@@ -1,0 +1,3108 @@
+{
+  "overview": {
+    "name": "student_manager",
+    "description": "学生管理系统 - 示例代码\n\n用于测试业务逻辑分析引擎的演示样本。\n典型的 CRUD + 数据验证 + 异常处理模式。",
+    "primary_purpose": "CRUD 数据操作",
+    "complexity_level": "advanced",
+    "total_functions": 12,
+    "total_classes": 1,
+    "total_lines": 209,
+    "key_patterns": [
+      "数据持久化",
+      "文件操作",
+      "数据验证",
+      "异常处理",
+      "CRUD 数据操作",
+      "批量处理",
+      "统计计算"
+    ]
+  },
+  "classes": [
+    {
+      "name": "StudentManager",
+      "start_line": 9,
+      "end_line": 155,
+      "docstring": "学生信息管理器，支持增删改查和批量操作",
+      "bases": [],
+      "methods": [
+        {
+          "name": "__init__",
+          "start_line": 12,
+          "end_line": 14,
+          "docstring": null,
+          "parameters": [
+            "self"
+          ],
+          "is_async": false,
+          "if_count": 0,
+          "loop_count": 0,
+          "try_count": 0,
+          "raise_count": 0,
+          "call_count": 0,
+          "_in_class": "StudentManager",
+          "_full_name": "StudentManager.__init__"
+        },
+        {
+          "name": "add_student",
+          "start_line": 16,
+          "end_line": 45,
+          "docstring": "添加一个新学生\n\nArgs:\n    name: 学生姓名\n    age: 年龄（必须在 0-150 之间）\n    major: 专业\n\nReturns:\n    新学生的 ID\n\nRaises:\n    ValueError: 参数不合法时抛出",
+          "parameters": [
+            "self",
+            "name",
+            "age",
+            "major"
+          ],
+          "is_async": false,
+          "if_count": 2,
+          "loop_count": 0,
+          "try_count": 0,
+          "raise_count": 2,
+          "call_count": 4,
+          "_in_class": "StudentManager",
+          "_full_name": "StudentManager.add_student"
+        },
+        {
+          "name": "delete_student",
+          "start_line": 47,
+          "end_line": 63,
+          "docstring": "删除指定学生\n\nArgs:\n    student_id: 学生 ID\n\nReturns:\n    删除成功返回 True\n\nRaises:\n    KeyError: 学生不存在时抛出",
+          "parameters": [
+            "self",
+            "student_id"
+          ],
+          "is_async": false,
+          "if_count": 1,
+          "loop_count": 0,
+          "try_count": 0,
+          "raise_count": 1,
+          "call_count": 1,
+          "_in_class": "StudentManager",
+          "_full_name": "StudentManager.delete_student"
+        },
+        {
+          "name": "update_student",
+          "start_line": 65,
+          "end_line": 86,
+          "docstring": "更新学生信息\n\nArgs:\n    student_id: 学生 ID\n    **kwargs: 要更新的字段（name, age, major）\n\nReturns:\n    更新成功返回 True",
+          "parameters": [
+            "self",
+            "student_id"
+          ],
+          "is_async": false,
+          "if_count": 4,
+          "loop_count": 1,
+          "try_count": 0,
+          "raise_count": 2,
+          "call_count": 4,
+          "_in_class": "StudentManager",
+          "_full_name": "StudentManager.update_student"
+        },
+        {
+          "name": "get_student",
+          "start_line": 88,
+          "end_line": 90,
+          "docstring": "查询学生信息，不存在返回 None",
+          "parameters": [
+            "self",
+            "student_id"
+          ],
+          "is_async": false,
+          "if_count": 0,
+          "loop_count": 0,
+          "try_count": 0,
+          "raise_count": 0,
+          "call_count": 1,
+          "_in_class": "StudentManager",
+          "_full_name": "StudentManager.get_student"
+        },
+        {
+          "name": "list_students",
+          "start_line": 92,
+          "end_line": 107,
+          "docstring": "列出所有学生，可按专业筛选\n\nArgs:\n    major: 专业筛选条件，None 表示全部\n\nReturns:\n    学生信息列表",
+          "parameters": [
+            "self",
+            "major"
+          ],
+          "is_async": false,
+          "if_count": 1,
+          "loop_count": 1,
+          "try_count": 0,
+          "raise_count": 0,
+          "call_count": 2,
+          "_in_class": "StudentManager",
+          "_full_name": "StudentManager.list_students"
+        },
+        {
+          "name": "add_score",
+          "start_line": 109,
+          "end_line": 125,
+          "docstring": "录入学生课程成绩\n\nArgs:\n    student_id: 学生 ID\n    course: 课程名\n    score: 分数（0-100）",
+          "parameters": [
+            "self",
+            "student_id",
+            "course",
+            "score"
+          ],
+          "is_async": false,
+          "if_count": 2,
+          "loop_count": 0,
+          "try_count": 0,
+          "raise_count": 2,
+          "call_count": 2,
+          "_in_class": "StudentManager",
+          "_full_name": "StudentManager.add_score"
+        },
+        {
+          "name": "get_average_score",
+          "start_line": 127,
+          "end_line": 146,
+          "docstring": "计算学生的平均分\n\nArgs:\n    student_id: 学生 ID\n\nReturns:\n    平均分（0 表示没有成绩）",
+          "parameters": [
+            "self",
+            "student_id"
+          ],
+          "is_async": false,
+          "if_count": 2,
+          "loop_count": 0,
+          "try_count": 0,
+          "raise_count": 1,
+          "call_count": 5,
+          "_in_class": "StudentManager",
+          "_full_name": "StudentManager.get_average_score"
+        },
+        {
+          "name": "count",
+          "start_line": 148,
+          "end_line": 150,
+          "docstring": "返回学生总数",
+          "parameters": [
+            "self"
+          ],
+          "is_async": false,
+          "if_count": 0,
+          "loop_count": 0,
+          "try_count": 0,
+          "raise_count": 0,
+          "call_count": 1,
+          "_in_class": "StudentManager",
+          "_full_name": "StudentManager.count"
+        },
+        {
+          "name": "clear",
+          "start_line": 152,
+          "end_line": 155,
+          "docstring": "清空所有学生数据",
+          "parameters": [
+            "self"
+          ],
+          "is_async": false,
+          "if_count": 0,
+          "loop_count": 0,
+          "try_count": 0,
+          "raise_count": 0,
+          "call_count": 1,
+          "_in_class": "StudentManager",
+          "_full_name": "StudentManager.clear"
+        }
+      ]
+    }
+  ],
+  "functions": [
+    {
+      "name": "load_from_file",
+      "start_line": 158,
+      "end_line": 191,
+      "docstring": "从 JSON 文件加载学生数据\n\nArgs:\n    filepath: JSON 文件路径\n\nReturns:\n    加载了数据的 StudentManager 实例",
+      "parameters": [
+        "filepath"
+      ],
+      "is_method": false,
+      "is_async": false,
+      "if_count": 1,
+      "loop_count": 1,
+      "try_count": 1,
+      "raise_count": 1,
+      "call_count": 7,
+      "called_functions": [
+        "StudentManager",
+        "get",
+        "open",
+        "load",
+        "ValueError"
+      ],
+      "_in_class": null,
+      "_full_name": "load_from_file"
+    },
+    {
+      "name": "save_to_file",
+      "start_line": 194,
+      "end_line": 209,
+      "docstring": "保存学生数据到 JSON 文件\n\nArgs:\n    manager: StudentManager 实例\n    filepath: 保存路径",
+      "parameters": [
+        "manager",
+        "filepath"
+      ],
+      "is_method": false,
+      "is_async": false,
+      "if_count": 0,
+      "loop_count": 1,
+      "try_count": 0,
+      "raise_count": 0,
+      "call_count": 4,
+      "called_functions": [
+        "items",
+        "append",
+        "open",
+        "dump"
+      ],
+      "_in_class": null,
+      "_full_name": "save_to_file"
+    }
+  ],
+  "imports": [],
+  "patterns": [
+    {
+      "pattern_id": "crud",
+      "pattern_name": "CRUD 数据操作",
+      "category": "data_operation",
+      "confidence": "high",
+      "score": 0.9,
+      "target_type": "class",
+      "target_name": "StudentManager",
+      "target_line": 9,
+      "sub_type": "CRUD",
+      "description": "该类是一个 CRUD 管理器，包含 4 种操作: C, R, U, D",
+      "evidence": [
+        {
+          "description": "类中包含 CRUD 操作: C, R, U, D",
+          "line_start": 9,
+          "line_end": 155,
+          "evidence_type": "naming"
+        }
+      ]
+    },
+    {
+      "pattern_id": "crud",
+      "pattern_name": "CRUD 数据操作",
+      "category": "data_operation",
+      "confidence": "high",
+      "score": 0.8,
+      "target_type": "function",
+      "target_name": "add_student",
+      "target_line": 16,
+      "sub_type": "C",
+      "description": "该函数实现了 CRUD 中的 C 操作",
+      "evidence": [
+        {
+          "description": "函数名包含新增语义: add_student",
+          "line_start": 16,
+          "line_end": 16,
+          "evidence_type": "naming"
+        },
+        {
+          "description": "包含 2 处参数校验异常",
+          "line_start": 16,
+          "line_end": 45,
+          "evidence_type": "code"
+        }
+      ]
+    },
+    {
+      "pattern_id": "crud",
+      "pattern_name": "CRUD 数据操作",
+      "category": "data_operation",
+      "confidence": "high",
+      "score": 0.8,
+      "target_type": "function",
+      "target_name": "add_score",
+      "target_line": 109,
+      "sub_type": "C",
+      "description": "该函数实现了 CRUD 中的 C 操作",
+      "evidence": [
+        {
+          "description": "函数名包含新增语义: add_score",
+          "line_start": 109,
+          "line_end": 109,
+          "evidence_type": "naming"
+        },
+        {
+          "description": "包含 2 处参数校验异常",
+          "line_start": 109,
+          "line_end": 125,
+          "evidence_type": "code"
+        }
+      ]
+    },
+    {
+      "pattern_id": "file_operation",
+      "pattern_name": "文件操作",
+      "category": "io",
+      "confidence": "medium",
+      "score": 0.75,
+      "target_type": "function",
+      "target_name": "load_from_file",
+      "target_line": 158,
+      "sub_type": null,
+      "description": "该函数涉及文件读写操作",
+      "evidence": [
+        {
+          "description": "调用了文件操作函数: open",
+          "line_start": 158,
+          "line_end": 191,
+          "evidence_type": "code"
+        },
+        {
+          "description": "函数名包含文件操作语义: load_from_file",
+          "line_start": 158,
+          "line_end": 158,
+          "evidence_type": "naming"
+        }
+      ]
+    },
+    {
+      "pattern_id": "file_operation",
+      "pattern_name": "文件操作",
+      "category": "io",
+      "confidence": "medium",
+      "score": 0.75,
+      "target_type": "function",
+      "target_name": "save_to_file",
+      "target_line": 194,
+      "sub_type": null,
+      "description": "该函数涉及文件读写操作",
+      "evidence": [
+        {
+          "description": "调用了文件操作函数: open",
+          "line_start": 194,
+          "line_end": 209,
+          "evidence_type": "code"
+        },
+        {
+          "description": "函数名包含文件操作语义: save_to_file",
+          "line_start": 194,
+          "line_end": 194,
+          "evidence_type": "naming"
+        }
+      ]
+    },
+    {
+      "pattern_id": "crud",
+      "pattern_name": "CRUD 数据操作",
+      "category": "data_operation",
+      "confidence": "high",
+      "score": 0.7,
+      "target_type": "function",
+      "target_name": "list_students",
+      "target_line": 92,
+      "sub_type": "R",
+      "description": "该函数实现了 CRUD 中的 R 操作",
+      "evidence": [
+        {
+          "description": "函数名包含查询语义: list_students",
+          "line_start": 92,
+          "line_end": 92,
+          "evidence_type": "naming"
+        },
+        {
+          "description": "包含循环遍历逻辑",
+          "line_start": 92,
+          "line_end": 107,
+          "evidence_type": "code"
+        }
+      ]
+    },
+    {
+      "pattern_id": "data_persistence",
+      "pattern_name": "数据持久化",
+      "category": "io",
+      "confidence": "medium",
+      "score": 0.7,
+      "target_type": "function",
+      "target_name": "load_from_file",
+      "target_line": 158,
+      "sub_type": null,
+      "description": "该函数涉及数据的持久化存储或加载",
+      "evidence": [
+        {
+          "description": "包含序列化/持久化操作: load",
+          "line_start": 158,
+          "line_end": 191,
+          "evidence_type": "code"
+        }
+      ]
+    },
+    {
+      "pattern_id": "data_persistence",
+      "pattern_name": "数据持久化",
+      "category": "io",
+      "confidence": "medium",
+      "score": 0.7,
+      "target_type": "function",
+      "target_name": "save_to_file",
+      "target_line": 194,
+      "sub_type": null,
+      "description": "该函数涉及数据的持久化存储或加载",
+      "evidence": [
+        {
+          "description": "包含序列化/持久化操作: dump",
+          "line_start": 194,
+          "line_end": 209,
+          "evidence_type": "code"
+        }
+      ]
+    },
+    {
+      "pattern_id": "error_handling",
+      "pattern_name": "异常处理",
+      "category": "robustness",
+      "confidence": "medium",
+      "score": 0.6,
+      "target_type": "function",
+      "target_name": "load_from_file",
+      "target_line": 158,
+      "sub_type": null,
+      "description": "该函数包含异常捕获和处理逻辑",
+      "evidence": [
+        {
+          "description": "包含 1 个 try/except 异常处理块",
+          "line_start": 158,
+          "line_end": 191,
+          "evidence_type": "code"
+        }
+      ]
+    },
+    {
+      "pattern_id": "data_validation",
+      "pattern_name": "数据验证",
+      "category": "validation",
+      "confidence": "medium",
+      "score": 0.6,
+      "target_type": "function",
+      "target_name": "add_student",
+      "target_line": 16,
+      "sub_type": null,
+      "description": "该函数包含输入数据合法性校验逻辑",
+      "evidence": [
+        {
+          "description": "包含 2 个条件判断和 2 个异常抛出",
+          "line_start": 16,
+          "line_end": 45,
+          "evidence_type": "code"
+        }
+      ]
+    },
+    {
+      "pattern_id": "crud",
+      "pattern_name": "CRUD 数据操作",
+      "category": "data_operation",
+      "confidence": "medium",
+      "score": 0.6,
+      "target_type": "function",
+      "target_name": "delete_student",
+      "target_line": 47,
+      "sub_type": "D",
+      "description": "该函数实现了 CRUD 中的 D 操作",
+      "evidence": [
+        {
+          "description": "函数名包含删除语义: delete_student",
+          "line_start": 47,
+          "line_end": 47,
+          "evidence_type": "naming"
+        }
+      ]
+    },
+    {
+      "pattern_id": "crud",
+      "pattern_name": "CRUD 数据操作",
+      "category": "data_operation",
+      "confidence": "medium",
+      "score": 0.6,
+      "target_type": "function",
+      "target_name": "update_student",
+      "target_line": 65,
+      "sub_type": "U",
+      "description": "该函数实现了 CRUD 中的 U 操作",
+      "evidence": [
+        {
+          "description": "函数名包含更新语义: update_student",
+          "line_start": 65,
+          "line_end": 65,
+          "evidence_type": "naming"
+        }
+      ]
+    },
+    {
+      "pattern_id": "data_validation",
+      "pattern_name": "数据验证",
+      "category": "validation",
+      "confidence": "medium",
+      "score": 0.6,
+      "target_type": "function",
+      "target_name": "update_student",
+      "target_line": 65,
+      "sub_type": null,
+      "description": "该函数包含输入数据合法性校验逻辑",
+      "evidence": [
+        {
+          "description": "包含 4 个条件判断和 2 个异常抛出",
+          "line_start": 65,
+          "line_end": 86,
+          "evidence_type": "code"
+        }
+      ]
+    },
+    {
+      "pattern_id": "batch_processing",
+      "pattern_name": "批量处理",
+      "category": "algorithm",
+      "confidence": "medium",
+      "score": 0.6,
+      "target_type": "function",
+      "target_name": "list_students",
+      "target_line": 92,
+      "sub_type": null,
+      "description": "该函数对集合数据进行批量处理",
+      "evidence": [
+        {
+          "description": "包含 1 个循环和 1 个条件判断",
+          "line_start": 92,
+          "line_end": 107,
+          "evidence_type": "code"
+        },
+        {
+          "description": "函数名包含批量处理语义: list_students",
+          "line_start": 92,
+          "line_end": 92,
+          "evidence_type": "naming"
+        }
+      ]
+    },
+    {
+      "pattern_id": "data_validation",
+      "pattern_name": "数据验证",
+      "category": "validation",
+      "confidence": "medium",
+      "score": 0.6,
+      "target_type": "function",
+      "target_name": "add_score",
+      "target_line": 109,
+      "sub_type": null,
+      "description": "该函数包含输入数据合法性校验逻辑",
+      "evidence": [
+        {
+          "description": "包含 2 个条件判断和 2 个异常抛出",
+          "line_start": 109,
+          "line_end": 125,
+          "evidence_type": "code"
+        }
+      ]
+    },
+    {
+      "pattern_id": "crud",
+      "pattern_name": "CRUD 数据操作",
+      "category": "data_operation",
+      "confidence": "medium",
+      "score": 0.6,
+      "target_type": "function",
+      "target_name": "clear",
+      "target_line": 152,
+      "sub_type": "D",
+      "description": "该函数实现了 CRUD 中的 D 操作",
+      "evidence": [
+        {
+          "description": "函数名包含删除语义: clear",
+          "line_start": 152,
+          "line_end": 152,
+          "evidence_type": "naming"
+        }
+      ]
+    },
+    {
+      "pattern_id": "crud",
+      "pattern_name": "CRUD 数据操作",
+      "category": "data_operation",
+      "confidence": "medium",
+      "score": 0.55,
+      "target_type": "function",
+      "target_name": "get_student",
+      "target_line": 88,
+      "sub_type": "R",
+      "description": "该函数实现了 CRUD 中的 R 操作",
+      "evidence": [
+        {
+          "description": "函数名包含查询语义: get_student",
+          "line_start": 88,
+          "line_end": 88,
+          "evidence_type": "naming"
+        }
+      ]
+    },
+    {
+      "pattern_id": "crud",
+      "pattern_name": "CRUD 数据操作",
+      "category": "data_operation",
+      "confidence": "medium",
+      "score": 0.55,
+      "target_type": "function",
+      "target_name": "get_average_score",
+      "target_line": 127,
+      "sub_type": "R",
+      "description": "该函数实现了 CRUD 中的 R 操作",
+      "evidence": [
+        {
+          "description": "函数名包含查询语义: get_average_score",
+          "line_start": 127,
+          "line_end": 127,
+          "evidence_type": "naming"
+        }
+      ]
+    },
+    {
+      "pattern_id": "statistical_calculation",
+      "pattern_name": "统计计算",
+      "category": "algorithm",
+      "confidence": "medium",
+      "score": 0.55,
+      "target_type": "function",
+      "target_name": "get_average_score",
+      "target_line": 127,
+      "sub_type": null,
+      "description": "该函数包含统计计算逻辑",
+      "evidence": [
+        {
+          "description": "函数名包含统计计算语义: get_average_score",
+          "line_start": 127,
+          "line_end": 127,
+          "evidence_type": "naming"
+        }
+      ]
+    },
+    {
+      "pattern_id": "data_validation",
+      "pattern_name": "数据验证",
+      "category": "validation",
+      "confidence": "medium",
+      "score": 0.45,
+      "target_type": "function",
+      "target_name": "load_from_file",
+      "target_line": 158,
+      "sub_type": null,
+      "description": "该函数包含输入数据合法性校验逻辑",
+      "evidence": [
+        {
+          "description": "包含 1 个条件判断和 1 个异常抛出",
+          "line_start": 158,
+          "line_end": 191,
+          "evidence_type": "code"
+        }
+      ]
+    },
+    {
+      "pattern_id": "data_validation",
+      "pattern_name": "数据验证",
+      "category": "validation",
+      "confidence": "medium",
+      "score": 0.45,
+      "target_type": "function",
+      "target_name": "delete_student",
+      "target_line": 47,
+      "sub_type": null,
+      "description": "该函数包含输入数据合法性校验逻辑",
+      "evidence": [
+        {
+          "description": "包含 1 个条件判断和 1 个异常抛出",
+          "line_start": 47,
+          "line_end": 63,
+          "evidence_type": "code"
+        }
+      ]
+    },
+    {
+      "pattern_id": "data_validation",
+      "pattern_name": "数据验证",
+      "category": "validation",
+      "confidence": "medium",
+      "score": 0.45,
+      "target_type": "function",
+      "target_name": "get_average_score",
+      "target_line": 127,
+      "sub_type": null,
+      "description": "该函数包含输入数据合法性校验逻辑",
+      "evidence": [
+        {
+          "description": "包含 2 个条件判断和 1 个异常抛出",
+          "line_start": 127,
+          "line_end": 146,
+          "evidence_type": "code"
+        }
+      ]
+    }
+  ],
+  "pattern_summary": {
+    "crud": 9,
+    "file_operation": 2,
+    "data_persistence": 2,
+    "error_handling": 1,
+    "data_validation": 6,
+    "batch_processing": 1,
+    "statistical_calculation": 1
+  },
+  "call_graph": {
+    "nodes": {
+      "load_from_file": {
+        "name": "load_from_file",
+        "kind": "function",
+        "class_name": null,
+        "start_line": 158,
+        "end_line": 191,
+        "calls": [],
+        "called_by": []
+      },
+      "save_to_file": {
+        "name": "save_to_file",
+        "kind": "function",
+        "class_name": null,
+        "start_line": 194,
+        "end_line": 209,
+        "calls": [],
+        "called_by": []
+      },
+      "StudentManager.__init__": {
+        "name": "__init__",
+        "kind": "method",
+        "class_name": "StudentManager",
+        "start_line": 12,
+        "end_line": 14,
+        "calls": [],
+        "called_by": []
+      },
+      "StudentManager.add_student": {
+        "name": "add_student",
+        "kind": "method",
+        "class_name": "StudentManager",
+        "start_line": 16,
+        "end_line": 45,
+        "calls": [],
+        "called_by": []
+      },
+      "StudentManager.delete_student": {
+        "name": "delete_student",
+        "kind": "method",
+        "class_name": "StudentManager",
+        "start_line": 47,
+        "end_line": 63,
+        "calls": [],
+        "called_by": []
+      },
+      "StudentManager.update_student": {
+        "name": "update_student",
+        "kind": "method",
+        "class_name": "StudentManager",
+        "start_line": 65,
+        "end_line": 86,
+        "calls": [],
+        "called_by": []
+      },
+      "StudentManager.get_student": {
+        "name": "get_student",
+        "kind": "method",
+        "class_name": "StudentManager",
+        "start_line": 88,
+        "end_line": 90,
+        "calls": [],
+        "called_by": [
+          "StudentManager.get_average_score"
+        ]
+      },
+      "StudentManager.list_students": {
+        "name": "list_students",
+        "kind": "method",
+        "class_name": "StudentManager",
+        "start_line": 92,
+        "end_line": 107,
+        "calls": [],
+        "called_by": []
+      },
+      "StudentManager.add_score": {
+        "name": "add_score",
+        "kind": "method",
+        "class_name": "StudentManager",
+        "start_line": 109,
+        "end_line": 125,
+        "calls": [],
+        "called_by": []
+      },
+      "StudentManager.get_average_score": {
+        "name": "get_average_score",
+        "kind": "method",
+        "class_name": "StudentManager",
+        "start_line": 127,
+        "end_line": 146,
+        "calls": [
+          "StudentManager.get_student"
+        ],
+        "called_by": []
+      },
+      "StudentManager.count": {
+        "name": "count",
+        "kind": "method",
+        "class_name": "StudentManager",
+        "start_line": 148,
+        "end_line": 150,
+        "calls": [],
+        "called_by": []
+      },
+      "StudentManager.clear": {
+        "name": "clear",
+        "kind": "method",
+        "class_name": "StudentManager",
+        "start_line": 152,
+        "end_line": 155,
+        "calls": [
+          "StudentManager.clear"
+        ],
+        "called_by": [
+          "StudentManager.clear"
+        ]
+      }
+    },
+    "entry_points": [
+      "load_from_file",
+      "save_to_file",
+      "StudentManager.__init__",
+      "StudentManager.add_student",
+      "StudentManager.delete_student",
+      "StudentManager.update_student",
+      "StudentManager.list_students",
+      "StudentManager.add_score",
+      "StudentManager.get_average_score",
+      "StudentManager.count"
+    ],
+    "leaves": [
+      "load_from_file",
+      "save_to_file",
+      "StudentManager.__init__",
+      "StudentManager.add_student",
+      "StudentManager.delete_student",
+      "StudentManager.update_student",
+      "StudentManager.get_student",
+      "StudentManager.list_students",
+      "StudentManager.add_score",
+      "StudentManager.count"
+    ]
+  },
+  "main_flow": [
+    {
+      "step": 1,
+      "description": "实现 C 操作：add_student",
+      "related_function": "add_student",
+      "line_start": 16,
+      "line_end": 45
+    },
+    {
+      "step": 2,
+      "description": "实现 C 操作：add_score",
+      "related_function": "add_score",
+      "line_start": 109,
+      "line_end": 125
+    },
+    {
+      "step": 3,
+      "description": "实现 R 操作：list_students",
+      "related_function": "list_students",
+      "line_start": 92,
+      "line_end": 107
+    },
+    {
+      "step": 4,
+      "description": "实现 R 操作：get_student",
+      "related_function": "get_student",
+      "line_start": 88,
+      "line_end": 90
+    },
+    {
+      "step": 5,
+      "description": "实现 R 操作：get_average_score",
+      "related_function": "get_average_score",
+      "line_start": 127,
+      "line_end": 146
+    },
+    {
+      "step": 6,
+      "description": "实现 U 操作：update_student",
+      "related_function": "update_student",
+      "line_start": 65,
+      "line_end": 86
+    },
+    {
+      "step": 7,
+      "description": "实现 D 操作：delete_student",
+      "related_function": "delete_student",
+      "line_start": 47,
+      "line_end": 63
+    },
+    {
+      "step": 8,
+      "description": "实现 D 操作：clear",
+      "related_function": "clear",
+      "line_start": 152,
+      "line_end": 155
+    }
+  ],
+  "knowledge_points": [
+    {
+      "id": "basic.function",
+      "name": "函数定义",
+      "category": "基础语法",
+      "difficulty": 1,
+      "description": "函数的定义、参数、返回值",
+      "related_lines": [
+        158,
+        194,
+        12,
+        16,
+        47,
+        65,
+        88,
+        92,
+        109,
+        127,
+        148,
+        152
+      ],
+      "related_functions": [
+        "load_from_file",
+        "save_to_file",
+        "__init__",
+        "add_student",
+        "delete_student",
+        "update_student",
+        "get_student",
+        "list_students",
+        "add_score",
+        "get_average_score",
+        "count",
+        "clear"
+      ]
+    },
+    {
+      "id": "basic.list",
+      "name": "列表操作",
+      "category": "基础语法",
+      "difficulty": 1,
+      "description": "列表的增删改查、遍历",
+      "related_lines": [
+        194,
+        92
+      ],
+      "related_functions": [
+        "save_to_file",
+        "list_students"
+      ]
+    },
+    {
+      "id": "basic.loop",
+      "name": "循环结构",
+      "category": "基础语法",
+      "difficulty": 1,
+      "description": "for/while 循环语句",
+      "related_lines": [
+        158,
+        194,
+        65,
+        92
+      ],
+      "related_functions": [
+        "load_from_file",
+        "save_to_file",
+        "update_student",
+        "list_students"
+      ]
+    },
+    {
+      "id": "basic.condition",
+      "name": "条件判断",
+      "category": "基础语法",
+      "difficulty": 1,
+      "description": "if/elif/else 条件语句",
+      "related_lines": [
+        158,
+        16,
+        47,
+        65,
+        92,
+        109,
+        127
+      ],
+      "related_functions": [
+        "load_from_file",
+        "add_student",
+        "delete_student",
+        "update_student",
+        "list_students",
+        "add_score",
+        "get_average_score"
+      ]
+    },
+    {
+      "id": "io.json",
+      "name": "JSON 序列化",
+      "category": "IO与持久化",
+      "difficulty": 2,
+      "description": "JSON 格式的序列化与反序列化",
+      "related_lines": [
+        158,
+        194
+      ],
+      "related_functions": [
+        "load_from_file",
+        "save_to_file"
+      ]
+    },
+    {
+      "id": "io.file",
+      "name": "文件操作",
+      "category": "IO与持久化",
+      "difficulty": 2,
+      "description": "文件的打开、读取、写入、关闭",
+      "related_lines": [
+        158,
+        194
+      ],
+      "related_functions": [
+        "load_from_file",
+        "save_to_file"
+      ]
+    },
+    {
+      "id": "basic.dict",
+      "name": "字典操作",
+      "category": "基础语法",
+      "difficulty": 2,
+      "description": "字典的增删改查、遍历",
+      "related_lines": [
+        158,
+        194,
+        65,
+        88,
+        92,
+        127
+      ],
+      "related_functions": [
+        "load_from_file",
+        "save_to_file",
+        "update_student",
+        "get_student",
+        "list_students",
+        "get_average_score"
+      ]
+    },
+    {
+      "id": "basic.class",
+      "name": "类与对象",
+      "category": "基础语法",
+      "difficulty": 2,
+      "description": "面向对象编程的基本概念：类定义、实例化",
+      "related_lines": [
+        9
+      ],
+      "related_functions": [
+        "StudentManager"
+      ]
+    },
+    {
+      "id": "validation.boundary",
+      "name": "边界检查",
+      "category": "数据验证",
+      "difficulty": 2,
+      "description": "输入参数的边界条件检查",
+      "related_lines": [
+        158,
+        16,
+        47,
+        65,
+        109,
+        127
+      ],
+      "related_functions": [
+        "load_from_file",
+        "add_student",
+        "delete_student",
+        "update_student",
+        "add_score",
+        "get_average_score"
+      ]
+    },
+    {
+      "id": "algo.statistics",
+      "name": "统计算法",
+      "category": "算法",
+      "difficulty": 2,
+      "description": "求和、平均值、最大最小值等统计计算",
+      "related_lines": [
+        127
+      ],
+      "related_functions": [
+        "get_average_score"
+      ]
+    },
+    {
+      "id": "pattern.crud",
+      "name": "CRUD 模式",
+      "category": "设计模式",
+      "difficulty": 2,
+      "description": "增删改查的数据管理模式",
+      "related_lines": [
+        9,
+        16,
+        109,
+        92,
+        47,
+        65,
+        152,
+        88,
+        127
+      ],
+      "related_functions": [
+        "StudentManager",
+        "add_student",
+        "add_score",
+        "list_students",
+        "delete_student",
+        "update_student",
+        "clear",
+        "get_student",
+        "get_average_score"
+      ]
+    },
+    {
+      "id": "io.context",
+      "name": "上下文管理器",
+      "category": "IO与持久化",
+      "difficulty": 3,
+      "description": "with 语句与上下文管理器",
+      "related_lines": [
+        158,
+        194
+      ],
+      "related_functions": [
+        "load_from_file",
+        "save_to_file"
+      ]
+    },
+    {
+      "id": "validation.custom",
+      "name": "自定义校验",
+      "category": "数据验证",
+      "difficulty": 3,
+      "description": "业务逻辑层面的数据合法性验证",
+      "related_lines": [
+        158,
+        16,
+        47,
+        65,
+        109,
+        127
+      ],
+      "related_functions": [
+        "load_from_file",
+        "add_student",
+        "delete_student",
+        "update_student",
+        "add_score",
+        "get_average_score"
+      ]
+    },
+    {
+      "id": "pattern.manager",
+      "name": "管理器模式",
+      "category": "设计模式",
+      "difficulty": 3,
+      "description": "集中管理某类资源的设计模式",
+      "related_lines": [
+        9
+      ],
+      "related_functions": [
+        "StudentManager"
+      ]
+    },
+    {
+      "id": "adv.exception",
+      "name": "异常处理",
+      "category": "进阶语法",
+      "difficulty": 3,
+      "description": "try/except/raise 异常捕获与抛出",
+      "related_lines": [
+        158,
+        16,
+        47,
+        65,
+        109,
+        127
+      ],
+      "related_functions": [
+        "load_from_file",
+        "add_student",
+        "delete_student",
+        "update_student",
+        "add_score",
+        "get_average_score"
+      ]
+    }
+  ],
+  "knowledge_categories": {
+    "基础语法": 6,
+    "IO与持久化": 3,
+    "数据验证": 2,
+    "算法": 1,
+    "设计模式": 2,
+    "进阶语法": 1
+  },
+  "difficulty_score": 3.9,
+  "flowcharts": {
+    "module": {
+      "title": "主业务流程",
+      "nodes": [
+        {
+          "id": "n1",
+          "label": "开始",
+          "type": "start",
+          "line_start": 0,
+          "line_end": 0,
+          "code_snippet": "",
+          "annotations": []
+        },
+        {
+          "id": "n2",
+          "label": "C :\nadd_student",
+          "type": "operation",
+          "line_start": 16,
+          "line_end": 45,
+          "code_snippet": "",
+          "annotations": [
+            "数据验证",
+            "CRUD 数据操作"
+          ]
+        },
+        {
+          "id": "n3",
+          "label": "C :\nadd_score",
+          "type": "operation",
+          "line_start": 109,
+          "line_end": 125,
+          "code_snippet": "",
+          "annotations": [
+            "数据验证",
+            "CRUD 数据操作"
+          ]
+        },
+        {
+          "id": "n4",
+          "label": "R :\nlist_students",
+          "type": "operation",
+          "line_start": 92,
+          "line_end": 107,
+          "code_snippet": "",
+          "annotations": [
+            "批量处理",
+            "CRUD 数据操作"
+          ]
+        },
+        {
+          "id": "n5",
+          "label": "R :\nget_student",
+          "type": "operation",
+          "line_start": 88,
+          "line_end": 90,
+          "code_snippet": "",
+          "annotations": [
+            "CRUD 数据操作"
+          ]
+        },
+        {
+          "id": "n6",
+          "label": "R :\nget_average_score",
+          "type": "operation",
+          "line_start": 127,
+          "line_end": 146,
+          "code_snippet": "",
+          "annotations": [
+            "数据验证",
+            "CRUD 数据操作",
+            "统计计算"
+          ]
+        },
+        {
+          "id": "n7",
+          "label": "U :\nupdate_student",
+          "type": "operation",
+          "line_start": 65,
+          "line_end": 86,
+          "code_snippet": "",
+          "annotations": [
+            "数据验证",
+            "CRUD 数据操作"
+          ]
+        },
+        {
+          "id": "n8",
+          "label": "D :\ndelete_student",
+          "type": "operation",
+          "line_start": 47,
+          "line_end": 63,
+          "code_snippet": "",
+          "annotations": [
+            "数据验证",
+            "CRUD 数据操作"
+          ]
+        },
+        {
+          "id": "n9",
+          "label": "D :\nclear",
+          "type": "operation",
+          "line_start": 152,
+          "line_end": 155,
+          "code_snippet": "",
+          "annotations": [
+            "CRUD 数据操作"
+          ]
+        },
+        {
+          "id": "n10",
+          "label": "结束",
+          "type": "end",
+          "line_start": 0,
+          "line_end": 0,
+          "code_snippet": "",
+          "annotations": []
+        }
+      ],
+      "edges": [
+        {
+          "from": "n1",
+          "to": "n2",
+          "label": ""
+        },
+        {
+          "from": "n2",
+          "to": "n3",
+          "label": ""
+        },
+        {
+          "from": "n3",
+          "to": "n4",
+          "label": ""
+        },
+        {
+          "from": "n4",
+          "to": "n5",
+          "label": ""
+        },
+        {
+          "from": "n5",
+          "to": "n6",
+          "label": ""
+        },
+        {
+          "from": "n6",
+          "to": "n7",
+          "label": ""
+        },
+        {
+          "from": "n7",
+          "to": "n8",
+          "label": ""
+        },
+        {
+          "from": "n8",
+          "to": "n9",
+          "label": ""
+        },
+        {
+          "from": "n9",
+          "to": "n10",
+          "label": ""
+        }
+      ],
+      "mermaid_syntax": "flowchart TD\n    n1([\"开始\"])\n    n2[\"C :<br/>add_student\"]\n    n3[\"C :<br/>add_score\"]\n    n4[\"R :<br/>list_students\"]\n    n5[\"R :<br/>get_student\"]\n    n6[\"R :<br/>get_average_score\"]\n    n7[\"U :<br/>update_student\"]\n    n8[\"D :<br/>delete_student\"]\n    n9[\"D :<br/>clear\"]\n    n10([\"结束\"])\n    n1 --> n2\n    n2 --> n3\n    n3 --> n4\n    n4 --> n5\n    n5 --> n6\n    n6 --> n7\n    n7 --> n8\n    n8 --> n9\n    n9 --> n10"
+    },
+    "functions": {
+      "StudentManager.__init__": {
+        "title": "__init__",
+        "nodes": [
+          {
+            "id": "n1",
+            "label": "开始\n__init__",
+            "type": "start",
+            "line_start": 12,
+            "line_end": 12,
+            "code_snippet": "",
+            "annotations": []
+          },
+          {
+            "id": "n2",
+            "label": "self.students = {}",
+            "type": "operation",
+            "line_start": 13,
+            "line_end": 13,
+            "code_snippet": "        self.students = {}",
+            "annotations": []
+          },
+          {
+            "id": "n3",
+            "label": "self._next_id = 1",
+            "type": "operation",
+            "line_start": 14,
+            "line_end": 14,
+            "code_snippet": "        self._next_id = 1",
+            "annotations": []
+          },
+          {
+            "id": "n4",
+            "label": "结束",
+            "type": "end",
+            "line_start": 14,
+            "line_end": 14,
+            "code_snippet": "",
+            "annotations": []
+          }
+        ],
+        "edges": [
+          {
+            "from": "n1",
+            "to": "n2",
+            "label": ""
+          },
+          {
+            "from": "n2",
+            "to": "n3",
+            "label": ""
+          },
+          {
+            "from": "n3",
+            "to": "n4",
+            "label": ""
+          }
+        ],
+        "mermaid_syntax": "flowchart TD\n    n1([\"开始<br/>__init__\"])\n    n2[\"self.students = {}\"]\n    n3[\"self._next_id = 1\"]\n    n4([\"结束\"])\n    n1 --> n2\n    n2 --> n3\n    n3 --> n4"
+      },
+      "StudentManager.add_student": {
+        "title": "add_student",
+        "nodes": [
+          {
+            "id": "n1",
+            "label": "开始\nadd_student",
+            "type": "start",
+            "line_start": 16,
+            "line_end": 16,
+            "code_snippet": "",
+            "annotations": []
+          },
+          {
+            "id": "n2",
+            "label": "\"\"\"...",
+            "type": "operation",
+            "line_start": 17,
+            "line_end": 30,
+            "code_snippet": "        \"\"\"\n        添加一个新学生\n\n        Args:\n            name: 学生姓名\n            age: 年龄（必须在 0-150 之间）\n            major: 专业\n\n        Returns:\n            新学生的 ID\n\n        Raises:\n            ValueError: 参数不合法时抛出\n        \"\"\"",
+            "annotations": []
+          },
+          {
+            "id": "n3",
+            "label": "not name or not isinstance(name, str)",
+            "type": "condition",
+            "line_start": 31,
+            "line_end": 31,
+            "code_snippet": "if not name or not isinstance(name, str):",
+            "annotations": [
+              "条件判断"
+            ]
+          },
+          {
+            "id": "n4",
+            "label": "抛出异常",
+            "type": "operation",
+            "line_start": 32,
+            "line_end": 32,
+            "code_snippet": "            raise ValueError(\"姓名不能为空且必须为字符串\")",
+            "annotations": [
+              "异常处理"
+            ]
+          },
+          {
+            "id": "n5",
+            "label": "not isinstance(age, int) or age < 0 or a",
+            "type": "condition",
+            "line_start": 34,
+            "line_end": 34,
+            "code_snippet": "if not isinstance(age, int) or age < 0 or age > 150:",
+            "annotations": [
+              "条件判断"
+            ]
+          },
+          {
+            "id": "n6",
+            "label": "抛出异常",
+            "type": "operation",
+            "line_start": 35,
+            "line_end": 35,
+            "code_snippet": "            raise ValueError(f\"年龄不合法: {age}\")",
+            "annotations": [
+              "异常处理"
+            ]
+          },
+          {
+            "id": "n7",
+            "label": "student_id = self._next_id",
+            "type": "operation",
+            "line_start": 37,
+            "line_end": 37,
+            "code_snippet": "        student_id = self._next_id",
+            "annotations": []
+          },
+          {
+            "id": "n8",
+            "label": "self.students[student_id] = {...",
+            "type": "operation",
+            "line_start": 38,
+            "line_end": 43,
+            "code_snippet": "        self.students[student_id] = {\n            \"name\": name,\n            \"age\": age,\n            \"major\": major,\n            \"scores\": {},\n        }",
+            "annotations": []
+          },
+          {
+            "id": "n9",
+            "label": "self._next_id += 1",
+            "type": "operation",
+            "line_start": 44,
+            "line_end": 44,
+            "code_snippet": "        self._next_id += 1",
+            "annotations": []
+          },
+          {
+            "id": "n10",
+            "label": "返回结果",
+            "type": "end",
+            "line_start": 45,
+            "line_end": 45,
+            "code_snippet": "        return student_id",
+            "annotations": []
+          },
+          {
+            "id": "n11",
+            "label": "结束",
+            "type": "end",
+            "line_start": 45,
+            "line_end": 45,
+            "code_snippet": "",
+            "annotations": []
+          }
+        ],
+        "edges": [
+          {
+            "from": "n1",
+            "to": "n2",
+            "label": ""
+          },
+          {
+            "from": "n2",
+            "to": "n3",
+            "label": ""
+          },
+          {
+            "from": "n3",
+            "to": "n4",
+            "label": "是"
+          },
+          {
+            "from": "n4",
+            "to": "n5",
+            "label": ""
+          },
+          {
+            "from": "n5",
+            "to": "n6",
+            "label": "是"
+          },
+          {
+            "from": "n6",
+            "to": "n7",
+            "label": ""
+          },
+          {
+            "from": "n7",
+            "to": "n8",
+            "label": ""
+          },
+          {
+            "from": "n8",
+            "to": "n9",
+            "label": ""
+          },
+          {
+            "from": "n9",
+            "to": "n10",
+            "label": ""
+          },
+          {
+            "from": "n10",
+            "to": "n11",
+            "label": ""
+          }
+        ],
+        "mermaid_syntax": "flowchart TD\n    n1([\"开始<br/>add_student\"])\n    n2[\"'''...\"]\n    n3{\"not name or not isinstance(name, str)\"}\n    n4[\"抛出异常\"]\n    n5{\"not isinstance(age, int) or age < 0 or a\"}\n    n6[\"抛出异常\"]\n    n7[\"student_id = self._next_id\"]\n    n8[\"self.students[student_id] = {...\"]\n    n9[\"self._next_id += 1\"]\n    n10([\"返回结果\"])\n    n11([\"结束\"])\n    n1 --> n2\n    n2 --> n3\n    n3 -->|是| n4\n    n4 --> n5\n    n5 -->|是| n6\n    n6 --> n7\n    n7 --> n8\n    n8 --> n9\n    n9 --> n10\n    n10 --> n11"
+      },
+      "StudentManager.delete_student": {
+        "title": "delete_student",
+        "nodes": [
+          {
+            "id": "n1",
+            "label": "开始\ndelete_student",
+            "type": "start",
+            "line_start": 47,
+            "line_end": 47,
+            "code_snippet": "",
+            "annotations": []
+          },
+          {
+            "id": "n2",
+            "label": "\"\"\"...",
+            "type": "operation",
+            "line_start": 48,
+            "line_end": 59,
+            "code_snippet": "        \"\"\"\n        删除指定学生\n\n        Args:\n            student_id: 学生 ID\n\n        Returns:\n            删除成功返回 True\n\n        Raises:\n            KeyError: 学生不存在时抛出\n        \"\"\"",
+            "annotations": []
+          },
+          {
+            "id": "n3",
+            "label": "student_id not in self.students",
+            "type": "condition",
+            "line_start": 60,
+            "line_end": 60,
+            "code_snippet": "if student_id not in self.students:",
+            "annotations": [
+              "条件判断"
+            ]
+          },
+          {
+            "id": "n4",
+            "label": "抛出异常",
+            "type": "operation",
+            "line_start": 61,
+            "line_end": 61,
+            "code_snippet": "            raise KeyError(f\"学生 {student_id} 不存在\")",
+            "annotations": [
+              "异常处理"
+            ]
+          },
+          {
+            "id": "n5",
+            "label": "del self.students[student_id]",
+            "type": "operation",
+            "line_start": 62,
+            "line_end": 62,
+            "code_snippet": "        del self.students[student_id]",
+            "annotations": []
+          },
+          {
+            "id": "n6",
+            "label": "返回结果",
+            "type": "end",
+            "line_start": 63,
+            "line_end": 63,
+            "code_snippet": "        return True",
+            "annotations": []
+          },
+          {
+            "id": "n7",
+            "label": "结束",
+            "type": "end",
+            "line_start": 63,
+            "line_end": 63,
+            "code_snippet": "",
+            "annotations": []
+          }
+        ],
+        "edges": [
+          {
+            "from": "n1",
+            "to": "n2",
+            "label": ""
+          },
+          {
+            "from": "n2",
+            "to": "n3",
+            "label": ""
+          },
+          {
+            "from": "n3",
+            "to": "n4",
+            "label": "是"
+          },
+          {
+            "from": "n4",
+            "to": "n5",
+            "label": ""
+          },
+          {
+            "from": "n5",
+            "to": "n6",
+            "label": ""
+          },
+          {
+            "from": "n6",
+            "to": "n7",
+            "label": ""
+          }
+        ],
+        "mermaid_syntax": "flowchart TD\n    n1([\"开始<br/>delete_student\"])\n    n2[\"'''...\"]\n    n3{\"student_id not in self.students\"}\n    n4[\"抛出异常\"]\n    n5[\"del self.students[student_id]\"]\n    n6([\"返回结果\"])\n    n7([\"结束\"])\n    n1 --> n2\n    n2 --> n3\n    n3 -->|是| n4\n    n4 --> n5\n    n5 --> n6\n    n6 --> n7"
+      },
+      "StudentManager.update_student": {
+        "title": "update_student",
+        "nodes": [
+          {
+            "id": "n1",
+            "label": "开始\nupdate_student",
+            "type": "start",
+            "line_start": 65,
+            "line_end": 65,
+            "code_snippet": "",
+            "annotations": []
+          },
+          {
+            "id": "n2",
+            "label": "\"\"\"...",
+            "type": "operation",
+            "line_start": 66,
+            "line_end": 75,
+            "code_snippet": "        \"\"\"\n        更新学生信息\n\n        Args:\n            student_id: 学生 ID\n            **kwargs: 要更新的字段（name, age, major）\n\n        Returns:\n            更新成功返回 True\n        \"\"\"",
+            "annotations": []
+          },
+          {
+            "id": "n3",
+            "label": "student_id not in self.students",
+            "type": "condition",
+            "line_start": 76,
+            "line_end": 76,
+            "code_snippet": "if student_id not in self.students:",
+            "annotations": [
+              "条件判断"
+            ]
+          },
+          {
+            "id": "n4",
+            "label": "抛出异常",
+            "type": "operation",
+            "line_start": 77,
+            "line_end": 77,
+            "code_snippet": "            raise KeyError(f\"学生 {student_id} 不存在\")",
+            "annotations": [
+              "异常处理"
+            ]
+          },
+          {
+            "id": "n5",
+            "label": "student = self.students[studen",
+            "type": "operation",
+            "line_start": 79,
+            "line_end": 79,
+            "code_snippet": "        student = self.students[student_id]",
+            "annotations": []
+          },
+          {
+            "id": "n6",
+            "label": "循环: key, value in kwargs.items()",
+            "type": "condition",
+            "line_start": 80,
+            "line_end": 80,
+            "code_snippet": "for key, value in kwargs.items():",
+            "annotations": [
+              "循环结构"
+            ]
+          },
+          {
+            "id": "n7",
+            "label": "key == \"age\"",
+            "type": "condition",
+            "line_start": 81,
+            "line_end": 81,
+            "code_snippet": "if key == \"age\":",
+            "annotations": [
+              "条件判断"
+            ]
+          },
+          {
+            "id": "n8",
+            "label": "not isinstance(value, int) or value < 0 ",
+            "type": "condition",
+            "line_start": 82,
+            "line_end": 82,
+            "code_snippet": "if not isinstance(value, int) or value < 0 or value > 150:",
+            "annotations": [
+              "条件判断"
+            ]
+          },
+          {
+            "id": "n9",
+            "label": "抛出异常",
+            "type": "operation",
+            "line_start": 83,
+            "line_end": 83,
+            "code_snippet": "                    raise ValueError(f\"年龄不合法: {value}\")",
+            "annotations": [
+              "异常处理"
+            ]
+          },
+          {
+            "id": "n10",
+            "label": "key in (\"name\", \"age\", \"major\")",
+            "type": "condition",
+            "line_start": 84,
+            "line_end": 84,
+            "code_snippet": "if key in (\"name\", \"age\", \"major\"):",
+            "annotations": [
+              "条件判断"
+            ]
+          },
+          {
+            "id": "n11",
+            "label": "student[key] = value",
+            "type": "operation",
+            "line_start": 85,
+            "line_end": 85,
+            "code_snippet": "                student[key] = value",
+            "annotations": []
+          },
+          {
+            "id": "n12",
+            "label": "返回结果",
+            "type": "end",
+            "line_start": 86,
+            "line_end": 86,
+            "code_snippet": "        return True",
+            "annotations": []
+          },
+          {
+            "id": "n13",
+            "label": "结束",
+            "type": "end",
+            "line_start": 86,
+            "line_end": 86,
+            "code_snippet": "",
+            "annotations": []
+          }
+        ],
+        "edges": [
+          {
+            "from": "n1",
+            "to": "n2",
+            "label": ""
+          },
+          {
+            "from": "n2",
+            "to": "n3",
+            "label": ""
+          },
+          {
+            "from": "n3",
+            "to": "n4",
+            "label": "是"
+          },
+          {
+            "from": "n4",
+            "to": "n5",
+            "label": ""
+          },
+          {
+            "from": "n5",
+            "to": "n6",
+            "label": ""
+          },
+          {
+            "from": "n6",
+            "to": "n7",
+            "label": ""
+          },
+          {
+            "from": "n7",
+            "to": "n8",
+            "label": "是"
+          },
+          {
+            "from": "n8",
+            "to": "n9",
+            "label": "是"
+          },
+          {
+            "from": "n9",
+            "to": "n10",
+            "label": ""
+          },
+          {
+            "from": "n10",
+            "to": "n11",
+            "label": "是"
+          },
+          {
+            "from": "n11",
+            "to": "n6",
+            "label": "继续"
+          },
+          {
+            "from": "n6",
+            "to": "n12",
+            "label": ""
+          },
+          {
+            "from": "n12",
+            "to": "n13",
+            "label": ""
+          }
+        ],
+        "mermaid_syntax": "flowchart TD\n    n1([\"开始<br/>update_student\"])\n    n2[\"'''...\"]\n    n3{\"student_id not in self.students\"}\n    n4[\"抛出异常\"]\n    n5[\"student = self.students[studen\"]\n    n6{\"循环: key, value in kwargs.items()\"}\n    n7{\"key == 'age'\"}\n    n8{\"not isinstance(value, int) or value < 0 \"}\n    n9[\"抛出异常\"]\n    n10{\"key in ('name', 'age', 'major')\"}\n    n11[\"student[key] = value\"]\n    n12([\"返回结果\"])\n    n13([\"结束\"])\n    n1 --> n2\n    n2 --> n3\n    n3 -->|是| n4\n    n4 --> n5\n    n5 --> n6\n    n6 --> n7\n    n7 -->|是| n8\n    n8 -->|是| n9\n    n9 --> n10\n    n10 -->|是| n11\n    n11 -->|继续| n6\n    n6 --> n12\n    n12 --> n13"
+      },
+      "StudentManager.get_student": {
+        "title": "get_student",
+        "nodes": [
+          {
+            "id": "n1",
+            "label": "开始\nget_student",
+            "type": "start",
+            "line_start": 88,
+            "line_end": 88,
+            "code_snippet": "",
+            "annotations": []
+          },
+          {
+            "id": "n2",
+            "label": "\"\"\"查询学生信息，不存在返回 None\"\"\"",
+            "type": "operation",
+            "line_start": 89,
+            "line_end": 89,
+            "code_snippet": "        \"\"\"查询学生信息，不存在返回 None\"\"\"",
+            "annotations": []
+          },
+          {
+            "id": "n3",
+            "label": "返回结果",
+            "type": "end",
+            "line_start": 90,
+            "line_end": 90,
+            "code_snippet": "        return self.students.get(student_id)",
+            "annotations": []
+          },
+          {
+            "id": "n4",
+            "label": "结束",
+            "type": "end",
+            "line_start": 90,
+            "line_end": 90,
+            "code_snippet": "",
+            "annotations": []
+          }
+        ],
+        "edges": [
+          {
+            "from": "n1",
+            "to": "n2",
+            "label": ""
+          },
+          {
+            "from": "n2",
+            "to": "n3",
+            "label": ""
+          },
+          {
+            "from": "n3",
+            "to": "n4",
+            "label": ""
+          }
+        ],
+        "mermaid_syntax": "flowchart TD\n    n1([\"开始<br/>get_student\"])\n    n2[\"'''查询学生信息，不存在返回 None'''\"]\n    n3([\"返回结果\"])\n    n4([\"结束\"])\n    n1 --> n2\n    n2 --> n3\n    n3 --> n4"
+      },
+      "StudentManager.list_students": {
+        "title": "list_students",
+        "nodes": [
+          {
+            "id": "n1",
+            "label": "开始\nlist_students",
+            "type": "start",
+            "line_start": 92,
+            "line_end": 92,
+            "code_snippet": "",
+            "annotations": []
+          },
+          {
+            "id": "n2",
+            "label": "\"\"\"...",
+            "type": "operation",
+            "line_start": 93,
+            "line_end": 101,
+            "code_snippet": "        \"\"\"\n        列出所有学生，可按专业筛选\n\n        Args:\n            major: 专业筛选条件，None 表示全部\n\n        Returns:\n            学生信息列表\n        \"\"\"",
+            "annotations": []
+          },
+          {
+            "id": "n3",
+            "label": "result = []",
+            "type": "operation",
+            "line_start": 102,
+            "line_end": 102,
+            "code_snippet": "        result = []",
+            "annotations": []
+          },
+          {
+            "id": "n4",
+            "label": "循环: sid, info in self.students.ite",
+            "type": "condition",
+            "line_start": 103,
+            "line_end": 103,
+            "code_snippet": "for sid, info in self.students.items():",
+            "annotations": [
+              "循环结构"
+            ]
+          },
+          {
+            "id": "n5",
+            "label": "major and info[\"major\"] != major",
+            "type": "condition",
+            "line_start": 104,
+            "line_end": 104,
+            "code_snippet": "if major and info[\"major\"] != major:",
+            "annotations": [
+              "条件判断"
+            ]
+          },
+          {
+            "id": "n6",
+            "label": "continue",
+            "type": "operation",
+            "line_start": 105,
+            "line_end": 105,
+            "code_snippet": "                continue",
+            "annotations": []
+          },
+          {
+            "id": "n7",
+            "label": "result.append({\"id\": sid, **in",
+            "type": "operation",
+            "line_start": 106,
+            "line_end": 106,
+            "code_snippet": "            result.append({\"id\": sid, **info})",
+            "annotations": []
+          },
+          {
+            "id": "n8",
+            "label": "返回结果",
+            "type": "end",
+            "line_start": 107,
+            "line_end": 107,
+            "code_snippet": "        return result",
+            "annotations": []
+          },
+          {
+            "id": "n9",
+            "label": "结束",
+            "type": "end",
+            "line_start": 107,
+            "line_end": 107,
+            "code_snippet": "",
+            "annotations": []
+          }
+        ],
+        "edges": [
+          {
+            "from": "n1",
+            "to": "n2",
+            "label": ""
+          },
+          {
+            "from": "n2",
+            "to": "n3",
+            "label": ""
+          },
+          {
+            "from": "n3",
+            "to": "n4",
+            "label": ""
+          },
+          {
+            "from": "n4",
+            "to": "n5",
+            "label": ""
+          },
+          {
+            "from": "n5",
+            "to": "n6",
+            "label": "是"
+          },
+          {
+            "from": "n6",
+            "to": "n7",
+            "label": ""
+          },
+          {
+            "from": "n7",
+            "to": "n4",
+            "label": "继续"
+          },
+          {
+            "from": "n4",
+            "to": "n8",
+            "label": ""
+          },
+          {
+            "from": "n8",
+            "to": "n9",
+            "label": ""
+          }
+        ],
+        "mermaid_syntax": "flowchart TD\n    n1([\"开始<br/>list_students\"])\n    n2[\"'''...\"]\n    n3[\"result = []\"]\n    n4{\"循环: sid, info in self.students.ite\"}\n    n5{\"major and info['major'] != major\"}\n    n6[\"continue\"]\n    n7[\"result.append({'id': sid, **in\"]\n    n8([\"返回结果\"])\n    n9([\"结束\"])\n    n1 --> n2\n    n2 --> n3\n    n3 --> n4\n    n4 --> n5\n    n5 -->|是| n6\n    n6 --> n7\n    n7 -->|继续| n4\n    n4 --> n8\n    n8 --> n9"
+      },
+      "StudentManager.add_score": {
+        "title": "add_score",
+        "nodes": [
+          {
+            "id": "n1",
+            "label": "开始\nadd_score",
+            "type": "start",
+            "line_start": 109,
+            "line_end": 109,
+            "code_snippet": "",
+            "annotations": []
+          },
+          {
+            "id": "n2",
+            "label": "\"\"\"...",
+            "type": "operation",
+            "line_start": 110,
+            "line_end": 117,
+            "code_snippet": "        \"\"\"\n        录入学生课程成绩\n\n        Args:\n            student_id: 学生 ID\n            course: 课程名\n            score: 分数（0-100）\n        \"\"\"",
+            "annotations": []
+          },
+          {
+            "id": "n3",
+            "label": "student_id not in self.students",
+            "type": "condition",
+            "line_start": 118,
+            "line_end": 118,
+            "code_snippet": "if student_id not in self.students:",
+            "annotations": [
+              "条件判断"
+            ]
+          },
+          {
+            "id": "n4",
+            "label": "抛出异常",
+            "type": "operation",
+            "line_start": 119,
+            "line_end": 119,
+            "code_snippet": "            raise KeyError(f\"学生 {student_id} 不存在\")",
+            "annotations": [
+              "异常处理"
+            ]
+          },
+          {
+            "id": "n5",
+            "label": "score < 0 or score > 100",
+            "type": "condition",
+            "line_start": 121,
+            "line_end": 121,
+            "code_snippet": "if score < 0 or score > 100:",
+            "annotations": [
+              "条件判断"
+            ]
+          },
+          {
+            "id": "n6",
+            "label": "抛出异常",
+            "type": "operation",
+            "line_start": 122,
+            "line_end": 122,
+            "code_snippet": "            raise ValueError(f\"分数不合法: {score}\")",
+            "annotations": [
+              "异常处理"
+            ]
+          },
+          {
+            "id": "n7",
+            "label": "self.students[student_id][\"sco",
+            "type": "operation",
+            "line_start": 124,
+            "line_end": 124,
+            "code_snippet": "        self.students[student_id][\"scores\"][course] = score",
+            "annotations": []
+          },
+          {
+            "id": "n8",
+            "label": "返回结果",
+            "type": "end",
+            "line_start": 125,
+            "line_end": 125,
+            "code_snippet": "        return True",
+            "annotations": []
+          },
+          {
+            "id": "n9",
+            "label": "结束",
+            "type": "end",
+            "line_start": 125,
+            "line_end": 125,
+            "code_snippet": "",
+            "annotations": []
+          }
+        ],
+        "edges": [
+          {
+            "from": "n1",
+            "to": "n2",
+            "label": ""
+          },
+          {
+            "from": "n2",
+            "to": "n3",
+            "label": ""
+          },
+          {
+            "from": "n3",
+            "to": "n4",
+            "label": "是"
+          },
+          {
+            "from": "n4",
+            "to": "n5",
+            "label": ""
+          },
+          {
+            "from": "n5",
+            "to": "n6",
+            "label": "是"
+          },
+          {
+            "from": "n6",
+            "to": "n7",
+            "label": ""
+          },
+          {
+            "from": "n7",
+            "to": "n8",
+            "label": ""
+          },
+          {
+            "from": "n8",
+            "to": "n9",
+            "label": ""
+          }
+        ],
+        "mermaid_syntax": "flowchart TD\n    n1([\"开始<br/>add_score\"])\n    n2[\"'''...\"]\n    n3{\"student_id not in self.students\"}\n    n4[\"抛出异常\"]\n    n5{\"score < 0 or score > 100\"}\n    n6[\"抛出异常\"]\n    n7[\"self.students[student_id]['sco\"]\n    n8([\"返回结果\"])\n    n9([\"结束\"])\n    n1 --> n2\n    n2 --> n3\n    n3 -->|是| n4\n    n4 --> n5\n    n5 -->|是| n6\n    n6 --> n7\n    n7 --> n8\n    n8 --> n9"
+      },
+      "StudentManager.get_average_score": {
+        "title": "get_average_score",
+        "nodes": [
+          {
+            "id": "n1",
+            "label": "开始\nget_average_score",
+            "type": "start",
+            "line_start": 127,
+            "line_end": 127,
+            "code_snippet": "",
+            "annotations": []
+          },
+          {
+            "id": "n2",
+            "label": "\"\"\"...",
+            "type": "operation",
+            "line_start": 128,
+            "line_end": 136,
+            "code_snippet": "        \"\"\"\n        计算学生的平均分\n\n        Args:\n            student_id: 学生 ID\n\n        Returns:\n            平均分（0 表示没有成绩）\n        \"\"\"",
+            "annotations": []
+          },
+          {
+            "id": "n3",
+            "label": "student = self.get_student(stu",
+            "type": "operation",
+            "line_start": 137,
+            "line_end": 137,
+            "code_snippet": "        student = self.get_student(student_id)",
+            "annotations": []
+          },
+          {
+            "id": "n4",
+            "label": "not student",
+            "type": "condition",
+            "line_start": 138,
+            "line_end": 138,
+            "code_snippet": "if not student:",
+            "annotations": [
+              "条件判断"
+            ]
+          },
+          {
+            "id": "n5",
+            "label": "抛出异常",
+            "type": "operation",
+            "line_start": 139,
+            "line_end": 139,
+            "code_snippet": "            raise KeyError(f\"学生 {student_id} 不存在\")",
+            "annotations": [
+              "异常处理"
+            ]
+          },
+          {
+            "id": "n6",
+            "label": "scores = student[\"scores\"]",
+            "type": "operation",
+            "line_start": 141,
+            "line_end": 141,
+            "code_snippet": "        scores = student[\"scores\"]",
+            "annotations": []
+          },
+          {
+            "id": "n7",
+            "label": "not scores",
+            "type": "condition",
+            "line_start": 142,
+            "line_end": 142,
+            "code_snippet": "if not scores:",
+            "annotations": [
+              "条件判断"
+            ]
+          },
+          {
+            "id": "n8",
+            "label": "返回结果",
+            "type": "end",
+            "line_start": 143,
+            "line_end": 143,
+            "code_snippet": "            return 0.0",
+            "annotations": []
+          },
+          {
+            "id": "n9",
+            "label": "total = sum(scores.values())",
+            "type": "operation",
+            "line_start": 145,
+            "line_end": 145,
+            "code_snippet": "        total = sum(scores.values())",
+            "annotations": []
+          },
+          {
+            "id": "n10",
+            "label": "返回结果",
+            "type": "end",
+            "line_start": 146,
+            "line_end": 146,
+            "code_snippet": "        return total / len(scores)",
+            "annotations": []
+          },
+          {
+            "id": "n11",
+            "label": "结束",
+            "type": "end",
+            "line_start": 146,
+            "line_end": 146,
+            "code_snippet": "",
+            "annotations": []
+          }
+        ],
+        "edges": [
+          {
+            "from": "n1",
+            "to": "n2",
+            "label": ""
+          },
+          {
+            "from": "n2",
+            "to": "n3",
+            "label": ""
+          },
+          {
+            "from": "n3",
+            "to": "n4",
+            "label": ""
+          },
+          {
+            "from": "n4",
+            "to": "n5",
+            "label": "是"
+          },
+          {
+            "from": "n5",
+            "to": "n6",
+            "label": ""
+          },
+          {
+            "from": "n6",
+            "to": "n7",
+            "label": ""
+          },
+          {
+            "from": "n7",
+            "to": "n8",
+            "label": "是"
+          },
+          {
+            "from": "n8",
+            "to": "n9",
+            "label": ""
+          },
+          {
+            "from": "n9",
+            "to": "n10",
+            "label": ""
+          },
+          {
+            "from": "n10",
+            "to": "n11",
+            "label": ""
+          }
+        ],
+        "mermaid_syntax": "flowchart TD\n    n1([\"开始<br/>get_average_score\"])\n    n2[\"'''...\"]\n    n3[\"student = self.get_student(stu\"]\n    n4{\"not student\"}\n    n5[\"抛出异常\"]\n    n6[\"scores = student['scores']\"]\n    n7{\"not scores\"}\n    n8([\"返回结果\"])\n    n9[\"total = sum(scores.values())\"]\n    n10([\"返回结果\"])\n    n11([\"结束\"])\n    n1 --> n2\n    n2 --> n3\n    n3 --> n4\n    n4 -->|是| n5\n    n5 --> n6\n    n6 --> n7\n    n7 -->|是| n8\n    n8 --> n9\n    n9 --> n10\n    n10 --> n11"
+      },
+      "StudentManager.count": {
+        "title": "count",
+        "nodes": [
+          {
+            "id": "n1",
+            "label": "开始\ncount",
+            "type": "start",
+            "line_start": 148,
+            "line_end": 148,
+            "code_snippet": "",
+            "annotations": []
+          },
+          {
+            "id": "n2",
+            "label": "\"\"\"返回学生总数\"\"\"",
+            "type": "operation",
+            "line_start": 149,
+            "line_end": 149,
+            "code_snippet": "        \"\"\"返回学生总数\"\"\"",
+            "annotations": []
+          },
+          {
+            "id": "n3",
+            "label": "返回结果",
+            "type": "end",
+            "line_start": 150,
+            "line_end": 150,
+            "code_snippet": "        return len(self.students)",
+            "annotations": []
+          },
+          {
+            "id": "n4",
+            "label": "结束",
+            "type": "end",
+            "line_start": 150,
+            "line_end": 150,
+            "code_snippet": "",
+            "annotations": []
+          }
+        ],
+        "edges": [
+          {
+            "from": "n1",
+            "to": "n2",
+            "label": ""
+          },
+          {
+            "from": "n2",
+            "to": "n3",
+            "label": ""
+          },
+          {
+            "from": "n3",
+            "to": "n4",
+            "label": ""
+          }
+        ],
+        "mermaid_syntax": "flowchart TD\n    n1([\"开始<br/>count\"])\n    n2[\"'''返回学生总数'''\"]\n    n3([\"返回结果\"])\n    n4([\"结束\"])\n    n1 --> n2\n    n2 --> n3\n    n3 --> n4"
+      },
+      "StudentManager.clear": {
+        "title": "clear",
+        "nodes": [
+          {
+            "id": "n1",
+            "label": "开始\nclear",
+            "type": "start",
+            "line_start": 152,
+            "line_end": 152,
+            "code_snippet": "",
+            "annotations": []
+          },
+          {
+            "id": "n2",
+            "label": "\"\"\"清空所有学生数据\"\"\"",
+            "type": "operation",
+            "line_start": 153,
+            "line_end": 153,
+            "code_snippet": "        \"\"\"清空所有学生数据\"\"\"",
+            "annotations": []
+          },
+          {
+            "id": "n3",
+            "label": "self.students.clear()",
+            "type": "operation",
+            "line_start": 154,
+            "line_end": 154,
+            "code_snippet": "        self.students.clear()",
+            "annotations": []
+          },
+          {
+            "id": "n4",
+            "label": "self._next_id = 1",
+            "type": "operation",
+            "line_start": 155,
+            "line_end": 155,
+            "code_snippet": "        self._next_id = 1",
+            "annotations": []
+          },
+          {
+            "id": "n5",
+            "label": "结束",
+            "type": "end",
+            "line_start": 155,
+            "line_end": 155,
+            "code_snippet": "",
+            "annotations": []
+          }
+        ],
+        "edges": [
+          {
+            "from": "n1",
+            "to": "n2",
+            "label": ""
+          },
+          {
+            "from": "n2",
+            "to": "n3",
+            "label": ""
+          },
+          {
+            "from": "n3",
+            "to": "n4",
+            "label": ""
+          },
+          {
+            "from": "n4",
+            "to": "n5",
+            "label": ""
+          }
+        ],
+        "mermaid_syntax": "flowchart TD\n    n1([\"开始<br/>clear\"])\n    n2[\"'''清空所有学生数据'''\"]\n    n3[\"self.students.clear()\"]\n    n4[\"self._next_id = 1\"]\n    n5([\"结束\"])\n    n1 --> n2\n    n2 --> n3\n    n3 --> n4\n    n4 --> n5"
+      },
+      "load_from_file": {
+        "title": "load_from_file",
+        "nodes": [
+          {
+            "id": "n1",
+            "label": "开始\nload_from_file",
+            "type": "start",
+            "line_start": 158,
+            "line_end": 158,
+            "code_snippet": "",
+            "annotations": []
+          },
+          {
+            "id": "n2",
+            "label": "\"\"\"...",
+            "type": "operation",
+            "line_start": 159,
+            "line_end": 167,
+            "code_snippet": "    \"\"\"\n    从 JSON 文件加载学生数据\n\n    Args:\n        filepath: JSON 文件路径\n\n    Returns:\n        加载了数据的 StudentManager 实例\n    \"\"\"",
+            "annotations": []
+          },
+          {
+            "id": "n3",
+            "label": "import json",
+            "type": "operation",
+            "line_start": 168,
+            "line_end": 168,
+            "code_snippet": "    import json",
+            "annotations": []
+          },
+          {
+            "id": "n4",
+            "label": "manager = StudentManager()",
+            "type": "operation",
+            "line_start": 170,
+            "line_end": 170,
+            "code_snippet": "    manager = StudentManager()",
+            "annotations": []
+          },
+          {
+            "id": "n5",
+            "label": "尝试执行",
+            "type": "operation",
+            "line_start": 171,
+            "line_end": 171,
+            "code_snippet": "try:",
+            "annotations": [
+              "异常处理"
+            ]
+          },
+          {
+            "id": "n6",
+            "label": "with open(filepath, \"r\", encod...",
+            "type": "operation",
+            "line_start": 172,
+            "line_end": 173,
+            "code_snippet": "        with open(filepath, \"r\", encoding=\"utf-8\") as f:\n            data = json.load(f)",
+            "annotations": []
+          },
+          {
+            "id": "n7",
+            "label": "循环: item in data.get(\"students\", [",
+            "type": "condition",
+            "line_start": 175,
+            "line_end": 175,
+            "code_snippet": "for item in data.get(\"students\", []):",
+            "annotations": [
+              "循环结构"
+            ]
+          },
+          {
+            "id": "n8",
+            "label": "sid = item[\"id\"]",
+            "type": "operation",
+            "line_start": 176,
+            "line_end": 176,
+            "code_snippet": "            sid = item[\"id\"]",
+            "annotations": []
+          },
+          {
+            "id": "n9",
+            "label": "manager.students[sid] = {...",
+            "type": "operation",
+            "line_start": 177,
+            "line_end": 182,
+            "code_snippet": "            manager.students[sid] = {\n                \"name\": item[\"name\"],\n                \"age\": item[\"age\"],\n                \"major\": item.get(\"major\", \"未分配\"),\n                \"scores\": item.get(\"scores\", {}),\n            }",
+            "annotations": []
+          },
+          {
+            "id": "n10",
+            "label": "sid >= manager._next_id",
+            "type": "condition",
+            "line_start": 183,
+            "line_end": 183,
+            "code_snippet": "if sid >= manager._next_id:",
+            "annotations": [
+              "条件判断"
+            ]
+          },
+          {
+            "id": "n11",
+            "label": "manager._next_id = sid + 1",
+            "type": "operation",
+            "line_start": 184,
+            "line_end": 184,
+            "code_snippet": "                manager._next_id = sid + 1",
+            "annotations": []
+          },
+          {
+            "id": "n12",
+            "label": "捕获异常\nFileNotFoundError",
+            "type": "condition",
+            "line_start": 185,
+            "line_end": 185,
+            "code_snippet": "",
+            "annotations": [
+              "异常处理"
+            ]
+          },
+          {
+            "id": "n13",
+            "label": "pass",
+            "type": "operation",
+            "line_start": 187,
+            "line_end": 187,
+            "code_snippet": "        pass",
+            "annotations": []
+          },
+          {
+            "id": "n14",
+            "label": "捕获异常\nException",
+            "type": "condition",
+            "line_start": 188,
+            "line_end": 188,
+            "code_snippet": "",
+            "annotations": [
+              "异常处理"
+            ]
+          },
+          {
+            "id": "n15",
+            "label": "抛出异常",
+            "type": "operation",
+            "line_start": 189,
+            "line_end": 189,
+            "code_snippet": "        raise ValueError(f\"JSON 文件解析失败: {e}\")",
+            "annotations": [
+              "异常处理"
+            ]
+          },
+          {
+            "id": "n16",
+            "label": "返回结果",
+            "type": "end",
+            "line_start": 191,
+            "line_end": 191,
+            "code_snippet": "    return manager",
+            "annotations": []
+          },
+          {
+            "id": "n17",
+            "label": "结束",
+            "type": "end",
+            "line_start": 191,
+            "line_end": 191,
+            "code_snippet": "",
+            "annotations": []
+          }
+        ],
+        "edges": [
+          {
+            "from": "n1",
+            "to": "n2",
+            "label": ""
+          },
+          {
+            "from": "n2",
+            "to": "n3",
+            "label": ""
+          },
+          {
+            "from": "n3",
+            "to": "n4",
+            "label": ""
+          },
+          {
+            "from": "n4",
+            "to": "n5",
+            "label": ""
+          },
+          {
+            "from": "n5",
+            "to": "n6",
+            "label": ""
+          },
+          {
+            "from": "n6",
+            "to": "n7",
+            "label": ""
+          },
+          {
+            "from": "n7",
+            "to": "n8",
+            "label": ""
+          },
+          {
+            "from": "n8",
+            "to": "n9",
+            "label": ""
+          },
+          {
+            "from": "n9",
+            "to": "n10",
+            "label": ""
+          },
+          {
+            "from": "n10",
+            "to": "n11",
+            "label": "是"
+          },
+          {
+            "from": "n11",
+            "to": "n7",
+            "label": "继续"
+          },
+          {
+            "from": "n5",
+            "to": "n12",
+            "label": ""
+          },
+          {
+            "from": "n12",
+            "to": "n13",
+            "label": ""
+          },
+          {
+            "from": "n5",
+            "to": "n14",
+            "label": ""
+          },
+          {
+            "from": "n14",
+            "to": "n15",
+            "label": ""
+          },
+          {
+            "from": "n7",
+            "to": "n16",
+            "label": ""
+          },
+          {
+            "from": "n13",
+            "to": "n16",
+            "label": ""
+          },
+          {
+            "from": "n15",
+            "to": "n16",
+            "label": ""
+          },
+          {
+            "from": "n16",
+            "to": "n17",
+            "label": ""
+          }
+        ],
+        "mermaid_syntax": "flowchart TD\n    n1([\"开始<br/>load_from_file\"])\n    n2[\"'''...\"]\n    n3[\"import json\"]\n    n4[\"manager = StudentManager()\"]\n    n5[\"尝试执行\"]\n    n6[\"with open(filepath, 'r', encod...\"]\n    n7{\"循环: item in data.get('students', [\"}\n    n8[\"sid = item['id']\"]\n    n9[\"manager.students[sid] = {...\"]\n    n10{\"sid >= manager._next_id\"}\n    n11[\"manager._next_id = sid + 1\"]\n    n12{\"捕获异常<br/>FileNotFoundError\"}\n    n13[\"pass\"]\n    n14{\"捕获异常<br/>Exception\"}\n    n15[\"抛出异常\"]\n    n16([\"返回结果\"])\n    n17([\"结束\"])\n    n1 --> n2\n    n2 --> n3\n    n3 --> n4\n    n4 --> n5\n    n5 --> n6\n    n6 --> n7\n    n7 --> n8\n    n8 --> n9\n    n9 --> n10\n    n10 -->|是| n11\n    n11 -->|继续| n7\n    n5 --> n12\n    n12 --> n13\n    n5 --> n14\n    n14 --> n15\n    n7 --> n16\n    n13 --> n16\n    n15 --> n16\n    n16 --> n17"
+      },
+      "save_to_file": {
+        "title": "save_to_file",
+        "nodes": [
+          {
+            "id": "n1",
+            "label": "开始\nsave_to_file",
+            "type": "start",
+            "line_start": 194,
+            "line_end": 194,
+            "code_snippet": "",
+            "annotations": []
+          },
+          {
+            "id": "n2",
+            "label": "\"\"\"...",
+            "type": "operation",
+            "line_start": 195,
+            "line_end": 201,
+            "code_snippet": "    \"\"\"\n    保存学生数据到 JSON 文件\n\n    Args:\n        manager: StudentManager 实例\n        filepath: 保存路径\n    \"\"\"",
+            "annotations": []
+          },
+          {
+            "id": "n3",
+            "label": "import json",
+            "type": "operation",
+            "line_start": 202,
+            "line_end": 202,
+            "code_snippet": "    import json",
+            "annotations": []
+          },
+          {
+            "id": "n4",
+            "label": "data = {\"students\": []}",
+            "type": "operation",
+            "line_start": 204,
+            "line_end": 204,
+            "code_snippet": "    data = {\"students\": []}",
+            "annotations": []
+          },
+          {
+            "id": "n5",
+            "label": "循环: sid, info in manager.students.",
+            "type": "condition",
+            "line_start": 205,
+            "line_end": 205,
+            "code_snippet": "for sid, info in manager.students.items():",
+            "annotations": [
+              "循环结构"
+            ]
+          },
+          {
+            "id": "n6",
+            "label": "data[\"students\"].append({\"id\":",
+            "type": "operation",
+            "line_start": 206,
+            "line_end": 206,
+            "code_snippet": "        data[\"students\"].append({\"id\": sid, **info})",
+            "annotations": []
+          },
+          {
+            "id": "n7",
+            "label": "with open(filepath, \"w\", encod...",
+            "type": "operation",
+            "line_start": 208,
+            "line_end": 209,
+            "code_snippet": "    with open(filepath, \"w\", encoding=\"utf-8\") as f:\n        json.dump(data, f, ensure_ascii=False, indent=2)",
+            "annotations": []
+          },
+          {
+            "id": "n8",
+            "label": "结束",
+            "type": "end",
+            "line_start": 209,
+            "line_end": 209,
+            "code_snippet": "",
+            "annotations": []
+          }
+        ],
+        "edges": [
+          {
+            "from": "n1",
+            "to": "n2",
+            "label": ""
+          },
+          {
+            "from": "n2",
+            "to": "n3",
+            "label": ""
+          },
+          {
+            "from": "n3",
+            "to": "n4",
+            "label": ""
+          },
+          {
+            "from": "n4",
+            "to": "n5",
+            "label": ""
+          },
+          {
+            "from": "n5",
+            "to": "n6",
+            "label": ""
+          },
+          {
+            "from": "n6",
+            "to": "n5",
+            "label": "继续"
+          },
+          {
+            "from": "n5",
+            "to": "n7",
+            "label": ""
+          },
+          {
+            "from": "n7",
+            "to": "n8",
+            "label": ""
+          }
+        ],
+        "mermaid_syntax": "flowchart TD\n    n1([\"开始<br/>save_to_file\"])\n    n2[\"'''...\"]\n    n3[\"import json\"]\n    n4[\"data = {'students': []}\"]\n    n5{\"循环: sid, info in manager.students.\"}\n    n6[\"data['students'].append({'id':\"]\n    n7[\"with open(filepath, 'w', encod...\"]\n    n8([\"结束\"])\n    n1 --> n2\n    n2 --> n3\n    n3 --> n4\n    n4 --> n5\n    n5 --> n6\n    n6 -->|继续| n5\n    n5 --> n7\n    n7 --> n8"
+      }
+    }
+  },
+  "quiz": [
+    {
+      "level": 1,
+      "question_type": "code_recognition",
+      "title": "代码功能识别",
+      "description": "阅读下面的代码，判断它实现了什么功能：\n\n```python\n    def add_score(self, student_id: int, course: str, score: float) -> bool:\n        \"\"\"\n        录入学生课程成绩\n\n        Args:\n            student_id: 学生 ID\n            course: 课程名\n            score: 分数（0-100）\n        \"\"\"\n        if student_id not in self.students:\n            raise KeyError(f\"学生 {student_id} 不存在\")\n\n        if score < 0 or score > 100:\n            raise ValueError(f\"分数不合法: {score}\")\n\n        self.students[student_id][\"scores\"][course] = score\n        return True\n```",
+      "options": [
+        {
+          "id": "A",
+          "text": "数据验证操作"
+        },
+        {
+          "id": "B",
+          "text": "排序算法"
+        },
+        {
+          "id": "C",
+          "text": "统计计算操作"
+        },
+        {
+          "id": "D",
+          "text": "新增数据操作"
+        }
+      ],
+      "correct_answer": "D",
+      "explanation": "这段代码是 add_score 函数，可以从函数名、参数和操作模式推断其功能。",
+      "evidence_lines": [
+        109,
+        110,
+        111,
+        112,
+        113,
+        114,
+        115,
+        116,
+        117,
+        118,
+        119,
+        120,
+        121,
+        122,
+        123,
+        124,
+        125
+      ],
+      "knowledge_points": [
+        "basic.function",
+        "basic.dict"
+      ],
+      "difficulty": 1
+    },
+    {
+      "level": 2,
+      "question_type": "logic_understanding",
+      "title": "边界条件理解",
+      "description": "在 `StudentManager.get_average_score` 函数中，如果传入的参数不合法（如负年龄、空姓名等），系统会如何处理？",
+      "options": [
+        {
+          "id": "A",
+          "text": "退出程序"
+        },
+        {
+          "id": "B",
+          "text": "抛出 KeyError 异常"
+        },
+        {
+          "id": "C",
+          "text": "自动修正为合法值"
+        },
+        {
+          "id": "D",
+          "text": "返回 False"
+        }
+      ],
+      "correct_answer": "B",
+      "explanation": "该函数使用防御式编程，在执行操作前先验证参数合法性。一旦发现不合法输入，立即通过 KeyError 抛出异常，阻止后续逻辑执行。",
+      "evidence_lines": [
+        139
+      ],
+      "knowledge_points": [
+        "adv.exception",
+        "validation.boundary",
+        "validation.custom"
+      ],
+      "difficulty": 2
+    },
+    {
+      "level": 3,
+      "question_type": "guided_fill",
+      "title": "关键代码补全",
+      "description": "下面是 `StudentManager.add_score` 函数的代码，其中有一行被遮挡了。请根据上下文逻辑，选择正确的语句填入空白处：\n\n```python\n    def add_score(self, student_id: int, course: str, score: float) -> bool:\n        \"\"\"\n        录入学生课程成绩\n\n        Args:\n            student_id: 学生 ID\n            course: 课程名\n            score: 分数（0-100）\n        \"\"\"\n        if student_id not in self.students:\n            ? _______  # 请填写正确的代码\n\n        if score < 0 or score > 100:\n            raise ValueError(f\"分数不合法: {score}\")\n\n        self.students[student_id][\"scores\"][course] = score\n        return True\n```",
+      "options": [
+        {
+          "id": "A",
+          "text": "raise KeyError(f\"学生 {student_id} 不存在\")"
+        },
+        {
+          "id": "B",
+          "text": "raise RuntimeError  # 抛出运行时错误"
+        },
+        {
+          "id": "C",
+          "text": "return None  # 返回空"
+        },
+        {
+          "id": "D",
+          "text": "pass  # 跳过该步骤"
+        }
+      ],
+      "correct_answer": "A",
+      "explanation": "正确答案是 `raise KeyError(f\"学生 {student_id} 不存在\")`。\n这行代码是该函数的核心操作，结合前面的验证逻辑和整体业务目的可以推断。",
+      "evidence_lines": [
+        119
+      ],
+      "knowledge_points": [
+        "pattern.crud",
+        "basic.dict",
+        "validation.boundary"
+      ],
+      "difficulty": 3
+    }
+  ]
+}

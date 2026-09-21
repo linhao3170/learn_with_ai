@@ -1,0 +1,2192 @@
+{
+  "project": {
+    "name": "lab_safety_assistant",
+    "files": 6,
+    "lines": 784
+  },
+  "summary": {
+    "total": 216,
+    "by_category": {
+      "关键实现": 122,
+      "状态变更": 39,
+      "业务流程": 21,
+      "调用链": 18,
+      "模块架构": 10,
+      "设计模式": 6
+    },
+    "by_confidence": {
+      "verified": 200,
+      "inferred": 16
+    },
+    "by_source": {
+      "architecture": 10,
+      "call_graph": 18,
+      "state_tracker": 39,
+      "flow_extractor": 21,
+      "key_implementation": 122,
+      "pattern_detector": 6
+    }
+  },
+  "facts": [
+    {
+      "fact_id": "F0001",
+      "category": "模块架构",
+      "type": "分层架构",
+      "description": "系统采用 2 层架构: 编排层 / 业务层",
+      "location": "全局",
+      "confidence": "verified",
+      "evidence": "基于模块依赖方向和角色自动分层",
+      "source": "architecture"
+    },
+    {
+      "fact_id": "F0002",
+      "category": "模块架构",
+      "type": "模块分层",
+      "description": "模块 app: 位于编排层，角色为编排器，3 个方法",
+      "location": "app",
+      "confidence": "verified",
+      "evidence": "推断职责: System Entry, Orchestration",
+      "source": "architecture"
+    },
+    {
+      "fact_id": "F0003",
+      "category": "模块架构",
+      "type": "模块分层",
+      "description": "模块 equipment_manager: 位于业务层，角色为核心模块，8 个方法",
+      "location": "equipment_manager",
+      "confidence": "verified",
+      "evidence": "推断职责: Equipment Tracking, Inventory, Management",
+      "source": "architecture"
+    },
+    {
+      "fact_id": "F0004",
+      "category": "模块架构",
+      "type": "模块分层",
+      "description": "模块 reservation_manager: 位于业务层，角色为核心模块，10 个方法",
+      "location": "reservation_manager",
+      "confidence": "verified",
+      "evidence": "推断职责: Booking, Scheduling, Management",
+      "source": "architecture"
+    },
+    {
+      "fact_id": "F0005",
+      "category": "模块架构",
+      "type": "模块分层",
+      "description": "模块 safety_checker: 位于业务层，角色为核心模块，10 个方法",
+      "location": "safety_checker",
+      "confidence": "verified",
+      "evidence": "推断职责: Safety Checks, Compliance, Validation, Verification",
+      "source": "architecture"
+    },
+    {
+      "fact_id": "F0006",
+      "category": "模块架构",
+      "type": "模块分层",
+      "description": "模块 user_manager: 位于业务层，角色为核心模块，8 个方法",
+      "location": "user_manager",
+      "confidence": "verified",
+      "evidence": "推断职责: User Management, Authentication, Management",
+      "source": "architecture"
+    },
+    {
+      "fact_id": "F0007",
+      "category": "模块架构",
+      "type": "模块依赖",
+      "description": "app → safety_checker（编排依赖，强度 0.68，3 次调用）",
+      "location": "app → safety_checker",
+      "confidence": "verified",
+      "evidence": "基于调用图的依赖强度计算",
+      "source": "architecture"
+    },
+    {
+      "fact_id": "F0008",
+      "category": "模块架构",
+      "type": "模块依赖",
+      "description": "app → reservation_manager（编排依赖，强度 0.48，2 次调用）",
+      "location": "app → reservation_manager",
+      "confidence": "verified",
+      "evidence": "基于调用图的依赖强度计算",
+      "source": "architecture"
+    },
+    {
+      "fact_id": "F0009",
+      "category": "模块架构",
+      "type": "模块依赖",
+      "description": "app → equipment_manager（编排依赖，强度 0.48，2 次调用）",
+      "location": "app → equipment_manager",
+      "confidence": "verified",
+      "evidence": "基于调用图的依赖强度计算",
+      "source": "architecture"
+    },
+    {
+      "fact_id": "F0010",
+      "category": "模块架构",
+      "type": "模块依赖",
+      "description": "app → user_manager（编排依赖，强度 0.28，1 次调用）",
+      "location": "app → user_manager",
+      "confidence": "verified",
+      "evidence": "基于调用图的依赖强度计算",
+      "source": "architecture"
+    },
+    {
+      "fact_id": "F0011",
+      "category": "调用链",
+      "type": "调用链-跨模块",
+      "description": "LabSafetyApp.initialize_sample_data 调用 UserManager.register（跨模块）",
+      "location": "lab_safety_assistant/app.py:30",
+      "confidence": "verified",
+      "evidence": "调用类型: composite_attr",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0012",
+      "category": "调用链",
+      "type": "调用链-跨模块",
+      "description": "LabSafetyApp.initialize_sample_data 调用 ReservationManager.add_lab（跨模块）",
+      "location": "lab_safety_assistant/app.py:38",
+      "confidence": "verified",
+      "evidence": "调用类型: composite_attr",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0013",
+      "category": "调用链",
+      "type": "调用链-跨模块",
+      "description": "LabSafetyApp.initialize_sample_data 调用 EquipmentManager.add_equipment（跨模块）",
+      "location": "lab_safety_assistant/app.py:54",
+      "confidence": "verified",
+      "evidence": "调用类型: composite_attr",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0014",
+      "category": "调用链",
+      "type": "调用链-跨模块",
+      "description": "LabSafetyApp.initialize_sample_data 调用 SafetyChecker.add_check_item（跨模块）",
+      "location": "lab_safety_assistant/app.py:62",
+      "confidence": "verified",
+      "evidence": "调用类型: composite_attr",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0015",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "ReservationManager.create_reservation 调用 ReservationManager._check_conflict",
+      "location": "lab_safety_assistant/reservation_manager.py:86",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0016",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "SafetyChecker.assign_hazard 调用 SafetyChecker._find_hazard",
+      "location": "lab_safety_assistant/safety_checker.py:130",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0017",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "SafetyChecker.close_hazard 调用 SafetyChecker._find_hazard",
+      "location": "lab_safety_assistant/safety_checker.py:144",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0018",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "SafetyChecker.perform_check 调用 SafetyChecker._create_hazard",
+      "location": "lab_safety_assistant/safety_checker.py:98",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0019",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "UserManager.has_permission 调用 UserManager.get_current_user",
+      "location": "lab_safety_assistant/user_manager.py:105",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0020",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "LabSafetyApp.initialize_sample_data 是系统入口点",
+      "location": "lab_safety_assistant/app.py:27",
+      "confidence": "verified",
+      "evidence": "出度 8，标签: creation, orchestrator",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0021",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "EquipmentManager.borrow_equipment 是系统入口点",
+      "location": "lab_safety_assistant/equipment_manager.py:53",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: update",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0022",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "EquipmentManager.add_maintenance 是系统入口点",
+      "location": "lab_safety_assistant/equipment_manager.py:103",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: creation",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0023",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "ReservationManager.create_reservation 是系统入口点",
+      "location": "lab_safety_assistant/reservation_manager.py:56",
+      "confidence": "verified",
+      "evidence": "出度 1，标签: creation",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0024",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "SafetyChecker.perform_check 是系统入口点",
+      "location": "lab_safety_assistant/safety_checker.py:59",
+      "confidence": "verified",
+      "evidence": "出度 1，标签: query, validation",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0025",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "SafetyChecker.assign_hazard 是系统入口点",
+      "location": "lab_safety_assistant/safety_checker.py:127",
+      "confidence": "verified",
+      "evidence": "出度 1，标签: update",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0026",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "SafetyChecker.close_hazard 是系统入口点",
+      "location": "lab_safety_assistant/safety_checker.py:142",
+      "confidence": "verified",
+      "evidence": "出度 1，标签: state_change, update",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0027",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "UserManager.login 是系统入口点",
+      "location": "lab_safety_assistant/user_manager.py:61",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0028",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "UserManager.has_permission 是系统入口点",
+      "location": "lab_safety_assistant/user_manager.py:95",
+      "confidence": "verified",
+      "evidence": "出度 1，标签: query, validation",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0029",
+      "category": "状态变更",
+      "type": "状态属性",
+      "description": "LabSafetyApp 拥有 4 个状态属性: equipment_manager, reservation_manager, safety_checker, user_manager",
+      "location": "lab_safety_assistant/app.py",
+      "confidence": "verified",
+      "evidence": "从 __init__ 中提取的 self.xxx 赋值",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0030",
+      "category": "状态变更",
+      "type": "属性写入",
+      "description": "LabSafetyApp.__init__() 修改 4 个属性: equipment_manager, reservation_manager, safety_checker, user_manager",
+      "location": "lab_safety_assistant/app.py:21",
+      "confidence": "verified",
+      "evidence": "AST 静态分析: self.attr = / self.attr.append() 等模式",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0031",
+      "category": "状态变更",
+      "type": "查询方法",
+      "description": "LabSafetyApp 有 2 个纯查询方法: initialize_sample_data, get_system_stats",
+      "location": "lab_safety_assistant/app.py",
+      "confidence": "verified",
+      "evidence": "方法体中只读取不修改状态属性",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0032",
+      "category": "状态变更",
+      "type": "状态属性",
+      "description": "EquipmentManager 拥有 4 个状态属性: _next_id, borrow_records, equipments, maintenance_logs",
+      "location": "lab_safety_assistant/equipment_manager.py",
+      "confidence": "verified",
+      "evidence": "从 __init__ 中提取的 self.xxx 赋值",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0033",
+      "category": "状态变更",
+      "type": "集合属性",
+      "description": "EquipmentManager 有 3 个集合型属性: borrow_records, equipments, maintenance_logs",
+      "location": "lab_safety_assistant/equipment_manager.py",
+      "confidence": "verified",
+      "evidence": "初始化为 dict/list/set 的属性",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0034",
+      "category": "状态变更",
+      "type": "类常量",
+      "description": "EquipmentManager 定义了 4 个常量: STATUS_AVAILABLE, STATUS_BORROWED, STATUS_MAINTENANCE, STATUS_SCRAPPED",
+      "location": "lab_safety_assistant/equipment_manager.py",
+      "confidence": "verified",
+      "evidence": "UPPER_CASE 命名的类级变量",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0035",
+      "category": "状态变更",
+      "type": "属性写入",
+      "description": "EquipmentManager.__init__() 修改 4 个属性: _next_id, borrow_records, equipments, maintenance_logs",
+      "location": "lab_safety_assistant/equipment_manager.py:18",
+      "confidence": "verified",
+      "evidence": "AST 静态分析: self.attr = / self.attr.append() 等模式",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0036",
+      "category": "状态变更",
+      "type": "属性写入",
+      "description": "EquipmentManager.add_equipment() 修改 2 个属性: _next_id, equipments",
+      "location": "lab_safety_assistant/equipment_manager.py:24",
+      "confidence": "verified",
+      "evidence": "AST 静态分析: self.attr = / self.attr.append() 等模式",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0037",
+      "category": "状态变更",
+      "type": "属性写入",
+      "description": "EquipmentManager.add_maintenance() 修改 3 个属性: equipments, equipments.last_maintenance, maintenance_logs",
+      "location": "lab_safety_assistant/equipment_manager.py:103",
+      "confidence": "verified",
+      "evidence": "AST 静态分析: self.attr = / self.attr.append() 等模式",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0038",
+      "category": "状态变更",
+      "type": "属性写入",
+      "description": "EquipmentManager.borrow_equipment() 修改 2 个属性: borrow_records, equipments",
+      "location": "lab_safety_assistant/equipment_manager.py:53",
+      "confidence": "verified",
+      "evidence": "AST 静态分析: self.attr = / self.attr.append() 等模式",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0039",
+      "category": "状态变更",
+      "type": "属性写入",
+      "description": "EquipmentManager.return_equipment() 修改 3 个属性: borrow_records, equipments, equipments.status",
+      "location": "lab_safety_assistant/equipment_manager.py:87",
+      "confidence": "verified",
+      "evidence": "AST 静态分析: self.attr = / self.attr.append() 等模式",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0040",
+      "category": "状态变更",
+      "type": "属性写入",
+      "description": "EquipmentManager.set_equipment_status() 修改 2 个属性: equipments, equipments.status",
+      "location": "lab_safety_assistant/equipment_manager.py:130",
+      "confidence": "verified",
+      "evidence": "AST 静态分析: self.attr = / self.attr.append() 等模式",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0041",
+      "category": "状态变更",
+      "type": "查询方法",
+      "description": "EquipmentManager 有 2 个纯查询方法: list_equipments, get_maintenance_history",
+      "location": "lab_safety_assistant/equipment_manager.py",
+      "confidence": "verified",
+      "evidence": "方法体中只读取不修改状态属性",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0042",
+      "category": "状态变更",
+      "type": "状态属性",
+      "description": "ReservationManager 拥有 3 个状态属性: _next_id, labs, reservations",
+      "location": "lab_safety_assistant/reservation_manager.py",
+      "confidence": "verified",
+      "evidence": "从 __init__ 中提取的 self.xxx 赋值",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0043",
+      "category": "状态变更",
+      "type": "集合属性",
+      "description": "ReservationManager 有 2 个集合型属性: labs, reservations",
+      "location": "lab_safety_assistant/reservation_manager.py",
+      "confidence": "verified",
+      "evidence": "初始化为 dict/list/set 的属性",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0044",
+      "category": "状态变更",
+      "type": "类常量",
+      "description": "ReservationManager 定义了 5 个常量: STATUS_PENDING, STATUS_APPROVED, STATUS_REJECTED, STATUS_CANCELLED, STATUS_COMPLETED",
+      "location": "lab_safety_assistant/reservation_manager.py",
+      "confidence": "verified",
+      "evidence": "UPPER_CASE 命名的类级变量",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0045",
+      "category": "状态变更",
+      "type": "属性写入",
+      "description": "ReservationManager.__init__() 修改 3 个属性: _next_id, labs, reservations",
+      "location": "lab_safety_assistant/reservation_manager.py:20",
+      "confidence": "verified",
+      "evidence": "AST 静态分析: self.attr = / self.attr.append() 等模式",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0046",
+      "category": "状态变更",
+      "type": "属性写入",
+      "description": "ReservationManager.add_lab() 修改 1 个属性: labs",
+      "location": "lab_safety_assistant/reservation_manager.py:25",
+      "confidence": "verified",
+      "evidence": "AST 静态分析: self.attr = / self.attr.append() 等模式",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0047",
+      "category": "状态变更",
+      "type": "属性写入",
+      "description": "ReservationManager.approve_reservation() 修改 1 个属性: reservations",
+      "location": "lab_safety_assistant/reservation_manager.py:126",
+      "confidence": "verified",
+      "evidence": "AST 静态分析: self.attr = / self.attr.append() 等模式",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0048",
+      "category": "状态变更",
+      "type": "属性写入",
+      "description": "ReservationManager.cancel_reservation() 修改 1 个属性: reservations",
+      "location": "lab_safety_assistant/reservation_manager.py:153",
+      "confidence": "verified",
+      "evidence": "AST 静态分析: self.attr = / self.attr.append() 等模式",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0049",
+      "category": "状态变更",
+      "type": "属性写入",
+      "description": "ReservationManager.create_reservation() 修改 3 个属性: _next_id, labs, reservations",
+      "location": "lab_safety_assistant/reservation_manager.py:56",
+      "confidence": "verified",
+      "evidence": "AST 静态分析: self.attr = / self.attr.append() 等模式",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0050",
+      "category": "状态变更",
+      "type": "属性写入",
+      "description": "ReservationManager.reject_reservation() 修改 1 个属性: reservations",
+      "location": "lab_safety_assistant/reservation_manager.py:139",
+      "confidence": "verified",
+      "evidence": "AST 静态分析: self.attr = / self.attr.append() 等模式",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0051",
+      "category": "状态变更",
+      "type": "查询方法",
+      "description": "ReservationManager 有 3 个纯查询方法: get_user_reservations, get_lab_reservations, list_labs",
+      "location": "lab_safety_assistant/reservation_manager.py",
+      "confidence": "verified",
+      "evidence": "方法体中只读取不修改状态属性",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0052",
+      "category": "状态变更",
+      "type": "状态属性",
+      "description": "SafetyChecker 拥有 6 个状态属性: _next_hazard_id, _next_item_id, _next_record_id, check_items, check_records, hazards",
+      "location": "lab_safety_assistant/safety_checker.py",
+      "confidence": "verified",
+      "evidence": "从 __init__ 中提取的 self.xxx 赋值",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0053",
+      "category": "状态变更",
+      "type": "集合属性",
+      "description": "SafetyChecker 有 3 个集合型属性: check_items, check_records, hazards",
+      "location": "lab_safety_assistant/safety_checker.py",
+      "confidence": "verified",
+      "evidence": "初始化为 dict/list/set 的属性",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0054",
+      "category": "状态变更",
+      "type": "类常量",
+      "description": "SafetyChecker 定义了 6 个常量: LEVEL_LOW, LEVEL_MEDIUM, LEVEL_HIGH, STATUS_OPEN, STATUS_IN_PROGRESS, STATUS_CLOSED",
+      "location": "lab_safety_assistant/safety_checker.py",
+      "confidence": "verified",
+      "evidence": "UPPER_CASE 命名的类级变量",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0055",
+      "category": "状态变更",
+      "type": "属性写入",
+      "description": "SafetyChecker.__init__() 修改 6 个属性: _next_hazard_id, _next_item_id, _next_record_id, check_items, check_records",
+      "location": "lab_safety_assistant/safety_checker.py:21",
+      "confidence": "verified",
+      "evidence": "AST 静态分析: self.attr = / self.attr.append() 等模式",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0056",
+      "category": "状态变更",
+      "type": "属性写入",
+      "description": "SafetyChecker._create_hazard() 修改 2 个属性: _next_hazard_id, hazards",
+      "location": "lab_safety_assistant/safety_checker.py:107",
+      "confidence": "verified",
+      "evidence": "AST 静态分析: self.attr = / self.attr.append() 等模式",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0057",
+      "category": "状态变更",
+      "type": "属性写入",
+      "description": "SafetyChecker.add_check_item() 修改 2 个属性: _next_item_id, check_items",
+      "location": "lab_safety_assistant/safety_checker.py:29",
+      "confidence": "verified",
+      "evidence": "AST 静态分析: self.attr = / self.attr.append() 等模式",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0058",
+      "category": "状态变更",
+      "type": "属性写入",
+      "description": "SafetyChecker.perform_check() 修改 3 个属性: _next_record_id, check_items, check_records",
+      "location": "lab_safety_assistant/safety_checker.py:59",
+      "confidence": "verified",
+      "evidence": "AST 静态分析: self.attr = / self.attr.append() 等模式",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0059",
+      "category": "状态变更",
+      "type": "查询方法",
+      "description": "SafetyChecker 有 3 个纯查询方法: get_hazards, get_check_records, list_check_items",
+      "location": "lab_safety_assistant/safety_checker.py",
+      "confidence": "verified",
+      "evidence": "方法体中只读取不修改状态属性",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0060",
+      "category": "状态变更",
+      "type": "状态属性",
+      "description": "UserManager 拥有 3 个状态属性: _current_user, _next_id, users",
+      "location": "lab_safety_assistant/user_manager.py",
+      "confidence": "verified",
+      "evidence": "从 __init__ 中提取的 self.xxx 赋值",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0061",
+      "category": "状态变更",
+      "type": "集合属性",
+      "description": "UserManager 有 1 个集合型属性: users",
+      "location": "lab_safety_assistant/user_manager.py",
+      "confidence": "verified",
+      "evidence": "初始化为 dict/list/set 的属性",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0062",
+      "category": "状态变更",
+      "type": "属性写入",
+      "description": "UserManager.__init__() 修改 3 个属性: _current_user, _next_id, users",
+      "location": "lab_safety_assistant/user_manager.py:12",
+      "confidence": "verified",
+      "evidence": "AST 静态分析: self.attr = / self.attr.append() 等模式",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0063",
+      "category": "状态变更",
+      "type": "属性写入",
+      "description": "UserManager.deactivate_user() 修改 2 个属性: users, users.active",
+      "location": "lab_safety_assistant/user_manager.py:130",
+      "confidence": "verified",
+      "evidence": "AST 静态分析: self.attr = / self.attr.append() 等模式",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0064",
+      "category": "状态变更",
+      "type": "属性写入",
+      "description": "UserManager.login() 修改 1 个属性: _current_user",
+      "location": "lab_safety_assistant/user_manager.py:61",
+      "confidence": "verified",
+      "evidence": "AST 静态分析: self.attr = / self.attr.append() 等模式",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0065",
+      "category": "状态变更",
+      "type": "属性写入",
+      "description": "UserManager.logout() 修改 1 个属性: _current_user",
+      "location": "lab_safety_assistant/user_manager.py:85",
+      "confidence": "verified",
+      "evidence": "AST 静态分析: self.attr = / self.attr.append() 等模式",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0066",
+      "category": "状态变更",
+      "type": "属性写入",
+      "description": "UserManager.register() 修改 2 个属性: _next_id, users",
+      "location": "lab_safety_assistant/user_manager.py:17",
+      "confidence": "verified",
+      "evidence": "AST 静态分析: self.attr = / self.attr.append() 等模式",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0067",
+      "category": "状态变更",
+      "type": "查询方法",
+      "description": "UserManager 有 2 个纯查询方法: get_current_user, list_users",
+      "location": "lab_safety_assistant/user_manager.py",
+      "confidence": "verified",
+      "evidence": "方法体中只读取不修改状态属性",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0068",
+      "category": "业务流程",
+      "type": "流程总览",
+      "description": "流程 'LabSafetyApp Initialization Flow': 涉及 5 个模块，5 个步骤，4 次跨模块调用",
+      "location": "app, equipment_manager, reservation_manager, safety_checker, user_manager",
+      "confidence": "verified",
+      "evidence": "入口: app:LabSafetyApp.initialize_sample_data，业务重要度: 20.0",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0069",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "LabSafetyApp Initialization Flow · 步骤 0 层: LabSafetyApp.initialize_sample_data()（状态变更）",
+      "location": "lab_safety_assistant/app.py:27",
+      "confidence": "verified",
+      "evidence": "调用类型: entry",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0070",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "LabSafetyApp Initialization Flow · 步骤 1 层: UserManager.register()（跨模块, 状态变更）",
+      "location": "lab_safety_assistant/user_manager.py:30",
+      "confidence": "verified",
+      "evidence": "调用类型: composite_attr",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0071",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "LabSafetyApp Initialization Flow · 步骤 1 层: ReservationManager.add_lab()（跨模块, 状态变更）",
+      "location": "lab_safety_assistant/reservation_manager.py:38",
+      "confidence": "verified",
+      "evidence": "调用类型: composite_attr",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0072",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "LabSafetyApp Initialization Flow · 步骤 1 层: EquipmentManager.add_equipment()（跨模块, 状态变更）",
+      "location": "lab_safety_assistant/equipment_manager.py:54",
+      "confidence": "verified",
+      "evidence": "调用类型: composite_attr",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0073",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "LabSafetyApp Initialization Flow · 步骤 1 层: SafetyChecker.add_check_item()（跨模块, 状态变更, 校验点）",
+      "location": "lab_safety_assistant/safety_checker.py:62",
+      "confidence": "verified",
+      "evidence": "调用类型: composite_attr",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0074",
+      "category": "业务流程",
+      "type": "流程总览",
+      "description": "流程 'SafetyChecker Execution Flow': 涉及 1 个模块，2 个步骤，0 次跨模块调用",
+      "location": "safety_checker",
+      "confidence": "verified",
+      "evidence": "入口: safety_checker:SafetyChecker.perform_check，业务重要度: 6.0",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0075",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "SafetyChecker Execution Flow · 步骤 0 层: SafetyChecker.perform_check()（状态变更, 校验点）",
+      "location": "lab_safety_assistant/safety_checker.py:59",
+      "confidence": "verified",
+      "evidence": "调用类型: entry",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0076",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "SafetyChecker Execution Flow · 步骤 1 层: SafetyChecker._create_hazard()（状态变更）",
+      "location": "lab_safety_assistant/safety_checker.py:98",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0077",
+      "category": "业务流程",
+      "type": "流程总览",
+      "description": "流程 'ReservationManager Create / Submit Flow': 涉及 1 个模块，2 个步骤，0 次跨模块调用",
+      "location": "reservation_manager",
+      "confidence": "verified",
+      "evidence": "入口: reservation_manager:ReservationManager.create_reservation，业务重要度: 4.5",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0078",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "ReservationManager Create / Submit Flow · 步骤 0 层: ReservationManager.create_reservation()（状态变更）",
+      "location": "lab_safety_assistant/reservation_manager.py:56",
+      "confidence": "verified",
+      "evidence": "调用类型: entry",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0079",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "ReservationManager Create / Submit Flow · 步骤 1 层: ReservationManager._check_conflict()（校验点）",
+      "location": "lab_safety_assistant/reservation_manager.py:86",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0080",
+      "category": "业务流程",
+      "type": "流程总览",
+      "description": "流程 'SafetyChecker Assignment Flow': 涉及 1 个模块，2 个步骤，0 次跨模块调用",
+      "location": "safety_checker",
+      "confidence": "verified",
+      "evidence": "入口: safety_checker:SafetyChecker.assign_hazard，业务重要度: 3.5",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0081",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "SafetyChecker Assignment Flow · 步骤 0 层: SafetyChecker.assign_hazard()（状态变更）",
+      "location": "lab_safety_assistant/safety_checker.py:127",
+      "confidence": "verified",
+      "evidence": "调用类型: entry",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0082",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "SafetyChecker Assignment Flow · 步骤 1 层: SafetyChecker._find_hazard()",
+      "location": "lab_safety_assistant/safety_checker.py:130",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0083",
+      "category": "业务流程",
+      "type": "流程总览",
+      "description": "流程 'SafetyChecker Completion / Close Flow': 涉及 1 个模块，2 个步骤，0 次跨模块调用",
+      "location": "safety_checker",
+      "confidence": "verified",
+      "evidence": "入口: safety_checker:SafetyChecker.close_hazard，业务重要度: 3.5",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0084",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "SafetyChecker Completion / Close Flow · 步骤 0 层: SafetyChecker.close_hazard()（状态变更）",
+      "location": "lab_safety_assistant/safety_checker.py:142",
+      "confidence": "verified",
+      "evidence": "调用类型: entry",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0085",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "SafetyChecker Completion / Close Flow · 步骤 1 层: SafetyChecker._find_hazard()",
+      "location": "lab_safety_assistant/safety_checker.py:144",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0086",
+      "category": "业务流程",
+      "type": "流程总览",
+      "description": "流程 'UserManager has_permission Flow': 涉及 1 个模块，2 个步骤，0 次跨模块调用",
+      "location": "user_manager",
+      "confidence": "verified",
+      "evidence": "入口: user_manager:UserManager.has_permission，业务重要度: 3.0",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0087",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "UserManager has_permission Flow · 步骤 0 层: UserManager.has_permission()（校验点）",
+      "location": "lab_safety_assistant/user_manager.py:95",
+      "confidence": "verified",
+      "evidence": "调用类型: entry",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0088",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "UserManager has_permission Flow · 步骤 1 层: UserManager.get_current_user()",
+      "location": "lab_safety_assistant/user_manager.py:105",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0089",
+      "category": "关键实现",
+      "type": "核心方法",
+      "description": "UserManager.register() 是核心实现点（重要度 12.0）",
+      "location": "lab_safety_assistant/user_manager.py:17-59",
+      "confidence": "verified",
+      "evidence": "入选原因: high complexity implementation; multiple boundary validations; comprehensive error handling",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0090",
+      "category": "关键实现",
+      "type": "守卫条件",
+      "description": "UserManager.register: guard-clause style (4 pre-checks)",
+      "location": "lab_safety_assistant/user_manager.py: lines 35, 38, 42",
+      "confidence": "verified",
+      "evidence": "lines 35, 38, 42",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0091",
+      "category": "关键实现",
+      "type": "异常处理",
+      "description": "UserManager.register: raises 1 exception type(s): ValueError",
+      "location": "lab_safety_assistant/user_manager.py: lines 36, 39, 43",
+      "confidence": "verified",
+      "evidence": "lines 36, 39, 43",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0092",
+      "category": "关键实现",
+      "type": "状态变更",
+      "description": "UserManager.register: modifies 2 state attributes(s): users, _next_id",
+      "location": "lab_safety_assistant/user_manager.py:17-59",
+      "confidence": "verified",
+      "evidence": "from state tracker",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0093",
+      "category": "关键实现",
+      "type": "编排调用",
+      "description": "UserManager.register: multi-step orchestration (6 internal calls)",
+      "location": "lab_safety_assistant/user_manager.py:17-59",
+      "confidence": "verified",
+      "evidence": "from call count",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0094",
+      "category": "关键实现",
+      "type": "设计模式",
+      "description": "UserManager.register: uses Repository Pattern",
+      "location": "lab_safety_assistant/user_manager.py:17-59",
+      "confidence": "inferred",
+      "evidence": "from pattern detector",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0095",
+      "category": "关键实现",
+      "type": "守卫子句",
+      "description": "UserManager.register: ... or ... -> raise",
+      "location": "lab_safety_assistant/user_manager.py:35",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的前置检查 + 提前退出模式",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0096",
+      "category": "关键实现",
+      "type": "守卫子句",
+      "description": "UserManager.register: username in self.users -> raise",
+      "location": "lab_safety_assistant/user_manager.py:38",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的前置检查 + 提前退出模式",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0097",
+      "category": "关键实现",
+      "type": "守卫子句",
+      "description": "UserManager.register: role not in valid_roles -> raise",
+      "location": "lab_safety_assistant/user_manager.py:42",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的前置检查 + 提前退出模式",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0098",
+      "category": "关键实现",
+      "type": "守卫子句",
+      "description": "UserManager.register: ... or ... -> raise",
+      "location": "lab_safety_assistant/user_manager.py:45",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的前置检查 + 提前退出模式",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0099",
+      "category": "关键实现",
+      "type": "异常抛出",
+      "description": "UserManager.register: 抛出 ValueError: 用户名长度不能少于3位",
+      "location": "lab_safety_assistant/user_manager.py:36",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的 raise 语句",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0100",
+      "category": "关键实现",
+      "type": "异常抛出",
+      "description": "UserManager.register: 抛出 ValueError",
+      "location": "lab_safety_assistant/user_manager.py:39",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的 raise 语句",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0101",
+      "category": "关键实现",
+      "type": "异常抛出",
+      "description": "UserManager.register: 抛出 ValueError: 密码长度不能少于6位",
+      "location": "lab_safety_assistant/user_manager.py:43",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的 raise 语句",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0102",
+      "category": "关键实现",
+      "type": "算法特征",
+      "description": "UserManager.register: conditional checks (no loops)",
+      "location": "lab_safety_assistant/user_manager.py:17-59",
+      "confidence": "verified",
+      "evidence": "4 guard clauses, no loops",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0103",
+      "category": "关键实现",
+      "type": "复杂度",
+      "description": "UserManager.register: 圈复杂度 5（循环 0，分支 4）",
+      "location": "lab_safety_assistant/user_manager.py:17-59",
+      "confidence": "verified",
+      "evidence": "从 AST 直接计数：if/try 为分支，for/while 为循环",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0104",
+      "category": "关键实现",
+      "type": "核心方法",
+      "description": "ReservationManager.create_reservation() 是核心实现点（重要度 11.5）",
+      "location": "lab_safety_assistant/reservation_manager.py:56-104",
+      "confidence": "verified",
+      "evidence": "入选原因: high complexity implementation; multiple boundary validations; comprehensive error handling",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0105",
+      "category": "关键实现",
+      "type": "守卫条件",
+      "description": "ReservationManager.create_reservation: guard-clause style (4 pre-checks)",
+      "location": "lab_safety_assistant/reservation_manager.py: lines 73, 79, 82",
+      "confidence": "verified",
+      "evidence": "lines 73, 79, 82",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0106",
+      "category": "关键实现",
+      "type": "异常处理",
+      "description": "ReservationManager.create_reservation: raises 1 exception type(s): ValueError",
+      "location": "lab_safety_assistant/reservation_manager.py: lines 74, 80, 83",
+      "confidence": "verified",
+      "evidence": "lines 74, 80, 83",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0107",
+      "category": "关键实现",
+      "type": "状态变更",
+      "description": "ReservationManager.create_reservation: modifies 1 state attribute(s): _next_id",
+      "location": "lab_safety_assistant/reservation_manager.py:56-104",
+      "confidence": "verified",
+      "evidence": "from state tracker",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0108",
+      "category": "关键实现",
+      "type": "编排调用",
+      "description": "ReservationManager.create_reservation: multi-step orchestration (9 internal calls)",
+      "location": "lab_safety_assistant/reservation_manager.py:56-104",
+      "confidence": "verified",
+      "evidence": "from call count",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0109",
+      "category": "关键实现",
+      "type": "设计模式",
+      "description": "ReservationManager.create_reservation: uses Repository Pattern",
+      "location": "lab_safety_assistant/reservation_manager.py:56-104",
+      "confidence": "inferred",
+      "evidence": "from pattern detector",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0110",
+      "category": "关键实现",
+      "type": "守卫子句",
+      "description": "ReservationManager.create_reservation: lab_id not in self.labs -> raise",
+      "location": "lab_safety_assistant/reservation_manager.py:73",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的前置检查 + 提前退出模式",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0111",
+      "category": "关键实现",
+      "type": "守卫子句",
+      "description": "ReservationManager.create_reservation: start >= end -> raise",
+      "location": "lab_safety_assistant/reservation_manager.py:79",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的前置检查 + 提前退出模式",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0112",
+      "category": "关键实现",
+      "type": "守卫子句",
+      "description": "ReservationManager.create_reservation: num_people > self.labs[...][...] -> raise",
+      "location": "lab_safety_assistant/reservation_manager.py:82",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的前置检查 + 提前退出模式",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0113",
+      "category": "关键实现",
+      "type": "守卫子句",
+      "description": "ReservationManager.create_reservation: self._check_conflict() -> raise",
+      "location": "lab_safety_assistant/reservation_manager.py:86",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的前置检查 + 提前退出模式",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0114",
+      "category": "关键实现",
+      "type": "异常抛出",
+      "description": "ReservationManager.create_reservation: 抛出 ValueError",
+      "location": "lab_safety_assistant/reservation_manager.py:74",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的 raise 语句",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0115",
+      "category": "关键实现",
+      "type": "异常抛出",
+      "description": "ReservationManager.create_reservation: 抛出 ValueError: 结束时间必须晚于开始时间",
+      "location": "lab_safety_assistant/reservation_manager.py:80",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的 raise 语句",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0116",
+      "category": "关键实现",
+      "type": "异常抛出",
+      "description": "ReservationManager.create_reservation: 抛出 ValueError: 该时间段已被预约",
+      "location": "lab_safety_assistant/reservation_manager.py:83",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的 raise 语句",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0117",
+      "category": "关键实现",
+      "type": "算法特征",
+      "description": "ReservationManager.create_reservation: conditional checks (no loops)",
+      "location": "lab_safety_assistant/reservation_manager.py:56-104",
+      "confidence": "verified",
+      "evidence": "4 guard clauses, no loops",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0118",
+      "category": "关键实现",
+      "type": "复杂度",
+      "description": "ReservationManager.create_reservation: 圈复杂度 5（循环 0，分支 4）",
+      "location": "lab_safety_assistant/reservation_manager.py:56-104",
+      "confidence": "verified",
+      "evidence": "从 AST 直接计数：if/try 为分支，for/while 为循环",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0119",
+      "category": "关键实现",
+      "type": "核心方法",
+      "description": "SafetyChecker.add_check_item() 是核心实现点（重要度 10.0）",
+      "location": "lab_safety_assistant/safety_checker.py:29-57",
+      "confidence": "verified",
+      "evidence": "入选原因: medium complexity; includes boundary validation; includes exception raises",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0120",
+      "category": "关键实现",
+      "type": "守卫条件",
+      "description": "SafetyChecker.add_check_item: 2 pre-flight validations",
+      "location": "lab_safety_assistant/safety_checker.py: lines 40, 44",
+      "confidence": "verified",
+      "evidence": "lines 40, 44",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0121",
+      "category": "关键实现",
+      "type": "异常处理",
+      "description": "SafetyChecker.add_check_item: raises 1 exception type(s): ValueError",
+      "location": "lab_safety_assistant/safety_checker.py: lines 41, 45",
+      "confidence": "verified",
+      "evidence": "lines 41, 45",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0122",
+      "category": "关键实现",
+      "type": "状态变更",
+      "description": "SafetyChecker.add_check_item: modifies 2 state attributes(s): check_items, _next_item_id",
+      "location": "lab_safety_assistant/safety_checker.py:29-57",
+      "confidence": "verified",
+      "evidence": "from state tracker",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0123",
+      "category": "关键实现",
+      "type": "设计模式",
+      "description": "SafetyChecker.add_check_item: uses Repository Pattern",
+      "location": "lab_safety_assistant/safety_checker.py:29-57",
+      "confidence": "inferred",
+      "evidence": "from pattern detector",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0124",
+      "category": "关键实现",
+      "type": "守卫子句",
+      "description": "SafetyChecker.add_check_item: not content -> raise",
+      "location": "lab_safety_assistant/safety_checker.py:40",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的前置检查 + 提前退出模式",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0125",
+      "category": "关键实现",
+      "type": "守卫子句",
+      "description": "SafetyChecker.add_check_item: risk_level not in valid_levels -> raise",
+      "location": "lab_safety_assistant/safety_checker.py:44",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的前置检查 + 提前退出模式",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0126",
+      "category": "关键实现",
+      "type": "异常抛出",
+      "description": "SafetyChecker.add_check_item: 抛出 ValueError: 检查内容不能为空",
+      "location": "lab_safety_assistant/safety_checker.py:41",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的 raise 语句",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0127",
+      "category": "关键实现",
+      "type": "异常抛出",
+      "description": "SafetyChecker.add_check_item: 抛出 ValueError",
+      "location": "lab_safety_assistant/safety_checker.py:45",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的 raise 语句",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0128",
+      "category": "关键实现",
+      "type": "算法特征",
+      "description": "SafetyChecker.add_check_item: conditional checks (no loops)",
+      "location": "lab_safety_assistant/safety_checker.py:29-57",
+      "confidence": "verified",
+      "evidence": "2 guard clauses, no loops",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0129",
+      "category": "关键实现",
+      "type": "复杂度",
+      "description": "SafetyChecker.add_check_item: 圈复杂度 3（循环 0，分支 2）",
+      "location": "lab_safety_assistant/safety_checker.py:29-57",
+      "confidence": "verified",
+      "evidence": "从 AST 直接计数：if/try 为分支，for/while 为循环",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0130",
+      "category": "关键实现",
+      "type": "核心方法",
+      "description": "SafetyChecker.perform_check() 是核心实现点（重要度 10.0）",
+      "location": "lab_safety_assistant/safety_checker.py:59-105",
+      "confidence": "verified",
+      "evidence": "入选原因: high complexity implementation; includes boundary validation; includes exception raises",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0131",
+      "category": "关键实现",
+      "type": "守卫条件",
+      "description": "SafetyChecker.perform_check: 1 pre-flight validations",
+      "location": "lab_safety_assistant/safety_checker.py: lines 72",
+      "confidence": "verified",
+      "evidence": "lines 72",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0132",
+      "category": "关键实现",
+      "type": "异常处理",
+      "description": "SafetyChecker.perform_check: raises 1 exception type(s): ValueError",
+      "location": "lab_safety_assistant/safety_checker.py: lines 73",
+      "confidence": "verified",
+      "evidence": "lines 73",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0133",
+      "category": "关键实现",
+      "type": "状态变更",
+      "description": "SafetyChecker.perform_check: modifies 2 state attributes(s): check_items, check_records",
+      "location": "lab_safety_assistant/safety_checker.py:59-105",
+      "confidence": "verified",
+      "evidence": "from state tracker",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0134",
+      "category": "关键实现",
+      "type": "算法模式",
+      "description": "SafetyChecker.perform_check: sequential traversal",
+      "location": "lab_safety_assistant/safety_checker.py:59-105",
+      "confidence": "verified",
+      "evidence": "2 loop(s) detected",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0135",
+      "category": "关键实现",
+      "type": "编排调用",
+      "description": "SafetyChecker.perform_check: multi-step orchestration (10 internal calls)",
+      "location": "lab_safety_assistant/safety_checker.py:59-105",
+      "confidence": "verified",
+      "evidence": "from call count",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0136",
+      "category": "关键实现",
+      "type": "设计模式",
+      "description": "SafetyChecker.perform_check: uses Repository Pattern",
+      "location": "lab_safety_assistant/safety_checker.py:59-105",
+      "confidence": "inferred",
+      "evidence": "from pattern detector",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0137",
+      "category": "关键实现",
+      "type": "守卫子句",
+      "description": "SafetyChecker.perform_check: not results -> raise",
+      "location": "lab_safety_assistant/safety_checker.py:72",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的前置检查 + 提前退出模式",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0138",
+      "category": "关键实现",
+      "type": "异常抛出",
+      "description": "SafetyChecker.perform_check: 抛出 ValueError: 检查结果不能为空",
+      "location": "lab_safety_assistant/safety_checker.py:73",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的 raise 语句",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0139",
+      "category": "关键实现",
+      "type": "算法特征",
+      "description": "SafetyChecker.perform_check: state machine transition",
+      "location": "lab_safety_assistant/safety_checker.py:59-105",
+      "confidence": "verified",
+      "evidence": "2 loops + 5 state writes",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0140",
+      "category": "关键实现",
+      "type": "复杂度",
+      "description": "SafetyChecker.perform_check: 圈复杂度 5（循环 2，分支 2）",
+      "location": "lab_safety_assistant/safety_checker.py:59-105",
+      "confidence": "verified",
+      "evidence": "从 AST 直接计数：if/try 为分支，for/while 为循环",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0141",
+      "category": "关键实现",
+      "type": "核心方法",
+      "description": "UserManager.login() 是核心实现点（重要度 9.5）",
+      "location": "lab_safety_assistant/user_manager.py:61-83",
+      "confidence": "verified",
+      "evidence": "入选原因: medium complexity; multiple boundary validations; comprehensive error handling",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0142",
+      "category": "关键实现",
+      "type": "守卫条件",
+      "description": "UserManager.login: guard-clause style (3 pre-checks)",
+      "location": "lab_safety_assistant/user_manager.py: lines 72, 76, 79",
+      "confidence": "verified",
+      "evidence": "lines 72, 76, 79",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0143",
+      "category": "关键实现",
+      "type": "异常处理",
+      "description": "UserManager.login: raises 1 exception type(s): ValueError",
+      "location": "lab_safety_assistant/user_manager.py: lines 73, 77, 80",
+      "confidence": "verified",
+      "evidence": "lines 73, 77, 80",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0144",
+      "category": "关键实现",
+      "type": "状态变更",
+      "description": "UserManager.login: modifies 1 state attribute(s): _current_user",
+      "location": "lab_safety_assistant/user_manager.py:61-83",
+      "confidence": "verified",
+      "evidence": "from state tracker",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0145",
+      "category": "关键实现",
+      "type": "设计模式",
+      "description": "UserManager.login: uses Repository Pattern",
+      "location": "lab_safety_assistant/user_manager.py:61-83",
+      "confidence": "inferred",
+      "evidence": "from pattern detector",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0146",
+      "category": "关键实现",
+      "type": "守卫子句",
+      "description": "UserManager.login: username not in self.users -> raise",
+      "location": "lab_safety_assistant/user_manager.py:72",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的前置检查 + 提前退出模式",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0147",
+      "category": "关键实现",
+      "type": "守卫子句",
+      "description": "UserManager.login: not user[...] -> raise",
+      "location": "lab_safety_assistant/user_manager.py:76",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的前置检查 + 提前退出模式",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0148",
+      "category": "关键实现",
+      "type": "守卫子句",
+      "description": "UserManager.login: user[...] != password -> raise",
+      "location": "lab_safety_assistant/user_manager.py:79",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的前置检查 + 提前退出模式",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0149",
+      "category": "关键实现",
+      "type": "异常抛出",
+      "description": "UserManager.login: 抛出 ValueError",
+      "location": "lab_safety_assistant/user_manager.py:73",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的 raise 语句",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0150",
+      "category": "关键实现",
+      "type": "异常抛出",
+      "description": "UserManager.login: 抛出 ValueError: 该账户已被停用",
+      "location": "lab_safety_assistant/user_manager.py:77",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的 raise 语句",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0151",
+      "category": "关键实现",
+      "type": "异常抛出",
+      "description": "UserManager.login: 抛出 ValueError: 密码错误",
+      "location": "lab_safety_assistant/user_manager.py:80",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的 raise 语句",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0152",
+      "category": "关键实现",
+      "type": "算法特征",
+      "description": "UserManager.login: conditional checks (no loops)",
+      "location": "lab_safety_assistant/user_manager.py:61-83",
+      "confidence": "verified",
+      "evidence": "3 guard clauses, no loops",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0153",
+      "category": "关键实现",
+      "type": "复杂度",
+      "description": "UserManager.login: 圈复杂度 4（循环 0，分支 3）",
+      "location": "lab_safety_assistant/user_manager.py:61-83",
+      "confidence": "verified",
+      "evidence": "从 AST 直接计数：if/try 为分支，for/while 为循环",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0154",
+      "category": "关键实现",
+      "type": "核心方法",
+      "description": "ReservationManager.add_lab() 是核心实现点（重要度 9.0）",
+      "location": "lab_safety_assistant/reservation_manager.py:25-54",
+      "confidence": "verified",
+      "evidence": "入选原因: medium complexity; multiple boundary validations; includes exception raises",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0155",
+      "category": "关键实现",
+      "type": "守卫条件",
+      "description": "ReservationManager.add_lab: guard-clause style (3 pre-checks)",
+      "location": "lab_safety_assistant/reservation_manager.py: lines 37, 40, 44",
+      "confidence": "verified",
+      "evidence": "lines 37, 40, 44",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0156",
+      "category": "关键实现",
+      "type": "异常处理",
+      "description": "ReservationManager.add_lab: raises 1 exception type(s): ValueError",
+      "location": "lab_safety_assistant/reservation_manager.py: lines 38, 41, 45",
+      "confidence": "verified",
+      "evidence": "lines 38, 41, 45",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0157",
+      "category": "关键实现",
+      "type": "状态变更",
+      "description": "ReservationManager.add_lab: modifies 1 state attribute(s): labs",
+      "location": "lab_safety_assistant/reservation_manager.py:25-54",
+      "confidence": "verified",
+      "evidence": "from state tracker",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0158",
+      "category": "关键实现",
+      "type": "设计模式",
+      "description": "ReservationManager.add_lab: uses Repository Pattern",
+      "location": "lab_safety_assistant/reservation_manager.py:25-54",
+      "confidence": "inferred",
+      "evidence": "from pattern detector",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0159",
+      "category": "关键实现",
+      "type": "守卫子句",
+      "description": "ReservationManager.add_lab: lab_id in self.labs -> raise",
+      "location": "lab_safety_assistant/reservation_manager.py:37",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的前置检查 + 提前退出模式",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0160",
+      "category": "关键实现",
+      "type": "守卫子句",
+      "description": "ReservationManager.add_lab: capacity <= 0 -> raise",
+      "location": "lab_safety_assistant/reservation_manager.py:40",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的前置检查 + 提前退出模式",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0161",
+      "category": "关键实现",
+      "type": "守卫子句",
+      "description": "ReservationManager.add_lab: safety_level not in valid_levels -> raise",
+      "location": "lab_safety_assistant/reservation_manager.py:44",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的前置检查 + 提前退出模式",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0162",
+      "category": "关键实现",
+      "type": "异常抛出",
+      "description": "ReservationManager.add_lab: 抛出 ValueError",
+      "location": "lab_safety_assistant/reservation_manager.py:38",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的 raise 语句",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0163",
+      "category": "关键实现",
+      "type": "异常抛出",
+      "description": "ReservationManager.add_lab: 抛出 ValueError: 容纳人数必须大于0",
+      "location": "lab_safety_assistant/reservation_manager.py:41",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的 raise 语句",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0164",
+      "category": "关键实现",
+      "type": "算法特征",
+      "description": "ReservationManager.add_lab: conditional checks (no loops)",
+      "location": "lab_safety_assistant/reservation_manager.py:25-54",
+      "confidence": "verified",
+      "evidence": "3 guard clauses, no loops",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0165",
+      "category": "关键实现",
+      "type": "复杂度",
+      "description": "ReservationManager.add_lab: 圈复杂度 4（循环 0，分支 3）",
+      "location": "lab_safety_assistant/reservation_manager.py:25-54",
+      "confidence": "verified",
+      "evidence": "从 AST 直接计数：if/try 为分支，for/while 为循环",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0166",
+      "category": "关键实现",
+      "type": "核心方法",
+      "description": "ReservationManager.cancel_reservation() 是核心实现点（重要度 9.0）",
+      "location": "lab_safety_assistant/reservation_manager.py:153-166",
+      "confidence": "verified",
+      "evidence": "入选原因: medium complexity; multiple boundary validations; comprehensive error handling",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0167",
+      "category": "关键实现",
+      "type": "守卫条件",
+      "description": "ReservationManager.cancel_reservation: guard-clause style (3 pre-checks)",
+      "location": "lab_safety_assistant/reservation_manager.py: lines 155, 159, 162",
+      "confidence": "verified",
+      "evidence": "lines 155, 159, 162",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0168",
+      "category": "关键实现",
+      "type": "异常处理",
+      "description": "ReservationManager.cancel_reservation: raises 3 exception type(s): ValueError, PermissionError, KeyError",
+      "location": "lab_safety_assistant/reservation_manager.py: lines 156, 160, 163",
+      "confidence": "verified",
+      "evidence": "lines 156, 160, 163",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0169",
+      "category": "关键实现",
+      "type": "状态变更",
+      "description": "ReservationManager.cancel_reservation: modifies 1 state attribute(s): reservations",
+      "location": "lab_safety_assistant/reservation_manager.py:153-166",
+      "confidence": "verified",
+      "evidence": "from state tracker",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0170",
+      "category": "关键实现",
+      "type": "设计模式",
+      "description": "ReservationManager.cancel_reservation: uses Repository Pattern",
+      "location": "lab_safety_assistant/reservation_manager.py:153-166",
+      "confidence": "inferred",
+      "evidence": "from pattern detector",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0171",
+      "category": "关键实现",
+      "type": "守卫子句",
+      "description": "ReservationManager.cancel_reservation: res_id not in self.reservations -> raise",
+      "location": "lab_safety_assistant/reservation_manager.py:155",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的前置检查 + 提前退出模式",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0172",
+      "category": "关键实现",
+      "type": "守卫子句",
+      "description": "ReservationManager.cancel_reservation: res[...] != username -> raise",
+      "location": "lab_safety_assistant/reservation_manager.py:159",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的前置检查 + 提前退出模式",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0173",
+      "category": "关键实现",
+      "type": "守卫子句",
+      "description": "ReservationManager.cancel_reservation: res[...] not in ... -> raise",
+      "location": "lab_safety_assistant/reservation_manager.py:162",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的前置检查 + 提前退出模式",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0174",
+      "category": "关键实现",
+      "type": "异常抛出",
+      "description": "ReservationManager.cancel_reservation: 抛出 KeyError",
+      "location": "lab_safety_assistant/reservation_manager.py:156",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的 raise 语句",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0175",
+      "category": "关键实现",
+      "type": "异常抛出",
+      "description": "ReservationManager.cancel_reservation: 抛出 PermissionError: 只能取消自己的预约",
+      "location": "lab_safety_assistant/reservation_manager.py:160",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的 raise 语句",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0176",
+      "category": "关键实现",
+      "type": "异常抛出",
+      "description": "ReservationManager.cancel_reservation: 抛出 ValueError: 该状态无法取消",
+      "location": "lab_safety_assistant/reservation_manager.py:163",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的 raise 语句",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0177",
+      "category": "关键实现",
+      "type": "算法特征",
+      "description": "ReservationManager.cancel_reservation: conditional checks (no loops)",
+      "location": "lab_safety_assistant/reservation_manager.py:153-166",
+      "confidence": "verified",
+      "evidence": "3 guard clauses, no loops",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0178",
+      "category": "关键实现",
+      "type": "复杂度",
+      "description": "ReservationManager.cancel_reservation: 圈复杂度 4（循环 0，分支 3）",
+      "location": "lab_safety_assistant/reservation_manager.py:153-166",
+      "confidence": "verified",
+      "evidence": "从 AST 直接计数：if/try 为分支，for/while 为循环",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0179",
+      "category": "关键实现",
+      "type": "核心方法",
+      "description": "EquipmentManager.borrow_equipment() 是核心实现点（重要度 8.0）",
+      "location": "lab_safety_assistant/equipment_manager.py:53-85",
+      "confidence": "verified",
+      "evidence": "入选原因: medium complexity; includes boundary validation; includes exception raises",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0180",
+      "category": "关键实现",
+      "type": "守卫条件",
+      "description": "EquipmentManager.borrow_equipment: 2 pre-flight validations",
+      "location": "lab_safety_assistant/equipment_manager.py: lines 66, 70",
+      "confidence": "verified",
+      "evidence": "lines 66, 70",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0181",
+      "category": "关键实现",
+      "type": "异常处理",
+      "description": "EquipmentManager.borrow_equipment: raises 2 exception type(s): ValueError, KeyError",
+      "location": "lab_safety_assistant/equipment_manager.py: lines 67, 71",
+      "confidence": "verified",
+      "evidence": "lines 67, 71",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0182",
+      "category": "关键实现",
+      "type": "状态变更",
+      "description": "EquipmentManager.borrow_equipment: modifies 1 state attribute(s): borrow_records",
+      "location": "lab_safety_assistant/equipment_manager.py:53-85",
+      "confidence": "verified",
+      "evidence": "from state tracker",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0183",
+      "category": "关键实现",
+      "type": "编排调用",
+      "description": "EquipmentManager.borrow_equipment: multi-step orchestration (6 internal calls)",
+      "location": "lab_safety_assistant/equipment_manager.py:53-85",
+      "confidence": "verified",
+      "evidence": "from call count",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0184",
+      "category": "关键实现",
+      "type": "设计模式",
+      "description": "EquipmentManager.borrow_equipment: uses Repository Pattern",
+      "location": "lab_safety_assistant/equipment_manager.py:53-85",
+      "confidence": "inferred",
+      "evidence": "from pattern detector",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0185",
+      "category": "关键实现",
+      "type": "守卫子句",
+      "description": "EquipmentManager.borrow_equipment: equip_id not in self.equipments -> raise",
+      "location": "lab_safety_assistant/equipment_manager.py:66",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的前置检查 + 提前退出模式",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0186",
+      "category": "关键实现",
+      "type": "守卫子句",
+      "description": "EquipmentManager.borrow_equipment: equip[...] != self.STATUS_AVAILABLE -> raise",
+      "location": "lab_safety_assistant/equipment_manager.py:70",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的前置检查 + 提前退出模式",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0187",
+      "category": "关键实现",
+      "type": "异常抛出",
+      "description": "EquipmentManager.borrow_equipment: 抛出 KeyError",
+      "location": "lab_safety_assistant/equipment_manager.py:67",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的 raise 语句",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0188",
+      "category": "关键实现",
+      "type": "异常抛出",
+      "description": "EquipmentManager.borrow_equipment: 抛出 ValueError",
+      "location": "lab_safety_assistant/equipment_manager.py:71",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的 raise 语句",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0189",
+      "category": "关键实现",
+      "type": "算法特征",
+      "description": "EquipmentManager.borrow_equipment: conditional checks (no loops)",
+      "location": "lab_safety_assistant/equipment_manager.py:53-85",
+      "confidence": "verified",
+      "evidence": "2 guard clauses, no loops",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0190",
+      "category": "关键实现",
+      "type": "复杂度",
+      "description": "EquipmentManager.borrow_equipment: 圈复杂度 3（循环 0，分支 2）",
+      "location": "lab_safety_assistant/equipment_manager.py:53-85",
+      "confidence": "verified",
+      "evidence": "从 AST 直接计数：if/try 为分支，for/while 为循环",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0191",
+      "category": "关键实现",
+      "type": "核心方法",
+      "description": "EquipmentManager.return_equipment() 是核心实现点（重要度 7.5）",
+      "location": "lab_safety_assistant/equipment_manager.py:87-101",
+      "confidence": "verified",
+      "evidence": "入选原因: medium complexity; includes boundary validation; includes exception raises",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0192",
+      "category": "关键实现",
+      "type": "异常处理",
+      "description": "EquipmentManager.return_equipment: raises 2 exception type(s): ValueError, KeyError",
+      "location": "lab_safety_assistant/equipment_manager.py: lines 101, 92",
+      "confidence": "verified",
+      "evidence": "lines 101, 92",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0193",
+      "category": "关键实现",
+      "type": "状态变更",
+      "description": "EquipmentManager.return_equipment: modifies 1 state attribute(s): borrow_records",
+      "location": "lab_safety_assistant/equipment_manager.py:87-101",
+      "confidence": "verified",
+      "evidence": "from state tracker",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0194",
+      "category": "关键实现",
+      "type": "算法模式",
+      "description": "EquipmentManager.return_equipment: sequential traversal",
+      "location": "lab_safety_assistant/equipment_manager.py:87-101",
+      "confidence": "verified",
+      "evidence": "1 loop(s) detected",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0195",
+      "category": "关键实现",
+      "type": "设计模式",
+      "description": "EquipmentManager.return_equipment: uses Repository Pattern",
+      "location": "lab_safety_assistant/equipment_manager.py:87-101",
+      "confidence": "inferred",
+      "evidence": "from pattern detector",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0196",
+      "category": "关键实现",
+      "type": "异常抛出",
+      "description": "EquipmentManager.return_equipment: 抛出 KeyError",
+      "location": "lab_safety_assistant/equipment_manager.py:101",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的 raise 语句",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0197",
+      "category": "关键实现",
+      "type": "异常抛出",
+      "description": "EquipmentManager.return_equipment: 抛出 ValueError: 该借用记录已归还",
+      "location": "lab_safety_assistant/equipment_manager.py:92",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的 raise 语句",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0198",
+      "category": "关键实现",
+      "type": "算法特征",
+      "description": "EquipmentManager.return_equipment: general business logic",
+      "location": "lab_safety_assistant/equipment_manager.py:87-101",
+      "confidence": "verified",
+      "evidence": "no distinctive algorithmic pattern",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0199",
+      "category": "关键实现",
+      "type": "复杂度",
+      "description": "EquipmentManager.return_equipment: 圈复杂度 4（循环 1，分支 2）",
+      "location": "lab_safety_assistant/equipment_manager.py:87-101",
+      "confidence": "verified",
+      "evidence": "从 AST 直接计数：if/try 为分支，for/while 为循环",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0200",
+      "category": "关键实现",
+      "type": "核心方法",
+      "description": "EquipmentManager.set_equipment_status() 是核心实现点（重要度 7.5）",
+      "location": "lab_safety_assistant/equipment_manager.py:130-144",
+      "confidence": "verified",
+      "evidence": "入选原因: medium complexity; includes boundary validation; includes exception raises",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0201",
+      "category": "关键实现",
+      "type": "守卫条件",
+      "description": "EquipmentManager.set_equipment_status: 2 pre-flight validations",
+      "location": "lab_safety_assistant/equipment_manager.py: lines 132, 140",
+      "confidence": "verified",
+      "evidence": "lines 132, 140",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0202",
+      "category": "关键实现",
+      "type": "异常处理",
+      "description": "EquipmentManager.set_equipment_status: raises 2 exception type(s): ValueError, KeyError",
+      "location": "lab_safety_assistant/equipment_manager.py: lines 133, 141",
+      "confidence": "verified",
+      "evidence": "lines 133, 141",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0203",
+      "category": "关键实现",
+      "type": "状态变更",
+      "description": "EquipmentManager.set_equipment_status: modifies 2 state attributes(s): equipments.status, equipments",
+      "location": "lab_safety_assistant/equipment_manager.py:130-144",
+      "confidence": "verified",
+      "evidence": "from state tracker",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0204",
+      "category": "关键实现",
+      "type": "设计模式",
+      "description": "EquipmentManager.set_equipment_status: uses Repository Pattern",
+      "location": "lab_safety_assistant/equipment_manager.py:130-144",
+      "confidence": "inferred",
+      "evidence": "from pattern detector",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0205",
+      "category": "关键实现",
+      "type": "守卫子句",
+      "description": "EquipmentManager.set_equipment_status: equip_id not in self.equipments -> raise",
+      "location": "lab_safety_assistant/equipment_manager.py:132",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的前置检查 + 提前退出模式",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0206",
+      "category": "关键实现",
+      "type": "守卫子句",
+      "description": "EquipmentManager.set_equipment_status: status not in valid_statuses -> raise",
+      "location": "lab_safety_assistant/equipment_manager.py:140",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的前置检查 + 提前退出模式",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0207",
+      "category": "关键实现",
+      "type": "异常抛出",
+      "description": "EquipmentManager.set_equipment_status: 抛出 KeyError",
+      "location": "lab_safety_assistant/equipment_manager.py:133",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的 raise 语句",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0208",
+      "category": "关键实现",
+      "type": "异常抛出",
+      "description": "EquipmentManager.set_equipment_status: 抛出 ValueError",
+      "location": "lab_safety_assistant/equipment_manager.py:141",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的 raise 语句",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0209",
+      "category": "关键实现",
+      "type": "算法特征",
+      "description": "EquipmentManager.set_equipment_status: conditional checks (no loops)",
+      "location": "lab_safety_assistant/equipment_manager.py:130-144",
+      "confidence": "verified",
+      "evidence": "2 guard clauses, no loops",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0210",
+      "category": "关键实现",
+      "type": "复杂度",
+      "description": "EquipmentManager.set_equipment_status: 圈复杂度 3（循环 0，分支 2）",
+      "location": "lab_safety_assistant/equipment_manager.py:130-144",
+      "confidence": "verified",
+      "evidence": "从 AST 直接计数：if/try 为分支，for/while 为循环",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0211",
+      "category": "设计模式",
+      "type": "structural",
+      "description": "ReservationManager 疑似使用 Repository Pattern",
+      "location": "ReservationManager",
+      "confidence": "inferred",
+      "evidence": "ReservationManager encapsulates data access with CRUD operations and validation",
+      "source": "pattern_detector"
+    },
+    {
+      "fact_id": "F0212",
+      "category": "设计模式",
+      "type": "structural",
+      "description": "EquipmentManager 疑似使用 Repository Pattern",
+      "location": "EquipmentManager",
+      "confidence": "inferred",
+      "evidence": "EquipmentManager encapsulates data access with CRUD operations and validation",
+      "source": "pattern_detector"
+    },
+    {
+      "fact_id": "F0213",
+      "category": "设计模式",
+      "type": "structural",
+      "description": "UserManager 疑似使用 Repository Pattern",
+      "location": "UserManager",
+      "confidence": "inferred",
+      "evidence": "UserManager encapsulates data access with CRUD operations and validation",
+      "source": "pattern_detector"
+    },
+    {
+      "fact_id": "F0214",
+      "category": "设计模式",
+      "type": "structural",
+      "description": "SafetyChecker 疑似使用 Repository Pattern",
+      "location": "SafetyChecker",
+      "confidence": "inferred",
+      "evidence": "SafetyChecker encapsulates data access with CRUD operations and validation",
+      "source": "pattern_detector"
+    },
+    {
+      "fact_id": "F0215",
+      "category": "设计模式",
+      "type": "structural",
+      "description": "LabSafetyApp 疑似使用 Service / Facade Pattern",
+      "location": "LabSafetyApp",
+      "confidence": "inferred",
+      "evidence": "LabSafetyApp orchestrates business logic by coordinating lower-level components",
+      "source": "pattern_detector"
+    },
+    {
+      "fact_id": "F0216",
+      "category": "设计模式",
+      "type": "structural",
+      "description": "ReservationManager 疑似使用 Service / Facade Pattern",
+      "location": "ReservationManager",
+      "confidence": "inferred",
+      "evidence": "ReservationManager orchestrates business logic by coordinating lower-level components",
+      "source": "pattern_detector"
+    }
+  ]
+}

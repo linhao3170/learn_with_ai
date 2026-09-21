@@ -1,0 +1,63 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+pip-wheel-metadata/
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+logs/
+
+# Data / outputs
+output/
+results/
+.cache/
+
+# Local task scripts
+_task_scripts/
+_check_repo.py
+_fix_dp_source.py
+_patch_metrics.py
+_patch_step.py
+_test_layer3.py
+_update_readme.py
+
+# Backup files
+*.bak
+README.bak.md
+README.v1.md

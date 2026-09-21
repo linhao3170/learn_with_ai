@@ -1,0 +1,12 @@
+# 核心依赖
+astroid>=3.0
+
+# 代码度量（可选，用于难度评估增强）
+radon>=6.0
+
+# Web API（可选，用于后端服务）
+fastapi>=0.100
+uvicorn>=0.20
+
+# 前端渲染（可选，Mermaid 是前端 JS 库，这里是 Python 端生成语法）
+# mermaid.js 在前端加载

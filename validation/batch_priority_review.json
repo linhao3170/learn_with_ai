@@ -1,0 +1,28 @@
+[
+  {
+    "project": "lab_safety_assistant",
+    "path": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant",
+    "files": 6,
+    "lines": 784,
+    "nodes": 39,
+    "flows": 6,
+    "top_node": "safety_checker:SafetyChecker.add_check_item",
+    "top_flow": "LabSafetyApp Initialization Flow",
+    "review_gaps": 2,
+    "evidence_completeness": 1.0,
+    "status": "ok"
+  },
+  {
+    "project": "tutorial",
+    "path": "D:\\learn_with_ai\\validation\\flask\\examples\\tutorial",
+    "files": 4,
+    "lines": 345,
+    "nodes": 16,
+    "flows": 3,
+    "top_node": "flaskr.db:init_db",
+    "top_flow": "init_db_command Flow",
+    "review_gaps": 3,
+    "evidence_completeness": 1.0,
+    "status": "ok"
+  }
+]

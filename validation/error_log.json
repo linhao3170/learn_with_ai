@@ -1,0 +1,44 @@
+[
+  {
+    "project": "lab_safety",
+    "fact_id": "调用链#5",
+    "error_type": "dynamic_call",
+    "reason": "getattr动态调用无法静态解析",
+    "timestamp": "2026-09-20T23:06:51.954712"
+  },
+  {
+    "project": "lab_safety",
+    "fact_id": "调用链#5",
+    "error_type": "dynamic_call",
+    "reason": "getattr动态调用无法静态解析",
+    "timestamp": "2026-09-20T23:09:50.716841"
+  },
+  {
+    "project": "lab_safety",
+    "fact_id": "模块#2",
+    "error_type": "module_boundary",
+    "reason": "单文件内两个类职责不同但被归为同一模块",
+    "timestamp": "2026-09-20T23:10:21.709228"
+  },
+  {
+    "project": "lab_safety",
+    "fact_id": "模式#1",
+    "error_type": "pattern_false_positive",
+    "reason": "误判为策略模式，实际只是普通继承",
+    "timestamp": "2026-09-20T23:10:21.883898"
+  },
+  {
+    "project": "project_demo",
+    "fact_id": "调用链#3",
+    "error_type": "dynamic_call",
+    "reason": "使用了exec执行动态代码",
+    "timestamp": "2026-09-20T23:10:21.980604"
+  },
+  {
+    "project": "project_demo",
+    "fact_id": "算法#1",
+    "error_type": "algorithm_inference",
+    "reason": "推断为二分查找，实际是线性扫描",
+    "timestamp": "2026-09-20T23:10:22.113326"
+  }
+]

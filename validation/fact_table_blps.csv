@@ -1,0 +1,186 @@
+﻿fact_id,category,type,description,location,confidence,evidence,source
+F0001,模块架构,模块统计,系统包含 5 个模块，4 条模块间依赖,全局,verified,从调用图汇总,dependency_strength
+F0002,模块架构,模块角色,模块 app: 编排器，3 个内部节点，入度 0，出度 4，中心性 0.3,app,verified,基于调用图的中心性计算,dependency_strength
+F0003,模块架构,模块角色,模块 equipment_manager: 核心模块，8 个内部节点，入度 1，出度 0，中心性 0.7,equipment_manager,verified,基于调用图的中心性计算,dependency_strength
+F0004,模块架构,模块角色,模块 reservation_manager: 核心模块，10 个内部节点，入度 1，出度 0，中心性 0.7,reservation_manager,verified,基于调用图的中心性计算,dependency_strength
+F0005,模块架构,模块角色,模块 safety_checker: 核心模块，10 个内部节点，入度 1，出度 0，中心性 0.7,safety_checker,verified,基于调用图的中心性计算,dependency_strength
+F0006,模块架构,模块角色,模块 user_manager: 核心模块，8 个内部节点，入度 1，出度 0，中心性 0.7,user_manager,verified,基于调用图的中心性计算,dependency_strength
+F0007,调用链,调用链-跨模块,LabSafetyApp.initialize_sample_data 调用 UserManager.register（跨模块）,lab_safety_assistant/app.py:30,verified,调用类型: composite_attr,call_graph
+F0008,调用链,调用链-跨模块,LabSafetyApp.initialize_sample_data 调用 ReservationManager.add_lab（跨模块）,lab_safety_assistant/app.py:38,verified,调用类型: composite_attr,call_graph
+F0009,调用链,调用链-跨模块,LabSafetyApp.initialize_sample_data 调用 EquipmentManager.add_equipment（跨模块）,lab_safety_assistant/app.py:54,verified,调用类型: composite_attr,call_graph
+F0010,调用链,调用链-跨模块,LabSafetyApp.initialize_sample_data 调用 SafetyChecker.add_check_item（跨模块）,lab_safety_assistant/app.py:62,verified,调用类型: composite_attr,call_graph
+F0011,调用链,调用链-模块内,ReservationManager.create_reservation 调用 ReservationManager._check_conflict,lab_safety_assistant/reservation_manager.py:86,verified,调用类型: self_method,call_graph
+F0012,调用链,调用链-模块内,SafetyChecker.assign_hazard 调用 SafetyChecker._find_hazard,lab_safety_assistant/safety_checker.py:130,verified,调用类型: self_method,call_graph
+F0013,调用链,调用链-模块内,SafetyChecker.close_hazard 调用 SafetyChecker._find_hazard,lab_safety_assistant/safety_checker.py:144,verified,调用类型: self_method,call_graph
+F0014,调用链,调用链-模块内,SafetyChecker.perform_check 调用 SafetyChecker._create_hazard,lab_safety_assistant/safety_checker.py:98,verified,调用类型: self_method,call_graph
+F0015,调用链,调用链-模块内,UserManager.has_permission 调用 UserManager.get_current_user,lab_safety_assistant/user_manager.py:105,verified,调用类型: self_method,call_graph
+F0016,调用链,入口点,LabSafetyApp.initialize_sample_data 是系统入口点,lab_safety_assistant/app.py:27,verified,"出度 8，标签: creation, orchestrator",call_graph
+F0017,调用链,入口点,EquipmentManager.borrow_equipment 是系统入口点,lab_safety_assistant/equipment_manager.py:53,verified,出度 0，标签: update,call_graph
+F0018,调用链,入口点,EquipmentManager.add_maintenance 是系统入口点,lab_safety_assistant/equipment_manager.py:103,verified,出度 0，标签: creation,call_graph
+F0019,调用链,入口点,ReservationManager.create_reservation 是系统入口点,lab_safety_assistant/reservation_manager.py:56,verified,出度 1，标签: creation,call_graph
+F0020,调用链,入口点,SafetyChecker.perform_check 是系统入口点,lab_safety_assistant/safety_checker.py:59,verified,"出度 1，标签: query, validation",call_graph
+F0021,调用链,入口点,SafetyChecker.assign_hazard 是系统入口点,lab_safety_assistant/safety_checker.py:127,verified,出度 1，标签: update,call_graph
+F0022,调用链,入口点,SafetyChecker.close_hazard 是系统入口点,lab_safety_assistant/safety_checker.py:142,verified,"出度 1，标签: state_change, update",call_graph
+F0023,调用链,入口点,UserManager.login 是系统入口点,lab_safety_assistant/user_manager.py:61,verified,出度 0，标签: 无,call_graph
+F0024,调用链,入口点,UserManager.has_permission 是系统入口点,lab_safety_assistant/user_manager.py:95,verified,"出度 1，标签: query, validation",call_graph
+F0025,状态变更,状态属性,"LabSafetyApp 拥有 4 个状态属性: equipment_manager, reservation_manager, safety_checker, user_manager",lab_safety_assistant/app.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0026,状态变更,属性写入,"LabSafetyApp.__init__() 修改 4 个属性: equipment_manager, reservation_manager, safety_checker, user_manager",lab_safety_assistant/app.py:21,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0027,状态变更,查询方法,"LabSafetyApp 有 2 个纯查询方法: initialize_sample_data, get_system_stats",lab_safety_assistant/app.py,verified,方法体中只读取不修改状态属性,state_tracker
+F0028,状态变更,状态属性,"EquipmentManager 拥有 4 个状态属性: _next_id, borrow_records, equipments, maintenance_logs",lab_safety_assistant/equipment_manager.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0029,状态变更,集合属性,"EquipmentManager 有 3 个集合型属性: borrow_records, equipments, maintenance_logs",lab_safety_assistant/equipment_manager.py,verified,初始化为 dict/list/set 的属性,state_tracker
+F0030,状态变更,类常量,"EquipmentManager 定义了 4 个常量: STATUS_AVAILABLE, STATUS_BORROWED, STATUS_MAINTENANCE, STATUS_SCRAPPED",lab_safety_assistant/equipment_manager.py,verified,UPPER_CASE 命名的类级变量,state_tracker
+F0031,状态变更,属性写入,"EquipmentManager.__init__() 修改 4 个属性: _next_id, borrow_records, equipments, maintenance_logs",lab_safety_assistant/equipment_manager.py:18,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0032,状态变更,属性写入,"EquipmentManager.add_equipment() 修改 2 个属性: _next_id, equipments",lab_safety_assistant/equipment_manager.py:24,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0033,状态变更,属性写入,"EquipmentManager.add_maintenance() 修改 3 个属性: equipments, equipments.last_maintenance, maintenance_logs",lab_safety_assistant/equipment_manager.py:103,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0034,状态变更,属性写入,"EquipmentManager.borrow_equipment() 修改 2 个属性: borrow_records, equipments",lab_safety_assistant/equipment_manager.py:53,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0035,状态变更,属性写入,"EquipmentManager.return_equipment() 修改 3 个属性: borrow_records, equipments, equipments.status",lab_safety_assistant/equipment_manager.py:87,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0036,状态变更,属性写入,"EquipmentManager.set_equipment_status() 修改 2 个属性: equipments, equipments.status",lab_safety_assistant/equipment_manager.py:130,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0037,状态变更,查询方法,"EquipmentManager 有 2 个纯查询方法: list_equipments, get_maintenance_history",lab_safety_assistant/equipment_manager.py,verified,方法体中只读取不修改状态属性,state_tracker
+F0038,状态变更,状态属性,"ReservationManager 拥有 3 个状态属性: _next_id, labs, reservations",lab_safety_assistant/reservation_manager.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0039,状态变更,集合属性,"ReservationManager 有 2 个集合型属性: labs, reservations",lab_safety_assistant/reservation_manager.py,verified,初始化为 dict/list/set 的属性,state_tracker
+F0040,状态变更,类常量,"ReservationManager 定义了 5 个常量: STATUS_PENDING, STATUS_APPROVED, STATUS_REJECTED, STATUS_CANCELLED, STATUS_COMPLETED",lab_safety_assistant/reservation_manager.py,verified,UPPER_CASE 命名的类级变量,state_tracker
+F0041,状态变更,属性写入,"ReservationManager.__init__() 修改 3 个属性: _next_id, labs, reservations",lab_safety_assistant/reservation_manager.py:20,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0042,状态变更,属性写入,ReservationManager.add_lab() 修改 1 个属性: labs,lab_safety_assistant/reservation_manager.py:25,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0043,状态变更,属性写入,ReservationManager.approve_reservation() 修改 1 个属性: reservations,lab_safety_assistant/reservation_manager.py:126,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0044,状态变更,属性写入,ReservationManager.cancel_reservation() 修改 1 个属性: reservations,lab_safety_assistant/reservation_manager.py:153,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0045,状态变更,属性写入,"ReservationManager.create_reservation() 修改 3 个属性: _next_id, labs, reservations",lab_safety_assistant/reservation_manager.py:56,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0046,状态变更,属性写入,ReservationManager.reject_reservation() 修改 1 个属性: reservations,lab_safety_assistant/reservation_manager.py:139,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0047,状态变更,查询方法,"ReservationManager 有 3 个纯查询方法: get_user_reservations, get_lab_reservations, list_labs",lab_safety_assistant/reservation_manager.py,verified,方法体中只读取不修改状态属性,state_tracker
+F0048,状态变更,状态属性,"SafetyChecker 拥有 6 个状态属性: _next_hazard_id, _next_item_id, _next_record_id, check_items, check_records, hazards",lab_safety_assistant/safety_checker.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0049,状态变更,集合属性,"SafetyChecker 有 3 个集合型属性: check_items, check_records, hazards",lab_safety_assistant/safety_checker.py,verified,初始化为 dict/list/set 的属性,state_tracker
+F0050,状态变更,类常量,"SafetyChecker 定义了 6 个常量: LEVEL_LOW, LEVEL_MEDIUM, LEVEL_HIGH, STATUS_OPEN, STATUS_IN_PROGRESS, STATUS_CLOSED",lab_safety_assistant/safety_checker.py,verified,UPPER_CASE 命名的类级变量,state_tracker
+F0051,状态变更,属性写入,"SafetyChecker.__init__() 修改 6 个属性: _next_hazard_id, _next_item_id, _next_record_id, check_items, check_records",lab_safety_assistant/safety_checker.py:21,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0052,状态变更,属性写入,"SafetyChecker._create_hazard() 修改 2 个属性: _next_hazard_id, hazards",lab_safety_assistant/safety_checker.py:107,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0053,状态变更,属性写入,"SafetyChecker.add_check_item() 修改 2 个属性: _next_item_id, check_items",lab_safety_assistant/safety_checker.py:29,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0054,状态变更,属性写入,"SafetyChecker.perform_check() 修改 3 个属性: _next_record_id, check_items, check_records",lab_safety_assistant/safety_checker.py:59,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0055,状态变更,查询方法,"SafetyChecker 有 3 个纯查询方法: get_hazards, get_check_records, list_check_items",lab_safety_assistant/safety_checker.py,verified,方法体中只读取不修改状态属性,state_tracker
+F0056,状态变更,状态属性,"UserManager 拥有 3 个状态属性: _current_user, _next_id, users",lab_safety_assistant/user_manager.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0057,状态变更,集合属性,UserManager 有 1 个集合型属性: users,lab_safety_assistant/user_manager.py,verified,初始化为 dict/list/set 的属性,state_tracker
+F0058,状态变更,属性写入,"UserManager.__init__() 修改 3 个属性: _current_user, _next_id, users",lab_safety_assistant/user_manager.py:12,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0059,状态变更,属性写入,"UserManager.deactivate_user() 修改 2 个属性: users, users.active",lab_safety_assistant/user_manager.py:130,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0060,状态变更,属性写入,UserManager.login() 修改 1 个属性: _current_user,lab_safety_assistant/user_manager.py:61,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0061,状态变更,属性写入,UserManager.logout() 修改 1 个属性: _current_user,lab_safety_assistant/user_manager.py:85,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0062,状态变更,属性写入,"UserManager.register() 修改 2 个属性: _next_id, users",lab_safety_assistant/user_manager.py:17,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0063,状态变更,查询方法,"UserManager 有 2 个纯查询方法: get_current_user, list_users",lab_safety_assistant/user_manager.py,verified,方法体中只读取不修改状态属性,state_tracker
+F0064,关键实现,核心方法,UserManager.register() 是核心实现点（重要度 12.0）,lab_safety_assistant/user_manager.py:17-59,verified,入选原因: high complexity implementation; multiple boundary validations; comprehensive error handling,key_implementation
+F0065,关键实现,守卫条件,UserManager.register: guard-clause style (4 pre-checks),"lab_safety_assistant/user_manager.py: lines 35, 38, 42",verified,"lines 35, 38, 42",key_implementation
+F0066,关键实现,异常处理,UserManager.register: raises 1 exception type(s): ValueError,"lab_safety_assistant/user_manager.py: lines 36, 39, 43",verified,"lines 36, 39, 43",key_implementation
+F0067,关键实现,状态变更,"UserManager.register: modifies 2 state attributes: _next_id, users",lab_safety_assistant/user_manager.py:17-59,verified,from state tracker,key_implementation
+F0068,关键实现,编排调用,UserManager.register: multi-step orchestration (6 internal calls),lab_safety_assistant/user_manager.py:17-59,verified,from call count,key_implementation
+F0069,关键实现,设计模式,UserManager.register: uses Repository Pattern,lab_safety_assistant/user_manager.py:17-59,inferred,from pattern detector,key_implementation
+F0070,关键实现,守卫子句,UserManager.register: ... or ... -> raise,lab_safety_assistant/user_manager.py:35,verified,从 AST 检测到的前置检查 + 提前退出模式,key_implementation
+F0071,关键实现,守卫子句,UserManager.register: username in self.users -> raise,lab_safety_assistant/user_manager.py:38,verified,从 AST 检测到的前置检查 + 提前退出模式,key_implementation
+F0072,关键实现,守卫子句,UserManager.register: role not in valid_roles -> raise,lab_safety_assistant/user_manager.py:42,verified,从 AST 检测到的前置检查 + 提前退出模式,key_implementation
+F0073,关键实现,守卫子句,UserManager.register: ... or ... -> raise,lab_safety_assistant/user_manager.py:45,verified,从 AST 检测到的前置检查 + 提前退出模式,key_implementation
+F0074,关键实现,异常抛出,UserManager.register: 抛出 ValueError: 用户名长度不能少于3位,lab_safety_assistant/user_manager.py:36,verified,从 AST 检测到的 raise 语句,key_implementation
+F0075,关键实现,异常抛出,UserManager.register: 抛出 ValueError,lab_safety_assistant/user_manager.py:39,verified,从 AST 检测到的 raise 语句,key_implementation
+F0076,关键实现,异常抛出,UserManager.register: 抛出 ValueError: 密码长度不能少于6位,lab_safety_assistant/user_manager.py:43,verified,从 AST 检测到的 raise 语句,key_implementation
+F0077,关键实现,算法特征,UserManager.register: conditional checks (no loops),lab_safety_assistant/user_manager.py:17-59,verified,"4 guard clauses, no loops",key_implementation
+F0078,关键实现,复杂度,UserManager.register: 圈复杂度 5（循环 0，分支 4）,lab_safety_assistant/user_manager.py:17-59,verified,从 AST 直接计数：if/try 为分支，for/while 为循环,key_implementation
+F0079,关键实现,核心方法,ReservationManager.create_reservation() 是核心实现点（重要度 11.5）,lab_safety_assistant/reservation_manager.py:56-104,verified,入选原因: high complexity implementation; multiple boundary validations; comprehensive error handling,key_implementation
+F0080,关键实现,守卫条件,ReservationManager.create_reservation: guard-clause style (4 pre-checks),"lab_safety_assistant/reservation_manager.py: lines 73, 79, 82",verified,"lines 73, 79, 82",key_implementation
+F0081,关键实现,异常处理,ReservationManager.create_reservation: raises 1 exception type(s): ValueError,"lab_safety_assistant/reservation_manager.py: lines 74, 80, 83",verified,"lines 74, 80, 83",key_implementation
+F0082,关键实现,状态变更,"ReservationManager.create_reservation: modifies 2 state attributes: reservations, _next_id",lab_safety_assistant/reservation_manager.py:56-104,verified,from state tracker,key_implementation
+F0083,关键实现,编排调用,ReservationManager.create_reservation: multi-step orchestration (9 internal calls),lab_safety_assistant/reservation_manager.py:56-104,verified,from call count,key_implementation
+F0084,关键实现,设计模式,ReservationManager.create_reservation: uses Repository Pattern,lab_safety_assistant/reservation_manager.py:56-104,inferred,from pattern detector,key_implementation
+F0085,关键实现,守卫子句,ReservationManager.create_reservation: lab_id not in self.labs -> raise,lab_safety_assistant/reservation_manager.py:73,verified,从 AST 检测到的前置检查 + 提前退出模式,key_implementation
+F0086,关键实现,守卫子句,ReservationManager.create_reservation: start >= end -> raise,lab_safety_assistant/reservation_manager.py:79,verified,从 AST 检测到的前置检查 + 提前退出模式,key_implementation
+F0087,关键实现,守卫子句,ReservationManager.create_reservation: num_people > self.labs[...][...] -> raise,lab_safety_assistant/reservation_manager.py:82,verified,从 AST 检测到的前置检查 + 提前退出模式,key_implementation
+F0088,关键实现,守卫子句,ReservationManager.create_reservation: self._check_conflict() -> raise,lab_safety_assistant/reservation_manager.py:86,verified,从 AST 检测到的前置检查 + 提前退出模式,key_implementation
+F0089,关键实现,异常抛出,ReservationManager.create_reservation: 抛出 ValueError,lab_safety_assistant/reservation_manager.py:74,verified,从 AST 检测到的 raise 语句,key_implementation
+F0090,关键实现,异常抛出,ReservationManager.create_reservation: 抛出 ValueError: 结束时间必须晚于开始时间,lab_safety_assistant/reservation_manager.py:80,verified,从 AST 检测到的 raise 语句,key_implementation
+F0091,关键实现,异常抛出,ReservationManager.create_reservation: 抛出 ValueError: 该时间段已被预约,lab_safety_assistant/reservation_manager.py:83,verified,从 AST 检测到的 raise 语句,key_implementation
+F0092,关键实现,算法特征,ReservationManager.create_reservation: conditional checks (no loops),lab_safety_assistant/reservation_manager.py:56-104,verified,"4 guard clauses, no loops",key_implementation
+F0093,关键实现,复杂度,ReservationManager.create_reservation: 圈复杂度 5（循环 0，分支 4）,lab_safety_assistant/reservation_manager.py:56-104,verified,从 AST 直接计数：if/try 为分支，for/while 为循环,key_implementation
+F0094,关键实现,核心方法,SafetyChecker.add_check_item() 是核心实现点（重要度 10.0）,lab_safety_assistant/safety_checker.py:29-57,verified,入选原因: medium complexity; includes boundary validation; includes exception raises,key_implementation
+F0095,关键实现,守卫条件,SafetyChecker.add_check_item: 2 pre-flight validations,"lab_safety_assistant/safety_checker.py: lines 40, 44",verified,"lines 40, 44",key_implementation
+F0096,关键实现,异常处理,SafetyChecker.add_check_item: raises 1 exception type(s): ValueError,"lab_safety_assistant/safety_checker.py: lines 41, 45",verified,"lines 41, 45",key_implementation
+F0097,关键实现,状态变更,"SafetyChecker.add_check_item: modifies 2 state attributes: check_items, _next_item_id",lab_safety_assistant/safety_checker.py:29-57,verified,from state tracker,key_implementation
+F0098,关键实现,设计模式,SafetyChecker.add_check_item: uses Repository Pattern,lab_safety_assistant/safety_checker.py:29-57,inferred,from pattern detector,key_implementation
+F0099,关键实现,守卫子句,SafetyChecker.add_check_item: not content -> raise,lab_safety_assistant/safety_checker.py:40,verified,从 AST 检测到的前置检查 + 提前退出模式,key_implementation
+F0100,关键实现,守卫子句,SafetyChecker.add_check_item: risk_level not in valid_levels -> raise,lab_safety_assistant/safety_checker.py:44,verified,从 AST 检测到的前置检查 + 提前退出模式,key_implementation
+F0101,关键实现,异常抛出,SafetyChecker.add_check_item: 抛出 ValueError: 检查内容不能为空,lab_safety_assistant/safety_checker.py:41,verified,从 AST 检测到的 raise 语句,key_implementation
+F0102,关键实现,异常抛出,SafetyChecker.add_check_item: 抛出 ValueError,lab_safety_assistant/safety_checker.py:45,verified,从 AST 检测到的 raise 语句,key_implementation
+F0103,关键实现,算法特征,SafetyChecker.add_check_item: conditional checks (no loops),lab_safety_assistant/safety_checker.py:29-57,verified,"2 guard clauses, no loops",key_implementation
+F0104,关键实现,复杂度,SafetyChecker.add_check_item: 圈复杂度 3（循环 0，分支 2）,lab_safety_assistant/safety_checker.py:29-57,verified,从 AST 直接计数：if/try 为分支，for/while 为循环,key_implementation
+F0105,关键实现,核心方法,SafetyChecker.perform_check() 是核心实现点（重要度 10.0）,lab_safety_assistant/safety_checker.py:59-105,verified,入选原因: high complexity implementation; includes boundary validation; includes exception raises,key_implementation
+F0106,关键实现,守卫条件,SafetyChecker.perform_check: 1 pre-flight validations,lab_safety_assistant/safety_checker.py: lines 72,verified,lines 72,key_implementation
+F0107,关键实现,异常处理,SafetyChecker.perform_check: raises 1 exception type(s): ValueError,lab_safety_assistant/safety_checker.py: lines 73,verified,lines 73,key_implementation
+F0108,关键实现,状态变更,"SafetyChecker.perform_check: modifies 2 state attributes: check_items, _next_record_id",lab_safety_assistant/safety_checker.py:59-105,verified,from state tracker,key_implementation
+F0109,关键实现,算法模式,SafetyChecker.perform_check: sequential traversal,lab_safety_assistant/safety_checker.py:59-105,verified,2 loop(s) detected,key_implementation
+F0110,关键实现,编排调用,SafetyChecker.perform_check: multi-step orchestration (10 internal calls),lab_safety_assistant/safety_checker.py:59-105,verified,from call count,key_implementation
+F0111,关键实现,设计模式,SafetyChecker.perform_check: uses Repository Pattern,lab_safety_assistant/safety_checker.py:59-105,inferred,from pattern detector,key_implementation
+F0112,关键实现,守卫子句,SafetyChecker.perform_check: not results -> raise,lab_safety_assistant/safety_checker.py:72,verified,从 AST 检测到的前置检查 + 提前退出模式,key_implementation
+F0113,关键实现,异常抛出,SafetyChecker.perform_check: 抛出 ValueError: 检查结果不能为空,lab_safety_assistant/safety_checker.py:73,verified,从 AST 检测到的 raise 语句,key_implementation
+F0114,关键实现,算法特征,SafetyChecker.perform_check: state machine transition,lab_safety_assistant/safety_checker.py:59-105,verified,2 loops + 5 state writes,key_implementation
+F0115,关键实现,复杂度,SafetyChecker.perform_check: 圈复杂度 5（循环 2，分支 2）,lab_safety_assistant/safety_checker.py:59-105,verified,从 AST 直接计数：if/try 为分支，for/while 为循环,key_implementation
+F0116,关键实现,核心方法,UserManager.login() 是核心实现点（重要度 9.5）,lab_safety_assistant/user_manager.py:61-83,verified,入选原因: medium complexity; multiple boundary validations; comprehensive error handling,key_implementation
+F0117,关键实现,守卫条件,UserManager.login: guard-clause style (3 pre-checks),"lab_safety_assistant/user_manager.py: lines 72, 76, 79",verified,"lines 72, 76, 79",key_implementation
+F0118,关键实现,异常处理,UserManager.login: raises 1 exception type(s): ValueError,"lab_safety_assistant/user_manager.py: lines 73, 77, 80",verified,"lines 73, 77, 80",key_implementation
+F0119,关键实现,状态变更,UserManager.login: modifies 1 state attribute: _current_user,lab_safety_assistant/user_manager.py:61-83,verified,from state tracker,key_implementation
+F0120,关键实现,设计模式,UserManager.login: uses Repository Pattern,lab_safety_assistant/user_manager.py:61-83,inferred,from pattern detector,key_implementation
+F0121,关键实现,守卫子句,UserManager.login: username not in self.users -> raise,lab_safety_assistant/user_manager.py:72,verified,从 AST 检测到的前置检查 + 提前退出模式,key_implementation
+F0122,关键实现,守卫子句,UserManager.login: not user[...] -> raise,lab_safety_assistant/user_manager.py:76,verified,从 AST 检测到的前置检查 + 提前退出模式,key_implementation
+F0123,关键实现,守卫子句,UserManager.login: user[...] != password -> raise,lab_safety_assistant/user_manager.py:79,verified,从 AST 检测到的前置检查 + 提前退出模式,key_implementation
+F0124,关键实现,异常抛出,UserManager.login: 抛出 ValueError,lab_safety_assistant/user_manager.py:73,verified,从 AST 检测到的 raise 语句,key_implementation
+F0125,关键实现,异常抛出,UserManager.login: 抛出 ValueError: 该账户已被停用,lab_safety_assistant/user_manager.py:77,verified,从 AST 检测到的 raise 语句,key_implementation
+F0126,关键实现,异常抛出,UserManager.login: 抛出 ValueError: 密码错误,lab_safety_assistant/user_manager.py:80,verified,从 AST 检测到的 raise 语句,key_implementation
+F0127,关键实现,算法特征,UserManager.login: conditional checks (no loops),lab_safety_assistant/user_manager.py:61-83,verified,"3 guard clauses, no loops",key_implementation
+F0128,关键实现,复杂度,UserManager.login: 圈复杂度 4（循环 0，分支 3）,lab_safety_assistant/user_manager.py:61-83,verified,从 AST 直接计数：if/try 为分支，for/while 为循环,key_implementation
+F0129,关键实现,核心方法,ReservationManager.add_lab() 是核心实现点（重要度 9.0）,lab_safety_assistant/reservation_manager.py:25-54,verified,入选原因: medium complexity; multiple boundary validations; includes exception raises,key_implementation
+F0130,关键实现,守卫条件,ReservationManager.add_lab: guard-clause style (3 pre-checks),"lab_safety_assistant/reservation_manager.py: lines 37, 40, 44",verified,"lines 37, 40, 44",key_implementation
+F0131,关键实现,异常处理,ReservationManager.add_lab: raises 1 exception type(s): ValueError,"lab_safety_assistant/reservation_manager.py: lines 38, 41, 45",verified,"lines 38, 41, 45",key_implementation
+F0132,关键实现,状态变更,ReservationManager.add_lab: modifies 1 state attribute: labs,lab_safety_assistant/reservation_manager.py:25-54,verified,from state tracker,key_implementation
+F0133,关键实现,设计模式,ReservationManager.add_lab: uses Repository Pattern,lab_safety_assistant/reservation_manager.py:25-54,inferred,from pattern detector,key_implementation
+F0134,关键实现,守卫子句,ReservationManager.add_lab: lab_id in self.labs -> raise,lab_safety_assistant/reservation_manager.py:37,verified,从 AST 检测到的前置检查 + 提前退出模式,key_implementation
+F0135,关键实现,守卫子句,ReservationManager.add_lab: capacity <= 0 -> raise,lab_safety_assistant/reservation_manager.py:40,verified,从 AST 检测到的前置检查 + 提前退出模式,key_implementation
+F0136,关键实现,守卫子句,ReservationManager.add_lab: safety_level not in valid_levels -> raise,lab_safety_assistant/reservation_manager.py:44,verified,从 AST 检测到的前置检查 + 提前退出模式,key_implementation
+F0137,关键实现,异常抛出,ReservationManager.add_lab: 抛出 ValueError,lab_safety_assistant/reservation_manager.py:38,verified,从 AST 检测到的 raise 语句,key_implementation
+F0138,关键实现,异常抛出,ReservationManager.add_lab: 抛出 ValueError: 容纳人数必须大于0,lab_safety_assistant/reservation_manager.py:41,verified,从 AST 检测到的 raise 语句,key_implementation
+F0139,关键实现,算法特征,ReservationManager.add_lab: conditional checks (no loops),lab_safety_assistant/reservation_manager.py:25-54,verified,"3 guard clauses, no loops",key_implementation
+F0140,关键实现,复杂度,ReservationManager.add_lab: 圈复杂度 4（循环 0，分支 3）,lab_safety_assistant/reservation_manager.py:25-54,verified,从 AST 直接计数：if/try 为分支，for/while 为循环,key_implementation
+F0141,关键实现,核心方法,ReservationManager.cancel_reservation() 是核心实现点（重要度 9.0）,lab_safety_assistant/reservation_manager.py:153-166,verified,入选原因: medium complexity; multiple boundary validations; comprehensive error handling,key_implementation
+F0142,关键实现,守卫条件,ReservationManager.cancel_reservation: guard-clause style (3 pre-checks),"lab_safety_assistant/reservation_manager.py: lines 155, 159, 162",verified,"lines 155, 159, 162",key_implementation
+F0143,关键实现,异常处理,"ReservationManager.cancel_reservation: raises 3 exception type(s): KeyError, ValueError, PermissionError","lab_safety_assistant/reservation_manager.py: lines 156, 160, 163",verified,"lines 156, 160, 163",key_implementation
+F0144,关键实现,状态变更,ReservationManager.cancel_reservation: modifies 1 state attribute: reservations,lab_safety_assistant/reservation_manager.py:153-166,verified,from state tracker,key_implementation
+F0145,关键实现,设计模式,ReservationManager.cancel_reservation: uses Repository Pattern,lab_safety_assistant/reservation_manager.py:153-166,inferred,from pattern detector,key_implementation
+F0146,关键实现,守卫子句,ReservationManager.cancel_reservation: res_id not in self.reservations -> raise,lab_safety_assistant/reservation_manager.py:155,verified,从 AST 检测到的前置检查 + 提前退出模式,key_implementation
+F0147,关键实现,守卫子句,ReservationManager.cancel_reservation: res[...] != username -> raise,lab_safety_assistant/reservation_manager.py:159,verified,从 AST 检测到的前置检查 + 提前退出模式,key_implementation
+F0148,关键实现,守卫子句,ReservationManager.cancel_reservation: res[...] not in ... -> raise,lab_safety_assistant/reservation_manager.py:162,verified,从 AST 检测到的前置检查 + 提前退出模式,key_implementation
+F0149,关键实现,异常抛出,ReservationManager.cancel_reservation: 抛出 KeyError,lab_safety_assistant/reservation_manager.py:156,verified,从 AST 检测到的 raise 语句,key_implementation
+F0150,关键实现,异常抛出,ReservationManager.cancel_reservation: 抛出 PermissionError: 只能取消自己的预约,lab_safety_assistant/reservation_manager.py:160,verified,从 AST 检测到的 raise 语句,key_implementation
+F0151,关键实现,异常抛出,ReservationManager.cancel_reservation: 抛出 ValueError: 该状态无法取消,lab_safety_assistant/reservation_manager.py:163,verified,从 AST 检测到的 raise 语句,key_implementation
+F0152,关键实现,算法特征,ReservationManager.cancel_reservation: conditional checks (no loops),lab_safety_assistant/reservation_manager.py:153-166,verified,"3 guard clauses, no loops",key_implementation
+F0153,关键实现,复杂度,ReservationManager.cancel_reservation: 圈复杂度 4（循环 0，分支 3）,lab_safety_assistant/reservation_manager.py:153-166,verified,从 AST 直接计数：if/try 为分支，for/while 为循环,key_implementation
+F0154,关键实现,核心方法,EquipmentManager.borrow_equipment() 是核心实现点（重要度 8.0）,lab_safety_assistant/equipment_manager.py:53-85,verified,入选原因: medium complexity; includes boundary validation; includes exception raises,key_implementation
+F0155,关键实现,守卫条件,EquipmentManager.borrow_equipment: 2 pre-flight validations,"lab_safety_assistant/equipment_manager.py: lines 66, 70",verified,"lines 66, 70",key_implementation
+F0156,关键实现,异常处理,"EquipmentManager.borrow_equipment: raises 2 exception type(s): KeyError, ValueError","lab_safety_assistant/equipment_manager.py: lines 67, 71",verified,"lines 67, 71",key_implementation
+F0157,关键实现,状态变更,EquipmentManager.borrow_equipment: modifies 1 state attribute: equipments,lab_safety_assistant/equipment_manager.py:53-85,verified,from state tracker,key_implementation
+F0158,关键实现,编排调用,EquipmentManager.borrow_equipment: multi-step orchestration (6 internal calls),lab_safety_assistant/equipment_manager.py:53-85,verified,from call count,key_implementation
+F0159,关键实现,设计模式,EquipmentManager.borrow_equipment: uses Repository Pattern,lab_safety_assistant/equipment_manager.py:53-85,inferred,from pattern detector,key_implementation
+F0160,关键实现,守卫子句,EquipmentManager.borrow_equipment: equip_id not in self.equipments -> raise,lab_safety_assistant/equipment_manager.py:66,verified,从 AST 检测到的前置检查 + 提前退出模式,key_implementation
+F0161,关键实现,守卫子句,EquipmentManager.borrow_equipment: equip[...] != self.STATUS_AVAILABLE -> raise,lab_safety_assistant/equipment_manager.py:70,verified,从 AST 检测到的前置检查 + 提前退出模式,key_implementation
+F0162,关键实现,异常抛出,EquipmentManager.borrow_equipment: 抛出 KeyError,lab_safety_assistant/equipment_manager.py:67,verified,从 AST 检测到的 raise 语句,key_implementation
+F0163,关键实现,异常抛出,EquipmentManager.borrow_equipment: 抛出 ValueError,lab_safety_assistant/equipment_manager.py:71,verified,从 AST 检测到的 raise 语句,key_implementation
+F0164,关键实现,算法特征,EquipmentManager.borrow_equipment: conditional checks (no loops),lab_safety_assistant/equipment_manager.py:53-85,verified,"2 guard clauses, no loops",key_implementation
+F0165,关键实现,复杂度,EquipmentManager.borrow_equipment: 圈复杂度 3（循环 0，分支 2）,lab_safety_assistant/equipment_manager.py:53-85,verified,从 AST 直接计数：if/try 为分支，for/while 为循环,key_implementation
+F0166,关键实现,核心方法,EquipmentManager.return_equipment() 是核心实现点（重要度 7.5）,lab_safety_assistant/equipment_manager.py:87-101,verified,入选原因: medium complexity; includes boundary validation; includes exception raises,key_implementation
+F0167,关键实现,异常处理,"EquipmentManager.return_equipment: raises 2 exception type(s): KeyError, ValueError","lab_safety_assistant/equipment_manager.py: lines 101, 92",verified,"lines 101, 92",key_implementation
+F0168,关键实现,状态变更,"EquipmentManager.return_equipment: modifies 2 state attributes: borrow_records, equipments",lab_safety_assistant/equipment_manager.py:87-101,verified,from state tracker,key_implementation
+F0169,关键实现,算法模式,EquipmentManager.return_equipment: sequential traversal,lab_safety_assistant/equipment_manager.py:87-101,verified,1 loop(s) detected,key_implementation
+F0170,关键实现,设计模式,EquipmentManager.return_equipment: uses Repository Pattern,lab_safety_assistant/equipment_manager.py:87-101,inferred,from pattern detector,key_implementation
+F0171,关键实现,异常抛出,EquipmentManager.return_equipment: 抛出 KeyError,lab_safety_assistant/equipment_manager.py:101,verified,从 AST 检测到的 raise 语句,key_implementation
+F0172,关键实现,异常抛出,EquipmentManager.return_equipment: 抛出 ValueError: 该借用记录已归还,lab_safety_assistant/equipment_manager.py:92,verified,从 AST 检测到的 raise 语句,key_implementation
+F0173,关键实现,算法特征,EquipmentManager.return_equipment: general business logic,lab_safety_assistant/equipment_manager.py:87-101,verified,no distinctive algorithmic pattern,key_implementation
+F0174,关键实现,复杂度,EquipmentManager.return_equipment: 圈复杂度 4（循环 1，分支 2）,lab_safety_assistant/equipment_manager.py:87-101,verified,从 AST 直接计数：if/try 为分支，for/while 为循环,key_implementation
+F0175,关键实现,核心方法,EquipmentManager.set_equipment_status() 是核心实现点（重要度 7.5）,lab_safety_assistant/equipment_manager.py:130-144,verified,入选原因: medium complexity; includes boundary validation; includes exception raises,key_implementation
+F0176,关键实现,守卫条件,EquipmentManager.set_equipment_status: 2 pre-flight validations,"lab_safety_assistant/equipment_manager.py: lines 132, 140",verified,"lines 132, 140",key_implementation
+F0177,关键实现,异常处理,"EquipmentManager.set_equipment_status: raises 2 exception type(s): KeyError, ValueError","lab_safety_assistant/equipment_manager.py: lines 133, 141",verified,"lines 133, 141",key_implementation
+F0178,关键实现,状态变更,"EquipmentManager.set_equipment_status: modifies 2 state attributes: equipments, equipments.status",lab_safety_assistant/equipment_manager.py:130-144,verified,from state tracker,key_implementation
+F0179,关键实现,设计模式,EquipmentManager.set_equipment_status: uses Repository Pattern,lab_safety_assistant/equipment_manager.py:130-144,inferred,from pattern detector,key_implementation
+F0180,关键实现,守卫子句,EquipmentManager.set_equipment_status: equip_id not in self.equipments -> raise,lab_safety_assistant/equipment_manager.py:132,verified,从 AST 检测到的前置检查 + 提前退出模式,key_implementation
+F0181,关键实现,守卫子句,EquipmentManager.set_equipment_status: status not in valid_statuses -> raise,lab_safety_assistant/equipment_manager.py:140,verified,从 AST 检测到的前置检查 + 提前退出模式,key_implementation
+F0182,关键实现,异常抛出,EquipmentManager.set_equipment_status: 抛出 KeyError,lab_safety_assistant/equipment_manager.py:133,verified,从 AST 检测到的 raise 语句,key_implementation
+F0183,关键实现,异常抛出,EquipmentManager.set_equipment_status: 抛出 ValueError,lab_safety_assistant/equipment_manager.py:141,verified,从 AST 检测到的 raise 语句,key_implementation
+F0184,关键实现,算法特征,EquipmentManager.set_equipment_status: conditional checks (no loops),lab_safety_assistant/equipment_manager.py:130-144,verified,"2 guard clauses, no loops",key_implementation
+F0185,关键实现,复杂度,EquipmentManager.set_equipment_status: 圈复杂度 3（循环 0，分支 2）,lab_safety_assistant/equipment_manager.py:130-144,verified,从 AST 直接计数：if/try 为分支，for/while 为循环,key_implementation
