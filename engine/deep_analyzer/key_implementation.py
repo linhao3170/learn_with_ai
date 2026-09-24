@@ -16,8 +16,9 @@ from dataclasses import dataclass, field
 from typing import List, Dict, Set, Optional, Tuple
 
 from .project_call_graph import ProjectCallGraph, CallNode
-from .state_tracker import StateAnalysis
+from .state_tracker import StateAnalysis, split_inferred_markers
 from .design_pattern_detector import DesignPatternResult
+from ..parser.ast_cache import get_source, get_tree
 
 
 @dataclass
@@ -42,6 +43,8 @@ class KeyImplementation:
     error_handling: List[str] = field(default_factory=list)
     state_writes: List[str] = field(default_factory=list)
     state_reads: List[str] = field(default_factory=list)
+    #: 由别名启发式**推断**出来的字典写入（与 state_writes 的 verified 部分分开，P0-07）
+    state_writes_inferred: List[str] = field(default_factory=list)
     validation_checks: List[str] = field(default_factory=list)
     guard_clauses: List[str] = field(default_factory=list)
     null_checks: List[str] = field(default_factory=list)
@@ -80,6 +83,7 @@ class KeyImplementation:
             "error_handling": self.error_handling,
             "state_writes": self.state_writes,
             "state_reads": self.state_reads,
+            "state_writes_inferred": self.state_writes_inferred,
             "validation_checks": self.validation_checks,
             "guard_clauses": self.guard_clauses,
             "null_checks": self.null_checks,
@@ -176,11 +180,18 @@ class KeyImplementationAnalyzer:
         )
 
         try:
-            with open(node.filepath, "r", encoding="utf-8") as f:
-                source = f.read()
-            tree = ast.parse(source)
+            # P0-14：走共享源码/AST 缓存。这里是重复度最高的调用点
+            # （每个候选方法都会读一次同一个文件）。
+            source = get_source(node.filepath)
+            if source is None:
+                self._source_lines = []
+                return None
+            tree = get_tree(node.filepath)
+            if tree is None:
+                self._source_lines = []
+                return None
             self._source_lines = source.splitlines()
-        except (SyntaxError, UnicodeDecodeError):
+        except OSError:
             self._source_lines = []
             return None
 
@@ -200,7 +211,19 @@ class KeyImplementationAnalyzer:
         ki.algorithm_hints = self._infer_algorithm_hints(node, ki)
         ki.algorithm_type = ki.algorithm_hints.get("detected", "")  # Backward compatibility
         ki.design_characteristics = self._extract_design_characteristics(node, ki)
-        ki.design_approach = "; ".join([c["label"] for c in ki.design_characteristics])  # Backward compatibility
+        # ``design_approach`` 是**学生可见**字段（第 4 关题干会整句引用它），
+        # 所以只允许放 ``verified`` 的结构特征。
+        #
+        # 为什么：设计模式检测器的结论是 ``inferred``，而 README §16.2 / §19.1 #16
+        # 已经决定「误报高 → 不进学生视图」，§6.2 也要求未审核的推断必须带待确认标记。
+        # 可是这一行原来把**全部**特征（含模式）拼进题干，于是学生看到的题干
+        # 直接写着「uses Repository Pattern」——既没有标记，也不是可核查的结构事实。
+        # 模式本身仍然留在 ``ki.design_pattern`` 与 ``design_characteristics`` 里，
+        # 供教师审核面板查看（面板上带证据来源与颜色标记）。
+        verified_labels = [
+            c["label"] for c in ki.design_characteristics if c.get("confidence") == "verified"
+        ]
+        ki.design_approach = "; ".join(verified_labels)  # Backward compatibility
         self._score_importance(node, ki)
         ki.categories = self._classify(node, ki)
 
@@ -491,11 +514,15 @@ class KeyImplementationAnalyzer:
         cs = self.state.get_class_state(node.module_name, node.class_name)
         if not cs:
             return
-        ki.state_writes = cs.method_writes.get(node.name, [])
-        ki.state_reads = cs.method_reads.get(node.name, [])
+        ki.state_writes = list(cs.method_writes.get(node.name, []))
+        ki.state_reads = list(cs.method_reads.get(node.name, []))
         dict_writes = cs.method_dict_writes.get(node.name, [])
         if dict_writes:
-            ki.state_writes = list(set(ki.state_writes + dict_writes))
+            # P0-07：内部推断标记（``x._inferred_``）不得混进 state_writes ——
+            # 它曾经直接出现在学生看到的题干里。真实路径与被推断的路径分开保存。
+            real_writes, inferred_writes = split_inferred_markers(dict_writes)
+            ki.state_writes = list(dict.fromkeys(ki.state_writes + real_writes))
+            ki.state_writes_inferred = inferred_writes
 
     def _extract_design_characteristics(self, node: CallNode, ki: KeyImplementation) -> List[Dict[str, str]]:
         """Extract design characteristics as evidence-backed facts, not inferences."""
@@ -522,7 +549,11 @@ class KeyImplementationAnalyzer:
         # Error handling (verified from AST)
         if ki.error_handling:
             error_lines = [ref["line"] for ref in ki.evidence_refs if ref["type"] == "error_handling"]
-            exc_types = list(set([e.split(":")[0] for e in ki.error_handling]))
+            # ⚠️ 必须 sorted：这里是「集合 → 列表 → 拼进学生可见文本」，
+            # 而 Python 的字符串哈希**每个进程都不同**，不排序就会让同一份输入
+            # 在两个进程里得到不同的文本（README §8.9「禁止依赖 set 迭代顺序」、
+            # §7.7「同一份输入，字节级相同输出」）。这是 ⑳ 号实测抓出来的。
+            exc_types = sorted({e.split(":")[0] for e in ki.error_handling})
             characteristics.append({
                 "category": "error_handling",
                 "label": f"raises {len(exc_types)} exception type(s): {', '.join(exc_types[:3])}",
@@ -569,6 +600,9 @@ class KeyImplementationAnalyzer:
             })
 
         # Design pattern (from detector, needs confirmation)
+        # confidence 必须是 "inferred"：这条结论未经教师审核，且检测器误报偏高
+        # （README §19.1 #16）。它**不会**进 ``design_approach``（学生可见），
+        # 只出现在带证据来源的教师审核面板里。
         if ki.design_pattern:
             characteristics.append({
                 "category": "design_pattern",
@@ -721,9 +755,15 @@ class KeyImplementationAnalyzer:
         elif ki.loop_count >= 1:
             score += 0.5
 
-        if ki.design_pattern:
-            score += 1.0
-            reasons.append(f"demonstrates {ki.design_pattern}")
+        # 设计模式**不参与重要性评分**（README §16.2 / §19.1 #16 的「不作评分维度」）。
+        #
+        # 原来这里给检测到模式的实现加 1.0 分并写一条 "demonstrates X" 的理由，
+        # 后果有两个，都是实测出来的（scripts/_probe_patterns.py 的探针输出）：
+        #   ① 这条理由会出现在第 4 关讲解里，等于把未审核的推断当结论讲给学生；
+        #   ② 分数会影响"哪条实现被选为第 4 关题"，所以它实际上**是**评分维度；
+        # 而在自造样本上 10/10 条关键实现全都是同一个模式 —— 一个人人都有的信号
+        # 加同样的分，既不能区分主次，也没有教学价值。
+        # 模式名保留在 ``ki.design_pattern`` 里，供教师审核面板使用。
 
         if len(ki.edge_cases) >= 3:
             score += 1.0
@@ -760,8 +800,10 @@ class KeyImplementationAnalyzer:
             cats.append("creation")
         if any(w in name_lower for w in ("approve", "reject", "cancel", "close")):
             cats.append("state_transition")
-        if ki.design_pattern:
-            cats.append("design_pattern")
+        # 这里**不再**追加 "design_pattern"：它既不是结构类目（不像 validation /
+        # state_mutation 那样来自 AST 事实），又是一个内部标记，
+        # 而 categories 会被前端当标签直接渲染出来（DeepAnalysisView 的 Categories 区）。
+        # 模式名本身仍在 ``ki.design_pattern`` 里，不在类目清单里重复一遍。
 
         if not cats:
             cats.append("general")

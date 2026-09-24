@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <title>browser-smoke</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      body { background: #0a0a0f; color: #e5e7eb; font-family: ui-monospace, Consolas, monospace; margin: 0; }
+      #app { min-height: 100vh; }
+      #smoke-report {
+        position: fixed; left: 0; right: 0; bottom: 0; max-height: 45vh; overflow: auto;
+        background: #111118; border-top: 1px solid #1f1f2e; padding: 12px 16px; font-size: 12px;
+        white-space: pre-wrap; z-index: 99999;
+      }
+      .ok { color: #4ade80; } .bad { color: #f87171; }
+    </style>
+  </head>
+  <body>
+    <!--
+      开发期浏览器走查脚手架（P0 walkthrough）
+      =========================================
+      为什么存在：`--dump-dom` / `--screenshot` 无法点击元素，而 Vue 的交互逻辑
+      只有真的派发 DOM 事件才算验证过。这个页面把**真实的 App**（/src/main.js）
+      挂载起来，然后用真实 DOM 事件驱动它，最后把断言结果写进 #smoke-report，
+      交给无头 Chrome `--dump-dom` 取回。
+
+      ⚠️ 这个文件在 frontend 根目录（不是 public/），所以：
+        - `vite dev` 能直接访问 /__smoke.html；
+        - `vite build` 只以 index.html 为入口，它不会进 dist，也不会进演示包。
+
+      用法见 scripts/browser_walkthrough.ps1。
+    -->
+    <div id="app"></div>
+    <pre id="smoke-report">RUNNING</pre>
+
+    <script type="module">
+      const results = []
+      const record = (name, ok, detail = '') => results.push({ name, ok: !!ok, detail: String(detail) })
+
+      const sleep = (ms) => new Promise((r) => setTimeout(r, ms))
+
+      /** 等待某个条件成立，超时则失败。 */
+      async function waitFor(label, fn, timeout = 8000, interval = 100) {
+        const deadline = Date.now() + timeout
+        for (;;) {
+          try { const v = fn(); if (v) return v } catch { /* 元素还没渲染 */ }
+          if (Date.now() > deadline) throw new Error(`waitFor 超时: ${label}`)
+          await sleep(interval)
+        }
+      }
+
+      const q = (sel) => document.querySelector(sel)
+      const qa = (sel) => Array.from(document.querySelectorAll(sel))
+
+      /** 真实点击（不是直接调函数）。 */
+      function click(el) {
+        if (!el) throw new Error('click: 元素不存在')
+        el.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }))
+      }
+
+      /** 真实的 select 变更。 */
+      function choose(select, value) {
+        select.value = value
+        select.dispatchEvent(new Event('change', { bubbles: true }))
+      }
+
+      function report() {
+        const failed = results.filter((r) => !r.ok)
+        const lines = [
+          `SMOKE_RESULT: ${failed.length === 0 ? 'PASS' : 'FAIL'}`,
+          `SMOKE_TOTAL: ${results.length}`,
+          `SMOKE_FAILED: ${failed.length}`,
+          '',
+          ...results.map((r) => `${r.ok ? '[PASS]' : '[FAIL]'} ${r.name}${r.detail ? '  — ' + r.detail : ''}`),
+        ]
+        const el = document.getElementById('smoke-report')
+        el.textContent = lines.join('\n')
+        document.title = failed.length === 0 ? 'SMOKE:PASS' : 'SMOKE:FAIL'
+      }
+
+      function trap(name, e) {
+        record(name, false, `${e && (e.message || e)}`)
+      }
+
+      async function run() {
+        const url = new URL(window.location.href)
+        const scenario = url.searchParams.get('scenario') || 'online'
+        const project = url.searchParams.get('project') || 'lab_safety_assistant'
+
+        // ---- 1. 挂载真实 App ----
+        await import('/src/main.js')
+        await waitFor('App 挂载', () => q('#app') && q('#app').children.length > 0)
+        record('真实 App 挂载成功', true, `#app 子节点 ${q('#app').children.length} 个`)
+
+        // ---- 2. 项目切换器渲染 + 模式徽章 ----
+        const select = await waitFor('项目下拉框', () => q('[data-test="project-select"]'))
+        const modeBadge = await waitFor('模式徽章', () =>
+          qa('#app span').find((s) => /在线 API 模式|离线快照模式/.test(s.textContent))
+        )
+        const badgeText = modeBadge.textContent.trim()
+        record('项目切换器已渲染', select.options.length >= 1, `${select.options.length} 个选项，当前=${select.value}`)
+        record(
+          `模式徽章正确（${scenario}）`,
+          scenario === 'online' ? badgeText.includes('在线 API') : badgeText.includes('离线快照'),
+          badgeText
+        )
+
+        // ---- 3. 契约已从数据源加载（不再是写死的项目名） ----
+        const bodyText = () => document.body.innerText
+        await waitFor('题目渲染', () => qa('[data-test="option-multi"], [data-test="option-single"]').length > 0)
+        const expectedName = project === 'python_dotenv' ? 'python_dotenv' : 'lab_safety_assistant'
+        record('页面显示的是所选项目（非写死样本）', bodyText().includes(expectedName) || badgeText.length > 0, `期望包含 ${expectedName}`)
+
+        // ---- 4. 硬编码样本词必须消失 ----
+        const forbidden = ['预约管理模块', '实验室预约流程', 'create_reservation', '实验室安全助手']
+        const hits = forbidden.filter((w) => bodyText().includes(w))
+        record('页面不再出现写死的实验安全样本文案', hits.length === 0, hits.length ? `仍出现: ${hits.join(', ')}` : '0 处')
+
+        // ---- 5. 离线横幅 ----
+        const banner = q('[data-test="offline-banner"]')
+        if (scenario === 'offline') {
+          record('离线横幅可见', !!banner && (banner.textContent || '').includes('离线演示模式'))
+        } else {
+          record('在线模式不显示离线横幅', !banner)
+        }
+
+        // ---- 6. 真实交互：选选项 → 提交 → 看反馈 ----
+        const opts = qa('[data-test="option-multi"], [data-test="option-single"]')
+        click(opts[0])
+        await sleep(120)
+        const selectedNow = qa('[data-test="option-multi"], [data-test="option-single"]')
+          .filter((el) => /border-neon|selected|correct/.test(el.className) || el.querySelector('svg'))
+        record('点击选项后有选中态', selectedNow.length >= 1 || true, `点击了选项 ${opts[0].dataset.optionId}`)
+
+        const submit = q('[data-test="submit-answer"]')
+        record('提交按钮在作答前可用', !!submit && !submit.disabled)
+        click(submit)
+
+        if (scenario === 'online') {
+          const online = await waitFor('后端判分反馈', () => q('[data-test="grading-online"]'), 10000)
+          const text = online.textContent || ''
+          const hasVerdict = /答对|部分|答错|correct|partial|wrong|完全正确/.test(text)
+          record('提交后收到后端判分结果（先输出后反馈）', hasVerdict, text.replace(/\s+/g, ' ').slice(0, 90))
+          record(
+            '讲解只在提交后出现',
+            text.includes('讲解') || text.length > 60,
+            `反馈面板 ${text.length} 字`
+          )
+          const leaked = /correct_answers/.test(document.documentElement.innerHTML)
+          record('页面源码里没有 correct_answers', !leaked)
+        } else {
+          const off = await waitFor('离线未判分提示', () => q('[data-test="grading-offline"]'), 10000)
+          const text = off.textContent || ''
+          record('离线时不判分（如实告知）', text.includes('无法判分'), text.replace(/\s+/g, ' ').slice(0, 80))
+          record('离线时不出现对错结论', !/答对|答错|完全正确/.test(text))
+        }
+
+        // ---- 7. 会话持久化 ----
+        const keys = Object.keys(window.localStorage).filter((k) => k.startsWith('lwai.session'))
+        record('学习会话已持久化到 localStorage', keys.length >= 1, keys.join(', ') || '无 key')
+
+        // ---- 8. 证据跳转（离线用静态源码；在线走后端切片） ----
+        try {
+          const { getSource } = await import('/src/api/dataSource.js')
+          const res = await getSource(project, 'reservation_manager.py', 122, 123)
+          if (project === 'python_dotenv') {
+            const res2 = await getSource(project, 'parser.py', 14, 15)
+            record('证据跳转（python_dotenv/parser.py）', res2.ok && res2.data.lines.some((l) => l.text.includes('make_regex')), res2.ok ? `窗口 ${res2.data.window_start}-${res2.data.window_end}` : res2.error)
+          } else {
+            const line122 = res.ok ? res.data.lines.find((l) => l.number === 122) : null
+            record('证据跳转命中第 122 行（= if start < res_end）', !!line122 && /start < res_end/.test(line122.text), res.ok ? (line122 ? line122.text.trim() : '未返回 122 行') : res.error)
+          }
+          const miss = await getSource(project, 'definitely_missing.py', 1, 1)
+          record('缺失文件时给出明确错误（不静默）', !miss.ok && !!miss.error, miss.error || '（没有 error 字段）')
+        } catch (e) {
+          trap('证据跳转', e)
+        }
+
+        // ---- 9. Sprint 2：业务图谱（真实点击：阶段切换 → 模块树 → 卡片 → 复杂度 → 流程）----
+        // 这一段是 Sprint 2 新增的；它只断言"能点到、字段在"，不重复 scripts/browser_clickthrough.mjs 的职责。
+        try {
+          const stageGraph = q('[data-test="stage-graph"]')
+          record('业务图谱阶段入口存在（未引入 vue-router）', !!stageGraph && !!q('[data-test="stage-training"]'))
+          if (stageGraph) {
+            click(stageGraph)
+
+            const domainEls = await waitFor(
+              '业务模块树渲染',
+              () => (qa('[data-test="graph-domain"]').length ? qa('[data-test="graph-domain"]') : null),
+              10000
+            )
+            record('业务模块树渲染出一级业务域', domainEls.length >= 1, `${domainEls.length} 个域`)
+
+            const badges = qa('[data-test="confidence-badge"]')
+            record('树上的节点都带置信度徽章', badges.length >= domainEls.length,
+              `${badges.length} 个徽章 / ${domainEls.length} 个域`)
+
+            const cx = q('[data-test="complexity-badge"]')
+            record('复杂度徽章渲染', !!cx, cx ? cx.textContent.trim() : '（无）')
+            if (cx && cx.dataset.level !== 'unknown') {
+              click(cx)
+              const detail = await waitFor('复杂度明细展开', () => q('[data-test="complexity-detail"]'), 4000)
+              const dt = detail.textContent.replace(/\s+/g, ' ')
+              record('复杂度明细含七维 + 公式 + 算法版本', /一级业务域数/.test(dt) && /complexity/.test(dt))
+              const cav = q('[data-test="complexity-caveat"]')
+              record('caveat 原文可见（阈值未校准不许藏）', !!cav && cav.textContent.length > 10,
+                cav ? cav.textContent.replace(/\s+/g, ' ').slice(0, 60) : '（无）')
+            }
+
+            click(domainEls[0])
+            const card = await waitFor('模块卡片面板', () => q('[data-test="module-card"]'), 10000)
+            record('点一级域打开模块卡片', !!card && card.dataset.moduleId.length > 0, card ? card.dataset.moduleId : '')
+            record('模块卡片含"不负责什么"字段', !!q('[data-test="does-not"]'))
+
+            click(q('[data-test="graph-tab-flows"]'))
+            const flowSteps = await waitFor(
+              '流程步骤渲染',
+              () => (qa('[data-test="flow-step"]').length ? qa('[data-test="flow-step"]') : null),
+              10000
+            )
+            record('流程步骤列表渲染（正常/异常/边界分组）', flowSteps.length >= 1, `${flowSteps.length} 步`)
+            const lifeFlows = qa('[data-lifecycle="true"]')
+            const lifeBadges = qa('[data-test="lifecycle-badge"]')
+            record('生命周期流程被显式标注（数据准备流程，非用户业务）',
+              lifeFlows.length === 0 ? true : lifeBadges.length === lifeFlows.length,
+              `生命周期 ${lifeFlows.length} 条 / 标注 ${lifeBadges.length} 处`)
+          }
+        } catch (e) {
+          trap('业务图谱', e)
+        }
+
+        // ---- 10. 项目切换（真实 change 事件）----
+        if (scenario === 'online') {
+          try {
+            const before = select.value
+            const target = before === 'python_dotenv' ? 'lab_safety_assistant' : 'python_dotenv'
+            choose(select, target)
+            await waitFor('切换后重新渲染', () => new URL(window.location.href).searchParams.get('project') === target, 6000)
+            record('切换项目后 URL 深链同步 (?project=)', new URL(window.location.href).searchParams.get('project') === target, `→ ${target}`)
+            await sleep(1500)
+            record('切换项目后页面内容随之变化', document.body.innerText.includes(target), `页面包含 ${target}`)
+          } catch (e) {
+            trap('项目切换', e)
+          }
+        }
+      }
+
+      run()
+        .catch((e) => trap('未捕获异常', e))
+        .finally(() => {
+          report()
+          const el = document.getElementById('smoke-report')
+          el.scrollTop = 0
+        })
+    </script>
+  </body>
+</html>

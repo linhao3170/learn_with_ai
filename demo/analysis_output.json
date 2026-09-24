@@ -8,13 +8,13 @@
     "total_classes": 1,
     "total_lines": 209,
     "key_patterns": [
-      "数据持久化",
-      "CRUD 数据操作",
       "数据验证",
-      "异常处理",
-      "文件操作",
+      "批量处理",
+      "CRUD 数据操作",
       "统计计算",
-      "批量处理"
+      "文件操作",
+      "异常处理",
+      "数据持久化"
     ]
   },
   "classes": [
@@ -1282,8 +1282,8 @@
           "line_end": 45,
           "code_snippet": "",
           "annotations": [
-            "CRUD 数据操作",
-            "数据验证"
+            "数据验证",
+            "CRUD 数据操作"
           ]
         },
         {
@@ -1294,8 +1294,8 @@
           "line_end": 125,
           "code_snippet": "",
           "annotations": [
-            "CRUD 数据操作",
-            "数据验证"
+            "数据验证",
+            "CRUD 数据操作"
           ]
         },
         {
@@ -1306,8 +1306,8 @@
           "line_end": 107,
           "code_snippet": "",
           "annotations": [
-            "批量处理",
-            "CRUD 数据操作"
+            "CRUD 数据操作",
+            "批量处理"
           ]
         },
         {
@@ -1342,8 +1342,8 @@
           "line_end": 86,
           "code_snippet": "",
           "annotations": [
-            "CRUD 数据操作",
-            "数据验证"
+            "数据验证",
+            "CRUD 数据操作"
           ]
         },
         {
@@ -1354,8 +1354,8 @@
           "line_end": 63,
           "code_snippet": "",
           "annotations": [
-            "CRUD 数据操作",
-            "数据验证"
+            "数据验证",
+            "CRUD 数据操作"
           ]
         },
         {
@@ -1649,7 +1649,7 @@
       "level": 2,
       "question_type": "logic_understanding",
       "title": "边界条件理解",
-      "description": "在 `StudentManager.get_average_score` 函数中，如果传入的参数不合法（如负年龄、空姓名等），系统会如何处理？",
+      "description": "在 `StudentManager.get_average_score` 函数中，如果传入的参数不合法（例如越界、为空、类型不符等），系统会如何处理？",
       "options": [
         {
           "id": "A",

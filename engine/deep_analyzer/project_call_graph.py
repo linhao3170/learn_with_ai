@@ -19,6 +19,8 @@ import ast
 from dataclasses import dataclass, field
 from typing import List, Dict, Set, Optional, Tuple
 
+from ..parser.ast_cache import get_tree
+
 
 @dataclass
 class CallNode:
@@ -255,11 +257,9 @@ def build_project_call_graph(project_info) -> ProjectCallGraph:
 
             # Parse __init__ source to find self.attr = ClassName() assignments
             filepath = cls_info["filepath"]
-            try:
-                with open(filepath, "r", encoding="utf-8") as f:
-                    source = f.read()
-                tree = ast.parse(source)
-            except (SyntaxError, UnicodeDecodeError):
+            # P0-14：走共享 AST 缓存
+            tree = get_tree(filepath)
+            if tree is None:
                 continue
 
             # Walk the AST and find __init__
@@ -302,11 +302,9 @@ def build_project_call_graph(project_info) -> ProjectCallGraph:
         filepath = file_info.filepath
 
         # Re-parse source for detailed call analysis
-        try:
-            with open(filepath, "r", encoding="utf-8") as f:
-                source = f.read()
-            tree = ast.parse(source)
-        except (SyntaxError, UnicodeDecodeError):
+        # P0-14：走共享 AST 缓存（同一文件在一次分析里只解析一次）
+        tree = get_tree(filepath)
+        if tree is None:
             continue
 
         # For each function/method, find all calls and resolve them

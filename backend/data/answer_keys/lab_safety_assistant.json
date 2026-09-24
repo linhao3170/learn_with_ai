@@ -1,0 +1,167 @@
+{
+  "contract_version": "1.0",
+  "project_id": "lab_safety_assistant",
+  "source": "sample_projects/lab_safety_assistant",
+  "questions": {
+    "0": {
+      "level": 1,
+      "question_type": "module_selection",
+      "answers": [
+        "A",
+        "B",
+        "C",
+        "E"
+      ],
+      "explanation": "这个项目里承担具体业务职责的模块有 4 个：预约管理模块、安全检查模块、设备管理模块、用户管理模块。\n\n以下几个模块同样存在于代码中，但它们不是**业务模块**：\n  - 「系统编排模块」不算核心业务模块：它不持有自己的业务状态，主要是把各个模块装配起来并编排调用\n\n区分「业务模块」和「支撑/装配模块」是业务逻辑训练的第一步：业务模块管理具体的业务对象和状态，支撑模块只提供通用能力，装配模块只负责把大家连起来。",
+      "knowledge_points": [
+        "业务模块识别",
+        "模块类型区分",
+        "职责边界"
+      ]
+    },
+    "1": {
+      "level": 2,
+      "question_type": "responsibility_match",
+      "answers": [
+        "C"
+      ],
+      "explanation": "「设备管理模块」的职责是：设备管理核心类、借还管理。\n\n理解模块职责的关键是看它对外提供什么能力、管理什么数据。一个好的模块应该职责单一，只负责一类相关的功能。",
+      "knowledge_points": [
+        "模块职责",
+        "单一职责",
+        "接口设计"
+      ]
+    },
+    "2": {
+      "level": 2,
+      "question_type": "responsibility_match",
+      "answers": [
+        "D"
+      ],
+      "explanation": "「预约管理模块」的职责是：预约管理核心类、审批流程管理。\n\n理解模块职责的关键是看它对外提供什么能力、管理什么数据。一个好的模块应该职责单一，只负责一类相关的功能。",
+      "knowledge_points": [
+        "模块职责",
+        "单一职责",
+        "接口设计"
+      ]
+    },
+    "3": {
+      "level": 2,
+      "question_type": "responsibility_match",
+      "answers": [
+        "C"
+      ],
+      "explanation": "「安全检查模块」的职责是：安全检查核心类、校验与检测。\n\n理解模块职责的关键是看它对外提供什么能力、管理什么数据。一个好的模块应该职责单一，只负责一类相关的功能。",
+      "knowledge_points": [
+        "模块职责",
+        "单一职责",
+        "接口设计"
+      ]
+    },
+    "4": {
+      "level": 2,
+      "question_type": "responsibility_match",
+      "answers": [
+        "D"
+      ],
+      "explanation": "「用户管理模块」的职责是：用户管理核心类、认证与权限。\n\n理解模块职责的关键是看它对外提供什么能力、管理什么数据。一个好的模块应该职责单一，只负责一类相关的功能。",
+      "knowledge_points": [
+        "模块职责",
+        "单一职责",
+        "接口设计"
+      ]
+    },
+    "5": {
+      "level": 3,
+      "question_type": "flow_next_step",
+      "answers": [
+        "D"
+      ],
+      "explanation": "正确顺序是：perform_check → _create_hazard\n\n`_create_hazard` 位于模块「safety_checker」。\n\n理解业务流程的关键是思考「数据和状态是怎么变化的」：什么操作会触发状态改变？改变之前需要什么前提？",
+      "knowledge_points": [
+        "业务流程",
+        "调用顺序",
+        "模块协作"
+      ]
+    },
+    "6": {
+      "level": 3,
+      "question_type": "flow_next_step",
+      "answers": [
+        "C"
+      ],
+      "explanation": "正确顺序是：create_reservation → _check_conflict\n\n`_check_conflict` 位于模块「reservation_manager」。\n\n理解业务流程的关键是思考「数据和状态是怎么变化的」：什么操作会触发状态改变？改变之前需要什么前提？",
+      "knowledge_points": [
+        "业务流程",
+        "调用顺序",
+        "模块协作"
+      ]
+    },
+    "7": {
+      "level": 3,
+      "question_type": "flow_next_step",
+      "answers": [
+        "C"
+      ],
+      "explanation": "正确顺序是：assign_hazard → _find_hazard\n\n`_find_hazard` 位于模块「safety_checker」。\n\n理解业务流程的关键是思考「数据和状态是怎么变化的」：什么操作会触发状态改变？改变之前需要什么前提？",
+      "knowledge_points": [
+        "业务流程",
+        "调用顺序",
+        "模块协作"
+      ]
+    },
+    "8": {
+      "level": 3,
+      "question_type": "flow_next_step",
+      "answers": [
+        "A"
+      ],
+      "explanation": "正确顺序是：close_hazard → _find_hazard\n\n`_find_hazard` 位于模块「safety_checker」。\n\n理解业务流程的关键是思考「数据和状态是怎么变化的」：什么操作会触发状态改变？改变之前需要什么前提？",
+      "knowledge_points": [
+        "业务流程",
+        "调用顺序",
+        "模块协作"
+      ]
+    },
+    "9": {
+      "level": 4,
+      "question_type": "key_implementation",
+      "answers": [
+        "C"
+      ],
+      "explanation": "正确思路：先进行边界条件校验（lab_id not in self.labs、start >= end、num_people > self.labs[...][...]）；修改状态字段（_next_id、labs、reservations）；非法情况抛出异常（ValueError、ValueError、ValueError）\n\n\n代码证据：\n  - high complexity implementation\n  - multiple boundary validations\n  - comprehensive error handling\n  - 抛出 3 种异常处理非法输入\n  - 修改 3 个状态字段\n  - 代码位于 reservation_manager.py 第 56-104 行\n\n⚠️ 本关的三个干扰项是**通用反模式**（固定文案），不是从代码里推导出来的；正确项才是由真实代码证据生成的。（多道题之间会轮换这三条，避免用排除法认出固定的一组）",
+      "knowledge_points": [
+        "边界条件",
+        "状态管理",
+        "异常处理"
+      ]
+    },
+    "10": {
+      "level": 4,
+      "question_type": "key_implementation",
+      "answers": [
+        "D"
+      ],
+      "explanation": "正确思路：先进行边界条件校验（... or ...、username in self.users、role not in valid_roles）；修改状态字段（_next_id、users）；非法情况抛出异常（ValueError、ValueError、ValueError）\n\n\n代码证据：\n  - high complexity implementation\n  - multiple boundary validations\n  - comprehensive error handling\n  - 抛出 3 种异常处理非法输入\n  - 修改 2 个状态字段\n  - 代码位于 user_manager.py 第 17-59 行\n\n⚠️ 本关的三个干扰项是**通用反模式**（固定文案），不是从代码里推导出来的；正确项才是由真实代码证据生成的。（多道题之间会轮换这三条，避免用排除法认出固定的一组）",
+      "knowledge_points": [
+        "边界条件",
+        "状态管理",
+        "异常处理"
+      ]
+    },
+    "11": {
+      "level": 4,
+      "question_type": "key_implementation",
+      "answers": [
+        "D"
+      ],
+      "explanation": "正确思路：先进行边界条件校验（not results）；通过遍历/循环实现核心算法逻辑；修改状态字段（_next_record_id、check_items、check_records）；非法情况抛出异常（ValueError）\n\n\n代码证据：\n  - high complexity implementation\n  - includes boundary validation\n  - includes exception raises\n  - 抛出 1 种异常处理非法输入\n  - 修改 3 个状态字段\n  - 代码位于 safety_checker.py 第 59-105 行\n\n⚠️ 本关的三个干扰项是**通用反模式**（固定文案），不是从代码里推导出来的；正确项才是由真实代码证据生成的。（多道题之间会轮换这三条，避免用排除法认出固定的一组）",
+      "knowledge_points": [
+        "算法设计",
+        "边界条件",
+        "状态管理",
+        "异常处理"
+      ]
+    }
+  }
+}

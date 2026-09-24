@@ -5,23 +5,48 @@
     <div class="glow-orb w-[500px] h-[500px] bottom-[-150px] left-[-100px] bg-neon-blue opacity-20"></div>
 
     <div class="relative z-10 max-w-5xl mx-auto px-6 py-8">
-      <!-- 顶部：项目信息 + 进度 -->
+      <!-- 顶部：项目信息 + 项目切换 + 进度 -->
       <div class="mb-8">
         <div class="flex items-center justify-between mb-4">
           <div>
             <div class="text-xs text-gray-500 font-mono tracking-widest uppercase mb-1">Project Training</div>
+            <!-- P0-01：项目名来自契约 project_name，不再写死 -->
             <h1 class="text-2xl font-bold gradient-text">{{ projectName }}</h1>
+            <div v-if="contract" class="text-[11px] text-gray-500 font-mono mt-1">
+              {{ contract.project_id }} · 契约 {{ contract.contract_version }}
+              <span v-if="overviewLine" class="text-gray-600">· {{ overviewLine }}</span>
+            </div>
           </div>
           <div class="text-right">
             <div class="text-xs text-gray-500 mb-1">完成进度</div>
             <div class="text-2xl font-bold text-white font-mono">
-              {{ currentLevel }}<span class="text-gray-600">/{{ totalLevels }}</span>
+              {{ currentLevel }}<span class="text-gray-600">/{{ totalLevels || '—' }}</span>
             </div>
           </div>
         </div>
 
+        <!-- P0-03：项目切换器 + 双通道模式徽章 + 离线横幅 -->
+        <ProjectSwitcher
+          :projects="projects"
+          :model-value="projectId"
+          :mode="mode"
+          :loading="loading"
+          :error-detail="ds.lastError.value"
+          :project-id="projectId"
+          @update:model-value="onProjectChange"
+          @refresh="reload"
+        />
+
+        <!-- 会话提示（P0-03：进度被丢弃时必须说明原因，不静默沿用） -->
+        <div v-if="session.notice" class="mb-4 p-3 rounded-xl bg-purple-500/5 border border-purple-500/30 text-xs text-purple-300 leading-relaxed">
+          {{ session.notice }}
+        </div>
+        <div v-else-if="session.restored && currentView === 'level'" class="mb-4 text-[11px] text-gray-500">
+          已恢复本项目上次的作答进度（会话 {{ shortSessionId }}）。
+        </div>
+
         <!-- 进度条 + 关卡节点 -->
-        <div class="relative">
+        <div class="relative" v-if="totalLevels">
           <div class="h-1 bg-deep-border rounded-full overflow-hidden">
             <div
               class="h-full difficulty-gradient transition-all duration-700 ease-out progress-bar"
@@ -31,29 +56,30 @@
           <div class="flex justify-between mt-2">
             <div
               v-for="(level, i) in levels"
-              :key="i"
+              :key="'lv-' + i"
               class="flex flex-col items-center relative"
-              style="width: 25%;"
+              :style="{ width: (100 / totalLevels) + '%' }"
             >
               <div
                 class="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300 z-10"
                 :class="{
-                  'bg-neon-blue text-white shadow-lg shadow-neon-blue/30 scale-110': i + 1 === currentLevel,
-                  'bg-green-500 text-white': i + 1 < currentLevel,
-                  'bg-deep-border text-gray-500': i + 1 > currentLevel,
+                  'bg-neon-blue text-white shadow-lg shadow-neon-blue/30 scale-110': i + 1 === currentLevel && currentView === 'level',
+                  'bg-green-500 text-white': isLevelCorrect(i),
+                  'bg-deep-border text-gray-500': !isLevelCorrect(i) && i + 1 !== currentLevel,
                 }"
                 :style="{ marginTop: i + 1 === currentLevel ? '-11px' : '-8px' }"
               >
-                <span v-if="i + 1 < currentLevel">✓</span>
+                <span v-if="isLevelCorrect(i)">✓</span>
                 <span v-else>{{ i + 1 }}</span>
               </div>
               <div
-                class="text-[11px] mt-2 text-center font-medium transition-colors"
+                class="text-[11px] mt-2 text-center font-medium transition-colors truncate max-w-full px-1"
                 :class="{
-                  'text-neon-blue': i + 1 === currentLevel,
-                  'text-green-400': i + 1 < currentLevel,
-                  'text-gray-500': i + 1 > currentLevel,
+                  'text-neon-blue': i + 1 === currentLevel && currentView === 'level',
+                  'text-green-400': isLevelCorrect(i),
+                  'text-gray-500': !isLevelCorrect(i) && i + 1 !== currentLevel,
                 }"
+                :title="level"
               >
                 {{ level }}
               </div>
@@ -62,619 +88,329 @@
         </div>
       </div>
 
+      <!--
+        Sprint 2 · 阶段切换（README5 §6.2 的 A 方案：不动 App.vue 外壳，在 TrainingView 里用 v-show 切子组件）
+        - "训练关卡"仍是默认阶段，判分 / 离线横幅的行为一个字都没改；
+          （题数**不固定**：第 2 关每个够格的业务模块各一道题，
+           所以 4 个业务模块的项目是 7 关，不是 4 关 —— 见训练生成器
+           `engine/project_analyzer/training_generator.py` 的 `_generate_level2`）
+        - "业务图谱"是 Sprint 2 新增的学生可见入口（P1-06）。
+          这里用 v-if 而不是 v-show：图谱是重面板，且**不该在只做训练时也发请求**，
+          也不该把图谱正文混进训练页的可见文本里（走查会用 body 文本做断言）。
+        - "项目认知"是 Sprint 3 新增的**阶段一**（培养方案第四章六阶段的第一个）。
+          它排在页签最前（学习顺序），但**默认阶段仍是训练关卡** ——
+          改默认落地页会牵动既有走查与演示动线，属于另一件事，不在这里顺手改。
+        - "模块卡片"是 Sprint 4 新增的**阶段二**（逐张卡片 + 五个问题 → 事实覆盖清单）。
+          它紧跟在阶段一后面（学习顺序），题目与判定都在后端，前端不认识任何业务字段。
+        - "设计画布"是 Sprint 5 新增的**阶段四 / 五**（自己拆模块 → 六维评审）。
+          按学习顺序它应该排在"训练关卡"前面，但**这里的顺序仍按落地时间排**：
+          改页签顺序会牵动既有走查的断言与演示动线，属于另一件事（README §10.3 说的
+          `teaching_plan.json` 落地时一并处理）。
+      -->
+      <div class="flex gap-2 mb-5 flex-wrap items-center" data-test="stage-switcher">
+        <button
+          class="tab-btn"
+          :class="{ active: mainStage === 'orientation' }"
+          data-test="stage-orientation"
+          @click="mainStage = 'orientation'"
+        >项目认知</button>
+        <button
+          class="tab-btn"
+          :class="{ active: mainStage === 'module-card' }"
+          data-test="stage-module-card"
+          @click="mainStage = 'module-card'"
+        >模块卡片</button>
+        <button
+          class="tab-btn"
+          :class="{ active: mainStage === 'design' }"
+          data-test="stage-design"
+          @click="mainStage = 'design'"
+        >设计画布</button>
+        <button
+          class="tab-btn"
+          :class="{ active: mainStage === 'training' }"
+          data-test="stage-training"
+          @click="mainStage = 'training'"
+        >训练关卡</button>
+        <button
+          class="tab-btn"
+          :class="{ active: mainStage === 'graph' }"
+          data-test="stage-graph"
+          @click="mainStage = 'graph'"
+        >业务图谱</button>
+        <span v-if="mainStage === 'graph'" class="text-[11px] text-gray-500">
+          数据来自 <span class="font-mono">/api/projects/{{ projectId }}/business-graph</span>，
+          后端不可用时回落到静态快照的 <span class="font-mono">business_graph</span>。
+        </span>
+        <span v-else-if="mainStage === 'orientation'" class="text-[11px] text-gray-500">
+          阶段一 · 系统只回覆盖清单，<span class="text-gray-400">不打分</span>
+          （覆盖度比对在后端：<span class="font-mono">engine/teaching/coverage.py</span>）。
+        </span>
+        <span v-else-if="mainStage === 'module-card'" class="text-[11px] text-gray-500">
+          阶段二 · 逐张卡片 + 五个问题，系统只做<span class="text-gray-400">事实覆盖比对</span>、不打分
+          （题目与判定都在后端：<span class="font-mono">engine/teaching/card_coverage.py</span>）。
+        </span>
+        <span v-else-if="mainStage === 'design'" class="text-[11px] text-gray-500">
+          阶段四 / 五 · 自己拆模块 → 六维评审；<span class="text-gray-400">算不出来的维度显示「本轮未评估」，不填 0</span>
+          （判定在后端：<span class="font-mono">engine/design/rubric.py</span>）。
+        </span>
+      </div>
+
+      <div v-show="mainStage === 'training'">
+      <!-- 加载 / 错误 -->
+      <div v-if="loading" class="glass-card p-10 text-center text-gray-400 text-sm">正在加载项目数据…</div>
+      <div v-else-if="loadError" class="glass-card p-10 text-center">
+        <div class="text-red-400 text-sm mb-2">无法加载项目「{{ projectId }}」</div>
+        <div class="text-xs text-gray-500 font-mono break-all">{{ loadError }}</div>
+      </div>
+
       <!-- 答题区域 -->
-      <div class="relative">
+      <div v-else class="relative">
         <transition name="slide-fade" mode="out-in">
 
           <!-- 关卡区域 -->
           <div v-if="currentView === 'level'" :key="'level-' + currentLevel" class="space-y-6">
+            <!-- 契约里没有题目时给诚实空状态，不编造题目 -->
+            <div v-if="!currentQuestion" class="glass-card p-8 text-center text-sm text-gray-400">
+              该项目契约里没有下发训练题（training.questions 为空），无法开始训练。
+            </div>
 
-            <!-- 第 1 关：功能拆分 -->
-            <div v-if="currentLevel === 1" class="glass-card p-8 neon-border">
-            <div class="flex items-center gap-3 mb-6">
-              <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-neon-blue to-cyan-400 flex items-center justify-center text-white font-bold">
-                1
+            <div v-else class="glass-card p-8 neon-border">
+              <div class="flex items-center gap-3 mb-6">
+                <div class="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold bg-gradient-to-br" :class="theme.badge">
+                  {{ currentLevel }}
+                </div>
+                <div>
+                  <h2 class="text-lg font-bold text-white">{{ currentQuestion.title || ('第 ' + currentLevel + ' 关') }}</h2>
+                  <p class="text-xs text-gray-500">
+                    {{ questionTypeLabel }}
+                    <span v-if="currentQuestion.difficulty" class="ml-2 font-mono">难度 {{ currentQuestion.difficulty }}</span>
+                  </p>
+                </div>
               </div>
-              <div>
-                <h2 class="text-lg font-bold text-white">功能拆分</h2>
-                <p class="text-xs text-gray-500">这个系统应该有哪些核心模块？</p>
+
+              <!-- 项目背景：来自契约数据（P0-01，不再写死某个项目的业务场景） -->
+              <div v-if="projectBackground" class="mb-4 p-4 rounded-xl bg-deep-card/50 border border-deep-border">
+                <div class="text-xs text-gray-400 mb-2">📋 项目背景</div>
+                <p class="text-sm text-gray-300 leading-relaxed whitespace-pre-line">{{ projectBackground }}</p>
               </div>
-            </div>
 
-            <div class="mb-6 p-4 rounded-xl bg-deep-card/50 border border-deep-border">
-              <div class="text-xs text-gray-400 mb-2">📋 项目背景</div>
-              <p class="text-sm text-gray-300 leading-relaxed">
-                这是一个实验室安全管理系统。高校实验室需要预约使用，设备需要管理，
-                安全检查要定期进行，用户有不同的角色权限。
-              </p>
-            </div>
+              <!-- 题干 -->
+              <div v-if="currentQuestion.description" class="mb-6 p-4 rounded-xl bg-deep-card/50 border border-deep-border">
+                <div class="text-xs text-gray-400 mb-2">📝 题干</div>
+                <p class="text-sm text-gray-300 leading-relaxed whitespace-pre-line">{{ currentQuestion.description }}</p>
+              </div>
 
-            <div class="mb-2 text-sm text-gray-400">
-              请选出这个系统<strong class="text-neon-blue">应该包含</strong>的核心功能模块（<span class="text-neon-blue">多选</span>）
-            </div>
-            <div class="mb-4 text-xs text-gray-500">
-              已选 {{ selectedCount }} 项
-            </div>
+              <!-- 按题型渲染上下文（模块 / 流程 / 关键实现），数据全部来自契约 -->
+              <div v-if="questionType === 'responsibility_match'" class="mb-6 p-4 rounded-xl bg-deep-card/50 border border-deep-border">
+                <div class="text-xs text-gray-400 mb-2">🎯 当前模块</div>
+                <template v-if="targetModuleName">
+                  <div class="text-xl font-bold text-neon-purple mb-1">{{ targetModuleName }}</div>
+                  <p class="text-sm text-gray-400">
+                    思考一下：这个模块在系统中承担什么角色？它的核心职责是什么？
+                  </p>
+                </template>
+                <div v-else class="text-sm text-amber-400/80">
+                  契约未提供可判定的业务模块（modules 里没有 core/business/intermediate 类型的模块），本关缺少模块信息。
+                </div>
+              </div>
 
-            <div class="grid grid-cols-2 gap-3 mb-8">
-              <div
-                v-for="opt in currentQuestion.options"
-                :key="opt.id"
-                class="p-4 rounded-xl border cursor-pointer transition-all group"
-                :class="getOptionClass(opt)"
-                @click="selectOption(opt)"
-              >
-                <div class="flex items-start gap-3">
-                  <div
-                    class="w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 mt-0.5 transition-all"
-                    :class="getCheckboxClass(opt)"
-                  >
-                    <svg v-if="isSelected(opt.id)" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
-                      <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
-                  </div>
-                  <div>
-                    <div class="text-sm font-medium text-white mb-1 group-hover:text-neon-blue transition-colors">
-                      {{ opt.text }}
+              <div v-else-if="questionType === 'flow_next_step'" class="mb-6 p-4 rounded-xl bg-deep-card/50 border border-deep-border">
+                <div class="text-xs text-gray-400 mb-2">⚡ 核心流程</div>
+                <template v-if="flowName">
+                  <div class="text-xl font-bold text-amber-400 mb-1">{{ flowName }}</div>
+                  <p class="text-sm text-gray-400">
+                    一个完整的业务操作，应该按照什么顺序执行？请思考数据和状态的流转逻辑。
+                  </p>
+                </template>
+                <div v-else class="text-sm text-amber-400/80">契约未提供 core_flows，本关缺少流程信息。</div>
+              </div>
+
+              <KeyImplementationPanel
+                v-else-if="questionType === 'key_implementation'"
+                :implementation="keyImplementation"
+                :project-id="projectId"
+                @open-source="openSource"
+              />
+
+              <!-- 选项 -->
+              <div class="mb-2 text-sm text-gray-400">
+                <template v-if="isMultiSelect">
+                  请选出<strong :class="theme.accent">应该包含</strong>的选项（<span :class="theme.accent">多选</span>）
+                </template>
+                <template v-else>请选出最准确的一项：</template>
+              </div>
+              <div v-if="isMultiSelect" class="mb-4 text-xs text-gray-500">已选 {{ currentState.selected.length }} 项</div>
+
+              <!-- 多选（第 1 关样式） -->
+              <div v-if="isMultiSelect" class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-8">
+                <div
+                  v-for="opt in currentQuestion.options"
+                  :key="opt.id"
+                  data-test="option-multi"
+                  :data-option-id="opt.id"
+                  class="p-4 rounded-xl border cursor-pointer transition-all group"
+                  :class="multiOptionClass(opt)"
+                  @click="toggleOption(opt)"
+                >
+                  <div class="flex items-start gap-3">
+                    <div class="w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 mt-0.5 transition-all" :class="multiCheckboxClass(opt)">
+                      <svg v-if="currentState.selected.includes(opt.id)" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                      </svg>
+                    </div>
+                    <div class="text-sm font-medium text-white group-hover:text-neon-blue transition-colors">
+                      {{ opt.id }} · {{ opt.text }}
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
 
-            <!-- 答错引导面板 -->
-            <transition name="fade">
-              <div v-if="level1Answered && !level1Correct && level1HintsRemaining > 0"
-                   class="mb-6 p-5 rounded-xl bg-amber-500/5 border border-amber-500/30 relative overflow-hidden">
-                <div class="absolute top-0 right-0 w-32 h-32 bg-amber-500/5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
-                <div class="relative">
-                  <div class="flex items-center gap-2 mb-3">
-                    <div class="w-8 h-8 rounded-lg bg-amber-500/20 flex items-center justify-center text-amber-400 text-lg">💡</div>
-                    <div>
-                      <div class="font-bold text-amber-400">别急，给你一条线索</div>
-                      <div class="text-xs text-amber-400/60">还剩 {{ level1HintsRemaining }} 次尝试机会</div>
-                    </div>
-                  </div>
+              <!-- 单选（第 2/3/4 关样式） -->
+              <div v-else class="space-y-2.5 mb-8">
+                <div
+                  v-for="opt in currentQuestion.options"
+                  :key="opt.id"
+                  data-test="option-single"
+                  :data-option-id="opt.id"
+                  class="quiz-option"
+                  :class="singleOptionClass(opt)"
+                  @click="selectSingle(opt.id)"
+                >
+                  <span class="option-letter" :style="optionLetterStyle(opt)">{{ opt.id }}</span>
+                  <span class="text-sm text-gray-300 pt-0.5">{{ opt.text }}</span>
+                </div>
+              </div>
 
-                  <div class="text-sm text-gray-300 leading-relaxed mb-4">
-                    {{ level1Hint }}
-                  </div>
-
-                  <!-- 相关模块线索 -->
-                  <div v-if="level1HintModules.length" class="mb-4">
-                    <div class="text-xs text-gray-500 mb-2">相关模块提示：</div>
-                    <div class="flex flex-wrap gap-2">
-                      <div
-                        v-for="mod in level1HintModules"
-                        :key="mod.name"
-                        class="px-3 py-1.5 rounded-lg bg-deep-card/80 border border-deep-border text-xs"
-                      >
-                        <span class="text-white font-medium">{{ mod.name }}</span>
-                        <span class="text-gray-500 ml-2">{{ mod.hint }}</span>
+              <!-- 答错引导面板（提示分层，README5 §6.6-5） -->
+              <transition name="fade">
+                <div v-if="showHintPanel" class="mb-6 p-5 rounded-xl bg-amber-500/5 border border-amber-500/30 relative overflow-hidden">
+                  <div class="absolute top-0 right-0 w-32 h-32 bg-amber-500/5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+                  <div class="relative">
+                    <div class="flex items-center gap-2 mb-3">
+                      <div class="w-8 h-8 rounded-lg bg-amber-500/20 flex items-center justify-center text-amber-400 text-lg">💡</div>
+                      <div>
+                        <div class="font-bold text-amber-400">别急，给你一条线索</div>
+                        <div class="text-xs text-amber-400/60">还剩 {{ currentState.hintsRemaining }} 次尝试机会</div>
                       </div>
                     </div>
-                  </div>
 
-                  <button
-                    @click="retryLevel1"
-                    class="px-5 py-2 rounded-lg text-sm font-medium text-white
-                           bg-gradient-to-r from-amber-500 to-orange-500
-                           hover:shadow-lg hover:shadow-amber-500/25 hover:-translate-y-0.5 transition-all"
-                  >
-                    🔄 再试一次
-                  </button>
-                </div>
-              </div>
-            </transition>
+                    <div class="text-sm text-gray-300 leading-relaxed mb-4">{{ currentHintText }}</div>
 
-            <!-- 答题反馈 -->
-            <transition name="fade">
-              <div v-if="level1Answered && (level1Correct || level1HintsRemaining === 0)" class="mb-6 p-4 rounded-xl"
-                :class="level1Correct ? 'bg-green-500/10 border border-green-500/30' : 'bg-red-500/10 border border-red-500/30'"
-              >
-                <div class="font-bold mb-2" :class="level1Correct ? 'text-green-400' : 'text-red-400'">
-                  {{ level1Correct ? '✓ 完全正确！' : '✗ 已经尝试了所有机会' }}
-                </div>
-                <div class="text-sm text-gray-400 leading-relaxed" v-html="currentQuestion.explanation"></div>
-              </div>
-            </transition>
-
-            <div class="flex justify-between">
-              <div></div>
-              <button
-                v-if="!level1Answered"
-                @click="submitLevel1"
-                :disabled="selectedCount === 0"
-                class="px-6 py-2.5 rounded-xl text-sm font-medium text-white transition-all
-                       bg-gradient-to-r from-neon-blue to-cyan-500
-                       hover:shadow-lg hover:shadow-neon-blue/25 hover:-translate-y-0.5
-                       disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:translate-y-0"
-              >
-                提交答案
-              </button>
-              <button
-                v-else-if="level1Correct || level1HintsRemaining === 0"
-                @click="nextLevel"
-                class="px-6 py-2.5 rounded-xl text-sm font-medium text-white transition-all
-                       bg-gradient-to-r from-neon-purple to-neon-pink
-                       hover:shadow-lg hover:shadow-neon-purple/25 hover:-translate-y-0.5"
-              >
-                下一关 →
-              </button>
-            </div>
-          </div>
-
-          <!-- 第 2 关：模块职责 -->
-          <div v-else-if="currentLevel === 2" key="level2" class="glass-card p-8 neon-border">
-            <div class="flex items-center gap-3 mb-6">
-              <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-neon-purple to-pink-400 flex items-center justify-center text-white font-bold">
-                2
-              </div>
-              <div>
-                <h2 class="text-lg font-bold text-white">模块职责</h2>
-                <p class="text-xs text-gray-500">每个模块具体负责什么？</p>
-              </div>
-            </div>
-
-            <div class="mb-6 p-4 rounded-xl bg-deep-card/50 border border-deep-border">
-              <div class="text-xs text-gray-400 mb-2">🎯 当前模块</div>
-              <div class="text-xl font-bold text-neon-purple mb-1">{{ targetModuleName }}</div>
-              <p class="text-sm text-gray-400">
-                思考一下：这个模块在系统中承担什么角色？它的核心职责是什么？
-              </p>
-            </div>
-
-            <div class="mb-4 text-sm text-gray-400">请选出最准确的职责描述：</div>
-
-            <div class="space-y-2.5 mb-8">
-              <div
-                v-for="opt in currentQuestion.options"
-                :key="opt.id"
-                class="quiz-option"
-                :class="{
-                  selected: selectedLevel2 === opt.id && !level2Answered,
-                  correct: level2Answered && isCorrectOption(opt),
-                  wrong: level2Answered && selectedLevel2 === opt.id && !isCorrectOption(opt),
-                }"
-                @click="selectLevel2(opt.id)"
-              >
-                <span class="option-letter"
-                  :style="{
-                    background: level2Answered && isCorrectOption(opt) ? '#4ade80' :
-                               level2Answered && selectedLevel2 === opt.id && !isCorrectOption(opt) ? '#f87171' :
-                               selectedLevel2 === opt.id ? '#a855f7' : '#1f1f2e',
-                    color: (level2Answered && isCorrectOption(opt)) || (selectedLevel2 === opt.id) ? '#fff' : '#94a3b8'
-                  }"
-                >{{ opt.id }}</span>
-                <span class="text-sm text-gray-300 pt-0.5">{{ opt.text }}</span>
-              </div>
-            </div>
-
-            <!-- 答错引导面板 -->
-            <transition name="fade">
-              <div v-if="level2Answered && !level2Correct && level2HintsRemaining > 0"
-                   class="mb-6 p-5 rounded-xl bg-purple-500/5 border border-purple-500/30 relative overflow-hidden">
-                <div class="absolute top-0 right-0 w-32 h-32 bg-purple-500/5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
-                <div class="relative">
-                  <div class="flex items-center gap-2 mb-3">
-                    <div class="w-8 h-8 rounded-lg bg-purple-500/20 flex items-center justify-center text-purple-400 text-lg">🔍</div>
-                    <div>
-                      <div class="font-bold text-purple-400">再深入想想</div>
-                      <div class="text-xs text-purple-400/60">还剩 {{ level2HintsRemaining }} 次尝试机会</div>
+                    <!-- 范围线索：只给"有几类、各几个"，不点名答案 -->
+                    <div v-if="showModuleTypeChips && moduleTypeSummary.length" class="mb-4">
+                      <div class="text-xs text-gray-500 mb-2">模块类型分布（只提示范围）：</div>
+                      <div class="flex flex-wrap gap-2">
+                        <div
+                          v-for="item in moduleTypeSummary"
+                          :key="item.type"
+                          class="px-3 py-1.5 rounded-lg bg-deep-card/80 border border-deep-border text-xs"
+                        >
+                          <span class="text-white font-medium">{{ typeLabel(item.type) }}</span>
+                          <span class="text-gray-500 ml-2">{{ item.count }} 个</span>
+                        </div>
+                      </div>
                     </div>
-                  </div>
 
-                  <div class="text-sm text-gray-300 leading-relaxed mb-3">
-                    {{ level2Hint }}
-                  </div>
-
-                  <!-- 职责关键词线索 -->
-                  <div v-if="level2HintKeywords.length" class="mb-4">
-                    <div class="text-xs text-gray-500 mb-2">这个模块的核心职责关键词：</div>
-                    <div class="flex flex-wrap gap-1.5">
-                      <span
-                        v-for="kw in level2HintKeywords"
-                        :key="kw"
-                        class="px-2.5 py-1 text-xs rounded-full bg-purple-500/10 text-purple-300 border border-purple-500/20"
-                      >
-                        {{ kw }}
-                      </span>
+                    <!-- 职责关键词线索 -->
+                    <div v-if="hintKeywords.length" class="mb-4">
+                      <div class="text-xs text-gray-500 mb-2">这个模块的职责关键词：</div>
+                      <div class="flex flex-wrap gap-1.5">
+                        <span
+                          v-for="kw in hintKeywords"
+                          :key="kw"
+                          class="px-2.5 py-1 text-xs rounded-full bg-purple-500/10 text-purple-300 border border-purple-500/20"
+                        >{{ kw }}</span>
+                      </div>
                     </div>
+
+                    <!-- 流程首尾锚点 -->
+                    <div v-if="flowAnchor" class="mb-4">
+                      <div class="text-xs text-gray-500 mb-2">流程线索：</div>
+                      <div class="flex items-center gap-2 text-xs">
+                        <span class="px-3 py-1.5 rounded-lg bg-green-500/10 text-green-400 border border-green-500/30 font-mono">▶ {{ flowAnchor.start }}</span>
+                        <span class="text-gray-600">→ ... →</span>
+                        <span class="px-3 py-1.5 rounded-lg bg-purple-500/10 text-purple-400 border border-purple-500/30 font-mono">◼ {{ flowAnchor.end }}</span>
+                      </div>
+                    </div>
+
+                    <!-- 关键实现线索 -->
+                    <div v-if="keyImplHint" class="mb-4 p-3 rounded-lg bg-deep-card/80 border border-deep-border">
+                      <div class="text-xs text-gray-500 mb-2">关键方法分析线索：</div>
+                      <div class="text-xs text-gray-400 space-y-1">
+                        <div v-if="keyImplHint.design_characteristics?.length">
+                          · 设计特征：
+                          <span
+                            v-for="(char, idx) in keyImplHint.design_characteristics.slice(0, 2)"
+                            :key="idx"
+                            :class="char.confidence === 'verified' ? 'text-emerald-300' : 'text-amber-300'"
+                          >{{ char.label }}<span v-if="idx === 0 && keyImplHint.design_characteristics.length > 1">, </span></span>
+                        </div>
+                        <div v-else>· 设计思路：<span class="text-pink-300">{{ keyImplHint.design_approach || '—' }}</span></div>
+                        <div>· 复杂度：<span class="text-white font-mono">{{ keyImplHint.complexity }}</span> · 修改 <span class="text-amber-400 font-mono">{{ keyImplHint.state_write_count }}</span> 个状态字段</div>
+                        <div v-if="keyImplHint.validation_count > 0">· 包含 <span class="text-green-400 font-mono">{{ keyImplHint.validation_count }}</span> 处前置校验</div>
+                      </div>
+                    </div>
+
+                    <button
+                      data-test="retry"
+                      @click="retryCurrent"
+                      class="px-5 py-2 rounded-lg text-sm font-medium text-white bg-gradient-to-r from-amber-500 to-orange-500
+                             hover:shadow-lg hover:shadow-amber-500/25 hover:-translate-y-0.5 transition-all"
+                    >
+                      🔄 再试一次
+                    </button>
                   </div>
-
-                  <button
-                    @click="retryLevel2"
-                    class="px-5 py-2 rounded-lg text-sm font-medium text-white
-                           bg-gradient-to-r from-purple-500 to-pink-500
-                           hover:shadow-lg hover:shadow-purple-500/25 hover:-translate-y-0.5 transition-all"
-                  >
-                    🔄 再试一次
-                  </button>
                 </div>
-              </div>
-            </transition>
+              </transition>
 
-            <!-- 答题反馈 -->
-            <transition name="fade">
-              <div v-if="level2Answered && (level2Correct || level2HintsRemaining === 0)" class="mb-6 p-4 rounded-xl"
-                :class="level2Correct ? 'bg-green-500/10 border border-green-500/30' : 'bg-red-500/10 border border-red-500/30'"
-              >
-                <div class="font-bold mb-2" :class="level2Correct ? 'text-green-400' : 'text-red-400'">
-                  {{ level2Correct ? '✓ 回答正确！' : '✗ 已经尝试了所有机会' }}
-                </div>
-                <div class="text-sm text-gray-400 leading-relaxed" v-html="currentQuestion.explanation"></div>
-              </div>
-            </transition>
+              <!-- 提交后的反馈（学生先输出，系统后反馈） -->
+              <transition name="fade">
+                <GradingFeedback
+                  v-if="currentState.answered && (currentState.offlineGraded || currentState.grading)"
+                  :grading="currentState.grading"
+                  :offline="currentState.offlineGraded"
+                  :selected="currentState.selected"
+                  :options="currentQuestion.options || []"
+                  :reveal-missing="currentState.hintsRemaining === 0"
+                />
+              </transition>
 
-            <div class="flex justify-between">
-              <button
-                @click="prevLevel"
-                class="px-4 py-2.5 rounded-xl text-sm text-gray-400 hover:text-white transition-colors"
-              >
-                ← 上一关
-              </button>
-              <button
-                v-if="!level2Answered"
-                @click="submitLevel2"
-                :disabled="!selectedLevel2"
-                class="px-6 py-2.5 rounded-xl text-sm font-medium text-white transition-all
-                       bg-gradient-to-r from-neon-purple to-pink-500
-                       hover:shadow-lg hover:shadow-neon-purple/25 hover:-translate-y-0.5
-                       disabled:opacity-40 disabled:cursor-not-allowed"
-              >
-                提交答案
-              </button>
-              <button
-                v-else-if="level2Correct || level2HintsRemaining === 0"
-                @click="nextLevel"
-                class="px-6 py-2.5 rounded-xl text-sm font-medium text-white transition-all
-                       bg-gradient-to-r from-neon-purple to-neon-pink
-                       hover:shadow-lg hover:shadow-neon-purple/25 hover:-translate-y-0.5"
-              >
-                下一关 →
-              </button>
-            </div>
-          </div>
+              <div class="flex justify-between items-center">
+                <button
+                  v-if="currentLevel > 1"
+                  @click="prevLevel"
+                  class="px-4 py-2.5 rounded-xl text-sm text-gray-400 hover:text-white transition-colors"
+                >
+                  ← 上一关
+                </button>
+                <div v-else></div>
 
-          <!-- 第 3 关：流程推演 -->
-          <div v-else-if="currentLevel === 3" key="level3" class="glass-card p-8 neon-border">
-            <div class="flex items-center gap-3 mb-6">
-              <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-white font-bold">
-                3
-              </div>
-              <div>
-                <h2 class="text-lg font-bold text-white">流程推演</h2>
-                <p class="text-xs text-gray-500">核心业务流程的步骤顺序是什么？</p>
-              </div>
-            </div>
-
-            <div class="mb-6 p-4 rounded-xl bg-deep-card/50 border border-deep-border">
-              <div class="text-xs text-gray-400 mb-2">⚡ 核心流程</div>
-              <div class="text-xl font-bold text-amber-400 mb-1">{{ flowName }}</div>
-              <p class="text-sm text-gray-400">
-                一个完整的业务操作，应该按照什么顺序执行？请思考数据和状态的流转逻辑。
-              </p>
-            </div>
-
-            <div class="mb-4 text-sm text-gray-400">选出步骤顺序正确的选项：</div>
-
-            <div class="space-y-3 mb-8">
-              <div
-                v-for="opt in currentQuestion.options"
-                :key="opt.id"
-                class="p-4 rounded-xl border cursor-pointer transition-all font-mono text-sm"
-                :class="{
-                  'border-neon-amber bg-amber-500/10': selectedLevel3 === opt.id && !level3Answered,
-                  'border-green-500 bg-green-500/10': level3Answered && isCorrectOption(opt),
-                  'border-red-500 bg-red-500/10': level3Answered && selectedLevel3 === opt.id && !isCorrectOption(opt),
-                  'border-deep-border hover:border-amber-500/30': !level3Answered && selectedLevel3 !== opt.id,
-                }"
-                @click="selectLevel3(opt.id)"
-              >
                 <div class="flex items-center gap-2">
-                  <span
-                    class="w-6 h-6 rounded flex items-center justify-center text-xs font-bold flex-shrink-0"
-                    :style="{
-                      background: level3Answered && isCorrectOption(opt) ? '#4ade80' :
-                                 level3Answered && selectedLevel3 === opt.id && !isCorrectOption(opt) ? '#f87171' :
-                                 selectedLevel3 === opt.id ? '#f59e0b' : '#1f1f2e',
-                      color: (level3Answered && isCorrectOption(opt)) || selectedLevel3 === opt.id ? '#0a0a0f' : '#94a3b8'
-                    }"
-                  >{{ opt.id }}</span>
-                  <span class="text-gray-300">{{ opt.text }}</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- 答错引导面板 -->
-            <transition name="fade">
-              <div v-if="level3Answered && !level3Correct && level3HintsRemaining > 0"
-                   class="mb-6 p-5 rounded-xl bg-amber-500/5 border border-amber-500/30 relative overflow-hidden">
-                <div class="absolute top-0 right-0 w-32 h-32 bg-amber-500/5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
-                <div class="relative">
-                  <div class="flex items-center gap-2 mb-3">
-                    <div class="w-8 h-8 rounded-lg bg-amber-500/20 flex items-center justify-center text-amber-400 text-lg">⚡</div>
-                    <div>
-                      <div class="font-bold text-amber-400">顺着流程再理一遍</div>
-                      <div class="text-xs text-amber-400/60">还剩 {{ level3HintsRemaining }} 次尝试机会</div>
-                    </div>
-                  </div>
-
-                  <div class="text-sm text-gray-300 leading-relaxed mb-3">
-                    {{ level3Hint }}
-                  </div>
-
-                  <!-- 流程线索：首尾锚点 -->
-                  <div v-if="level3FlowAnchor" class="mb-4">
-                    <div class="text-xs text-gray-500 mb-2">流程线索：</div>
-                    <div class="flex items-center gap-2 text-xs">
-                      <span class="px-3 py-1.5 rounded-lg bg-green-500/10 text-green-400 border border-green-500/30 font-mono">
-                        ▶ {{ level3FlowAnchor.start }}
-                      </span>
-                      <span class="text-gray-600">→ ... →</span>
-                      <span class="px-3 py-1.5 rounded-lg bg-purple-500/10 text-purple-400 border border-purple-500/30 font-mono">
-                        ◼ {{ level3FlowAnchor.end }}
-                      </span>
-                    </div>
-                    <div class="text-xs text-gray-500 mt-2">
-                      流程从 <span class="text-green-400">{{ level3FlowAnchor.start }}</span> 开始，
-                      到 <span class="text-purple-400">{{ level3FlowAnchor.end }}</span> 结束。
-                      中间步骤应该如何排列？
-                    </div>
-                  </div>
-
                   <button
-                    @click="retryLevel3"
-                    class="px-5 py-2 rounded-lg text-sm font-medium text-white
-                           bg-gradient-to-r from-amber-500 to-orange-500
-                           hover:shadow-lg hover:shadow-amber-500/25 hover:-translate-y-0.5 transition-all"
+                    v-if="!currentState.answered"
+                    data-test="submit-answer"
+                    @click="submitCurrent"
+                    :disabled="!canSubmit || currentState.submitting"
+                    class="px-6 py-2.5 rounded-xl text-sm font-medium text-white transition-all bg-gradient-to-r
+                           hover:shadow-lg hover:-translate-y-0.5 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:translate-y-0"
+                    :class="[theme.button, theme.shadow]"
                   >
-                    🔄 再试一次
+                    {{ currentState.submitting ? '提交中…' : '提交答案' }}
+                  </button>
+                  <button
+                    v-else-if="showNextButton"
+                    data-test="next-level"
+                    @click="nextLevel"
+                    class="px-6 py-2.5 rounded-xl text-sm font-medium text-white transition-all
+                           bg-gradient-to-r from-neon-purple to-neon-pink
+                           hover:shadow-lg hover:shadow-neon-purple/25 hover:-translate-y-0.5"
+                  >
+                    {{ isLastLevel ? '查看最终结果 →' : '下一关 →' }}
                   </button>
                 </div>
               </div>
-            </transition>
-
-            <!-- 答题反馈 -->
-            <transition name="fade">
-              <div v-if="level3Answered && (level3Correct || level3HintsRemaining === 0)" class="mb-6 p-4 rounded-xl"
-                :class="level3Correct ? 'bg-green-500/10 border border-green-500/30' : 'bg-red-500/10 border border-red-500/30'"
-              >
-                <div class="font-bold mb-2" :class="level3Correct ? 'text-green-400' : 'text-red-400'">
-                  {{ level3Correct ? '✓ 流程正确！' : '✗ 已经尝试了所有机会' }}
-                </div>
-                <div class="text-sm text-gray-400 leading-relaxed" v-html="currentQuestion.explanation"></div>
-              </div>
-            </transition>
-
-            <div class="flex justify-between">
-              <button
-                @click="prevLevel"
-                class="px-4 py-2.5 rounded-xl text-sm text-gray-400 hover:text-white transition-colors"
-              >
-                ← 上一关
-              </button>
-              <button
-                v-if="!level3Answered"
-                @click="submitLevel3"
-                :disabled="!selectedLevel3"
-                class="px-6 py-2.5 rounded-xl text-sm font-medium text-white transition-all
-                       bg-gradient-to-r from-amber-500 to-orange-500
-                       hover:shadow-lg hover:shadow-amber-500/25 hover:-translate-y-0.5
-                       disabled:opacity-40 disabled:cursor-not-allowed"
-              >
-                提交答案
-              </button>
-              <button
-                v-else-if="level3Correct || level3HintsRemaining === 0"
-                @click="nextLevel"
-                class="px-6 py-2.5 rounded-xl text-sm font-medium text-white transition-all
-                       bg-gradient-to-r from-neon-purple to-neon-pink
-                       hover:shadow-lg hover:shadow-neon-purple/25 hover:-translate-y-0.5"
-              >
-                下一关 →
-              </button>
             </div>
-          </div>
-
-          <!-- 第 4 关：关键实现 -->
-          <div v-else-if="currentLevel === 4" key="level4" class="glass-card p-8 neon-border">
-            <div class="flex items-center gap-3 mb-6">
-              <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-neon-pink to-rose-500 flex items-center justify-center text-white font-bold">
-                4
-              </div>
-              <div>
-                <h2 class="text-lg font-bold text-white">关键实现</h2>
-                <p class="text-xs text-gray-500">核心功能的实现思路是什么？</p>
-              </div>
-            </div>
-
-            <!-- 关键实现深度分析 -->
-            <div class="mb-6 space-y-4">
-              <!-- 代码片段 -->
-              <div class="rounded-xl overflow-hidden border border-deep-border">
-                <div class="flex items-center justify-between px-4 py-2.5 bg-deep-card/80 border-b border-deep-border">
-                  <div class="flex items-center gap-2">
-                    <div class="flex gap-1.5">
-                      <span class="w-3 h-3 rounded-full bg-red-500/60"></span>
-                      <span class="w-3 h-3 rounded-full bg-yellow-500/60"></span>
-                      <span class="w-3 h-3 rounded-full bg-green-500/60"></span>
-                    </div>
-                    <span class="text-xs text-gray-500 font-mono ml-2">{{ keyImpFile }}</span>
-                  </div>
-                  <span class="text-[10px] text-gray-500">L{{ keyImpLineRange }}</span>
-                </div>
-                <div class="p-4 bg-deep-card/40 overflow-x-auto">
-                  <pre class="text-xs text-gray-300 leading-relaxed font-mono"><code><template v-for="(line, idx) in keyImpCodeLines" :key="idx"><span class="inline-block w-6 text-right mr-3 text-gray-600 select-none">{{ idx + keyImpStartLine }}</span><span v-html="line"></span>
-</template></code></pre>
-                </div>
-              </div>
-
-              <!-- 分析维度 -->
-              <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-                <div class="p-3 rounded-lg bg-deep-card/50 border border-deep-border text-center">
-                  <div class="text-lg font-bold text-neon-pink font-mono">{{ keyImpData?.complexity || '?' }}</div>
-                  <div class="text-[10px] text-gray-500 mt-0.5">圈复杂度</div>
-                </div>
-                <div class="p-3 rounded-lg bg-deep-card/50 border border-deep-border text-center">
-                  <div class="text-lg font-bold text-amber-400 font-mono">{{ keyImpData?.state_writes?.length || 0 }}</div>
-                  <div class="text-[10px] text-gray-500 mt-0.5">状态写入</div>
-                </div>
-                <div class="p-3 rounded-lg bg-deep-card/50 border border-deep-border text-center">
-                  <div class="text-lg font-bold text-green-400 font-mono">{{ keyImpData?.validation_checks?.length || 0 }}</div>
-                  <div class="text-[10px] text-gray-500 mt-0.5">前置校验</div>
-                </div>
-                <div class="p-3 rounded-lg bg-deep-card/50 border border-deep-border text-center">
-                  <div class="text-lg font-bold text-purple-400 font-mono">{{ keyImpData?.error_handling?.length || 0 }}</div>
-                  <div class="text-[10px] text-gray-500 mt-0.5">异常抛出</div>
-                </div>
-              </div>
-
-              <!-- 设计特征 -->
-              <div class="p-3 rounded-lg bg-pink-500/5 border border-pink-500/20">
-                <div class="text-xs font-medium text-pink-400 mb-1.5">🧩 设计特征</div>
-                <div v-if="keyImpData?.design_characteristics?.length" class="space-y-1.5">
-                  <div v-for="char in keyImpData.design_characteristics.slice(0, 3)" :key="char.label"
-                       class="text-xs leading-relaxed">
-                    <span :class="char.confidence === 'verified' ? 'text-emerald-400' : 'text-amber-400'">
-                      {{ char.label }}
-                    </span>
-                    <span class="text-gray-500 text-[10px] ml-1">({{ char.evidence }})</span>
-                  </div>
-                </div>
-                <div v-else class="text-xs text-gray-300 leading-relaxed">
-                  {{ keyImpData?.design_approach || '分析中...' }}
-                </div>
-              </div>
-
-              <!-- 为什么它是关键实现 -->
-              <div v-if="keyImpData?.importance_reasons?.length" class="p-3 rounded-lg bg-deep-card/50 border border-deep-border">
-                <div class="text-xs font-medium text-gray-300 mb-2">为什么这是关键实现？</div>
-                <div class="flex flex-wrap gap-1.5">
-                  <span
-                    v-for="reason in keyImpData.importance_reasons"
-                    :key="reason"
-                    class="text-[10px] px-2 py-0.5 rounded-full bg-pink-500/10 text-pink-300 border border-pink-500/20"
-                  >{{ reason }}</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="mb-4 text-sm text-gray-400">选出最合适的实现方案：</div>
-
-            <div class="space-y-2.5 mb-8">
-              <div
-                v-for="opt in currentQuestion.options"
-                :key="opt.id"
-                class="quiz-option"
-                :class="{
-                  selected: selectedLevel4 === opt.id && !level4Answered,
-                  correct: level4Answered && isCorrectOption(opt),
-                  wrong: level4Answered && selectedLevel4 === opt.id && !isCorrectOption(opt),
-                }"
-                @click="selectLevel4(opt.id)"
-              >
-                <span class="option-letter"
-                  :style="{
-                    background: level4Answered && isCorrectOption(opt) ? '#4ade80' :
-                               level4Answered && selectedLevel4 === opt.id && !isCorrectOption(opt) ? '#f87171' :
-                               selectedLevel4 === opt.id ? '#ec4899' : '#1f1f2e',
-                    color: (level4Answered && isCorrectOption(opt)) || (selectedLevel4 === opt.id) ? '#fff' : '#94a3b8'
-                  }"
-                >{{ opt.id }}</span>
-                <span class="text-sm text-gray-300 pt-0.5">{{ opt.text }}</span>
-              </div>
-            </div>
-
-            <!-- 答错引导面板 -->
-            <transition name="fade">
-              <div v-if="level4Answered && !level4Correct && level4HintsRemaining > 0"
-                   class="mb-6 p-5 rounded-xl bg-pink-500/5 border border-pink-500/30 relative overflow-hidden">
-                <div class="absolute top-0 right-0 w-32 h-32 bg-pink-500/5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
-                <div class="relative">
-                  <div class="flex items-center gap-2 mb-3">
-                    <div class="w-8 h-8 rounded-lg bg-pink-500/20 flex items-center justify-center text-pink-400 text-lg">🧩</div>
-                    <div>
-                      <div class="font-bold text-pink-400">回到代码本身想一想</div>
-                      <div class="text-xs text-pink-400/60">还剩 {{ level4HintsRemaining }} 次尝试机会</div>
-                    </div>
-                  </div>
-
-                  <div class="text-sm text-gray-300 leading-relaxed mb-3">
-                    {{ level4Hint }}
-                  </div>
-
-                  <!-- 关键实现线索 -->
-                  <div v-if="level4KeyImpHint" class="mb-4 p-3 rounded-lg bg-deep-card/80 border border-deep-border">
-                    <div class="text-xs text-gray-500 mb-2">关键方法分析线索：</div>
-                    <div class="text-xs text-gray-400 space-y-1">
-                      <div v-if="level4KeyImpHint.design_characteristics?.length">
-                        · 设计特征：
-                        <span v-for="(char, idx) in level4KeyImpHint.design_characteristics.slice(0, 2)" :key="idx"
-                              :class="char.confidence === 'verified' ? 'text-emerald-300' : 'text-amber-300'">
-                          {{ char.label }}<span v-if="idx < Math.min(1, level4KeyImpHint.design_characteristics.length - 1)">, </span>
-                        </span>
-                      </div>
-                      <div v-else>· 设计思路：<span class="text-pink-300">{{ level4KeyImpHint.design_approach }}</span></div>
-                      <div>· 复杂度：<span class="text-white font-mono">{{ level4KeyImpHint.complexity }}</span> · 修改 <span class="text-amber-400 font-mono">{{ level4KeyImpHint.state_write_count }}</span> 个状态字段</div>
-                      <div v-if="level4KeyImpHint.validation_count > 0">· 包含 <span class="text-green-400 font-mono">{{ level4KeyImpHint.validation_count }}</span> 处前置校验</div>
-                    </div>
-                  </div>
-
-                  <button
-                    @click="retryLevel4"
-                    class="px-5 py-2 rounded-lg text-sm font-medium text-white
-                           bg-gradient-to-r from-pink-500 to-rose-500
-                           hover:shadow-lg hover:shadow-pink-500/25 hover:-translate-y-0.5 transition-all"
-                  >
-                    🔄 再试一次
-                  </button>
-                </div>
-              </div>
-            </transition>
-
-            <!-- 答题反馈 -->
-            <transition name="fade">
-              <div v-if="level4Answered && (level4Correct || level4HintsRemaining === 0)" class="mb-6 p-4 rounded-xl"
-                :class="level4Correct ? 'bg-green-500/10 border border-green-500/30' : 'bg-red-500/10 border border-red-500/30'"
-              >
-                <div class="font-bold mb-2" :class="level4Correct ? 'text-green-400' : 'text-red-400'">
-                  {{ level4Correct ? '✓ 思路正确！' : '✗ 已经尝试了所有机会' }}
-                </div>
-                <div class="text-sm text-gray-400 leading-relaxed whitespace-pre-line">{{ currentQuestion.explanation }}</div>
-              </div>
-            </transition>
-
-            <div class="flex justify-between">
-              <button
-                @click="prevLevel"
-                class="px-4 py-2.5 rounded-xl text-sm text-gray-400 hover:text-white transition-colors"
-              >
-                ← 上一关
-              </button>
-              <button
-                v-if="!level4Answered"
-                @click="submitLevel4"
-                :disabled="!selectedLevel4"
-                class="px-6 py-2.5 rounded-xl text-sm font-medium text-white transition-all
-                       bg-gradient-to-r from-neon-pink to-rose-500
-                       hover:shadow-lg hover:shadow-neon-pink/25 hover:-translate-y-0.5
-                       disabled:opacity-40 disabled:cursor-not-allowed"
-              >
-                提交答案
-              </button>
-              <button
-                v-else-if="level4Correct || level4HintsRemaining === 0"
-                @click="goToResult"
-                class="px-6 py-2.5 rounded-xl text-sm font-medium text-white transition-all
-                       bg-gradient-to-r from-neon-purple to-neon-pink
-                       hover:shadow-lg hover:shadow-neon-purple/25 hover:-translate-y-0.5"
-              >
-                查看最终结果 →
-              </button>
-            </div>
-          </div>
-
           </div>
 
           <!-- 最终结果页 -->
@@ -684,12 +420,21 @@
             <div class="glass-card p-8 neon-border text-center">
               <div class="mb-6">
                 <div class="w-24 h-24 mx-auto mb-4 rounded-full bg-gradient-to-br from-neon-blue via-neon-purple to-neon-pink flex items-center justify-center animate-glow-pulse">
-                  <span class="text-4xl font-bold text-white font-mono">{{ finalScore }}</span>
+                  <span class="text-3xl font-bold text-white font-mono">{{ resultSummary.gradedCount ? resultSummary.correct + '/' + resultSummary.gradedCount : '—' }}</span>
                 </div>
                 <h2 class="text-2xl font-bold gradient-text mb-2">训练完成！</h2>
                 <p class="text-gray-400 text-sm">
-                  你答对了 {{ correctCount }} / {{ totalLevels }} 关 ·
-                  理解度 <span class="text-neon-blue font-mono font-bold">{{ Math.round(finalScore / totalLevels * 100) }}%</span>
+                  共 {{ resultSummary.total }} 关 ·
+                  <span class="text-neon-blue font-mono font-bold">{{ resultSummary.gradedCount }}</span> 关已判分（答对 {{ resultSummary.correct }} 关）
+                  <template v-if="resultSummary.ungradedCount || resultSummary.unansweredCount">
+                    · <span class="text-amber-400 font-mono font-bold">{{ resultSummary.ungradedCount + resultSummary.unansweredCount }}</span> 关未判分
+                  </template>
+                </p>
+                <p v-if="resultSummary.gradedCount === 0" class="text-xs text-amber-400/80 mt-2">
+                  离线演示模式：判题接口不可用，本次没有产生任何成绩，也不会给出掌握度结论。
+                </p>
+                <p v-else-if="resultSummary.ungradedCount" class="text-xs text-amber-400/60 mt-2">
+                  其中 {{ resultSummary.ungradedCount }} 关因为后端不可用而未判分，未计入正确率。
                 </p>
               </div>
 
@@ -697,108 +442,35 @@
                 <div class="h-2 bg-deep-border rounded-full overflow-hidden progress-bar">
                   <div
                     class="h-full difficulty-gradient rounded-full transition-all duration-1000 ease-out"
-                    :style="{ width: (finalScore / totalLevels * 100) + '%' }"
+                    :style="{ width: gradedPercent + '%' }"
                   ></div>
                 </div>
               </div>
 
-              <div class="grid grid-cols-4 gap-3 mb-6 max-w-lg mx-auto">
-                <div v-for="(level, i) in levels" :key="i" class="text-center">
+              <div class="grid gap-3 mb-6 max-w-lg mx-auto" :style="{ gridTemplateColumns: 'repeat(' + Math.max(resultSummary.total, 1) + ', minmax(0, 1fr))' }">
+                <div v-for="(level, i) in levels" :key="'res-' + i" class="text-center">
                   <div
                     class="w-10 h-10 mx-auto mb-1 rounded-xl flex items-center justify-center text-sm font-bold"
-                    :class="results[i] ? 'bg-green-500/20 text-green-400 border border-green-500/30' : 'bg-red-500/20 text-red-400 border border-red-500/30'"
+                    :class="resultCellClass(i)"
                   >
-                    {{ results[i] ? '✓' : '✗' }}
+                    {{ resultCellText(i) }}
                   </div>
-                  <div class="text-[10px] text-gray-500">{{ level }}</div>
+                  <div class="text-[10px] text-gray-500 truncate" :title="level">{{ level }}</div>
                 </div>
               </div>
 
-              <!-- 理解度雷达图 -->
+              <!-- 理解度雷达图（维度数量 = 题目数量） -->
               <div class="p-5 rounded-xl bg-deep-card/50 border border-deep-border">
                 <div class="text-sm font-medium text-white mb-4 text-center">📊 理解度评估</div>
-                <div class="flex items-center justify-center gap-8 flex-wrap">
-                  <svg :viewBox="radarViewBox" width="200" height="200" class="flex-shrink-0">
-                    <defs>
-                      <polygon id="radar-grad-shape" :points="radarPolyPoints" fill="none" />
-                      <linearGradient id="radar-fill-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" style="stop-color:#06b6d4;stop-opacity:0.35" />
-                        <stop offset="100%" style="stop-color:#a855f7;stop-opacity:0.35" />
-                      </linearGradient>
-                    </defs>
-                    <!-- 背景网格 格层 -->
-                    <g v-for="i in 5" :key="'ring-'+i" class="radar-ring">
-                      <polygon
-                        :points="ringPoints(i)"
-                        fill="none"
-                        stroke="#1e293b"
-                        stroke-width="1"
-                      />
-                    </g>
-                    <!-- 轴线 -->
-                    <g v-for="(dim, i) in radarDims" :key="'radar-axis-'+i">
-                      <line
-                        :x1="radarCX"
-                        :y1="radarCY"
-                        :x2="radarCX + radarRadius * Math.cos(radarAngle(i))"
-                        :y2="radarCY + radarRadius * Math.sin(radarAngle(i))"
-                        stroke="#334155"
-                        stroke-width="1"
-                      />
-                    </g>
-                    <!-- 数据多边形 -->
-                    <polygon
-                      :points="radarDataPoints"
-                      fill="url(#radar-fill-grad)"
-                      stroke="#a855f7"
-                      stroke-width="2"
-                      class="radar-data"
-                    />
-                    <!-- 数据点 -->
-                    <circle
-                      v-for="(dim, i) in radarDims"
-                      :key="'radar-dot-'+i"
-                      :cx="radarCX + radarRadius * radarScores[i] * Math.cos(radarAngle(i))"
-                      :cy="radarCY + radarRadius * radarScores[i] * Math.sin(radarAngle(i))"
-                      r="4"
-                      fill="#fff"
-                      stroke="#a855f7"
-                      stroke-width="2"
-                    />
-                    <!-- 维度标签 -->
-                    <g v-for="(dim, i) in radarDims" :key="'radar-label-'+i">
-                      <text
-                        :x="radarCX + (radarRadius + 22) * Math.cos(radarAngle(i))"
-                        :y="radarCY + (radarRadius + 22) * Math.sin(radarAngle(i))"
-                        text-anchor="middle"
-                        dominant-baseline="middle"
-                        fill="#94a3b8"
-                        font-size="11"
-                        font-weight="500"
-                      >{{ dim.label }}</text>
-                    </g>
-                  </svg>
-
-                  <div class="space-y-2.5 min-w-[160px]">
-                    <div v-for="(dim, i) in radarDims" :key="'dim-'+i" class="flex items-center gap-3">
-                      <div class="w-2 h-2 rounded-full" :style="{ background: dim.color }"></div>
-                      <div class="text-xs text-gray-400 w-20">{{ dim.label }}</div>
-                      <div class="flex-1 h-1.5 bg-deep-border rounded-full overflow-hidden">
-                        <div
-                          class="h-full rounded-full transition-all duration-700 ease-out"
-                        :style="{ width: radarScores[i] * 100 + '%', background: dim.color }"
-                        ></div>
-                      </div>
-                      <div class="text-xs font-mono font-bold" :style="{ color: dim.color }">{{ Math.round(radarScores[i] * 100) }}%</div>
-                    </div>
-                  </div>
-                </div>
-
+                <UnderstandingRadar :dims="radarDims" :scores="radarScores" />
                 <div class="mt-4 pt-4 border-t border-deep-border text-center">
                   <div class="text-sm">
                     综合评级：<strong :class="scoreLevel.color" class="font-bold text-base">{{ scoreLevel.label }}</strong>
                   </div>
                   <p class="text-xs text-gray-500 mt-1 leading-relaxed">{{ scoreLevel.comment }}</p>
+                  <p v-if="resultSummary.ungradedCount || resultSummary.unansweredCount" class="text-[11px] text-gray-600 mt-1">
+                    灰色维度表示该关未判分，不参与评级。
+                  </p>
                 </div>
 
                 <div v-if="weakPoints.length" class="mt-4 p-3 rounded-lg bg-amber-500/5 border border-amber-500/20">
@@ -812,35 +484,40 @@
               </div>
             </div>
 
-            <!-- 完整业务逻辑呈现：模块架构图 -->
+            <!-- 完整业务逻辑呈现：模块架构图（全部来自契约 modules） -->
             <div class="glass-card p-6 neon-border">
               <h3 class="text-base font-bold mb-1 flex items-center gap-2">
                 <span class="w-1 h-4 bg-gradient-to-b from-neon-blue to-neon-purple rounded-full"></span>
                 模块架构
               </h3>
-              <p class="text-xs text-gray-500 mb-4 ml-3">系统由以下核心模块组成，各司其职，相互协作</p>
+              <p class="text-xs text-gray-500 mb-4 ml-3">
+                系统由以下 {{ projectModules.length }} 个模块组成，各司其职，相互协作
+              </p>
 
-              <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+              <div v-if="!projectModules.length" class="text-sm text-gray-400">契约未提供 modules 数据。</div>
+              <div v-else class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
                 <div
                   v-for="(mod, i) in projectModules"
-                  :key="i"
+                  :key="mod.module_id || i"
                   class="p-4 rounded-xl bg-deep-card/50 border border-deep-border text-center
                          hover:border-neon-blue/40 hover:bg-neon-blue/5 transition-all group"
                 >
                   <div
                     class="w-10 h-10 mx-auto mb-2 rounded-lg flex items-center justify-center text-lg"
-                    :style="{ background: moduleColors[i % moduleColors.length] + '20' }"
+                    :style="{ background: paletteColor(i) + '20' }"
                   >
-                    {{ moduleIcons[i % moduleIcons.length] }}
+                    {{ paletteIcon(i) }}
                   </div>
                   <div class="text-sm font-medium text-white group-hover:text-neon-blue transition-colors">
                     {{ mod.name }}
                   </div>
-                  <div class="text-[10px] text-gray-500 mt-1">{{ mod.class_count }} 个类 · {{ mod.method_count }} 个方法</div>
+                  <div class="text-[10px] text-gray-500 mt-1">
+                    {{ mod.type || '未分类' }} · {{ mod.class_count }} 个类 · {{ mod.method_count }} 个方法
+                  </div>
                   <div class="mt-2 flex justify-center">
                     <span
                       class="text-[10px] px-2 py-0.5 rounded-full"
-                      :style="{ background: moduleColors[i % moduleColors.length] + '20', color: moduleColors[i % moduleColors.length] }"
+                      :style="{ background: paletteColor(i) + '20', color: paletteColor(i) }"
                     >
                       核心度 {{ mod.core_score }}
                     </span>
@@ -856,7 +533,12 @@
             </div>
 
             <!-- 深度业务分析（架构图 + 调用链 + 状态追踪） -->
-            <DeepAnalysisView :deep-analysis="deepAnalysis" />
+            <DeepAnalysisView
+              :deep-analysis="deepAnalysis"
+              :project-id="projectId"
+              :modules="projectModules"
+              @evidence-viewed="onEvidenceLoaded"
+            />
 
             <!-- 模块职责清单 -->
             <div class="glass-card p-6 neon-border">
@@ -865,35 +547,29 @@
                 模块职责清单
               </h3>
 
-              <div class="space-y-3">
+              <div v-if="!projectModules.length" class="text-sm text-gray-400">契约未提供 modules 数据。</div>
+              <div v-else class="space-y-3">
                 <div
                   v-for="(mod, i) in projectModules"
-                  :key="i"
+                  :key="'resp-' + (mod.module_id || i)"
                   class="p-4 rounded-xl bg-deep-card/50 border border-deep-border"
                 >
                   <div class="flex items-center gap-3 mb-2">
-                    <div
-                      class="w-8 h-8 rounded-lg flex items-center justify-center"
-                      :style="{ background: moduleColors[i % moduleColors.length] + '20' }"
-                    >
-                      <span class="text-base">{{ moduleIcons[i % moduleIcons.length] }}</span>
+                    <div class="w-8 h-8 rounded-lg flex items-center justify-center" :style="{ background: paletteColor(i) + '20' }">
+                      <span class="text-base">{{ paletteIcon(i) }}</span>
                     </div>
-                    <div>
-                      <div class="text-sm font-medium text-white">{{ mod.name }}</div>
-                      <div class="text-[11px] text-gray-500">{{ mod.description }}</div>
+                    <div class="min-w-0">
+                      <div class="text-sm font-medium text-white truncate">{{ mod.name }}</div>
+                      <div class="text-[11px] text-gray-500 truncate">{{ mod.description }}</div>
                     </div>
-                    <div class="ml-auto text-[10px] font-mono text-gray-500">
-                      核心度 {{ mod.core_score }}
-                    </div>
+                    <div class="ml-auto text-[10px] font-mono text-gray-500">核心度 {{ mod.core_score }}</div>
                   </div>
                   <div class="flex flex-wrap gap-1.5 pl-11">
                     <span
-                      v-for="(resp, j) in mod.responsibilities.slice(0, 5)"
+                      v-for="(resp, j) in (mod.responsibilities || []).slice(0, 5)"
                       :key="j"
                       class="px-2 py-0.5 text-[11px] rounded bg-deep-hover text-gray-400"
-                    >
-                      {{ resp }}
-                    </span>
+                    >{{ resp }}</span>
                   </div>
                 </div>
               </div>
@@ -910,11 +586,11 @@
                 🔄 重新训练
               </button>
               <button
-                @click="goBackToLevel4"
+                @click="goBackToLastLevel"
                 class="px-6 py-2.5 rounded-xl text-sm font-medium text-gray-300 transition-all
                        border border-deep-border hover:border-neon-blue/30 hover:text-white"
               >
-                ← 返回第4关
+                ← 返回第{{ totalLevels }}关
               </button>
               <button
                 @click="$emit('view-analysis')"
@@ -927,574 +603,647 @@
           </div>
         </transition>
       </div>
+      </div>
+
+      <!--
+        Sprint 3 · 阶段一「项目认知」：只读业务图谱，不依赖训练题契约
+        （所以契约加载失败时它照样可用，理由与业务图谱视图相同）。
+      -->
+      <StageOrientation
+        v-if="mainStage === 'orientation'"
+        :project-id="projectId"
+      />
+
+      <!--
+        Sprint 4 · 阶段二「模块卡片学习」：逐张卡片 + 五个问题 → 事实覆盖清单（不打分）。
+        题目与卡片内容都来自后端（`/teaching/module-card/task`，由 business_graph 派生），
+        所以它同样不依赖训练题契约；证据跳转复用页面右上角的 SourceViewerModal（P0-09）。
+      -->
+      <StageModuleCard
+        v-if="mainStage === 'module-card'"
+        :project-id="projectId"
+        @open-source="openSource"
+        @evidence-viewed="onEvidenceLoaded"
+      />
+
+      <!--
+        Sprint 5 · 阶段四「设计画布」+ 阶段五「六维评审」（README §18 优先级 3）。
+        题干、需求简报、必备能力数量与六维评审**全部来自后端**（`/teaching/design/*`，
+        由 business_graph 与 engine/lexicon/design_*.json 派生），所以它同样不依赖训练题契约。
+        画布本身（原生 drag + 手写 SVG）是学生的输入；判定只在后端 ——
+        离线时页面会明确显示「设计任务不可用」，而不是在浏览器里算一份分数出来。
+      -->
+      <StageDesign
+        v-if="mainStage === 'design'"
+        :project-id="projectId"
+      />
+
+      <!--
+        Sprint 2 · 业务图谱（P1-06）：一级域 → 二级功能点 → 动作，点击进卡片 / 跳源码。
+        它在"训练关卡"之外，所以在契约加载失败（loadError）时也应当可达 —— 图谱有自己的数据通道
+        （/business-graph 或快照里的 business_graph），不依赖 training 契约是否加载成功。
+      -->
+      <BusinessGraphView
+        v-if="mainStage === 'graph'"
+        :project-id="projectId"
+        @evidence-viewed="onEvidenceLoaded"
+      />
     </div>
+
+    <!-- 证据查看器（按项目内相对路径 + 行区间打开，P0-09） -->
+    <SourceViewerModal
+      :visible="sourceViewer.visible"
+      :project-id="projectId"
+      :path="sourceViewer.path"
+      :start="sourceViewer.start"
+      :end="sourceViewer.end"
+      :hint="sourceViewer.hint"
+      @close="sourceViewer.visible = false"
+      @loaded="onEvidenceLoaded"
+    />
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import DeepAnalysisView from '../components/DeepAnalysisView.vue'
+import ProjectSwitcher from '../components/ProjectSwitcher.vue'
+import GradingFeedback from '../components/GradingFeedback.vue'
+import KeyImplementationPanel from '../components/KeyImplementationPanel.vue'
+import UnderstandingRadar from '../components/UnderstandingRadar.vue'
+import SourceViewerModal from '../components/SourceViewerModal.vue'
+// Sprint 2：业务图谱视图（P1-06）——一级域 / 二级功能点 / 模块卡片 / 复杂度徽章 / 流程场景
+import BusinessGraphView from '../components/BusinessGraphView.vue'
+// Sprint 3：阶段一「项目认知」——项目地图 + 学生自由文本 → 覆盖清单（不打分）
+import StageOrientation from '../components/StageOrientation.vue'
+// Sprint 4：阶段二「模块卡片学习」——逐张卡片 + 五个问题 → 事实覆盖清单（不打分）
+import StageModuleCard from '../components/StageModuleCard.vue'
+import StageDesign from '../components/StageDesign.vue'
+// P0-13：数据统一走双通道数据源（API 优先 / 静态快照回落）
+import { useDataSource, DEFAULT_PROJECT_ID } from '../api/dataSource'
+// P0-03：会话与进度持久化
+import { useLearningSession } from '../stores/learningSession'
 
 const emit = defineEmits(['view-analysis'])
 
-// 数据
-const projectName = ref('实验室安全助手')
-const levels = ['功能拆分', '模块职责', '流程推演', '关键实现']
-const totalLevels = 4
+const ds = useDataSource()
+const session = useLearningSession()
 
-// 视图状态
+const mode = ds.mode
+const HINTS_PER_LEVEL = 2
+
+// ---------------------------------------------------------------------------
+// 项目加载（P0-03：project_id 来自 ?project=<id>，可切换）
+// ---------------------------------------------------------------------------
+const projectId = ref(ds.readProjectFromUrl() || DEFAULT_PROJECT_ID)
+const projects = ref([...ds.demos])
+const contract = ref(null)
+const loading = ref(true)
+const loadError = ref('')
+
+/**
+ * 主阶段：'orientation'（Sprint 3 · 阶段一 项目认知） | 'module-card'（Sprint 4 · 阶段二 模块卡片）
+ * | 'training'（旧四关题型，**默认**；题数随项目而定） | 'graph'（Sprint 2 业务图谱）。
+ * 用 v-show/v-if 切换而**不引 vue-router**，与 App.vue 的 currentView 机制一致（README5 §6.2 方案 A）。
+ */
+const mainStage = ref('training')
+
+// P0-01：项目名来自契约 project_name，不再写死项目名字符串
+const projectName = computed(() => contract.value?.project_name || contract.value?.project_id || '（未命名项目）')
+
+// 所有业务内容都从契约派生
+const questions = computed(() => contract.value?.training?.questions || [])
+const projectModules = computed(() => contract.value?.modules || [])
+const deepAnalysis = computed(() => contract.value?.deep_analysis || null)
+
+const overviewLine = computed(() => {
+  const o = contract.value?.overview
+  if (!o) return ''
+  return `${o.total_files ?? '?'} 文件 · ${o.module_count ?? projectModules.value.length} 模块 · ${o.total_lines ?? '?'} 行`
+})
+
+// 项目背景：优先用契约自带的 project_description；为空时用 overview 的真实统计拼一句，不编造业务场景
+const projectBackground = computed(() => {
+  const desc = contract.value?.training?.project_description
+  if (desc && String(desc).trim()) return String(desc).trim()
+  const o = contract.value?.overview
+  if (!o) return ''
+  return `本项目包含 ${o.total_files ?? '?'} 个源码文件、${o.total_classes ?? '?'} 个类、${o.module_count ?? projectModules.value.length} 个模块，共 ${o.total_lines ?? '?'} 行代码。`
+})
+
+// P0-01：目标模块 = 业务类模块（core/business/intermediate）中 core_score 最高的一个
+const BUSINESS_MODULE_TYPES = ['core', 'business', 'intermediate']
+const businessModules = computed(() => {
+  const list = projectModules.value.filter(m => BUSINESS_MODULE_TYPES.includes(String(m.type || '').toLowerCase()))
+  return list.length ? list : projectModules.value
+})
+const targetModule = computed(() => {
+  const list = businessModules.value
+  if (!list.length) return null
+  return list.reduce((best, m) => (Number(m.core_score) || 0) > (Number(best.core_score) || 0) ? m : best, list[0])
+})
+const targetModuleName = computed(() => targetModule.value?.name || '')
+
+// P0-01：流程名来自 core_flows[0].name
+const coreFlow = computed(() => contract.value?.core_flows?.[0] || null)
+const flowName = computed(() => coreFlow.value?.name || '')
+
+// P0-01：关键函数来自 deep_analysis.key_implementations.implementations[0]
+const keyImplementation = computed(() => deepAnalysis.value?.key_implementations?.implementations?.[0] || null)
+const keyFunction = computed(() => keyImplementation.value?.method || '')
+
+// ---------------------------------------------------------------------------
+// 关卡状态
+// ---------------------------------------------------------------------------
 const currentLevel = ref(1)
 const currentView = ref('level') // level | result
 
-// 项目数据
-const projectModules = ref([])
-const coreFlow = ref(null)
-const deepAnalysis = ref(null)
-const moduleColors = ['#00d4ff', '#a855f7', '#ec4899', '#22d3ee', '#f59e0b']
-const moduleIcons = ['📋', '🔐', '🔧', '⚠️', '📊']
+/** 每关一份独立状态，便于切换项目/关卡时保留 */
+const levelStates = ref({})
 
-// 第1关状态
-const selectedLevel1 = ref([])
-const level1Answered = ref(false)
-const level1Correct = ref(false)
-const level1HintsRemaining = ref(2)
-const level1HintCount = ref(0)
+function defaultLevelState() {
+  return {
+    selected: [],        // 多选：数组；单选：长度为 0/1 的数组（统一数据结构）
+    answered: false,
+    grading: null,       // 后端判题响应；离线时为 null
+    offlineGraded: false,// true = 本题未判分（离线演示模式）
+    hintsRemaining: HINTS_PER_LEVEL,
+    hintsUsed: 0,
+    submitting: false,
+  }
+}
 
-// 第2关状态
-const selectedLevel2 = ref('')
-const level2Answered = ref(false)
-const level2Correct = ref(false)
-const level2HintsRemaining = ref(2)
-const level2HintCount = ref(0)
+function initLevelStates() {
+  const next = {}
+  questions.value.forEach((_, i) => {
+    const restored = session.state.answers?.[i]
+    const st = defaultLevelState()
+    if (restored) {
+      // P0-03：恢复"选了什么 + 上次的判分结论"，但不恢复讲解文本（讲解只在本次提交后展示）
+      st.selected = Array.isArray(restored.selected) ? restored.selected : [restored.selected].filter(Boolean)
+      st.hintsUsed = Number(session.state.hints_used?.[i + 1]) || 0
+      st.hintsRemaining = Math.max(0, HINTS_PER_LEVEL - st.hintsUsed)
+      if (restored.graded) {
+        st.answered = true
+        st.grading = { result: restored.result, matched: [], missing: [], extra: [], explanation: '' }
+      } else if (restored.result === 'ungraded') {
+        st.answered = true
+        st.offlineGraded = true
+      }
+    }
+    next[i] = st
+  })
+  levelStates.value = next
+}
 
-// 第3关状态
-const selectedLevel3 = ref('')
-const level3Answered = ref(false)
-const level3Correct = ref(false)
-const level3HintsRemaining = ref(2)
-const level3HintCount = ref(0)
-
-// 第4关状态
-const selectedLevel4 = ref('')
-const level4Answered = ref(false)
-const level4Correct = ref(false)
-const level4HintsRemaining = ref(2)
-const level4HintCount = ref(0)
-
-// 题目数据（实际从后端加载）
-const questions = ref([])
-
-const currentQuestion = computed(() => {
-  if (!questions.value.length) return { options: [], correct_answers: [], explanation: '' }
-  return questions.value[currentLevel.value - 1] || {}
-})
+const totalLevels = computed(() => questions.value.length)
+const levels = computed(() => questions.value.map((q, i) => q.title || `第 ${i + 1} 关`))
+const currentQuestion = computed(() => questions.value[currentLevel.value - 1] || null)
+const currentState = computed(() => levelStates.value[currentLevel.value - 1] || defaultLevelState())
+const questionType = computed(() => currentQuestion.value?.question_type || '')
+const isMultiSelect = computed(() => questionType.value === 'module_selection')
+const isLastLevel = computed(() => currentLevel.value >= totalLevels.value)
 
 const progressPercent = computed(() => {
   if (currentView.value === 'result') return 100
-  return ((currentLevel.value - 1) / totalLevels) * 100
+  if (!totalLevels.value) return 0
+  return ((currentLevel.value - 1) / totalLevels.value) * 100
 })
 
-const selectedCount = computed(() => selectedLevel1.value.length)
+// 题型文案（展示用；题型本身来自契约）
+const QUESTION_TYPE_LABELS = {
+  module_selection: '功能拆分',
+  responsibility_match: '模块职责',
+  flow_next_step: '流程推演',
+  key_implementation: '关键实现',
+}
+const questionTypeLabel = computed(() => QUESTION_TYPE_LABELS[questionType.value] || (currentQuestion.value?.question_type || '训练题'))
 
-const targetModuleName = computed(() => {
-  return '预约管理模块'
-})
-
-const flowName = computed(() => {
-  return '实验室预约流程'
-})
-
-const keyFunction = computed(() => {
-  return 'create_reservation'
-})
-
-// 第4关：关键实现数据
-const keyImpData = computed(() => {
-  const imps = deepAnalysis.value?.key_implementations?.implementations || []
-  return imps.find(imp =>
-    imp.method === keyFunction.value ||
-    imp.method.toLowerCase().includes(keyFunction.value.replace(/_/g, ''))
-  ) || null
-})
-
-const keyImpFile = computed(() => {
-  if (!keyImpData.value?.filepath) return ''
-  const parts = keyImpData.value.filepath.split(/[\\/]/)
-  return parts[parts.length - 1]
-})
-
-const keyImpStartLine = computed(() => keyImpData.value?.start_line || 1)
-const keyImpEndLine = computed(() => keyImpData.value?.end_line || 1)
-const keyImpLineRange = computed(() => `${keyImpStartLine.value}-${keyImpEndLine.value}`)
-
-// 代码行：从项目演示文件中读取（用深度分析里已有的代码源，简化处理）
-// 实际会从后端拉，这里用 key_implementations 里的数据 + 简单的代码模拟
-const keyImpCodeLines = computed(() => {
-  const imp = keyImpData.value
-  if (!imp) return []
-
-  // 根据分析数据生成代码骨架示意（真实场景会从后端获取完整源码）
-  const lines = []
-  const method = imp.method
-  const cls = imp.class || ''
-  const indent = cls ? '    ' : ''
-
-  // 方法签名
-  lines.push(`${indent}<span class="text-purple-400">def</span> <span class="text-yellow-300">${method}</span>(<span class="text-orange-300">self</span>, ...):`)
-
-  // docstring
-  lines.push(`${indent}    <span class="text-green-600">"""关键业务方法"""</span>`)
-
-  // 校验逻辑
-  if (imp.validation_checks && imp.validation_checks.length > 0) {
-    lines.push('')
-    lines.push(`${indent}    <span class="text-gray-500"># 前置校验</span>`)
-    imp.validation_checks.forEach(check => {
-      lines.push(`${indent}    <span class="text-purple-400">if</span> <span class="text-cyan-300">${check}</span>:`)
-      lines.push(`${indent}        <span class="text-purple-400">raise</span> <span class="text-red-400">ValueError</span>(...)`)
-    })
-  }
-
-  // 状态写入
-  if (imp.state_writes && imp.state_writes.length > 0) {
-    lines.push('')
-    lines.push(`${indent}    <span class="text-gray-500"># 状态变更</span>`)
-    imp.state_writes.slice(0, 3).forEach(field => {
-      const cleanField = field.replace('._inferred_', '')
-      if (cleanField.includes('[')) {
-        lines.push(`${indent}    <span class="text-cyan-300">self.${cleanField}</span> = ...`)
-      } else {
-        lines.push(`${indent}    <span class="text-cyan-300">self.${cleanField}</span> = ...`)
-      }
-    })
-  }
-
-  // 循环/遍历
-  if (imp.loop_count > 0) {
-    lines.push('')
-    lines.push(`${indent}    <span class="text-gray-500"># 核心逻辑</span>`)
-    lines.push(`${indent}    <span class="text-purple-400">for</span> item <span class="text-purple-400">in</span> ...:`)
-    lines.push(`${indent}        ...`)
-  }
-
-  // 返回值
-  lines.push('')
-  lines.push(`${indent}    <span class="text-purple-400">return</span> ...`)
-
-  return lines
-})
-
-const finalScore = computed(() => {
-  let score = 0
-  if (level1Correct.value) score++
-  if (level2Correct.value) score++
-  if (level3Correct.value) score++
-  if (level4Correct.value) score++
-  return score
-})
-
-const correctCount = computed(() => finalScore.value)
-
-const results = computed(() => [
-  level1Correct.value,
-  level2Correct.value,
-  level3Correct.value,
-  level4Correct.value,
-])
-
-const scoreLevel = computed(() => {
-  const pct = finalScore.value / totalLevels
-  if (pct === 1) return { label: '非常优秀', color: 'text-green-400', comment: '你对这个项目的业务逻辑理解很透彻，从模块划分到核心实现都掌握得很好。' }
-  if (pct >= 0.75) return { label: '良好', color: 'text-neon-blue', comment: '整体理解不错，个别细节还需要加强。建议重点复习答错的部分。' }
-  if (pct >= 0.5) return { label: '及格', color: 'text-amber-400', comment: '有一定基础，但对系统的整体把握还不够。建议再走一遍流程，重点理解模块间关系。' }
-  return { label: '需要加强', color: 'text-red-400', comment: '对项目的业务逻辑还比较陌生。建议从模块拆分开始重新学习，一步步建立全局认识。' }
-})
-
-// ---- 理解度雷达图 ----
-const radarDims = [
-  { key: 'split', label: '功能拆分', color: '#06b6d4' },
-  { key: 'responsibility', label: '模块职责', color: '#a855f7' },
-  { key: 'flow', label: '流程推演', color: '#f59e0b' },
-  { key: 'implementation', label: '关键实现', color: '#ec4899' },
+// 每关的配色主题（纯样式，与业务内容无关）
+const LEVEL_THEMES = [
+  { badge: 'from-neon-blue to-cyan-400', accent: 'text-neon-blue', button: 'from-neon-blue to-cyan-500', shadow: 'shadow-neon-blue/25' },
+  { badge: 'from-neon-purple to-pink-400', accent: 'text-neon-purple', button: 'from-neon-purple to-pink-500', shadow: 'shadow-neon-purple/25' },
+  { badge: 'from-amber-400 to-orange-500', accent: 'text-amber-400', button: 'from-amber-500 to-orange-500', shadow: 'shadow-amber-500/25' },
+  { badge: 'from-neon-pink to-rose-500', accent: 'text-neon-pink', button: 'from-neon-pink to-rose-500', shadow: 'shadow-neon-pink/25' },
 ]
+const theme = computed(() => LEVEL_THEMES[(currentLevel.value - 1) % LEVEL_THEMES.length])
 
-const radarCX = 110
-const radarCY = 110
-const radarRadius = 70
-const radarSize = 220
-const radarViewBox = `0 0 ${radarSize} ${radarSize}`
+// 模块卡片的调色板 / 图标（按下标取，不再按写死的模块名取）
+const MODULE_PALETTE = ['#00d4ff', '#a855f7', '#ec4899', '#22d3ee', '#f59e0b', '#4ade80']
+const MODULE_ICONS = ['📦', '🔐', '🔧', '⚠️', '📊', '🧩']
+function paletteColor(i) { return MODULE_PALETTE[i % MODULE_PALETTE.length] }
+function paletteIcon(i) { return MODULE_ICONS[i % MODULE_ICONS.length] }
 
-function radarAngle(i) {
-  // 从顶部开始，顺时针排列 4 个维度
-  return (-Math.PI / 2) + (2 * Math.PI * i / radarDims.length)
+// ---------------------------------------------------------------------------
+// 选择 / 提交 / 判分（P0-11：判分只在后端，前端永不读 correct_answers）
+// ---------------------------------------------------------------------------
+const canSubmit = computed(() => currentState.value.selected.length > 0)
+
+function isAnswered(id) {
+  return currentState.value.selected.includes(id)
 }
 
-const radarScores = computed(() => {
-  return [
-    level1Correct.value ? 1.0 : 0.4,
-    level2Correct.value ? 1.0 : 0.4,
-    level3Correct.value ? 1.0 : 0.4,
-    level4Correct.value ? 1.0 : 0.4,
-  ]
-})
-
-const radarDataPoints = computed(() => {
-  return radarDims.map((_, i) => {
-    const r = radarRadius * radarScores.value[i]
-    const x = radarCX + r * Math.cos(radarAngle(i))
-    const y = radarCY + r * Math.sin(radarAngle(i))
-    return `${x},${y}`
-  }).join(' ')
-})
-
-const radarPolyPoints = computed(() => {
-  return radarDims.map((_, i) => {
-    const x = radarCX + radarRadius * Math.cos(radarAngle(i))
-    const y = radarCY + radarRadius * Math.sin(radarAngle(i))
-    return `${x},${y}`
-  }).join(' ')
-})
-
-function ringPoints(i) {
-  const ratio = i / 5
-  return radarDims.map((_, idx) => {
-    const r = radarRadius * ratio
-    const x = radarCX + r * Math.cos(radarAngle(idx))
-    const y = radarCY + r * Math.sin(radarAngle(idx))
-    return `${x},${y}`
-  }).join(' ')
+function toggleOption(opt) {
+  const st = currentState.value
+  if (st.answered) return
+  const idx = st.selected.indexOf(opt.id)
+  if (idx >= 0) st.selected.splice(idx, 1)
+  else st.selected.push(opt.id)
 }
 
-const weakPoints = computed(() => {
-  const res = []
-  const levelCorrect = [level1Correct.value, level2Correct.value, level3Correct.value, level4Correct.value]
-  const advice = [
-    '功能拆分：建议从"人、事、物"三个角度重新梳理系统模块',
-    '模块职责：建议复习每个模块的职责清单，关注"核心职责 vs 附带功能"的区别',
-    '流程推演：建议对照业务流程图，梳理"校验→处理→记录"的标准模式',
-    '关键实现：建议深入阅读核心方法的代码，理解设计思路和边界条件',
-  ]
-  radarDims.forEach((dim, i) => {
-    if (!levelCorrect[i]) {
-      res.push(advice[i])
-    }
-  })
-  return res
-})
-
-// 方法
-function isSelected(id) {
-  return selectedLevel1.value.includes(id)
+function selectSingle(id) {
+  const st = currentState.value
+  if (st.answered) return
+  st.selected = [id]
 }
 
-function getOptionClass(opt) {
-  if (!level1Answered.value) {
-    return isSelected(opt.id)
-      ? 'border-neon-blue bg-neon-blue/10'
-      : 'border-deep-border hover:border-neon-blue/30'
+/** 判分后：matched 高亮绿色，选错的标红；没有 correct_answers 可用，也不需要 */
+function gradingMatched(id) {
+  return (currentState.value.grading?.matched || []).includes(id)
+}
+
+function multiOptionClass(opt) {
+  const st = currentState.value
+  if (!st.answered) {
+    return isAnswered(opt.id) ? 'border-neon-blue bg-neon-blue/10' : 'border-deep-border hover:border-neon-blue/30'
   }
-  const isCorrect = currentQuestion.value.correct_answers.includes(opt.id)
-  const wasSelected = isSelected(opt.id)
-  if (isCorrect) return 'border-green-500 bg-green-500/10'
-  if (wasSelected && !isCorrect) return 'border-red-500 bg-red-500/10'
+  if (gradingMatched(opt.id)) return 'border-green-500 bg-green-500/10'
+  if (isAnswered(opt.id)) return 'border-red-500 bg-red-500/10'
   return 'border-deep-border opacity-50'
 }
 
-function getCheckboxClass(opt) {
-  if (!level1Answered.value) {
-    return isSelected(opt.id)
-      ? 'bg-neon-blue border-neon-blue'
-      : 'border-gray-600'
-  }
-  const isCorrect = currentQuestion.value.correct_answers.includes(opt.id)
-  if (isCorrect) return 'bg-green-500 border-green-500'
+function multiCheckboxClass(opt) {
+  const st = currentState.value
+  if (!st.answered) return isAnswered(opt.id) ? 'bg-neon-blue border-neon-blue' : 'border-gray-600'
+  if (gradingMatched(opt.id)) return 'bg-green-500 border-green-500'
   return 'border-gray-600'
 }
 
-function selectOption(opt) {
-  if (level1Answered.value) return
-  if (isSelected(opt.id)) {
-    selectedLevel1.value = selectedLevel1.value.filter(id => id !== opt.id)
-  } else {
-    selectedLevel1.value.push(opt.id)
+function singleOptionClass(opt) {
+  const st = currentState.value
+  if (!st.answered) return isAnswered(opt.id) ? 'selected' : ''
+  if (gradingMatched(opt.id)) return 'correct'
+  if (isAnswered(opt.id)) return 'wrong'
+  return ''
+}
+
+function optionLetterStyle(opt) {
+  const st = currentState.value
+  const selected = isAnswered(opt.id)
+  if (st.answered) {
+    if (gradingMatched(opt.id)) return { background: '#4ade80', color: '#fff' }
+    if (selected) return { background: '#f87171', color: '#fff' }
   }
+  return selected
+    ? { background: '#a855f7', color: '#fff' }
+    : { background: '#1f1f2e', color: '#94a3b8' }
 }
 
-function isCorrectOption(opt) {
-  return currentQuestion.value.correct_answers.includes(opt.id)
-}
-
-function selectLevel2(id) {
-  if (level2Answered.value) return
-  selectedLevel2.value = id
-}
-
-function selectLevel3(id) {
-  if (level3Answered.value) return
-  selectedLevel3.value = id
-}
-
-function selectLevel4(id) {
-  if (level4Answered.value) return
-  selectedLevel4.value = id
-}
-
-function submitLevel1() {
-  const correct = currentQuestion.value.correct_answers
-  const userSet = new Set(selectedLevel1.value)
-  const correctSet = new Set(correct)
-  // 完全正确才算对
-  const isRight = userSet.size === correctSet.size &&
-    [...userSet].every(x => correctSet.has(x))
-  level1Correct.value = isRight
-  level1Answered.value = true
-  if (!isRight && level1HintsRemaining.value > 0) {
-    level1HintsRemaining.value--
-    level1HintCount.value++
-  }
-}
-
-function submitLevel2() {
-  level2Correct.value = currentQuestion.value.correct_answers.includes(selectedLevel2.value)
-  level2Answered.value = true
-  if (!level2Correct.value && level2HintsRemaining.value > 0) {
-    level2HintsRemaining.value--
-    level2HintCount.value++
-  }
-}
-
-function submitLevel3() {
-  level3Correct.value = currentQuestion.value.correct_answers.includes(selectedLevel3.value)
-  level3Answered.value = true
-  if (!level3Correct.value && level3HintsRemaining.value > 0) {
-    level3HintsRemaining.value--
-    level3HintCount.value++
-  }
-}
-
-function submitLevel4() {
-  level4Correct.value = currentQuestion.value.correct_answers.includes(selectedLevel4.value)
-  level4Answered.value = true
-  if (!level4Correct.value && level4HintsRemaining.value > 0) {
-    level4HintsRemaining.value--
-    level4HintCount.value++
-  }
-}
-
-// ---- 引导提示内容 ----
-
-// 第1关引导：根据答错的类型给不同线索
-const level1Hint = computed(() => {
-  const correct = new Set(currentQuestion.value.correct_answers || [])
-  const userSet = new Set(selectedLevel1.value)
-  const missed = [...correct].filter(x => !userSet.has(x))
-  const extra = [...userSet].filter(x => !correct.has(x))
-
-  const hints = [
-    '想一想：一个实验室安全系统，最核心的业务是什么？学生进来第一件事做什么？',
-    '提示：从"人、事、物"三个角度去拆分——谁来用？做什么事？用什么东西？',
-    '再想想：安全检查和设备管理是一回事吗？用户权限需要单独管吗？',
-  ]
-
-  let msg = hints[Math.min(level1HintCount.value - 1, hints.length - 1)]
-  if (missed.length > 0 && extra.length > 0) {
-    msg += `你漏选了 ${missed.length} 个，多选了 ${extra.length} 个。`
-  } else if (missed.length > 0) {
-    msg += `还有 ${missed.length} 个核心模块没有选到。`
-  } else if (extra.length > 0) {
-    msg += `你多选了 ${extra.length} 个，这些真的是独立的核心模块吗？`
-  }
-  return msg
+const showNextButton = computed(() => {
+  const st = currentState.value
+  if (!st.answered) return false
+  if (st.offlineGraded) return true                                  // 离线：不判分，允许继续
+  if (st.grading?.result === 'correct') return true
+  return st.hintsRemaining === 0                                     // 用尽机会后也允许继续
 })
 
-const level1HintModules = computed(() => {
-  // 从项目模块数据中提取 2 个作为线索，但不直接说对或错
-  if (!projectModules.value.length) return []
-  const correct = new Set(currentQuestion.value.correct_answers || [])
-  // 找两个正确选项对应的模块作为"参考线索"
-  const hints = []
-  for (const mod of projectModules.value) {
-    // 通过模块名匹配选项
-    const matchedOpt = currentQuestion.value.options?.find(opt =>
-      opt.text.includes(mod.name.replace('模块', '')) ||
-      mod.name.includes(opt.text.replace(/模块|管理/g, ''))
-    )
-    if (matchedOpt && correct.has(matchedOpt.id) && hints.length < 2) {
-      hints.push({
-        name: mod.name,
-        hint: `负责 ${mod.responsibilities?.[0] || '核心业务'}`,
-      })
+const showHintPanel = computed(() => {
+  const st = currentState.value
+  if (!st.answered || st.offlineGraded) return false
+  if (st.grading?.result === 'correct') return false
+  return st.hintsRemaining > 0
+})
+
+async function submitCurrent() {
+  const st = currentState.value
+  const q = currentQuestion.value
+  if (!q || st.answered || st.submitting || !st.selected.length) return
+
+  const index = currentLevel.value - 1
+  st.submitting = true
+  // P0-11：判题走后端；离线时 submitAnswer 返回 offline=true，不伪造分数
+  const res = await ds.submitAnswer(projectId.value, index, st.selected)
+  st.submitting = false
+  st.answered = true
+
+  if (res.ok) {
+    st.grading = res.data
+    st.offlineGraded = false
+    if (res.data.result !== 'correct' && st.hintsRemaining > 0) {
+      st.hintsRemaining--
+      st.hintsUsed++
+      session.recordHint(currentLevel.value)
     }
+    session.recordAnswer(index, { selected: st.selected, result: res.data.result, graded: true })
+  } else {
+    // 离线演示模式：明确"未判分"，学生可以直接进入下一关
+    st.grading = null
+    st.offlineGraded = true
+    session.recordAnswer(index, { selected: st.selected, result: 'ungraded', graded: false })
   }
-  return hints
-})
-
-function retryLevel1() {
-  level1Answered.value = false
 }
 
-// 第2关引导：给出职责关键词线索
-const level2Hint = computed(() => {
-  const hints = [
-    `再想想"${targetModuleName.value}"这个名字——它的核心职责应该跟什么最相关？`,
-    '好的模块职责描述应该回答三个问题：管什么数据？提供什么操作？对外暴露什么接口？',
-    '注意区分"核心职责"和"附带功能"——一个模块可以有很多功能，但核心职责只有一个。',
-  ]
-  return hints[Math.min(level2HintCount.value - 1, hints.length - 1)]
+function retryCurrent() {
+  const st = currentState.value
+  st.answered = false
+  st.grading = null
+  st.offlineGraded = false
+}
+
+// ---------------------------------------------------------------------------
+// 提示内容（全部由契约数据驱动，P0-01：不再出现某个具体项目的样例文案）
+// ---------------------------------------------------------------------------
+const moduleTypeSummary = computed(() => {
+  const counts = {}
+  projectModules.value.forEach(m => {
+    const t = String(m.type || 'unknown')
+    counts[t] = (counts[t] || 0) + 1
+  })
+  return Object.entries(counts).map(([type, count]) => ({ type, count }))
 })
 
-const level2HintKeywords = computed(() => {
-  // 从目标模块的 responsibilities 中提取关键词
-  const targetMod = projectModules.value.find(m => m.name === targetModuleName.value)
-  if (!targetMod || !targetMod.responsibilities) return []
-  // 提取关键词（去掉常见停用词）
+// 只有"功能拆分"这一关才用模块类型分布做提示（它才是关于模块职责边界的题）
+const showModuleTypeChips = computed(() => questionType.value === 'module_selection')
+
+function typeLabel(type) {
+  const map = { core: '核心业务', business: '业务', intermediate: '中间层', orchestrator: '编排', peripheral: '外围支撑', unknown: '未标注类型' }
+  return map[type] || type
+}
+
+const currentHintText = computed(() => {
+  const used = currentState.value.hintsUsed
+  const pick = (hints) => hints[Math.min(Math.max(used - 1, 0), hints.length - 1)]
+
+  if (questionType.value === 'module_selection') {
+    return pick([
+      `这个项目一共有 ${projectModules.value.length} 个代码模块，其中真正承担业务职责的只是其中一部分——先判断"谁持有业务状态并对外提供操作"。`,
+      '从"人、事、物"三个角度拆：谁来用？做什么事？对什么资源做？只负责装配/编排的模块不算业务模块。',
+      '再看一眼模块的类型：编排（orchestrator）与外围支撑（peripheral）都不该算核心业务模块。',
+    ])
+  }
+  if (questionType.value === 'responsibility_match') {
+    return pick([
+      targetModuleName.value
+        ? `再想想「${targetModuleName.value}」这个名字——它的核心职责应该跟什么最相关？`
+        : '契约里没有可判定的业务模块，先看模块清单，找出承担业务职责的那几个。',
+      '好的模块职责描述应该回答三个问题：管什么数据？提供什么操作？对外暴露什么接口？',
+      '注意区分"核心职责"和"附带功能"——一个模块可以有很多功能，但核心职责只有一个。',
+    ])
+  }
+  if (questionType.value === 'flow_next_step') {
+    return pick([
+      '顺着数据流向去想：用户触发一个操作，第一步做什么？最后一步做什么？',
+      '业务流程通常遵循"校验 → 处理 → 记录"的模式，想想每一步属于哪个阶段。',
+      '注意：有些步骤是前置条件，有些是核心操作，有些是收尾工作。区分它们的顺序。',
+    ])
+  }
+  return pick([
+    keyFunction.value
+      ? `关键函数「${keyFunction.value}」的核心思路是什么？先想想它要解决什么问题。`
+      : '先看代码证据：这个方法要做几件事？边界条件在哪？',
+    '一个好的实现思路，应该先说清楚"输入是什么、输出是什么、核心逻辑分几步"。',
+    '注意看函数名里的关键词——"check"、"validate"、"find" 这些词暗示了实现方式。',
+  ])
+})
+
+const hintKeywords = computed(() => {
+  if (questionType.value !== 'responsibility_match') return []
+  const resps = targetModule.value?.responsibilities || []
   const words = []
-  targetMod.responsibilities.forEach(r => {
-    const tokens = r.split(/[、，/（）()]/).filter(t => t.trim().length > 1 && t.length < 6)
+  resps.forEach(r => {
+    const tokens = String(r).split(/[、，/（）()]/).filter(t => t.trim().length > 1 && t.length < 6)
     words.push(...tokens)
   })
-  // 给 3-4 个关键词作为线索，其中混入一个干扰项
-  const unique = [...new Set(words)].slice(0, 4)
-  return unique
+  return [...new Set(words)].slice(0, 4)
 })
 
-function retryLevel2() {
-  level2Answered.value = false
-  selectedLevel2.value = ''
-}
-
-// 第3关引导：给出流程首尾锚点
-const level3Hint = computed(() => {
-  const hints = [
-    '顺着数据流向去想：用户触发一个操作，第一步做什么？最后一步做什么？',
-    '业务流程通常遵循"校验 → 处理 → 记录"的模式，想想每一步属于哪个阶段。',
-    '注意：有些步骤是前置条件，有些是核心操作，有些是收尾工作。区分它们的顺序。',
-  ]
-  return hints[Math.min(level3HintCount.value - 1, hints.length - 1)]
-})
-
-const level3FlowAnchor = computed(() => {
-  // 从核心流程数据中取第一步和最后一步
-  if (!coreFlow.value || !coreFlow.value.steps?.length) return null
-  const steps = coreFlow.value.steps
+const flowAnchor = computed(() => {
+  if (questionType.value !== 'flow_next_step') return null
+  const steps = coreFlow.value?.steps
+  if (!steps?.length) return null
   return {
     start: steps[0].method || steps[0].name,
     end: steps[steps.length - 1].method || steps[steps.length - 1].name,
   }
 })
 
-function retryLevel3() {
-  level3Answered.value = false
-  selectedLevel3.value = ''
-}
-
-// 第4关引导：给出关键实现的分析线索
-const level4Hint = computed(() => {
-  const hints = [
-    `关键函数 "${keyFunction.value}" 的核心思路是什么？先想想它要解决什么问题。`,
-    '一个好的实现思路，应该先说清楚"输入是什么、输出是什么、核心逻辑分几步"。',
-    '注意看函数名里的关键词——"check"、"validate"、"find" 这些词暗示了实现方式。',
-  ]
-  return hints[Math.min(level4HintCount.value - 1, hints.length - 1)]
+const keyImplHint = computed(() => {
+  if (questionType.value !== 'key_implementation') return null
+  const imp = keyImplementation.value
+  if (!imp) return null
+  return {
+    design_approach: imp.design_approach,
+    design_characteristics: imp.design_characteristics,
+    complexity: imp.complexity ?? '?',
+    state_write_count: (imp.state_writes || []).length,
+    validation_count: (imp.validation_checks || []).length,
+  }
 })
 
-const level4KeyImpHint = computed(() => {
-  // 从深度分析的 key_implementations 中找对应的关键方法
-  const imps = deepAnalysis.value?.key_implementations?.implementations || []
-  const target = imps.find(imp =>
-    imp.method === keyFunction.value ||
-    imp.method.toLowerCase().includes(keyFunction.value.replace(/_/g, ''))
-  )
-  if (!target) {
-    // 找不到的话给一个默认的
+// ---------------------------------------------------------------------------
+// 结果统计（P0-11：区分"已判分"与"未判分"，不谎报分数）
+// ---------------------------------------------------------------------------
+const perLevel = computed(() => questions.value.map((_, i) => {
+  const st = levelStates.value[i] || defaultLevelState()
+  const graded = !!st.grading
+  return {
+    index: i,
+    graded,
+    answered: st.answered,
+    correct: graded && st.grading.result === 'correct',
+  }
+}))
+
+const resultSummary = computed(() => {
+  const graded = perLevel.value.filter(p => p.graded)
+  const ungraded = perLevel.value.filter(p => !p.graded && p.answered)
+  const unanswered = perLevel.value.filter(p => !p.answered)
+  return {
+    total: totalLevels.value,
+    gradedCount: graded.length,
+    correct: graded.filter(p => p.correct).length,
+    ungradedCount: ungraded.length,
+    unansweredCount: unanswered.length,
+  }
+})
+
+const gradedPercent = computed(() => {
+  const { gradedCount, total } = resultSummary.value
+  if (!total || !gradedCount) return 0
+  return (resultSummary.value.correct / gradedCount) * 100
+})
+
+function isLevelCorrect(i) {
+  return !!perLevel.value[i]?.correct
+}
+
+function resultCellText(i) {
+  const p = perLevel.value[i]
+  if (!p?.graded) return '—'
+  return p.correct ? '✓' : '✗'
+}
+
+function resultCellClass(i) {
+  const p = perLevel.value[i]
+  if (!p?.graded) return 'bg-deep-border/40 text-gray-500 border border-deep-border'
+  return p.correct
+    ? 'bg-green-500/20 text-green-400 border border-green-500/30'
+    : 'bg-red-500/20 text-red-400 border border-red-500/30'
+}
+
+// 雷达图维度 = 各关（标签去掉"第N关："前缀），未判分的维度用灰色
+const radarDims = computed(() => questions.value.map((q, i) => ({
+  label: String(q.title || `第 ${i + 1} 关`).replace(/^第\s*\d+\s*关\s*[：:]\s*/, ''),
+  color: perLevel.value[i]?.graded ? MODULE_PALETTE[i % MODULE_PALETTE.length] : '#4b5563',
+})))
+
+const radarScores = computed(() => perLevel.value.map(p => (p.graded ? (p.correct ? 1 : 0) : 0)))
+
+const scoreLevel = computed(() => {
+  const { gradedCount, correct } = resultSummary.value
+  if (!gradedCount) {
     return {
-      design_approach: '核心业务逻辑',
-      complexity: '?',
-      state_write_count: '?',
-      validation_count: 0,
+      label: '未判分',
+      color: 'text-amber-400',
+      comment: '后端判题不可用（离线演示模式），本次没有产生成绩。接入后端后重新提交即可获得真实评级。',
     }
   }
-  return {
-    design_approach: target.design_approach,
-    complexity: target.complexity,
-    state_write_count: (target.state_writes || []).length,
-    validation_count: (target.validation_checks || []).length,
-  }
+  const pct = correct / gradedCount
+  if (pct === 1) return { label: '非常优秀', color: 'text-green-400', comment: '你对这个项目的业务逻辑理解很透彻，从模块划分到核心实现都掌握得很好。' }
+  if (pct >= 0.75) return { label: '良好', color: 'text-neon-blue', comment: '整体理解不错，个别细节还需要加强。建议重点复习答错的部分。' }
+  if (pct >= 0.5) return { label: '及格', color: 'text-amber-400', comment: '有一定基础，但对系统的整体把握还不够。建议再走一遍流程，重点理解模块间关系。' }
+  return { label: '需要加强', color: 'text-red-400', comment: '对项目的业务逻辑还比较陌生。建议从模块拆分开始重新学习，一步步建立全局认识。' }
 })
 
-function retryLevel4() {
-  level4Answered.value = false
-  selectedLevel4.value = ''
+// 薄弱点建议按题型给（与具体项目无关，不写死业务样例）
+const ADVICE_BY_TYPE = {
+  module_selection: '功能拆分：先判断哪些模块持有业务状态并对外提供操作，只做装配编排的模块不算核心业务模块',
+  responsibility_match: '模块职责：对照模块卡片里的职责清单，区分"核心职责"与"附带功能"',
+  flow_next_step: '流程推演：按"校验 → 处理 → 记录/状态变更"梳理顺序，注意前置条件的先后',
+  key_implementation: '关键实现：对照真实源码，看边界校验、状态写入与异常处理是否齐全',
+}
+const weakPoints = computed(() => {
+  const res = []
+  perLevel.value.forEach((p, i) => {
+    if (p.graded && !p.correct) {
+      const t = questions.value[i]?.question_type
+      // 同一题型可能有多道题（第 2 关每个业务模块一道），建议去重后只出现一次
+      const advice = ADVICE_BY_TYPE[t] || `第 ${i + 1} 关建议重新作答并阅读讲评`
+      if (!res.includes(advice)) res.push(advice)
+    }
+  })
+  return res
+})
+
+// ---------------------------------------------------------------------------
+// 证据跳转（P0-09：项目内相对路径 + 行区间）
+// ---------------------------------------------------------------------------
+const sourceViewer = ref({ visible: false, path: '', start: null, end: null, hint: '' })
+
+function openSource(path, start, end, hint = '') {
+  if (!path) return
+  sourceViewer.value = {
+    visible: true,
+    path: String(path).replace(/\\/g, '/'),
+    start: Number.isFinite(start) ? start : null,
+    end: Number.isFinite(end) ? end : null,
+    hint: hint || `${path}${start ? ' · L' + start : ''}`,
+  }
 }
 
-function goToResult() {
-  currentView.value = 'result'
+// 打开证据就记一次事件（供能力报告统计）
+function onEvidenceLoaded({ path, start, end }) {
+  session.recordEvidence(path, start, end)
 }
 
-function goBackToLevel4() {
-  currentView.value = 'level'
-}
+// ---------------------------------------------------------------------------
+// 导航 / 会话
+// ---------------------------------------------------------------------------
+const shortSessionId = computed(() => String(session.state.session_id || '').slice(-6))
 
 function nextLevel() {
-  if (currentLevel.value < totalLevels) {
-    currentLevel.value++
-  }
+  if (currentLevel.value < totalLevels.value) currentLevel.value++
+  else currentView.value = 'result'
 }
 
 function prevLevel() {
-  if (currentLevel.value > 1) {
-    currentLevel.value--
-  }
+  if (currentLevel.value > 1) currentLevel.value--
+}
+
+function goBackToLastLevel() {
+  currentView.value = 'level'
+  currentLevel.value = totalLevels.value || 1
 }
 
 function restart() {
-  currentLevel.value = 1
   currentView.value = 'level'
-  selectedLevel1.value = []
-  level1Answered.value = false
-  level1Correct.value = false
-  level1HintsRemaining.value = 2
-  level1HintCount.value = 0
-  selectedLevel2.value = ''
-  level2Answered.value = false
-  level2Correct.value = false
-  level2HintsRemaining.value = 2
-  level2HintCount.value = 0
-  selectedLevel3.value = ''
-  level3Answered.value = false
-  level3Correct.value = false
-  level3HintsRemaining.value = 2
-  level3HintCount.value = 0
-  selectedLevel4.value = ''
-  level4Answered.value = false
-  level4Correct.value = false
-  level4HintsRemaining.value = 2
-  level4HintCount.value = 0
+  currentLevel.value = 1
+  levelStates.value = {}
+  questions.value.forEach((_, i) => { levelStates.value[i] = defaultLevelState() })
+  // P0-03：清空会话里本项目的作答记录，并写回 localStorage
+  session.resetProgress()
 }
 
-// 加载数据
-onMounted(async () => {
-  try {
-    const resp = await fetch('/demo/project_analysis.json')
-    const data = await resp.json()
-    if (data.training && data.training.questions) {
-      questions.value = data.training.questions
-      projectName.value = data.training.project_name
-    }
-    // 加载模块和流程数据
-    if (data.modules) {
-      projectModules.value = data.modules
-    }
-    if (data.core_flows && data.core_flows.length > 0) {
-      coreFlow.value = data.core_flows[0]
-    }
-    // 加载深度分析数据
-    if (data.deep_analysis) {
-      deepAnalysis.value = data.deep_analysis
-    }
-  } catch (e) {
-    console.error('加载训练数据失败:', e)
+function onProjectChange(id) {
+  if (!id || id === projectId.value) return
+  projectId.value = id
+}
+
+async function reload() {
+  const listRes = await ds.listProjects()
+  projects.value = listRes.data.projects
+  await loadProject(projectId.value)
+}
+
+async function loadProject(id) {
+  loading.value = true
+  loadError.value = ''
+  const res = await ds.loadContract(id)
+  if (!res.ok) {
+    contract.value = null
+    loadError.value = res.error || '未知错误'
+    loading.value = false
+    return
   }
+  contract.value = res.data
+
+  // P0-03：恢复会话；契约版本/项目不一致时 store 会丢弃并说明原因
+  session.restoreFor(res.data.project_id || id, String(res.data.contract_version || ''))
+  initLevelStates()
+
+  // 恢复阶段（stage 形如 'level:2' / 'result'）
+  const stage = String(session.state.stage || '')
+  if (stage === 'result') {
+    currentView.value = 'result'
+  } else {
+    currentView.value = 'level'
+    const m = stage.match(/^level:(\d+)$/)
+    const restoredLevel = m ? Number(m[1]) : 1
+    currentLevel.value = Math.min(Math.max(restoredLevel, 1), Math.max(totalLevels.value, 1))
+  }
+
+  loading.value = false
+}
+
+onMounted(async () => {
+  // 项目列表：在线取 API，离线用静态 demo 列表
+  const listRes = await ds.listProjects()
+  projects.value = listRes.data.projects
+  // URL 深链：把当前项目写回 ?project=，方便复制链接直达
+  ds.writeProjectToUrl(projectId.value)
+  await loadProject(projectId.value)
+})
+
+// 切换项目：写回 ?project= 深链 + 重新加载
+watch(projectId, async (id) => {
+  ds.writeProjectToUrl(id)
+  await loadProject(id)
+})
+
+// 记录阶段，供下次恢复
+watch([currentLevel, currentView], () => {
+  if (!contract.value) return
+  session.setStage(currentView.value === 'result' ? 'result' : `level:${currentLevel.value}`)
 })
 </script>
 

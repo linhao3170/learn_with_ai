@@ -10,7 +10,9 @@
   python scripts/export_fact_table.py --project sample_projects/lab_safety_assistant
 
   # 方式二：从已有的分析 JSON 导入
-  python scripts/export_fact_table.py --input frontend/public/demo/deep_analysis.json
+  #   （deep_analysis.json 是规范 DeepAnalysisResult 形状，由 scripts/generate_deep_data.py 生成；
+  #     scripts/test_deep_analyzer.py 的调试形状写在 deep_analysis_test.json，字段名不同，不要混用）
+  python scripts/export_fact_table.py --input validation/results/deep_analysis.json
 
   # 指定输出路径和格式
   python scripts/export_fact_table.py --project path/to/project --output validation/fact_table.csv --format csv

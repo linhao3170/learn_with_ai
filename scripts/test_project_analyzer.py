@@ -26,6 +26,9 @@ def main():
     result = analyzer.analyze(project_path)
 
     data = result.to_dict()
+    # P0-11：答案不再随契约下发，判题答案只在后端（这里从结果对象里单独取，
+    # 用来确认题目是可判定的）。
+    answer_key = result.training_answer_key
 
     # === 概览 ===
     print("\n" + "=" * 70)
@@ -77,20 +80,28 @@ def main():
 
     # === 训练题 ===
     print("\n" + "=" * 70)
-    print("四关训练题")
+    print("训练题（第 1~4 关；第 2 关每个够格的业务模块各一道，因此题数不固定）")
     print("=" * 70)
     tr = data["training"]
     print(f"\n  训练项目: {tr['project_name']}")
     print(f"  题目数: {len(tr['questions'])}")
 
-    for q in tr["questions"]:
+    for index, q in enumerate(tr["questions"]):
         print(f"\n  【关卡 {q['level']}】{q['title']}")
         print(f"    类型: {q['question_type']}")
         print(f"    难度: {q['difficulty']}/5")
+        print(f"    来源: {q.get('source', 'n/a')}")
         print(f"    题干: {q['description'][:80]}...")
         print(f"    选项数: {len(q['options'])}")
-        print(f"    正确答案: {', '.join(q['correct_answers'])}")
+        key = answer_key.get(str(index), {})
+        print(f"    正确答案（仅后端可见）: {', '.join(key.get('answers', []))}")
         print(f"    知识点: {', '.join(q['knowledge_points'])}")
+
+    # 契约自检
+    if result.training.get("questions") and any(
+        "correct_answers" in q for q in result.training["questions"]
+    ):
+        print("\n  ⚠️ 契约里出现了 correct_answers —— 违反 P0-11！")
 
     # === 保存 JSON ===
     print("\n" + "=" * 70)

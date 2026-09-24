@@ -12,6 +12,54 @@ import os
 from dataclasses import dataclass, field
 from typing import List, Dict, Set, Optional, Tuple
 
+from ..parser.ast_cache import get_tree
+
+
+#: 内部推断标记（P0-07）
+#:
+#: ``_analyze_method_body`` 用 ``f"{attr}._inferred_"`` 表示"这个字典写入是
+#: 别名启发式**推断**出来的，不是 AST 直接看到的"。它曾经是一个哨兵值，
+#: 混在正常的状态路径里，结果泄漏到了学生看到的题干
+#: （``modifies 3 state attribute(s): users, _next_id, users._inferred_``）。
+#:
+#: 现在统一用下面两个函数把"真实写入"和"推断写入"分开，
+#: 推断信息单独用 ``method_dict_writes_inferred`` 承载，
+#: 既不再泄漏内部标记，也**没有丢失** inferred / verified 的分层。
+INTERNAL_INFERRED_SUFFIX = "._inferred_"
+
+
+def is_internal_marker(name: str) -> bool:
+    """判断一个状态路径是否是内部推断标记。"""
+    return str(name).endswith(INTERNAL_INFERRED_SUFFIX) or str(name) == "_inferred_"
+
+
+def strip_internal_markers(names) -> List[str]:
+    """剔除内部推断标记，返回干净的状态路径列表（保序去重）。"""
+    cleaned: List[str] = []
+    for name in names or []:
+        text = str(name)
+        if is_internal_marker(text):
+            continue
+        if text not in cleaned:
+            cleaned.append(text)
+    return cleaned
+
+
+def split_inferred_markers(names) -> Tuple[List[str], List[str]]:
+    """把 ``names`` 拆成 ``(真实路径, 被推断的路径)`` 两部分。"""
+    real: List[str] = []
+    inferred: List[str] = []
+    for name in names or []:
+        text = str(name)
+        if is_internal_marker(text):
+            base = text[: -len(INTERNAL_INFERRED_SUFFIX)] if text.endswith(INTERNAL_INFERRED_SUFFIX) else text
+            if base and base not in inferred:
+                inferred.append(base)
+            continue
+        if text not in real:
+            real.append(text)
+    return real, inferred
+
 
 @dataclass
 class ClassState:
@@ -44,8 +92,23 @@ class StateAnalysis:
         return len(writes) > 0 or len(dict_writes) > 0
 
     def to_dict(self) -> dict:
+        """序列化（P0-07：内部推断标记不下发）。
+
+        - ``method_dict_writes`` 只输出**真实**的字典写入路径；
+        - 被推断出来的写入单独放在 ``method_dict_writes_inferred``，
+          并标 ``inferred`` 语义，学生界面可以据此区分"看到的"和"推出来的"。
+        """
         result = {}
         for key, cs in self.classes.items():
+            clean_writes: Dict[str, List[str]] = {}
+            inferred_writes: Dict[str, List[str]] = {}
+            for method, paths in (cs.method_dict_writes or {}).items():
+                real, inferred = split_inferred_markers(paths)
+                if real:
+                    clean_writes[method] = real
+                if inferred:
+                    inferred_writes[method] = inferred
+
             result[key] = {
                 "class": cs.class_name,
                 "module": cs.module_name,
@@ -55,9 +118,11 @@ class StateAnalysis:
                 "class_constants": cs.class_constants,
                 "method_writes": cs.method_writes,
                 "method_reads": cs.method_reads,
-                "method_dict_writes": cs.method_dict_writes,
+                "method_dict_writes": clean_writes,
+                "method_dict_writes_inferred": inferred_writes,
             }
         return result
+
 
 
 class StateTracker:
@@ -72,11 +137,9 @@ class StateTracker:
             mod = file_info.module_name
             filepath = file_info.filepath
 
-            try:
-                with open(filepath, "r", encoding="utf-8") as f:
-                    source = f.read()
-                tree = ast.parse(source)
-            except (SyntaxError, UnicodeDecodeError):
+            # P0-14：走共享 AST 缓存，避免同一文件被反复 ast.parse
+            tree = get_tree(filepath)
+            if tree is None:
                 continue
 
             for node in ast.iter_child_nodes(tree):

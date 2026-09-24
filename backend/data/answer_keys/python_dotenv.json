@@ -1,0 +1,107 @@
+{
+  "contract_version": "1.0",
+  "project_id": "python_dotenv",
+  "source": "validation/python_dotenv",
+  "questions": {
+    "0": {
+      "level": 1,
+      "question_type": "module_selection",
+      "answers": [
+        "B",
+        "D"
+      ],
+      "explanation": "这个项目里承担具体业务职责的模块有 2 个：管理模块（variables）、管理模块（parser）。\n\n以下几个模块同样存在于代码中，但它们不是**业务模块**：\n  - 「管理模块（main）」不算核心业务模块：它不持有自己的业务状态，主要是把各个模块装配起来并编排调用\n  - 「管理模块（ipython）」不算核心业务模块：它提供的是通用/支撑能力，不承载具体的业务对象与状态\n\n区分「业务模块」和「支撑/装配模块」是业务逻辑训练的第一步：业务模块管理具体的业务对象和状态，支撑模块只提供通用能力，装配模块只负责把大家连起来。",
+      "knowledge_points": [
+        "业务模块识别",
+        "模块类型区分",
+        "职责边界"
+      ]
+    },
+    "1": {
+      "level": 3,
+      "question_type": "flow_ordering",
+      "answers": [
+        "B"
+      ],
+      "explanation": "正确顺序是：set_value → set_key → rewrite → with_warn_for_invalid_lines → parse_stream → parse_binding → parse_key → parse_value → decode_escapes → parse_unquoted_value\n\n理解业务流程的关键是思考「数据和状态是怎么变化的」：什么操作会触发状态改变？改变之前需要什么前提？校验通常在操作之前，审批通常在创建之后。",
+      "knowledge_points": [
+        "业务流程",
+        "状态流转",
+        "数据流"
+      ]
+    },
+    "2": {
+      "level": 3,
+      "question_type": "flow_ordering",
+      "answers": [
+        "C"
+      ],
+      "explanation": "正确顺序是：unset → unset_key → rewrite → with_warn_for_invalid_lines → parse_stream → parse_binding → parse_key → parse_value → decode_escapes → parse_unquoted_value\n\n理解业务流程的关键是思考「数据和状态是怎么变化的」：什么操作会触发状态改变？改变之前需要什么前提？校验通常在操作之前，审批通常在创建之后。",
+      "knowledge_points": [
+        "业务流程",
+        "状态流转",
+        "数据流"
+      ]
+    },
+    "3": {
+      "level": 3,
+      "question_type": "flow_ordering",
+      "answers": [
+        "B"
+      ],
+      "explanation": "正确顺序是：set_as_environment_variables → dict → parse → resolve_variables → _get_stream → with_warn_for_invalid_lines → parse_stream → parse_variables → parse_binding → parse_key → parse_value → decode_escapes → parse_unquoted_value\n\n理解业务流程的关键是思考「数据和状态是怎么变化的」：什么操作会触发状态改变？改变之前需要什么前提？校验通常在操作之前，审批通常在创建之后。",
+      "knowledge_points": [
+        "业务流程",
+        "状态流转",
+        "数据流"
+      ]
+    },
+    "4": {
+      "level": 3,
+      "question_type": "flow_ordering",
+      "answers": [
+        "C"
+      ],
+      "explanation": "正确顺序是：dotenv → load_dotenv → find_dotenv → _load_dotenv_disabled → _walk_to_root → _is_file_or_fifo\n\n理解业务流程的关键是思考「数据和状态是怎么变化的」：什么操作会触发状态改变？改变之前需要什么前提？校验通常在操作之前，审批通常在创建之后。",
+      "knowledge_points": [
+        "业务流程",
+        "状态流转",
+        "数据流"
+      ]
+    },
+    "5": {
+      "level": 4,
+      "question_type": "key_implementation",
+      "answers": [
+        "D"
+      ],
+      "explanation": "正确思路：先进行边界条件校验（self._dict is not None）\n\n\n代码证据：\n  - medium complexity\n  - includes boundary validation\n  - core method called by many\n  - 代码位于 main.py 第 75-89 行\n\n⚠️ 本关的三个干扰项是**通用反模式**（固定文案），不是从代码里推导出来的；正确项才是由真实代码证据生成的。（多道题之间会轮换这三条，避免用排除法认出固定的一组）",
+      "knowledge_points": [
+        "边界条件"
+      ]
+    },
+    "6": {
+      "level": 4,
+      "question_type": "key_implementation",
+      "answers": [
+        "A"
+      ],
+      "explanation": "正确思路：先进行边界条件校验（not self.dict()）；通过遍历/循环实现核心算法逻辑\n\n\n代码证据：\n  - high complexity implementation\n  - includes boundary validation\n  - 代码位于 main.py 第 97-110 行\n\n⚠️ 本关的三个干扰项是**通用反模式**（固定文案），不是从代码里推导出来的；正确项才是由真实代码证据生成的。（多道题之间会轮换这三条，避免用排除法认出固定的一组）",
+      "knowledge_points": [
+        "算法设计",
+        "边界条件"
+      ]
+    },
+    "7": {
+      "level": 4,
+      "question_type": "key_implementation",
+      "answers": [
+        "A"
+      ],
+      "explanation": "正确思路：通过遍历/循环实现核心算法逻辑\n\n\n代码证据：\n  - medium complexity\n  - 代码位于 main.py 第 91-95 行\n\n⚠️ 本关的三个干扰项是**通用反模式**（固定文案），不是从代码里推导出来的；正确项才是由真实代码证据生成的。（多道题之间会轮换这三条，避免用排除法认出固定的一组）",
+      "knowledge_points": [
+        "算法设计"
+      ]
+    }
+  }
+}

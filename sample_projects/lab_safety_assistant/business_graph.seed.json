@@ -1,0 +1,102 @@
+{
+  "_comment": "教师种子图谱（README §8.8 / README5 §3.8）。它由教师/人工维护，运行时按 domain_id / capability_id 与自动结果对齐，**种子优先**，合并后每个节点带 source 徽章（teacher / auto），图谱整体 status 变成 mixed（前端显示「部分已审核」）。本文件只覆盖 `lab_safety_assistant`。⚠️ 三个纪律：① 本文件**不参与** source_hash（`compute_source_hash` 只哈希被解析的 .py 源文件），所以填了它不会让旧审核失效；② 它放在**被分析的项目目录里**，`project_parser.py:167` 会跳过非 .py 文件，不会被当成源码；③ objective 是**业务含义**，必须由人写——引擎推不出来时留空并标 unconfirmed，绝不自编（README §19.2 ⑩）。",
+  "version": "1.0",
+  "project_id": "lab_safety_assistant",
+  "reviewed_by": "教师（本轮在会话中逐项确认）",
+  "reviewed_at": "2026-09-24",
+  "schema": {
+    "domains": [
+      {"domain_id": "d_x", "name_cn": "教师确认的域名", "role": "core", "locked": ["name_cn"]}
+    ],
+    "module_cards": {
+      "d_x": {
+        "name_cn": "教师确认的域名",
+        "objective": "教师写的模块目标（它为什么存在）",
+        "objective_confidence": "confirmed",
+        "review_status": "approved",
+        "locked": ["name_cn", "objective", "objective_confidence"]
+      }
+    }
+  },
+  "_schema_notes": [
+    "`domains` 只用于**锁定已有的域名 / 角色**：域对象本身没有 `objective` 字段（阶段一读的是 `module_cards[<domain_id>].objective`，见 engine/teaching/coverage.py:188），所以域目标必须填在 `module_cards` 里、不要填在 `domains` 里。",
+    "`objective_confidence` 必须显式写 `confirmed`：`coverage.py` 只把 `_UNCONFIRMED_TOKENS`（'', unconfirmed, unknown, none, null, 未标注, 待确认）当「待确认」，而这个字段**不在 LOCKABLE_FIELDS 里**——它靠 merge 的「种子显式提供的其它字段照抄」那条规则生效，所以必须**显式写出来**，写成空字符串等于没填。",
+    "`locked` 只对 LOCKABLE_FIELDS（name_cn / objective / does_not / parent_id / role / entity_cn / inputs / outputs / business_rules_text）生效，并会累加进 `seed_report.locked_fields`；`objective_confidence` 是靠上面那条「照抄」规则生效的，写进 locked 只是如实表达意图。",
+    "**不要在每个节点里写 `_comment` / `_evidence` 之类的下划线键**：merge 会把「锁定字段之外的字段」原样照抄进节点，下划线键会顺着契约漏到前端。要写说明就写在本文件的**顶层**（`_comment` / `_schema_notes` / `_evidence`），merge 只读 `domains` 与 `module_cards`，顶层其它键一律忽略。",
+    "只覆盖需要教师定调的内容（这里是「域为什么存在」）；**没有写进本文件的字段继续由引擎自动生成**，节点会如实标成 `source: auto`（前端显示「系统推断」）。"
+  ],
+  "_evidence": {
+    "_comment": "每一条 objective 的出处（用于教师复核与答辩引用；引擎不读这一段）。",
+    "d_1": ["safety_checker.py:1-5（文件 docstring「负责安全检查项管理、检查记录、隐患整改跟踪」）", "safety_checker.py:13-14（隐患等级常量）", "safety_checker.py:142-154（close_hazard：整改完成后关闭）"],
+    "d_2": ["app.py:1-5（文件 docstring「实验室安全助手系统 - 主入口，串联四大模块」）"],
+    "d_3": ["user_manager.py:1-6（文件 docstring + 四种角色：学生 / 教师 / 实验员 / 管理员）", "user_manager.py:95-118（has_permission）"],
+    "d_4": ["equipment_manager.py:1-5（文件 docstring「负责实验室设备台账管理、设备借用、维护记录」）", "equipment_manager.py:13-16（四种设备状态）", "equipment_manager.py:70-71（状态非可用即拒绝借出）"],
+    "d_5": ["reservation_manager.py:1-6（文件 docstring「负责实验室预约申请、审批、取消、冲突检测等核心业务流程」）", "reservation_manager.py:106-124（_check_conflict：同一实验室同一时段的重叠判断）"],
+    "c_d_1_create_hazard": ["safety_checker.py:107-125（_create_hazard）"],
+    "c_d_1_query_hazard": ["safety_checker.py:156-161（_find_hazard）"],
+    "c_d_5_validate_check": ["reservation_manager.py:106-124（_check_conflict：重叠即返回 True，调用方据此拒绝提交）"]
+  },
+  "_review_note": "本文件里的 5 条域目标与 3 条二级目标由教师（用户）逐项确认后才写入。按 README §9.1 第 ③ 条的同一条纪律：业务含义只能由人给，引擎负责的是「给什么用什么、没给就不编」。",
+  "domains": [
+    {"domain_id": "d_1", "name_cn": "安全检查模块", "role": "core", "locked": ["name_cn"]},
+    {"domain_id": "d_2", "name_cn": "系统装配", "role": "orchestrator", "locked": ["name_cn"]},
+    {"domain_id": "d_3", "name_cn": "用户管理模块", "role": "core", "locked": ["name_cn"]},
+    {"domain_id": "d_4", "name_cn": "设备管理模块", "role": "core", "locked": ["name_cn"]},
+    {"domain_id": "d_5", "name_cn": "预约管理模块", "role": "core", "locked": ["name_cn"]}
+  ],
+  "module_cards": {
+    "d_1": {
+      "name_cn": "安全检查模块",
+      "objective": "把隐患从「发现」管到「关闭」：检查项定义查什么，执行检查产生隐患记录，整改完成后才能关闭，避免隐患停在中间状态",
+      "objective_confidence": "confirmed",
+      "review_status": "approved",
+      "locked": ["name_cn", "objective", "objective_confidence"]
+    },
+    "d_2": {
+      "name_cn": "系统装配",
+      "objective": "把四个业务模块装配成可运行的系统并提供统一入口；它本身不承担业务规则，只负责协调调用",
+      "objective_confidence": "confirmed",
+      "review_status": "approved",
+      "locked": ["name_cn", "objective", "objective_confidence"]
+    },
+    "d_3": {
+      "name_cn": "用户管理模块",
+      "objective": "让系统知道「现在是谁、他能做什么」：注册与登录确认身份，角色权限（学生 / 教师 / 实验员 / 管理员）决定后续操作是否被允许",
+      "objective_confidence": "confirmed",
+      "review_status": "approved",
+      "locked": ["name_cn", "objective", "objective_confidence"]
+    },
+    "d_4": {
+      "name_cn": "设备管理模块",
+      "objective": "跟踪每台设备现在在谁手上、能不能借：台账、借用归还与维护记录共同维护设备状态（可用 / 借出 / 维护中 / 报废）的可信度",
+      "objective_confidence": "confirmed",
+      "review_status": "approved",
+      "locked": ["name_cn", "objective", "objective_confidence"]
+    },
+    "d_5": {
+      "name_cn": "预约管理模块",
+      "objective": "保证同一实验室同一时段只存在一个有效预约：申请、审批、取消都围绕这条约束运转，冲突检测决定一次申请能不能成立",
+      "objective_confidence": "confirmed",
+      "review_status": "approved",
+      "locked": ["name_cn", "objective", "objective_confidence"]
+    },
+    "c_d_1_create_hazard": {
+      "objective": "把一次检查里发现的问题登记成可跟踪的隐患记录，并带上等级与整改期限",
+      "objective_confidence": "confirmed",
+      "review_status": "approved",
+      "locked": ["objective", "objective_confidence"]
+    },
+    "c_d_1_query_hazard": {
+      "objective": "按编号取出一条隐患，供指派整改与关闭环节读取它的当前状态",
+      "objective_confidence": "confirmed",
+      "review_status": "approved",
+      "locked": ["objective", "objective_confidence"]
+    },
+    "c_d_5_validate_check": {
+      "objective": "判断一个时间段是否与已有有效预约（待审批 / 已批准）重叠——重叠即拒绝，是提交预约的前置条件",
+      "objective_confidence": "confirmed",
+      "review_status": "approved",
+      "locked": ["objective", "objective_confidence"]
+    }
+  }
+}

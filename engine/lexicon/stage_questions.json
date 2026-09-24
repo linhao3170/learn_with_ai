@@ -1,0 +1,40 @@
+{
+  "_comment": "培训阶段二「模块卡片学习」的题目模板与「问题 → 参与比对的卡片字段」映射。这里放的是**教学配置**（问题怎么问、答案拿卡片的哪些字段去比），不是业务词：教师改这个文件就能换问法 / 换比对字段，不需要改引擎代码，也不需要改前端组件（前端从后端拿这份配置，见 README 第十章 10.3 的取舍说明）。",
+  "version": "1.0",
+  "stage": "module_card",
+  "stage_name_cn": "模块卡片学习",
+  "answer_prompt_cn": "请用自己的话回答下面五个问题。系统不打分，只做「事实覆盖比对」：看你的回答里提到了这张卡片上哪些已核实的事实，以及哪些没有提到。",
+  "_fields_comment": "fields 是字段选择器（引擎里的实现见 engine/teaching/card_coverage.py 的 _field_keys）。可选值：name / objective / business_rules / preconditions / exceptions / inputs / outputs / state_changes / does_not / upstream_modules / downstream_modules。",
+  "questions": [
+    {
+      "question_id": "q1_problem",
+      "text_cn": "它要解决什么问题？",
+      "placeholder_cn": "例如：这个模块存在的意义是……它挡住了什么情况？",
+      "fields": ["name", "objective", "business_rules"]
+    },
+    {
+      "question_id": "q2_inputs",
+      "text_cn": "它接收什么输入？",
+      "placeholder_cn": "例如：它开始工作前需要拿到哪些数据 / 参数？有哪些前提条件？",
+      "fields": ["inputs", "preconditions"]
+    },
+    {
+      "question_id": "q3_outputs",
+      "text_cn": "它输出什么结果？",
+      "placeholder_cn": "例如：它做完之后交出去什么？调用方拿到什么？",
+      "fields": ["outputs"]
+    },
+    {
+      "question_id": "q4_state",
+      "text_cn": "它改变了什么状态？",
+      "placeholder_cn": "例如：它写了哪些数据（状态字段）？写之前之后有什么不同？",
+      "fields": ["state_changes"]
+    },
+    {
+      "question_id": "q5_not_merge",
+      "text_cn": "它为什么不应该和其他模块合并？",
+      "placeholder_cn": "例如：它和上下游模块分别负责什么？合并以后会出什么问题？",
+      "fields": ["does_not", "upstream_modules", "downstream_modules"]
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "_comment": "设计层反馈模板（README §9.2）：信号码 → 中文模板的纯函数映射。触发条件与模板一一对应，模板不允许自由发挥 —— 这样「反馈是硬编码的吧」这个问题才有诚实且有力的答案：模板是固定的，但每一条是被学生设计里的哪个结构信号触发的，完全可复现。占位符由 rubric 逐条填值；缺值时由 feedback.py 用 params 里的降级短语填，不留空括号。",
+  "version": "1.0",
+  "templates": {
+    "COVERAGE_MISSING": "未在设计中识别到「{name}」（可能是命名不同），因此 {related_flow} 缺少承担者。",
+    "COVERAGE_UNRECOGNIZED": "「{module}」没有对应到任何一项必备能力：可能是命名不同，也可能它承担的是必备清单之外的需求 —— 请确认属于哪一种。",
+
+    "CLARITY_NO_BOUNDARY": "有 {n} 个模块没有填写「不负责什么」，边界不清会让相邻模块的职责互相渗透，建议补上。",
+    "CLARITY_OVERLOADED": "「{module}」同时承担 {clusters} 类职责，职责过重，建议拆分为：{suggest}。",
+    "CLARITY_OVERLAP": "「{a}」与「{b}」都在处理『{verb}{entity}』，职责重叠，需要确定其中一方不负责这件事。",
+    "CLARITY_TOO_COARSE": "你只用了 {modules} 个模块去承担 {covered} 项必备能力，模块粒度过粗，建议按职责边界继续拆分。",
+
+    "HIERARCHY_FLAT": "你的设计里 {modules} 个模块都在同一层级，本轮不评估层级合理性，也不扣分；如果模块数超过 {hint_modules} 个，建议用父子关系分组。",
+    "HIERARCHY_COUNT_OUT_OF_RANGE": "你的项目级别是 {level}，一级模块的常见区间是 {min}–{max} 个，而你画了 {primary} 个一级模块。",
+    "HIERARCHY_TOO_DEEP": "模块层级深度达到 {depth} 层，超过 {max_depth} 层的结构通常意味着分层过度，建议合并中间层。",
+
+    "DEP_NOT_FILLED": "你没有在模块之间建立任何依赖关系（{modules} 个模块全部没有连线或依赖声明），本轮不评估依赖与流程完整性。",
+    "DEP_CYCLE": "检测到循环依赖：{path}。循环依赖会让这两个模块无法独立修改，建议引入第三方模块或反转依赖方向。",
+    "DEP_DANGLING_EDGE": "存在指向不存在模块的连线（{from} → {to}），这属于数据完整性问题，请检查画布上的连线。",
+    "DEP_ORPHAN": "「{module}」既没有依赖别人，也没有被别人依赖，需确认它在业务流程中的位置。",
+    "DEP_REQUIRED_MISSING": "本任务给出了 {total} 条必备依赖关系，你的设计里识别到 {matched} 条；缺少的是：{names}。",
+    "DEP_FLOW_NOT_REACHING_STATE": "流程「{flow}」的步骤里没有任何一步改变状态，这条流程可能只是查询，或者漏掉了状态更新步骤。",
+
+    "EDGE_NOT_FILLED": "你没有填写任何异常分支、业务规则或边界条件，本维度按「未填写」计 0 分（这一项不是「算不出来」，而是「还没有填」）。",
+    "EDGE_FAMILY_MISSING": "整个设计里没有出现 {words} 这类词：异常路径很可能被漏掉了。",
+    "EDGE_DECLARED_EMPTY": "有 {missing} 个模块的「异常情况」是空的（未填写比例 {ratio_percent}%），异常分支只在少数模块上被考虑到。",
+    "EDGE_REQUIRED_MISSING": "本任务给出了 {total} 个必备边界情况，你的设计里匹配到 {matched} 个；没有匹配到的是：{cases}。",
+
+    "RATIONALE_NOT_FILLED": "你没有填写设计理由，无法核查理由与设计是否一致，本轮不评估这一维。",
+    "RATIONALE_TOO_SHORT": "设计理由只有 {chars} 字（建议不少于 {min_chars} 字），不足以说明你为什么这样划分模块。",
+    "RATIONALE_UNCHECKABLE": "设计理由里提到了「{name}」，但你画的模块里没有它，请确认两者是否一致。",
+    "RATIONALE_NO_RULE_OR_STATE": "设计理由里没有引用任何一条业务规则或状态变化，无法核查它是否建立在真实约束上。",
+    "RATIONALE_DEPENDS_ON_INCONSISTENT": "「{module}」声明依赖 {declared}，但画布上的连线是 {drawn}，声明与图不一致。",
+
+    "SUBMISSION_EMPTY_MODULES": "提交里没有任何模块，请先在画布上添加模块。",
+    "SUBMISSION_DUPLICATE_NAME": "有 {n} 个模块都叫「{name}」（{module_ids}），重名会让职责边界无法核查。",
+    "SUBMISSION_UNKNOWN_PARENT": "「{module}」声明了父模块 {parent}，但这个父模块不在你的设计里。",
+    "SUBMISSION_SELF_LOOP": "「{module}」依赖了它自己，这是一条无效连线。",
+
+    "ALT_FORBIDDEN_MERGE": "「{a}」与「{b}」被合并成了一个模块，但本任务明确要求它们分开：{reason}。",
+    "ALT_ACCEPTED": "你的模块划分命中了一条可接受替代结构（{alternative}）——业务设计本来就不止一种正确答案。"
+  },
+  "_comment_fallbacks": "COVERAGE_MISSING 的 {related_flow} 在自动生成的任务里可能查不到流程名，此时 rubric 传「这条能力所在的业务流程」作为降级短语，不留空。"
+}

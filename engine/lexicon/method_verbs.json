@@ -1,0 +1,29 @@
+{
+  "_comment": "方法名动词 → 能力类别（原 module_analyzer.py 的 _categorize_methods 正则）。这些标签是**内部信号**：README4 §3.2 明确它们是手段而不是业务职责，展示'模块职责'时必须过滤掉 CRUD 标签。",
+  "version": "1.0",
+  "internal_only": ["新增/创建操作", "删除/停用操作", "更新/修改操作", "查询/获取操作"],
+  "groups": [
+    {"category": "crud_create", "cn": "新增/创建操作", "internal_only": true,
+     "patterns": ["(add|create|insert|new|register)"]},
+    {"category": "crud_delete", "cn": "删除/停用操作", "internal_only": true,
+     "patterns": ["(delete|remove|drop|clear|deactivate)"]},
+    {"category": "crud_update", "cn": "更新/修改操作", "internal_only": true,
+     "patterns": ["(update|modify|edit|change|set)"]},
+    {"category": "crud_read", "cn": "查询/获取操作", "internal_only": true,
+     "patterns": ["(get|find|query|search|list|fetch|lookup)"]},
+    {"category": "approval", "cn": "审批流程管理", "internal_only": false,
+     "patterns": ["(approve|reject|cancel|confirm)"]},
+    {"category": "validation", "cn": "校验与检测", "internal_only": false,
+     "patterns": ["(check|verify|validate|detect|conflict)"]},
+    {"category": "loan", "cn": "借还管理", "internal_only": false,
+     "patterns": ["(borrow|return|lend)"]},
+    {"category": "allocation", "cn": "资源分配", "internal_only": false,
+     "patterns": ["(assign|allocate)"]},
+    {"category": "identity", "cn": "认证与权限", "internal_only": false,
+     "patterns": ["(login|logout|auth|permission|role)"]},
+    {"category": "maintenance", "cn": "维护管理", "internal_only": false,
+     "patterns": ["(maintenance|repair|fix)"]},
+    {"category": "safety", "cn": "安全检查", "internal_only": false,
+     "patterns": ["(safety|hazard|inspect|check)"]}
+  ]
+}

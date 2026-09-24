@@ -7,6 +7,7 @@ from .python_parser import (
     FunctionInfo,
     ClassInfo,
 )
+from .ast_cache import get_source, get_tree, clear as clear_ast_cache, stats as ast_cache_stats
 
 __all__ = [
     "PythonParser",
@@ -14,4 +15,8 @@ __all__ = [
     "ParsedResult",
     "FunctionInfo",
     "ClassInfo",
+    "get_source",
+    "get_tree",
+    "clear_ast_cache",
+    "ast_cache_stats",
 ]

@@ -1,0 +1,8 @@
+{
+  "_comment": "核心度评分关键词（原 engine/project_analyzer/module_analyzer.py 的 CORE_KEYWORDS）。注意：核心度分数只是排序信号，不是事实判定（见 README2 §18.2 的口径）。",
+  "version": "1.0",
+  "keywords": [
+    "reservation", "booking", "order", "business", "workflow", "process",
+    "预约", "订单", "流程", "业务"
+  ]
+}

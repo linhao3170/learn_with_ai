@@ -1,0 +1,210 @@
+{
+  "_comment": "教师设计任务种子（README §9.1「must_have 从哪来」的第 ① 条，首选）。**当前状态：`lab_safety_assistant` 已有一份教师确认过的任务（review_status = confirmed），`python_dotenv` 仍然为空。** 命中种子的项目，其任务来源自动变成 teacher_seed（needs_review = false，页面上不再出现「待教师确认」徽章）；没命中的项目继续由本项目图谱自动提炼（source = auto_from_project，必须标注待审核）。⚠️ 纪律：种子里的 must_have 必须由人写/确认，不许让 LLM 生成后当成评分基准（README §9.1 第 ③ 条）。⚠️ 注意：某项目一旦有种子任务，`full_tasks()` 就**只返回种子任务**（task_builder.py:533-539），该项目原有的自动任务不再生成——要给一个项目保留多道任务，就在种子里写多条。",
+  "version": "1.0",
+  "schema": {
+    "tasks": {
+      "<project_id>": [
+        {
+          "task_id": "dt_<任意稳定标识>",
+          "type": "<design_tasks.json 里的类型 key>",
+          "level": "L2",
+          "prompt_cn": "教师自己写的题干（覆盖模板里的 prompt_cn，可省略）",
+          "scenario_cn": "教师自己写的场景说明（可省略）",
+          "must_have": [
+            {"key": "mh_identity", "name_cn": "用户身份与权限", "aliases": ["登录校验", "权限判断"],
+             "cluster": "identity", "verb_class": "query", "entity": "identity",
+             "related_flow": "借用申请流程"}
+          ],
+          "required_relations": [{"from_key": "mh_borrow", "to_key": "mh_device_state", "reason_cn": "借用成功后必须回写设备状态"}],
+          "required_edge_cases": ["设备已借出", "借用人为黑名单", "审批超时"],
+          "forbidden_merges": [{"a": "mh_approval", "b": "mh_borrow", "reason_cn": "审批与申请是两个不同角色的职责"}],
+          "acceptable_alternatives": [
+            {"alternative_id": "alt_a", "name_cn": "审批独立成模块", "separate_keys": ["mh_approval", "mh_borrow"]},
+            {"alternative_id": "alt_b", "name_cn": "审批并入借用流程", "merge_keys": ["mh_approval", "mh_borrow"]}
+          ],
+          "rubric_weights": {"coverage": 0.25, "clarity": 0.2, "hierarchy": 0.15, "dependency": 0.2, "edge_case": 0.1, "rationale": 0.1},
+          "review_status": "confirmed"
+        }
+      ]
+    }
+  },
+  "_schema_notes": [
+    "must_have 的 (verb_class, entity) 两两不能重复：scripts/test_design_rubric.py 会逐项断言这条。entity 留空表示「没有具体业务对象」，因此整个清单里最多只能有一条 entity 为空的项。",
+    "cluster 取值必须是 clusters.json 里的 key（identity / governance / integrity / lifecycle / inquiry / infrastructure）；它决定「模块职责是否过载」的判定（同模块覆盖 ≥3 个簇即过载）。",
+    "required_relations 的 from_key → to_key 表示「学生设计里，承担 from 的模块必须有一条边指向承担 to 的模块」。两项能力被合并进同一个模块时，这条关系必然判为未命中——这正是它的教学意义。",
+    "required_edge_cases 是**子串**匹配（中文按子串）：学生文本里出现该字符串才算命中，所以措辞要写成学生真会写的样子。",
+    "acceptable_alternatives 的 merge_keys / separate_keys 都指向 must_have 的 key，不是模块名；两者都不给等于这条替代结构没法判定（既不计命中也不计未命中）。",
+    "task_id 一旦发布就不要再改：学生会话里存的是它。"
+  ],
+  "tasks": {
+    "lab_safety_assistant": [
+      {
+        "task_id": "dt_lab_safety_assistant_L2_module_split",
+        "type": "module_split",
+        "level": "L2",
+        "must_have": [
+          {
+            "key": "mh_identity_user",
+            "name_cn": "用户身份与权限校验",
+            "aliases": ["登录校验", "身份认证", "权限判断", "权限校验"],
+            "cluster": "identity",
+            "verb_class": "identity",
+            "verb_cn": "认证与授权",
+            "entity": "user",
+            "entity_cn": "用户",
+            "related_flow": "UserManager has_permission Flow"
+          },
+          {
+            "key": "mh_check_conflict",
+            "name_cn": "预约冲突检测",
+            "aliases": ["冲突检测", "时间冲突检测"],
+            "cluster": "integrity",
+            "verb_class": "validate",
+            "verb_cn": "校验与检查",
+            "entity": "check",
+            "entity_cn": "检查",
+            "related_flow": "预约流程"
+          },
+          {
+            "key": "mh_create_reservation",
+            "name_cn": "提交预约申请",
+            "aliases": ["创建预约", "预约申请", "提交预约"],
+            "cluster": "lifecycle",
+            "verb_class": "create",
+            "verb_cn": "提交与创建",
+            "entity": "reservation",
+            "entity_cn": "预约",
+            "related_flow": "预约流程"
+          },
+          {
+            "key": "mh_approve_reservation",
+            "name_cn": "预约审批",
+            "aliases": ["审批处理", "批准预约", "驳回预约"],
+            "cluster": "governance",
+            "verb_class": "approve",
+            "verb_cn": "审批通过或驳回",
+            "entity": "reservation",
+            "entity_cn": "预约",
+            "related_flow": "预约审批流程"
+          },
+          {
+            "key": "mh_cancel_reservation",
+            "name_cn": "取消预约",
+            "aliases": ["撤销预约", "取消预约申请"],
+            "cluster": "lifecycle",
+            "verb_class": "cancel",
+            "verb_cn": "取消与撤回",
+            "entity": "reservation",
+            "entity_cn": "预约",
+            "related_flow": "预约流程"
+          },
+          {
+            "key": "mh_update_equipment",
+            "name_cn": "设备状态更新",
+            "aliases": ["设备状态变更", "更新设备状态"],
+            "cluster": "lifecycle",
+            "verb_class": "update",
+            "verb_cn": "更新与修改",
+            "entity": "equipment",
+            "entity_cn": "设备",
+            "related_flow": "设备借用流程"
+          },
+          {
+            "key": "mh_transition_equipment",
+            "name_cn": "设备借出与归还",
+            "aliases": ["借用设备", "归还设备", "设备借用"],
+            "cluster": "lifecycle",
+            "verb_class": "transition",
+            "verb_cn": "状态流转",
+            "entity": "equipment",
+            "entity_cn": "设备",
+            "related_flow": "设备借用流程"
+          },
+          {
+            "key": "mh_create_equipment",
+            "name_cn": "设备入库",
+            "aliases": ["新增设备", "设备登记"],
+            "cluster": "lifecycle",
+            "verb_class": "create",
+            "verb_cn": "提交与创建",
+            "entity": "equipment",
+            "entity_cn": "设备",
+            "related_flow": "设备入库流程"
+          },
+          {
+            "key": "mh_create_check",
+            "name_cn": "安全检查执行",
+            "aliases": ["提交安全检查", "执行检查"],
+            "cluster": "lifecycle",
+            "verb_class": "create",
+            "verb_cn": "提交与创建",
+            "entity": "check",
+            "entity_cn": "检查",
+            "related_flow": "SafetyChecker Execution Flow"
+          },
+          {
+            "key": "mh_transition_hazard",
+            "name_cn": "隐患整改与关闭",
+            "aliases": ["隐患整改", "关闭隐患", "隐患登记"],
+            "cluster": "lifecycle",
+            "verb_class": "transition",
+            "verb_cn": "状态流转",
+            "entity": "hazard",
+            "entity_cn": "隐患",
+            "related_flow": "SafetyChecker Completion / Close Flow"
+          }
+        ],
+        "required_relations": [
+          {
+            "from_key": "mh_create_reservation",
+            "to_key": "mh_check_conflict",
+            "reason_cn": "提交预约前必须先做冲突检测：检测不是可有可无的一步，而是提交的前置条件（代码事实：reservation_manager.py:86 调用 _check_conflict）"
+          },
+          {
+            "from_key": "mh_transition_equipment",
+            "to_key": "mh_update_equipment",
+            "reason_cn": "设备借出 / 归还成功后必须回写设备状态，让别人看到的是最新状态（教师判断：状态回写必须由单独的状态模块承担，而不是散落在借还逻辑里；现状是写在函数内部，见 equipment_manager.py:84、:98）"
+          }
+        ],
+        "required_edge_cases": ["时间冲突", "重复借用"],
+        "forbidden_merges": [
+          {
+            "a": "mh_approve_reservation",
+            "b": "mh_identity_user",
+            "reason_cn": "审批是对预约申请的决策，权限校验是身份判定：两者变化的原因不同（审批规则变了不该动身份逻辑），合并后任何一次权限调整都会波及审批流程"
+          }
+        ],
+        "acceptable_alternatives": [
+          {
+            "alternative_id": "alt_approval_standalone",
+            "name_cn": "审批独立成模块",
+            "separate_keys": ["mh_approve_reservation", "mh_create_reservation"]
+          },
+          {
+            "alternative_id": "alt_approval_merged",
+            "name_cn": "审批并入预约生命周期",
+            "merge_keys": ["mh_approve_reservation", "mh_create_reservation"]
+          }
+        ],
+        "review_status": "confirmed",
+        "reviewed_by": "教师（本轮在会话中逐项确认）",
+        "reviewed_at": "2026-09-24",
+        "_review_note": "十项必备能力、两条必备依赖、两个必备边界、两条可接受替代结构与一条禁止合并项，均由教师（用户）逐项确认后才标 confirmed；候选清单的证据见 _evidence。按 README §9.1 第 ③ 条，这份清单没有让 LLM 直接生成后当成评分基准——引擎侧只保证「种子给了什么就用什么」，判断权在人和这份文件里。",
+        "_evidence": {
+          "_comment": "每一项必备能力的源码出处（本项目内相对路径 + 行号），供教师复核与答辩引用；引擎不读这一段。",
+          "mh_identity_user": ["user_manager.py:61-87（login / logout）", "user_manager.py:95-118（has_permission）"],
+          "mh_check_conflict": ["reservation_manager.py:106-124（_check_conflict 的重叠区间判断）"],
+          "mh_create_reservation": ["reservation_manager.py:56-104（create_reservation；:86 调用冲突检测、:87 冲突即拒绝）"],
+          "mh_approve_reservation": ["reservation_manager.py:126-137（approve_reservation）", "reservation_manager.py:139-151（reject_reservation）"],
+          "mh_cancel_reservation": ["reservation_manager.py:153-166（cancel_reservation）"],
+          "mh_update_equipment": ["equipment_manager.py:130-144（set_equipment_status）", "equipment_manager.py:84、:98（借出 / 归还时的状态回写）"],
+          "mh_transition_equipment": ["equipment_manager.py:53-85（borrow_equipment；:70-71 状态非可用即拒绝）", "equipment_manager.py:87-101（return_equipment）"],
+          "mh_create_equipment": ["equipment_manager.py:24-51（add_equipment）"],
+          "mh_create_check": ["safety_checker.py:29-57（add_check_item）"],
+          "mh_transition_hazard": ["safety_checker.py:142-154（close_hazard）"]
+        },
+        "_order_note": "must_have 的顺序不是随手排的：它还是「一项能力一个模块、连成链」这种规范设计的默认顺序，所以规范设计能同时满足上面两条必备依赖（否则一件合格的作业会在依赖维度上被扣分）。改动顺序前先看 _evidence 与 required_relations。"
+      }
+    ]
+  }
+}

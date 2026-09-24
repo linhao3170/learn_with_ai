@@ -1,0 +1,18 @@
+{
+  "_comment": "初始化/样例数据流程特征词（README5 §3.4）。命中即降权 q=0.2 并排到流程列表末尾 —— 保留不删，因为'这个项目只有初始化流程'本身是有效信息。由 engine/flow_filter.py 读取。",
+  "version": "1.0",
+  "downweight": 0.2,
+  "markers": [
+    "initialize",
+    "initialise",
+    "init",
+    "bootstrap",
+    "seed",
+    "sample_data",
+    "sampledata",
+    "setup",
+    "fixture",
+    "populate",
+    "demo_data"
+  ]
+}

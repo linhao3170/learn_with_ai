@@ -1,0 +1,26 @@
+{
+  "_comment": "业务对象词典（README5 §3.2）。用途：从函数名/状态属性里认出「对象」，与 verbs.json 的能力类别组成 (verb_class, entity) 能力键，用于二级功能点切分，以及模块卡片的 entity 字段。",
+  "version": "1.0",
+  "entities": {
+    "user":        {"names": ["user", "account", "member", "student", "teacher", "staff", "operator", "person", "用户", "账户", "成员", "学生", "教师", "人员"], "cn": "用户"},
+    "role":        {"names": ["role", "permission", "privilege", "group", "角色", "权限", "用户组"], "cn": "角色权限"},
+    "reservation": {"names": ["reservation", "booking", "appointment", "schedule", "slot", "预约", "预订", "排期"], "cn": "预约"},
+    "lab":         {"names": ["lab", "laboratory", "room", "venue", "实验室", "机房", "场地"], "cn": "实验室"},
+    "equipment":   {"names": ["equipment", "device", "instrument", "asset", "machine", "tool", "设备", "仪器", "器材", "资产"], "cn": "设备"},
+    "inventory":   {"names": ["inventory", "stock", "warehouse", "storage", "库存", "仓库", "存量"], "cn": "库存"},
+    "hazard":      {"names": ["hazard", "risk", "danger", "issue", "defect", "隐患", "风险", "缺陷"], "cn": "隐患"},
+    "check":       {"names": ["check", "inspection", "audit", "review", "exam", "检查", "检查项", "审核", "复核"], "cn": "检查"},
+    "record":      {"names": ["record", "log", "history", "entry", "trace", "记录", "日志", "历史"], "cn": "记录"},
+    "order":       {"names": ["order", "purchase", "payment", "invoice", "订单", "支付", "账单"], "cn": "订单"},
+    "loan":        {"names": ["loan", "borrow", "lend", "return", "借用", "归还", "领用"], "cn": "借还"},
+    "report":      {"names": ["report", "statistic", "summary", "dashboard", "metric", "报表", "统计", "汇总", "看板"], "cn": "报表"},
+    "notification": {"names": ["notification", "message", "email", "alert", "notice", "通知", "消息", "提醒"], "cn": "通知"},
+    "config":      {"names": ["config", "setting", "option", "preference", "env", "配置", "设置", "选项", "环境"], "cn": "配置"},
+    "file":        {"names": ["file", "path", "directory", "folder", "文件", "路径", "目录"], "cn": "文件"},
+    "value":       {"names": ["value", "variable", "key", "entry", "item", "值", "变量", "键"], "cn": "数据项"},
+    "task":        {"names": ["task", "job", "step", "workflow", "pipeline", "任务", "作业", "步骤", "流程"], "cn": "任务"}
+  },
+  "_stopwords": [
+    "self", "cls", "data", "result", "obj", "object", "args", "kwargs", "the", "and", "for", "with"
+  ]
+}

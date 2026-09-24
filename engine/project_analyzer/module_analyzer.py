@@ -3,6 +3,15 @@
 
 从项目解析结果中识别模块边界、推断模块职责、
 分析模块间依赖关系、提取核心业务流程。
+
+P0-12（README5 §3.2）
+---------------------
+所有业务词汇（模块类型关键词、中文模块名、流程名、步骤标签、方法动词类别）
+**已全部外置**到 ``engine/lexicon/*.json``。
+
+本文件里不再出现"预约""设备""安全检查"这类业务词 ——
+出现即是 bug，可用 ``scripts/audit_hardcoding.py`` 机器化检查。
+教师可以在不改代码的前提下替换词典来适配自己学校的命名习惯。
 """
 
 from __future__ import annotations
@@ -13,25 +22,7 @@ from dataclasses import dataclass, field
 from typing import List, Dict, Set, Optional, Tuple
 
 from .project_parser import ProjectInfo
-
-
-# 模块类型关键词（用于职责推断）
-MODULE_TYPE_KEYWORDS = {
-    "user_management": ["user", "account", "auth", "login", "register", "权限", "用户", "账户", "认证"],
-    "reservation": ["reservation", "booking", "order", "appointment", "预约", "订单", "预订"],
-    "equipment": ["equipment", "device", "machine", "tool", "device", "设备", "器材", "仪器"],
-    "safety_check": ["safety", "check", "inspect", "hazard", "security", "安全", "检查", "隐患"],
-    "data_persistence": ["storage", "repository", "dao", "database", "db", "存储", "数据库"],
-    "api": ["api", "route", "view", "controller", "handler", "接口", "路由"],
-    "utils": ["util", "helper", "common", "tools", "工具", "通用"],
-    "management": ["manager", "管理", "处理"],
-}
-
-# 核心度评分关键词
-CORE_KEYWORDS = [
-    "reservation", "booking", "order", "business", "workflow", "process",
-    "预约", "订单", "流程", "业务",
-]
+from .. import lexicon
 
 
 @dataclass
@@ -171,42 +162,41 @@ class ModuleAnalyzer:
         return modules
 
     def _detect_module_type(self, module_name: str, docstring: str) -> str:
-        """根据模块名和文档推断模块类型"""
+        """根据模块名和文档推断模块类型（词表来自 ``lexicon/module_types.json``）。"""
         name_lower = module_name.lower()
         doc_lower = docstring.lower()
 
-        scores = {}
-        for mtype, keywords in MODULE_TYPE_KEYWORDS.items():
+        scores: Dict[str, int] = {}
+        for mtype, keywords in lexicon.module_types().items():
             score = 0
             for kw in keywords:
-                kw_lower = kw.lower()
+                kw_lower = str(kw).lower()
                 if kw_lower in name_lower:
                     score += 3  # 名字里有，权重高
                 if kw_lower in doc_lower:
                     score += 2  # 文档里有
             scores[mtype] = score
 
-        # 取最高分
+        # 取最高分。
+        # 注意：并列时取**词典里先出现的类型**（JSON 对象的键顺序是稳定的，
+        # 因此结果仍然可复现）。这里**不能**按类型名字典序排序 ——
+        # 那会让并列时 "management" 压过 "reservation"，改变既有行为。
+        if not scores:
+            return lexicon.module_type_default()
         best_type = max(scores, key=scores.get)
         if scores[best_type] > 0:
             return best_type
 
-        return "management"  # 默认
+        return lexicon.module_type_default()
 
     def _generate_module_name(self, module_id: str, module_type: str) -> str:
-        """生成易读的模块名称"""
-        # 中文模块名称映射
-        type_names = {
-            "user_management": "用户管理模块",
-            "reservation": "预约管理模块",
-            "equipment": "设备管理模块",
-            "safety_check": "安全检查模块",
-            "data_persistence": "数据持久化模块",
-            "api": "接口模块",
-            "utils": "工具模块",
-            "management": "管理模块",
-        }
+        """生成易读的模块名称（映射来自 ``lexicon/module_types.json``）。
 
+        ⚠️ 这份名字的置信度是 ``inferred``，必须可被教师改写。
+        README5 Sprint 1 起由业务图谱引擎按"目录 + 类名 + 中文 docstring"生成，
+        这里的映射表只作为兜底。
+        """
+        type_names = lexicon.module_type_names()
         if module_type in type_names:
             return type_names[module_type]
 
@@ -250,39 +240,23 @@ class ModuleAnalyzer:
                 mod.description = f"{mod.name}，提供相关业务功能"
 
     def _categorize_methods(self, method_names: List[str]) -> List[str]:
-        """从方法名聚合出功能类别"""
-        categories = []
+        """从方法名聚合出功能类别（规则来自 ``lexicon/method_verbs.json``）。
 
-        # CRUD 类
-        add_methods = [m for m in method_names if re.search(r"(add|create|insert|new|register)", m.lower())]
-        delete_methods = [m for m in method_names if re.search(r"(delete|remove|drop|clear|deactivate)", m.lower())]
-        update_methods = [m for m in method_names if re.search(r"(update|modify|edit|change|set)", m.lower())]
-        get_methods = [m for m in method_names if re.search(r"(get|find|query|search|list|fetch|lookup)", m.lower())]
+        ⚠️ README4 §3.2：这些是**内部信号**，不是"模块职责"。
+        CRUD 那几个标签（``internal_only: true``）在展示职责时必须过滤掉，
+        由 ``training_generator._business_text()`` 负责过滤。
+        """
+        categories: List[str] = []
+        lowered = [m.lower() for m in method_names]
 
-        if add_methods:
-            categories.append("新增/创建操作")
-        if delete_methods:
-            categories.append("删除/停用操作")
-        if update_methods:
-            categories.append("更新/修改操作")
-        if get_methods:
-            categories.append("查询/获取操作")
-
-        # 业务流程类
-        if any(re.search(r"(approve|reject|cancel|confirm)", m.lower()) for m in method_names):
-            categories.append("审批流程管理")
-        if any(re.search(r"(check|verify|validate|detect|conflict)", m.lower()) for m in method_names):
-            categories.append("校验与检测")
-        if any(re.search(r"(borrow|return|lend)", m.lower()) for m in method_names):
-            categories.append("借还管理")
-        if any(re.search(r"(assign|allocate|assign)", m.lower()) for m in method_names):
-            categories.append("资源分配")
-        if any(re.search(r"(login|logout|auth|permission|role)", m.lower()) for m in method_names):
-            categories.append("认证与权限")
-        if any(re.search(r"(maintenance|repair|fix)", m.lower()) for m in method_names):
-            categories.append("维护管理")
-        if any(re.search(r"(safety|hazard|inspect|check)", m.lower()) for m in method_names):
-            categories.append("安全检查")
+        for group in lexicon.method_verbs():
+            patterns = group.get("patterns") or []
+            label = group.get("cn", "")
+            if not label or not patterns:
+                continue
+            if any(re.search(pattern, name) for pattern in patterns for name in lowered):
+                if label not in categories:
+                    categories.append(label)
 
         return categories
 
@@ -352,18 +326,21 @@ class ModuleAnalyzer:
             dep_score = min(len(mod.depended_by) / max(len(modules) - 1, 1), 1.0)
             score += dep_score * 0.3
 
-            # 因素 3：关键词匹配（业务核心词）
+            # 因素 3：关键词匹配（业务核心词，词表来自 lexicon/core_keywords.json）
             keyword_score = 0.0
             name_text = mod.module_id.lower() + " " + mod.description.lower()
-            for kw in CORE_KEYWORDS:
-                if kw in name_text:
+            for kw in lexicon.core_keywords():
+                if str(kw).lower() in name_text:
                     keyword_score += 0.2
             keyword_score = min(keyword_score, 1.0)
             score += keyword_score * 0.3
 
-            # 因素 4：是否包含状态流转/流程
+            # 因素 4：是否包含状态流转/流程（特征词同样来自词典）
+            flow_markers = lexicon.load_lexicon("core_keywords").get(
+                "flow_markers", []
+            ) or ["流程", "审批", "状态"]
             has_flow = any(
-                "流程" in r or "审批" in r or "状态" in r
+                any(marker in r for marker in flow_markers)
                 for r in mod.key_responsibilities
             )
             if has_flow:
@@ -398,33 +375,26 @@ class ModuleAnalyzer:
         return flows
 
     def _generate_flow_name(self, module: ModuleInfo) -> str:
-        """生成流程名称"""
-        type_flow_names = {
-            "reservation": "实验室预约流程",
-            "user_management": "用户注册登录流程",
-            "equipment": "设备借用归还流程",
-            "safety_check": "安全检查与整改流程",
-        }
-        return type_flow_names.get(module.module_type, f"{module.name}核心流程")
+        """生成流程名称（映射来自 ``lexicon/flow_names.json``，inferred 级别、教师可改）。"""
+        names = lexicon.flow_names()
+        if module.module_type in names:
+            return names[module.module_type]
+        template = lexicon.load_lexicon("flow_names").get(
+            "fallback_template", "{module_name}核心流程"
+        )
+        return template.replace("{module_name}", module.name)
 
     def _derive_flow_steps(self, module: ModuleInfo) -> List[dict]:
-        """从方法名推导流程步骤"""
-        steps = []
-
-        # 按业务逻辑顺序排列方法
-        flow_patterns = [
-            (r"(add|create|register|new)", "创建/提交", "submit"),
-            (r"(check|verify|validate|conflict)", "校验/检测", "validate"),
-            (r"(approve|confirm|accept)", "审批/确认", "approve"),
-            (r"(reject|refuse|deny)", "拒绝/驳回", "reject"),
-            (r"(update|modify)", "更新/修改", "update"),
-            (r"(cancel|withdraw)", "取消/撤回", "cancel"),
-            (r"(complete|finish|close)", "完成/关闭", "complete"),
-            (r"(get|list|find|query)", "查询/查看", "query"),
-        ]
+        """从方法名推导流程步骤（规则来自 ``lexicon/flow_steps.json``）。"""
+        steps: List[dict] = []
 
         step_order = 0
-        for pattern, label, action_type in flow_patterns:
+        for rule in lexicon.flow_step_labels():
+            pattern = rule.get("pattern")
+            label = rule.get("label", "")
+            action_type = rule.get("action_type", "")
+            if not pattern:
+                continue
             for cls in module.classes:
                 for method in cls.get("methods", []):
                     if re.search(pattern, method.name.lower()):
@@ -441,12 +411,22 @@ class ModuleAnalyzer:
                     continue
                 break  # 找到就跳出类循环
 
-        # 如果步骤太少，补充通用步骤
+        # 如果步骤太少，补充通用步骤（模板来自词典）
         if not steps:
-            steps = [
-                {"order": 1, "name": f"初始化{module.name}", "action_type": "init"},
-                {"order": 2, "name": "执行核心操作", "action_type": "process"},
-                {"order": 3, "name": "返回结果", "action_type": "return"},
-            ]
+            fallback = lexicon.load_lexicon("flow_steps").get("fallback_steps") or []
+            if fallback:
+                steps = [
+                    {
+                        "order": item.get("order", index + 1),
+                        "name": str(item.get("name", "")).replace("{module_name}", module.name),
+                        "action_type": item.get("action_type", ""),
+                    }
+                    for index, item in enumerate(fallback)
+                ]
+            else:
+                steps = [
+                    {"order": 1, "name": lexicon.flow_step_fallback().replace("{module_name}", module.name), "action_type": "process"},
+                    {"order": 2, "name": lexicon.flow_final_step(), "action_type": "return"},
+                ]
 
         return steps

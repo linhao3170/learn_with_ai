@@ -1,0 +1,14 @@
+{
+  "_comment": "能力簇划分（README5 §3.2 / §3.6）。用途：判断「模块职责是否过载」—— 如果一个模块卡同时覆盖了 3 个以上不同簇的能力，就属于职责过重。簇名用英文 key，中文名用于反馈文案。",
+  "version": "1.0",
+  "clusters": {
+    "identity":   {"cn": "身份与权限", "prefixes": ["identity"]},
+    "governance": {"cn": "审批与治理", "prefixes": ["approve", "reject", "notify"]},
+    "integrity":  {"cn": "校验与一致性", "prefixes": ["validate", "serialize"]},
+    "lifecycle":  {"cn": "生命周期", "prefixes": ["create", "update", "transition", "cancel", "delete"]},
+    "inquiry":    {"cn": "查询与统计", "prefixes": ["query", "calculate"]},
+    "infrastructure": {"cn": "配置与装配", "prefixes": ["configure"]}
+  },
+  "overload_threshold": 3,
+  "_comment_threshold": "一个模块覆盖 >= 3 个簇即判定为「职责过载」，数值可调。"
+}

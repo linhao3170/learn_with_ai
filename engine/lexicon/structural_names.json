@@ -1,0 +1,20 @@
+{
+  "_comment": "结构性名称（不是业务词）。用途：编排类/支撑类的域名等——它们描述的是代码在系统里的角色，而不是某个业务领域，因此不能放进业务词典，但也不该硬编码在引擎代码里。",
+  "version": "1.0",
+  "domain_names": {
+    "orchestrator": "系统装配",
+    "support": "通用支撑"
+  },
+  "module_labels": {
+    "orchestrator": "系统编排模块",
+    "core": "核心业务模块",
+    "support": "支撑模块"
+  },
+  "roles": {
+    "core": "核心",
+    "support": "支撑",
+    "orchestrator": "编排"
+  },
+  "_coverage_stopwords_comment": "覆盖度比对（阶段一「项目认知」）里要从模块名中剥掉的**结构性词**。它们描述的是代码在系统里的角色，不是业务对象本身，因此既不属于业务词典，也不该硬编码在引擎代码里。",
+  "coverage_stopwords": ["模块", "管理", "系统", "的"]
+}

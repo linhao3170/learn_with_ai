@@ -359,11 +359,14 @@ class BusinessPriorityAnalyzer:
         Initialization is still retained in the result and can be reviewed;
         it simply should not outrank a user-facing business operation only
         because it calls many managers while seeding demo data.
+
+        P0-06：判定逻辑已抽到 ``engine/flow_filter.py``，与
+        ``ProjectAnalyzer.core_flows`` 和 ``TrainingGenerator`` 第 3 关共用同一实现，
+        避免三处对"哪条流程最重要"给出互相矛盾的结论。
         """
-        entry = str(getattr(flow, "entry_node", "")).lower()
-        name = str(getattr(flow, "name", "")).lower()
-        setup_markers = ("initialize", "bootstrap", "seed", "sample_data", "setup")
-        return 0.2 if any(marker in entry or marker in name for marker in setup_markers) else 1.0
+        from ..flow_filter import is_lifecycle_flow, LIFECYCLE_FACTOR
+
+        return LIFECYCLE_FACTOR if is_lifecycle_flow(flow) else 1.0
 
     @staticmethod
     def _is_state_writer(node, state_analysis) -> bool:

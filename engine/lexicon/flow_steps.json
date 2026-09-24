@@ -1,0 +1,21 @@
+{
+  "_comment": "流程步骤中文标签规则（原 module_analyzer.py 的 _derive_flow_steps）。按数组顺序匹配，每个类别只取第一个代表性方法。",
+  "version": "1.0",
+  "labels": [
+    {"pattern": "(add|create|register|new)", "label": "创建/提交", "action_type": "submit"},
+    {"pattern": "(check|verify|validate|conflict)", "label": "校验/检测", "action_type": "validate"},
+    {"pattern": "(approve|confirm|accept)", "label": "审批/确认", "action_type": "approve"},
+    {"pattern": "(reject|refuse|deny)", "label": "拒绝/驳回", "action_type": "reject"},
+    {"pattern": "(update|modify)", "label": "更新/修改", "action_type": "update"},
+    {"pattern": "(cancel|withdraw)", "label": "取消/撤回", "action_type": "cancel"},
+    {"pattern": "(complete|finish|close)", "label": "完成/关闭", "action_type": "complete"},
+    {"pattern": "(get|list|find|query)", "label": "查询/查看", "action_type": "query"}
+  ],
+  "fallback_steps": [
+    {"order": 1, "name": "初始化{module_name}", "action_type": "init"},
+    {"order": 2, "name": "执行核心操作", "action_type": "process"},
+    {"order": 3, "name": "返回结果", "action_type": "return"}
+  ],
+  "fallback": "执行{module_name}的核心操作",
+  "final_step": "返回结果"
+}

@@ -1,0 +1,21 @@
+{
+  "_comment": "角色/权限词表（README5 §3.3）。用途：估计「角色数」——复杂度分级的七维之一。命中位置包括标识符、字符串常量与类常量名。",
+  "version": "1.0",
+  "roles": [
+    "admin", "administrator", "superuser", "root",
+    "teacher", "instructor", "tutor",
+    "student", "pupil", "trainee",
+    "manager", "supervisor", "leader",
+    "operator", "technician", "engineer", "staff",
+    "reviewer", "approver", "inspector", "auditor",
+    "guest", "anonymous", "visitor", "public_user",
+    "owner", "member", "user"
+  ],
+  "role_hints": [
+    "ROLE_", "PERMISSION_", "SCOPE_", "PRIVILEGE_", "ACCESS_"
+  ],
+  "_comment_cn": "中文角色名同样计入，便于中文项目。",
+  "roles_cn": [
+    "管理员", "教师", "老师", "学生", "实验员", "负责人", "审批人", "审核人", "检查人", "访客", "普通用户"
+  ]
+}

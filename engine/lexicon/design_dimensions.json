@@ -1,0 +1,91 @@
+{
+  "_comment": "设计层六维（培养方案第四章 阶段五 + README §9.2）。权重必须与 DesignTask.rubric_weights 一致。本文件同时定义每一维的「扣分信号」——分数完全由信号决定，不允许出现「模型觉得这个设计不够优雅」这类无依据分数（README §4 阶段五）。",
+  "version": "1.0",
+  "dimensions": [
+    {
+      "key": "coverage",
+      "name_cn": "核心需求覆盖度",
+      "weight": 0.25,
+      "definition_cn": "matched_must_have / total_must_have；输出 matched / missing / unrecognized 三张清单",
+      "not_evaluated_reason_cn": "本任务没有必备能力清单（must_have 为空），无法评估覆盖度"
+    },
+    {
+      "key": "clarity",
+      "name_cn": "模块职责清晰度",
+      "weight": 0.2,
+      "definition_cn": "「不负责什么」空值率 / 单模块覆盖的能力簇数 / 两个模块覆盖同一(动词,对象) / 模块数与覆盖能力数之比",
+      "not_evaluated_reason_cn": "学生没有填写任何模块卡片内容（目标、边界、输入输出全为空），无法评估职责清晰度"
+    },
+    {
+      "key": "hierarchy",
+      "name_cn": "层级结构合理性",
+      "weight": 0.15,
+      "definition_cn": "一级模块数 vs 级别推荐区间 / 是否建立父子归属 / 层级深度",
+      "not_evaluated_reason_cn": "学生设计中所有模块都在同一层级，没有建立父子关系，无法评估层级合理性"
+    },
+    {
+      "key": "dependency",
+      "name_cn": "依赖与流程完整性",
+      "weight": 0.2,
+      "definition_cn": "有向图环检测 / 必备依赖命中率 / 无入边孤岛 / 连线指向不存在的模块 / 主流程是否可达状态更新节点",
+      "not_evaluated_reason_cn": "学生没有建立任何模块之间的依赖关系，无法评估依赖与流程完整性"
+    },
+    {
+      "key": "edge_case",
+      "name_cn": "异常与边界情况",
+      "weight": 0.1,
+      "definition_cn": "必备边界命中率 / 学生卡片异常分支非空率 / 是否出现异常词族",
+      "not_evaluated_reason_cn": "本维度按「未填写」计 0 分并标注 not_filled（见 §9.2 的口径），不返回 not_evaluated"
+    },
+    {
+      "key": "rationale",
+      "name_cn": "设计理由与证据",
+      "weight": 0.1,
+      "definition_cn": "只衡量可核查性，不衡量正确性：引用图中真实模块名 / 引用至少一条规则或状态 / depends_on 与画的边自洽 / 字数在合理区间",
+      "not_evaluated_reason_cn": "学生没有填写设计理由，无法核查理由与设计的一致性"
+    }
+  ],
+  "scoring": {
+    "_comment": "每一维从满分 base 开始，被信号逐项扣分；penalty 为每次触发的扣分，cap 为该信号最多扣多少。所有数值都可被教师调整。",
+    "base": 100.0,
+    "round_digits": 1,
+    "penalties": {
+      "clarity": {
+        "CLARITY_NO_BOUNDARY": {"per": 4.0, "cap": 20.0},
+        "CLARITY_OVERLOADED": {"per": 12.0, "cap": 24.0},
+        "CLARITY_OVERLAP": {"per": 8.0, "cap": 16.0},
+        "CLARITY_TOO_COARSE": {"per": 10.0, "cap": 10.0}
+      },
+      "hierarchy": {
+        "HIERARCHY_COUNT_OUT_OF_RANGE": {"per": 5.0, "cap": 20.0},
+        "HIERARCHY_TOO_DEEP": {"per": 15.0, "cap": 15.0}
+      },
+      "dependency": {
+        "DEP_CYCLE": {"per": 20.0, "cap": 40.0},
+        "DEP_DANGLING_EDGE": {"per": 10.0, "cap": 20.0},
+        "DEP_ORPHAN": {"per": 5.0, "cap": 20.0},
+        "DEP_FLOW_NOT_REACHING_STATE": {"per": 8.0, "cap": 16.0}
+      },
+      "edge_case": {
+        "EDGE_FAMILY_MISSING": {"per": 30.0, "cap": 30.0},
+        "EDGE_DECLARED_EMPTY": {"per": 20.0, "cap": 20.0}
+      },
+      "rationale": {
+        "RATIONALE_TOO_SHORT": {"per": 30.0, "cap": 30.0},
+        "RATIONALE_UNCHECKABLE": {"per": 15.0, "cap": 30.0},
+        "RATIONALE_NO_RULE_OR_STATE": {"per": 20.0, "cap": 20.0},
+        "RATIONALE_DEPENDS_ON_INCONSISTENT": {"per": 10.0, "cap": 20.0}
+      },
+      "_ratio_signals": {
+        "_comment": "命中率类信号：扣分 = 权重 × (1 - 命中率)，只有在任务里确实给出了必备清单时才触发。",
+        "DEP_REQUIRED_MISSING": {"weight": 30.0},
+        "EDGE_REQUIRED_MISSING": {"weight": 50.0}
+      }
+    },
+    "rationale_min_chars": 40,
+    "coarse_ratio": 4.0,
+    "max_depth": 3,
+    "flat_group_hint_modules": 8
+  },
+  "_comment_edge_family": "异常词族由 design_words.json 提供，不在代码里硬编码。"
+}

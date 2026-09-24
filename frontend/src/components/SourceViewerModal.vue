@@ -3,20 +3,27 @@
     <Transition name="modal">
       <div v-if="visible" class="source-viewer-overlay" @click.self="close">
         <div class="source-viewer-modal glass-card overflow-hidden flex flex-col">
-          <!-- Header -->
+          <!-- Header：P0-09 要求显示【完整相对路径 + 行号区间】，不再只显示 basename -->
           <div class="flex items-center justify-between px-4 py-2.5 bg-deep-card/95 border-b border-deep-border flex-shrink-0">
             <div class="flex items-center gap-2 min-w-0">
-              <div class="flex gap-1.5">
+              <div class="flex gap-1.5 flex-shrink-0">
                 <div class="w-3 h-3 rounded-full bg-red-500/60"></div>
                 <div class="w-3 h-3 rounded-full bg-yellow-500/60"></div>
                 <div class="w-3 h-3 rounded-full bg-green-500/60"></div>
               </div>
-              <span class="ml-2 text-xs text-gray-300 font-mono truncate">{{ displayPath }}</span>
-              <span v-if="targetLine" class="text-[10px] px-1.5 py-0.5 rounded bg-neon-blue/15 text-neon-blue font-mono flex-shrink-0">
-                L{{ targetLine }}
+              <span class="ml-2 text-xs text-gray-300 font-mono truncate" :title="displayPath">{{ displayPath }}</span>
+              <span v-if="rangeLabel" class="text-[10px] px-1.5 py-0.5 rounded bg-neon-blue/15 text-neon-blue font-mono flex-shrink-0">
+                {{ rangeLabel }}
               </span>
             </div>
             <div class="flex items-center gap-2 flex-shrink-0">
+              <span
+                class="text-[10px] px-1.5 py-0.5 rounded font-mono flex-shrink-0"
+                :class="sourceKind === 'api' ? 'bg-emerald-500/15 text-emerald-400' : 'bg-amber-500/15 text-amber-400'"
+                :title="sourceKind === 'api' ? '数据来自后端 API' : '数据来自静态快照（离线演示模式）'"
+              >
+                {{ sourceKind === 'api' ? 'API' : '离线快照' }}
+              </span>
               <span v-if="totalLines" class="text-[10px] text-gray-600 font-mono">{{ totalLines }} lines</span>
               <button @click="close" class="w-6 h-6 flex items-center justify-center rounded hover:bg-deep-surface text-gray-400 hover:text-white transition-colors">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -30,22 +37,28 @@
           <!-- Code -->
           <div class="code-container overflow-auto flex-1" ref="codeContainer">
             <div v-if="loading" class="flex items-center justify-center h-full text-gray-500 text-sm">
-              loading...
+              加载中…
             </div>
-            <div v-else-if="error" class="flex items-center justify-center h-full text-red-400 text-sm">
-              {{ error }}
+            <!-- P0-09：失败必须显式报错，绝不静默渲染空白 -->
+            <div v-else-if="error" class="flex flex-col items-center justify-center h-full text-center px-6 gap-2">
+              <div class="text-red-400 text-sm font-medium">{{ error }}</div>
+              <div class="text-[11px] text-gray-500 font-mono break-all">{{ displayPath }}</div>
+              <div v-if="errorDetail" class="text-[11px] text-gray-600 font-mono break-all">{{ errorDetail }}</div>
+            </div>
+            <div v-else-if="!lines.length" class="flex items-center justify-center h-full text-gray-500 text-sm">
+              该文件没有可显示的内容
             </div>
             <div v-else class="code-block !rounded-none !border-0 py-3">
               <span
-                v-for="(line, i) in lines"
-                :key="i"
+                v-for="line in lines"
+                :key="line.number"
                 class="code-line"
-                :class="{ 
-                  highlighted: isHighlighted(i + 1),
-                  'in-range': isInRange(i + 1)
+                :class="{
+                  highlighted: line.number === targetStart,
+                  'in-range': isInRange(line.number)
                 }"
-                :data-line="i + 1"
-                v-html="formatLine(line, i + 1)"
+                :data-line="line.number"
+                v-html="formatLine(line.text)"
               ></span>
             </div>
           </div>
@@ -64,59 +77,82 @@
 import { ref, computed, watch, nextTick } from 'vue'
 import hljs from 'highlight.js/lib/core'
 import python from 'highlight.js/lib/languages/python'
+// P0-09：源码读取统一走双通道数据源（API 优先 / 静态快照回落）
+// 原来这里自己拼 `${sourceBase}/${basename}`，只对 5 个手工复制的 demo 文件有效，已删除。
+import { getSource } from '../api/dataSource'
 
 hljs.registerLanguage('python', python)
 
 const props = defineProps({
   visible: Boolean,
-  filepath: String,
-  line: Number,
-  endLine: Number,
-  sourceBase: {
+  /** 项目 id：API 模式需要它来定位项目源码 */
+  projectId: {
     type: String,
-    default: '/demo/source'
+    default: '',
+  },
+  /**
+   * 项目内相对路径（POSIX `/`）。P0-10/P0-09 之后契约保证是相对路径，
+   * 因此这里不再做"取 basename"的降级（那个降级正是 P0-09 的根因）。
+   */
+  path: {
+    type: String,
+    default: '',
+  },
+  /** 1-based 起始行（可选） */
+  start: {
+    type: Number,
+    default: null,
+  },
+  /** 1-based 结束行（可选，用于区间高亮） */
+  end: {
+    type: Number,
+    default: null,
   },
   hint: String,
+  /**
+   * 可选：自定义源码加载器（默认 null = 走上面的 /api/projects/{id}/source 通道）。
+   *
+   * 为什么需要它：业务逻辑分析平台（logic-platform）的证据落在**另一条路由**上
+   * （`/api/logic-platform/{analysisId}/source?path=&start=&end=`，它刻意不做 basename 兜底）。
+   * 与其复制第二个证据查看器（那会让"全应用只有一个证据弹窗"这条纪律失效），
+   * 不如让调用方注入自己的取数函数。
+   *
+   * 签名：`(path, start, end) => Promise<{ok, data?:{lines,total_lines}, source?, error?}>`
+   * 返回结构与 `dataSource.getSource()` 完全一致，所以本组件下面的渲染逻辑一个字都不用改。
+   */
+  sourceLoader: {
+    type: Function,
+    default: null,
+  },
 })
 
-const emit = defineEmits(['close'])
+const emit = defineEmits(['close', 'loaded'])
 
 const codeContainer = ref(null)
-const sourceCode = ref('')
 const loading = ref(false)
 const error = ref('')
-const targetLine = ref(null)
-const targetEndLine = ref(null)
+const errorDetail = ref('')
+const lines = ref([])          // [{ number, text }] —— 后端已切好窗口，离线模式前端同样切窗口
+const totalLines = ref(0)
+const sourceKind = ref('offline')
+const targetStart = ref(null)
+const targetEnd = ref(null)
 
-const lines = computed(() => sourceCode.value ? sourceCode.value.split('\n') : [])
-const totalLines = computed(() => lines.value.length)
-
-const displayPath = computed(() => {
-  if (!props.filepath) return ''
-  // Extract just the filename from absolute paths
-  const parts = props.filepath.replace(/\\/g, '/').split('/')
-  return parts[parts.length - 1]
+const displayPath = computed(() => props.path || '')
+const rangeLabel = computed(() => {
+  if (!props.start) return ''
+  if (props.end && props.end > props.start) return `L${props.start}-${props.end}`
+  return `L${props.start}`
 })
 
-const fileName = computed(() => displayPath.value)
-
-function isHighlighted(lineNum) {
-  if (!targetLine.value) return false
-  // If there's a range, highlight the start line specially
-  if (targetEndLine.value && targetEndLine.value > targetLine.value) {
-    return lineNum === targetLine.value
-  }
-  return lineNum === targetLine.value
-}
-
 function isInRange(lineNum) {
-  if (!targetLine.value || !targetEndLine.value) return false
-  return lineNum > targetLine.value && lineNum <= targetEndLine.value
+  if (!targetStart.value || !targetEnd.value) return false
+  return lineNum > targetStart.value && lineNum <= targetEnd.value
 }
 
-function formatLine(line, lineNum) {
-  if (line === undefined || line === null) return '&nbsp;'
-  const result = hljs.highlight(line || ' ', { language: 'python', ignoreIllegals: true })
+function formatLine(text) {
+  if (text === undefined || text === null || text === '') return '&nbsp;'
+  const result = hljs.highlight(text, { language: 'python', ignoreIllegals: true })
   return result.value
 }
 
@@ -124,58 +160,60 @@ function close() {
   emit('close')
 }
 
-// Resolve source URL from filepath
-function resolveSourceUrl(filepath) {
-  if (!filepath) return null
-  // Extract filename from absolute path
-  const normalized = filepath.replace(/\\/g, '/')
-  const parts = normalized.split('/')
-  const filename = parts[parts.length - 1]
-  if (!filename) return null
-  return `${props.sourceBase}/${filename}`
-}
-
 async function loadSource() {
-  if (!props.visible || !props.filepath) return
-  
-  const url = resolveSourceUrl(props.filepath)
-  if (!url) {
-    error.value = 'Invalid file path'
-    return
-  }
+  if (!props.visible || !props.path) return
 
   loading.value = true
   error.value = ''
-  sourceCode.value = ''
-  targetLine.value = props.line
-  targetEndLine.value = props.endLine
+  errorDetail.value = ''
+  lines.value = []
+  totalLines.value = 0
+  targetStart.value = props.start || null
+  targetEnd.value = props.end || null
 
-  try {
-    const resp = await fetch(url)
-    if (!resp.ok) {
-      throw new Error(`HTTP ${resp.status}`)
+  // 有注入的加载器就用它（逻辑平台）；否则走双通道数据源的默认通道（训练页）。
+  const res = props.sourceLoader
+    ? await props.sourceLoader(props.path, props.start, props.end)
+    : await getSource(props.projectId, props.path, props.start, props.end)
+
+  if (!res.ok) {
+    if (props.sourceLoader) {
+      /*
+       * 注入通道（逻辑平台）：后端的中文原文直接当标题。
+       * 那条通道**没有静态快照回落**，所以不能用"该项目未提供源码，无法跳转"这句
+       * 暗示"代码里没这个文件"的话去盖住真正的 404 detail（文件不存在 / 路径越界）。
+       */
+      error.value = res.error || '源码读取失败'
+      errorDetail.value = ''
+    } else {
+      error.value = '该项目未提供源码，无法跳转'
+      errorDetail.value = res.error || ''
     }
-    sourceCode.value = await resp.text()
-  } catch (e) {
-    error.value = `Cannot load source: ${e.message}`
-  } finally {
     loading.value = false
+    return
   }
 
-  // Scroll to target line after render
+  sourceKind.value = res.source || 'offline'
+  lines.value = Array.isArray(res.data?.lines) ? res.data.lines : []
+  totalLines.value = res.data?.total_lines || lines.value.length
+  loading.value = false
+
+  emit('loaded', { path: props.path, start: props.start, end: props.end, total: totalLines.value })
+
   await nextTick()
   scrollToLine()
 }
 
 function scrollToLine() {
-  if (!codeContainer.value || !targetLine.value) return
+  if (!codeContainer.value || !targetStart.value) return
+  const idx = lines.value.findIndex(l => l.number === targetStart.value)
+  if (idx < 0) return
   const lineHeight = 21
   const containerHeight = codeContainer.value.clientHeight
-  const targetScroll = Math.max(0, (targetLine.value - 1) * lineHeight - containerHeight / 3)
-  codeContainer.value.scrollTop = targetScroll
+  codeContainer.value.scrollTop = Math.max(0, idx * lineHeight - containerHeight / 3)
 }
 
-watch(() => [props.visible, props.filepath, props.line, props.endLine], () => {
+watch(() => [props.visible, props.path, props.start, props.end], () => {
   if (props.visible) {
     loadSource()
   }

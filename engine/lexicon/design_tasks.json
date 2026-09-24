@@ -1,0 +1,127 @@
+{
+  "_comment": "分级设计任务模板（README §9.1）。任务**类型**、提示语、简报口径在这里；必备能力清单（must_have）来自教师种子（design_tasks.seed.json，首选）或从本项目图谱提炼（auto_from_project，必须标注待审核）。绝不让 LLM 生成 must_have 并当成评分基准。",
+  "version": "1.0",
+  "level_types": {
+    "L1": ["module_identify", "card_fill", "flow_order"],
+    "L2": ["module_split", "card_fill", "flow_design"],
+    "L3": ["multi_scenario", "state_machine", "boundary_refactor", "compare"],
+    "L4": ["full_design", "multi_option", "reconstruct", "defense"]
+  },
+  "types": {
+    "module_identify": {
+      "name_cn": "模块识别",
+      "goal_cn": "把给出的功能需求归成职责清晰的模块，并说清每个模块的边界",
+      "brief_includes": "capabilities",
+      "must_have_source": "core_capabilities",
+      "prompt_cn": "下面是「{project_name}」项目里的 {capability_count} 项功能需求。请你自己把它们归成若干个业务模块（建议 {module_count_min}–{module_count_max} 个），并为每个模块写清：它解决什么问题、它的输入输出、它改变了什么状态、它不负责什么。系统不要求你和我心中的那份划分完全一致——业务设计本来就不止一种正确答案。",
+      "scenario_cn": "本项目复杂度级别是 {level}（{level_label}）：{level_desc}。这是一次「识别与归类」练习：功能需求已经给你，考的是你归出来的模块是否有清晰边界。"
+    },
+    "card_fill": {
+      "name_cn": "模块卡片填写",
+      "goal_cn": "为模块补齐卡片字段：目标、输入输出、状态变化、业务规则、异常、不负责什么",
+      "brief_includes": "capabilities",
+      "must_have_source": "core_capabilities",
+      "prompt_cn": "请为「{project_name}」设计业务模块，并**把每个模块的卡片填满**：目标、输入、输出、状态变化、业务规则、异常情况，以及最重要的一条——「它不负责什么」。这一轮考察的是你能否把职责边界说清楚，而不是模块数量。",
+      "scenario_cn": "本项目复杂度级别是 {level}（{level_label}）。卡片填空缺的字段会被单独指出来，缺「不负责什么」会明确扣分。"
+    },
+    "flow_order": {
+      "name_cn": "流程排序",
+      "goal_cn": "把一条主流程的步骤排对，并说明每一步由哪个模块承担",
+      "brief_includes": "flows",
+      "must_have_source": "flow_capabilities",
+      "prompt_cn": "下面是「{project_name}」项目里已经存在的流程线索：{flow_names}。请设计承担这些流程的模块，并把「哪一步由哪个模块负责」写进模块的输入输出与依赖关系里。",
+      "scenario_cn": "本项目复杂度级别是 {level}（{level_label}）。这一轮考察的是流程与模块的对应关系：流程里出现的状态更新必须有人负责。"
+    },
+    "module_split": {
+      "name_cn": "模块拆分",
+      "goal_cn": "在没有功能清单的情况下自己拆出模块，并覆盖核心业务能力",
+      "brief_includes": "counts",
+      "must_have_source": "core_capabilities",
+      "prompt_cn": "请为「{project_name}」设计核心业务模块：给出模块的中文名称、它解决什么问题、输入输出、状态变化、依赖关系、异常分支，以及「它不负责什么」。系统不会给你模块清单——这一轮考的就是你自己拆模块的能力，而不是照抄现有代码结构。",
+      "scenario_cn": "本项目复杂度级别是 {level}（{level_label}）：{level_desc}。系统只会告诉你规模（{capability_count} 项功能需求、{domain_count} 个业务域、{flow_count} 条流程），模块由你自己拆。"
+    },
+    "flow_design": {
+      "name_cn": "流程设计",
+      "goal_cn": "自己设计一条主流程，并让模块与流程互相支撑",
+      "brief_includes": "counts",
+      "must_have_source": "flow_capabilities",
+      "prompt_cn": "请为「{project_name}」设计核心业务模块，并**自己设计一条主流程**：从入口开始，写清每一步由哪个模块承担、每一步改变了什么状态。模块与流程必须互相支撑——流程里没有承担者的步骤会被指出来。",
+      "scenario_cn": "本项目复杂度级别是 {level}（{level_label}）。这一轮会额外检查：你画的依赖关系里，主流程是否真的能走到「状态更新」那一步。"
+    },
+    "multi_scenario": {
+      "name_cn": "多场景推演",
+      "goal_cn": "同一套模块要同时支撑正常 / 冲突 / 权限三类场景",
+      "brief_includes": "flows",
+      "must_have_source": "flow_capabilities",
+      "prompt_cn": "请为「{project_name}」设计核心业务模块，并让它同时支撑三类场景：正常路径、冲突路径（同一资源被重复占用）、权限受限路径。请在你的设计里说明这三类场景分别由哪些模块承担。",
+      "scenario_cn": "本项目复杂度级别是 {level}（{level_label}）。这一轮考察的是「一套结构能否支撑多种场景」，只有正常路径的设计会被明确指出来。"
+    },
+    "state_machine": {
+      "name_cn": "状态机设计",
+      "goal_cn": "把核心对象的状态流转画成模块之间的依赖与状态变化",
+      "brief_includes": "counts",
+      "must_have_source": "core_capabilities",
+      "prompt_cn": "请为「{project_name}」设计核心业务模块，并**把核心对象的状态流转写清楚**：有哪些状态、谁能改、改成什么、不允许从哪个状态改到哪个状态。状态变化要落在具体模块的卡片字段里。",
+      "scenario_cn": "本项目复杂度级别是 {level}（{level_label}）。这一轮会重点看「状态变化」字段：只写查询、不写状态更新的设计会被指出来。"
+    },
+    "boundary_refactor": {
+      "name_cn": "边界重构",
+      "goal_cn": "为已经识别出来的高风险能力补齐异常与边界处理",
+      "brief_includes": "capabilities",
+      "must_have_source": "boundary_capabilities",
+      "prompt_cn": "「{project_name}」里有一些能力本身带校验与异常分支。请为这些能力设计模块，并**把异常与边界情况写满**：什么情况下必须拒绝、拒绝之后状态是什么、谁能介入处理。",
+      "scenario_cn": "本项目复杂度级别是 {level}（{level_label}）。这一轮权重压在「异常与边界情况」上：只写正常路径会被明确指出来。"
+    },
+    "compare": {
+      "name_cn": "两方案比较",
+      "goal_cn": "给出两套模块划分方案并说明取舍",
+      "brief_includes": "counts",
+      "must_have_source": "core_capabilities",
+      "prompt_cn": "请为「{project_name}」给出**两套**模块划分方案：一套你认为更清晰，一套你认为更省事。把你选中的那一套放进画布，并在设计理由里说明两套方案的取舍（哪一套在什么变化下会先坏掉）。",
+      "scenario_cn": "本项目复杂度级别是 {level}（{level_label}）。这一轮看的是理由与可核查性：理由里提到的模块必须真的在图上。"
+    },
+    "full_design": {
+      "name_cn": "完整架构设计",
+      "goal_cn": "从需求到模块、依赖、状态、异常做一次完整设计",
+      "brief_includes": "counts",
+      "must_have_source": "core_capabilities",
+      "prompt_cn": "请为「{project_name}」做一次**完整设计**：模块划分、层级归属、依赖关系、状态变化、异常边界、设计理由，一项都不要缺。",
+      "scenario_cn": "本项目复杂度级别是 {level}（{level_label}）：{level_desc}。六维全部参与评估，没有捷径。"
+    },
+    "multi_option": {
+      "name_cn": "多方案权衡",
+      "goal_cn": "给出多种可行划分并说明各自的代价",
+      "brief_includes": "counts",
+      "must_have_source": "core_capabilities",
+      "prompt_cn": "请为「{project_name}」给出多种可行的模块划分，并在设计理由里写清每种划分的代价与适用条件；把你认为最稳的一套放进画布。",
+      "scenario_cn": "本项目复杂度级别是 {level}（{level_label}）。这一轮不接受「只有一种正确答案」的论证方式。"
+    },
+    "reconstruct": {
+      "name_cn": "重构挑战",
+      "goal_cn": "在追加需求下修改原有设计，并说明影响范围",
+      "brief_includes": "counts",
+      "must_have_source": "core_capabilities",
+      "prompt_cn": "「{project_name}」现在追加一条需求（由教师给出）。请修改你的模块设计，并在设计理由里说明：这条需求应该影响哪些模块、为什么。",
+      "scenario_cn": "本项目复杂度级别是 {level}（{level_label}）。⚠️ 追加需求目前**需要教师提供**（设计任务种子）：仓库里还没有教师种子时，本任务只按六维通用口径评估，不判「影响范围命中率」。"
+    },
+    "defense": {
+      "name_cn": "答辩式总结",
+      "goal_cn": "为自己的设计给出可核查的论证",
+      "brief_includes": "counts",
+      "must_have_source": "core_capabilities",
+      "prompt_cn": "请为「{project_name}」设计模块，并在设计理由里**逐条论证**你的划分：为什么不合并、为什么不拆得更细、如果需求变化哪一块会先坏。理由里提到的模块名必须真的出现在你的图上。",
+      "scenario_cn": "本项目复杂度级别是 {level}（{level_label}）。这一轮「设计理由与证据」只衡量可核查性，不衡量你说得对不对。"
+    }
+  },
+  "brief": {
+    "flow_limit": 5,
+    "capability_limit": 12,
+    "max_chars": 1600,
+    "_comment": "简报（brief）是给学生的「需求侧」信息，绝不含 must_have 的完整清单（当 brief_includes != capabilities 时），也绝不含 rubric_weights。"
+  },
+  "must_have": {
+    "limit": 8,
+    "_comment": "从图谱自动提炼必备能力时最多取几项（按「流程参与 → 异常/规则 → 状态写入 → 成员数」排序，并且同一 (动词类别, 业务对象) 只留一条）。教师种子给多少就是多少，不受此限制。"
+  },
+  "_comment_module_counts": "一级模块的推荐区间不在这里写死：它来自该项目 complexity.thresholds（同一份定义只允许存在一处）。"
+}

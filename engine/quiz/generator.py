@@ -10,6 +10,10 @@
 1. 所有题目的正确答案必须能从静态分析结果中推导出来
 2. 干扰项要有迷惑性，但不能有歧义
 3. 每道题都附带来源行号证据
+
+P0-12：中文标签外置到 ``engine/lexicon/quiz_labels.json``；
+P0-14：随机源改为独立的 ``random.Random`` 实例（默认播种 42），
+       不再改写全局随机状态，默认输出可复现。
 """
 
 from __future__ import annotations
@@ -18,6 +22,13 @@ import random
 import re
 from dataclasses import dataclass, field
 from typing import List, Dict, Any, Optional
+
+from .. import lexicon
+
+
+def _quiz_labels() -> Dict[str, Any]:
+    """读取闯关题标签词典（缺失时回退到空 dict，由调用方给兜底值）。"""
+    return lexicon.load_lexicon("quiz_labels")
 
 
 @dataclass
@@ -73,9 +84,21 @@ class QuizGenerator:
     当前使用模板 + 启发式规则，保证答案可验证。
     """
 
-    def __init__(self, seed: Optional[int] = None):
-        if seed is not None:
-            random.seed(seed)
+    def __init__(self, seed: Optional[int] = 42):
+        """
+        P0-14（README5 §1.2-⑨）
+        ----------------------
+        以前默认 ``seed=None``，即**不播种**，用的是**全局** ``random`` 模块 ——
+        结果既不可复现，又会互相污染（同进程里另一个生成器调用 ``random.seed``
+        会改变这里的输出）。
+
+        现在：
+        - 默认 ``seed=42``，保证同一份输入得到同一份题目；
+        - 使用**独立的** ``random.Random`` 实例，不再碰全局随机状态；
+        - 显式传 ``seed=None`` 可以要"每次都不同"，这时用一个独立实例，
+          仍然不影响其他组件。
+        """
+        self._rng = random.Random(seed)
 
     def generate(self, analysis_result: Dict[str, Any], source_lines: List[str]) -> QuizSet:
         quiz = QuizSet()
@@ -131,12 +154,12 @@ class QuizGenerator:
         target = None
         func_obj = None
         if crud_funcs:
-            target = random.choice(crud_funcs)
+            target = self._rng.choice(crud_funcs)
             target_name = target["target_name"]
             func_obj = next((f for f in all_funcs if f["name"] == target_name), None)
 
         if not func_obj and all_funcs:
-            func_obj = random.choice(all_funcs)
+            func_obj = self._rng.choice(all_funcs)
             target_name = func_obj["name"]
 
         if not func_obj:
@@ -148,19 +171,17 @@ class QuizGenerator:
         code_snippet = "\n".join(code_lines)
 
         sub_type = target.get("sub_type", "") if target else ""
-        crud_map = {"C": "新增数据操作", "R": "查询数据操作", "U": "更新数据操作", "D": "删除数据操作"}
-        correct_label = crud_map.get(sub_type, "实现指定功能的函数")
+        # P0-12：标签来自 engine/lexicon/quiz_labels.json，不再写死在代码里
+        crud_map = _quiz_labels().get("crud_map", {})
+        correct_label = crud_map.get(sub_type, _quiz_labels().get("fallback_label", "实现指定功能的函数"))
 
-        all_labels = [
-            "新增数据操作", "查询数据操作", "更新数据操作", "删除数据操作",
-            "数据验证操作", "统计计算操作", "文件读写操作", "排序算法",
-        ]
+        all_labels = list(_quiz_labels().get("all_labels", [])) or [correct_label]
         distractors = [l for l in all_labels if l != correct_label]
-        random.shuffle(distractors)
+        self._rng.shuffle(distractors)
         distractors = distractors[:3]
 
         options_text = [correct_label] + distractors
-        random.shuffle(options_text)
+        self._rng.shuffle(options_text)
 
         options = []
         correct_id = ""
@@ -192,7 +213,7 @@ class QuizGenerator:
         if not valid_funcs:
             return None
 
-        func = random.choice(valid_funcs)
+        func = self._rng.choice(valid_funcs)
         func_name = func["_full_name"]
         start = func["start_line"]
         end = func["end_line"]
@@ -219,11 +240,11 @@ class QuizGenerator:
             "打印错误信息后继续",
             "退出程序",
         ]
-        random.shuffle(distractors)
+        self._rng.shuffle(distractors)
         distractors = distractors[:3]
 
         options_text = [correct] + distractors
-        random.shuffle(options_text)
+        self._rng.shuffle(options_text)
 
         options = []
         correct_id = ""
@@ -238,7 +259,13 @@ class QuizGenerator:
             level=2,
             question_type="logic_understanding",
             title="边界条件理解",
-            description="在 `" + func_name + "` 函数中，如果传入的参数不合法（如负年龄、空姓名等），系统会如何处理？",
+            description=(
+                "在 `" + func_name + "` 函数中，"
+                + _quiz_labels().get(
+                    "exception_stem_suffix",
+                    "如果传入的参数不合法，系统会如何处理？",
+                )
+            ),
             options=options,
             correct_answer=correct_id,
             explanation=(
@@ -264,7 +291,7 @@ class QuizGenerator:
         if not candidates:
             return None
 
-        func = random.choice(candidates)
+        func = self._rng.choice(candidates)
         func_name = func["_full_name"]
         start = func["start_line"]
         end = func["end_line"]
@@ -317,7 +344,7 @@ class QuizGenerator:
         distractors = self._generate_code_distractors(blank_text)
 
         options_text = [correct_display] + distractors
-        random.shuffle(options_text)
+        self._rng.shuffle(options_text)
 
         options = []
         correct_id = ""
@@ -381,7 +408,7 @@ class QuizGenerator:
             "return None  # 返回空",
             "raise RuntimeError  # 抛出运行时错误",
         ]
-        random.shuffle(generic)
+        self._rng.shuffle(generic)
         for g in generic:
             if len(distractors) >= 3:
                 break

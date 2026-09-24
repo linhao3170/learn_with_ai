@@ -1,0 +1,3409 @@
+[
+  {
+    "project": "sample_projects/lab_safety_assistant",
+    "self_made": true,
+    "status": "needs_review",
+    "level": "L2",
+    "complexity_raw": 105.9,
+    "elapsed_sec": 0.12,
+    "files": 6,
+    "lines": 784,
+    "domains": 5,
+    "capabilities": 29,
+    "cards": 34,
+    "facts": 133,
+    "relations": 8,
+    "flows": 6,
+    "flow_types": {
+      "normal": 5,
+      "edge_case": 1
+    },
+    "domain_name_status": {
+      "from_docstring": 4,
+      "from_structural_role": 1
+    },
+    "capability_name_status": {
+      "from_docstring": 22,
+      "from_lexicon": 7
+    },
+    "domain_confidence": {
+      "inferred": 5
+    },
+    "capability_confidence": {
+      "inferred": 26,
+      "inferred-low": 3
+    },
+    "members_with_lines": "37/37 (100.0%)",
+    "cap_cards_with_evidence": "29/29 (100.0%)",
+    "facts_with_lines": "133/133 (100.0%)",
+    "flat_domains": "1/5",
+    "unclassified_caps": "0/29 (0.0%)",
+    "unconfirmed_objectives": "3/29 (10.3%)",
+    "deterministic": true,
+    "domains_detail": [
+      {
+        "domain_id": "d_1",
+        "name_cn": "安全检查模块",
+        "role": "core",
+        "confidence": "inferred",
+        "children": 8,
+        "name_status": "from_docstring",
+        "evidence": [
+          "file_docstring_cn=安全检查模块",
+          "merge=call_adjacent(3)",
+          "merge=shared_token:safety(3)"
+        ]
+      },
+      {
+        "domain_id": "d_2",
+        "name_cn": "系统装配",
+        "role": "orchestrator",
+        "confidence": "inferred",
+        "children": 2,
+        "name_status": "from_structural_role",
+        "evidence": [
+          "file_docstring_cn=实验室安全助手系统 - 主入口",
+          "merge=call_adjacent(2)",
+          "merge=call_adjacent(3)",
+          "merge=shared_token:safety(3)"
+        ]
+      },
+      {
+        "domain_id": "d_3",
+        "name_cn": "用户管理模块",
+        "role": "core",
+        "confidence": "inferred",
+        "children": 6,
+        "name_status": "from_docstring",
+        "evidence": [
+          "file_docstring_cn=用户管理模块",
+          "merge=call_adjacent(2)"
+        ]
+      },
+      {
+        "domain_id": "d_4",
+        "name_cn": "设备管理模块",
+        "role": "core",
+        "confidence": "inferred",
+        "children": 6,
+        "name_status": "from_docstring",
+        "evidence": [
+          "file_docstring_cn=设备管理模块",
+          "merge=call_adjacent(2)"
+        ]
+      },
+      {
+        "domain_id": "d_5",
+        "name_cn": "预约管理模块",
+        "role": "core",
+        "confidence": "inferred",
+        "children": 7,
+        "name_status": "from_docstring",
+        "evidence": [
+          "file_docstring_cn=预约管理模块",
+          "merge=call_adjacent(2)"
+        ]
+      }
+    ],
+    "capabilities_detail": [
+      {
+        "capability_id": "c_d_1_create_check",
+        "name_cn": "添加安全检查项",
+        "parent_id": "d_1",
+        "verb_class": "create",
+        "entity": "check",
+        "confidence": "inferred",
+        "members": [
+          "add_check_item"
+        ]
+      },
+      {
+        "capability_id": "c_d_1_create_hazard",
+        "name_cn": "创建一条隐患记录",
+        "parent_id": "d_1",
+        "verb_class": "create",
+        "entity": "hazard",
+        "confidence": "inferred-low",
+        "members": [
+          "_create_hazard"
+        ]
+      },
+      {
+        "capability_id": "c_d_1_query_check",
+        "name_cn": "查询检查",
+        "parent_id": "d_1",
+        "verb_class": "query",
+        "entity": "check",
+        "confidence": "inferred",
+        "members": [
+          "get_check_records",
+          "list_check_items"
+        ]
+      },
+      {
+        "capability_id": "c_d_1_query_general",
+        "name_cn": "获取隐患列表，支持多条件筛选",
+        "parent_id": "d_1",
+        "verb_class": "query",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "get_hazards"
+        ]
+      },
+      {
+        "capability_id": "c_d_1_query_hazard",
+        "name_cn": "查找隐患",
+        "parent_id": "d_1",
+        "verb_class": "query",
+        "entity": "hazard",
+        "confidence": "inferred-low",
+        "members": [
+          "_find_hazard"
+        ]
+      },
+      {
+        "capability_id": "c_d_1_transition_check",
+        "name_cn": "流转检查",
+        "parent_id": "d_1",
+        "verb_class": "transition",
+        "entity": "check",
+        "confidence": "inferred",
+        "members": [
+          "perform_check",
+          "_create_hazard"
+        ]
+      },
+      {
+        "capability_id": "c_d_1_transition_hazard",
+        "name_cn": "完成隐患整改并关闭",
+        "parent_id": "d_1",
+        "verb_class": "transition",
+        "entity": "hazard",
+        "confidence": "inferred",
+        "members": [
+          "close_hazard"
+        ]
+      },
+      {
+        "capability_id": "c_d_1_update_hazard",
+        "name_cn": "修改隐患",
+        "parent_id": "d_1",
+        "verb_class": "update",
+        "entity": "hazard",
+        "confidence": "inferred",
+        "members": [
+          "assign_hazard",
+          "_find_hazard"
+        ]
+      },
+      {
+        "capability_id": "c_d_2_create_general",
+        "name_cn": "初始化示例数据",
+        "parent_id": "d_2",
+        "verb_class": "create",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "initialize_sample_data"
+        ]
+      },
+      {
+        "capability_id": "c_d_2_query_general",
+        "name_cn": "获取系统概览统计",
+        "parent_id": "d_2",
+        "verb_class": "query",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "get_system_stats"
+        ]
+      },
+      {
+        "capability_id": "c_d_3_create_general",
+        "name_cn": "注册新用户",
+        "parent_id": "d_3",
+        "verb_class": "create",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "register"
+        ]
+      },
+      {
+        "capability_id": "c_d_3_identity_role",
+        "name_cn": "检查当前用户是否有指定权限",
+        "parent_id": "d_3",
+        "verb_class": "identity",
+        "entity": "role",
+        "confidence": "inferred",
+        "members": [
+          "has_permission"
+        ]
+      },
+      {
+        "capability_id": "c_d_3_identity_user",
+        "name_cn": "权限校验用户",
+        "parent_id": "d_3",
+        "verb_class": "identity",
+        "entity": "user",
+        "confidence": "inferred",
+        "members": [
+          "login",
+          "logout"
+        ]
+      },
+      {
+        "capability_id": "c_d_3_query_general",
+        "name_cn": "列出用户，可按角色筛选",
+        "parent_id": "d_3",
+        "verb_class": "query",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "list_users"
+        ]
+      },
+      {
+        "capability_id": "c_d_3_query_user",
+        "name_cn": "获取当前登录用户",
+        "parent_id": "d_3",
+        "verb_class": "query",
+        "entity": "user",
+        "confidence": "inferred",
+        "members": [
+          "get_current_user"
+        ]
+      },
+      {
+        "capability_id": "c_d_3_transition_user",
+        "name_cn": "停用用户账户",
+        "parent_id": "d_3",
+        "verb_class": "transition",
+        "entity": "user",
+        "confidence": "inferred",
+        "members": [
+          "deactivate_user"
+        ]
+      },
+      {
+        "capability_id": "c_d_4_create_equipment",
+        "name_cn": "添加设备",
+        "parent_id": "d_4",
+        "verb_class": "create",
+        "entity": "equipment",
+        "confidence": "inferred",
+        "members": [
+          "add_equipment"
+        ]
+      },
+      {
+        "capability_id": "c_d_4_create_general",
+        "name_cn": "添加设备维护记录",
+        "parent_id": "d_4",
+        "verb_class": "create",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "add_maintenance"
+        ]
+      },
+      {
+        "capability_id": "c_d_4_query_general",
+        "name_cn": "列出设备，可按实验室/状态筛选",
+        "parent_id": "d_4",
+        "verb_class": "query",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "list_equipments"
+        ]
+      },
+      {
+        "capability_id": "c_d_4_query_record",
+        "name_cn": "获取设备的维护历史",
+        "parent_id": "d_4",
+        "verb_class": "query",
+        "entity": "record",
+        "confidence": "inferred",
+        "members": [
+          "get_maintenance_history"
+        ]
+      },
+      {
+        "capability_id": "c_d_4_transition_equipment",
+        "name_cn": "流转设备",
+        "parent_id": "d_4",
+        "verb_class": "transition",
+        "entity": "equipment",
+        "confidence": "inferred",
+        "members": [
+          "borrow_equipment",
+          "return_equipment"
+        ]
+      },
+      {
+        "capability_id": "c_d_4_update_equipment",
+        "name_cn": "设置设备状态（可用/维护中/报废）",
+        "parent_id": "d_4",
+        "verb_class": "update",
+        "entity": "equipment",
+        "confidence": "inferred",
+        "members": [
+          "set_equipment_status"
+        ]
+      },
+      {
+        "capability_id": "c_d_5_approve_reservation",
+        "name_cn": "审批通过/审批拒绝预约",
+        "parent_id": "d_5",
+        "verb_class": "approve",
+        "entity": "reservation",
+        "confidence": "inferred",
+        "members": [
+          "approve_reservation",
+          "reject_reservation"
+        ]
+      },
+      {
+        "capability_id": "c_d_5_cancel_reservation",
+        "name_cn": "取消/撤回/提交/创建预约",
+        "parent_id": "d_5",
+        "verb_class": "cancel",
+        "entity": "reservation",
+        "confidence": "inferred",
+        "members": [
+          "create_reservation",
+          "_check_conflict",
+          "cancel_reservation"
+        ]
+      },
+      {
+        "capability_id": "c_d_5_create_lab",
+        "name_cn": "添加实验室",
+        "parent_id": "d_5",
+        "verb_class": "create",
+        "entity": "lab",
+        "confidence": "inferred",
+        "members": [
+          "add_lab"
+        ]
+      },
+      {
+        "capability_id": "c_d_5_query_general",
+        "name_cn": "列出实验室列表",
+        "parent_id": "d_5",
+        "verb_class": "query",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "list_labs"
+        ]
+      },
+      {
+        "capability_id": "c_d_5_query_lab",
+        "name_cn": "获取指定实验室的预约，可按状态筛选",
+        "parent_id": "d_5",
+        "verb_class": "query",
+        "entity": "lab",
+        "confidence": "inferred",
+        "members": [
+          "get_lab_reservations"
+        ]
+      },
+      {
+        "capability_id": "c_d_5_query_user",
+        "name_cn": "获取指定用户的所有预约",
+        "parent_id": "d_5",
+        "verb_class": "query",
+        "entity": "user",
+        "confidence": "inferred",
+        "members": [
+          "get_user_reservations"
+        ]
+      },
+      {
+        "capability_id": "c_d_5_validate_check",
+        "name_cn": "检查预约冲突",
+        "parent_id": "d_5",
+        "verb_class": "validate",
+        "entity": "check",
+        "confidence": "inferred-low",
+        "members": [
+          "_check_conflict"
+        ]
+      }
+    ]
+  },
+  {
+    "project": "validation/python_dotenv",
+    "self_made": false,
+    "status": "needs_review",
+    "level": "L2",
+    "complexity_raw": 77.2,
+    "elapsed_sec": 0.1,
+    "files": 8,
+    "lines": 1112,
+    "domains": 6,
+    "capabilities": 24,
+    "cards": 30,
+    "facts": 74,
+    "relations": 3,
+    "flows": 8,
+    "flow_types": {
+      "normal": 8
+    },
+    "domain_name_status": {
+      "from_identifier": 3,
+      "from_structural_role": 3
+    },
+    "capability_name_status": {
+      "from_lexicon": 20,
+      "unconfirmed": 4
+    },
+    "domain_confidence": {
+      "inferred": 4,
+      "inferred-low": 2
+    },
+    "capability_confidence": {
+      "inferred": 19,
+      "inferred-low": 5
+    },
+    "members_with_lines": "51/51 (100.0%)",
+    "cap_cards_with_evidence": "24/24 (100.0%)",
+    "facts_with_lines": "74/74 (100.0%)",
+    "flat_domains": "3/6",
+    "unclassified_caps": "4/24 (16.7%)",
+    "unconfirmed_objectives": "11/24 (45.8%)",
+    "deterministic": true,
+    "domains_detail": [
+      {
+        "domain_id": "d_atom",
+        "name_cn": "Atom",
+        "role": "core",
+        "confidence": "inferred",
+        "children": 1,
+        "name_status": "from_identifier",
+        "evidence": [
+          "identifier_root=atom",
+          "identifier_root=literal",
+          "identifier_root=variable",
+          "identifier_root=variables"
+        ]
+      },
+      {
+        "domain_id": "d_binding",
+        "name_cn": "Binding",
+        "role": "core",
+        "confidence": "inferred",
+        "children": 7,
+        "name_status": "from_identifier",
+        "evidence": [
+          "identifier_root=binding",
+          "identifier_root=error",
+          "identifier_root=original",
+          "identifier_root=parser"
+        ]
+      },
+      {
+        "domain_id": "d_cli",
+        "name_cn": "系统装配（cli）",
+        "role": "orchestrator",
+        "confidence": "inferred-low",
+        "children": 5,
+        "name_status": "from_structural_role",
+        "evidence": [
+          "identifier_root=cli",
+          "merge=call_adjacent(2)"
+        ]
+      },
+      {
+        "domain_id": "d_dot_env",
+        "name_cn": "系统装配（main）",
+        "role": "orchestrator",
+        "confidence": "inferred",
+        "children": 8,
+        "name_status": "from_structural_role",
+        "evidence": [
+          "identifier_root=dot_env",
+          "identifier_root=main",
+          "merge=call_adjacent(2)",
+          "merge=call_adjacent(6)"
+        ]
+      },
+      {
+        "domain_id": "d_i_python_dot_env",
+        "name_cn": "I Python Dot Env",
+        "role": "core",
+        "confidence": "inferred",
+        "children": 2,
+        "name_status": "from_identifier",
+        "evidence": [
+          "identifier_root=i_python_dot_env",
+          "identifier_root=ipython",
+          "merge=call_adjacent(2)",
+          "merge=same_file(5)"
+        ]
+      },
+      {
+        "domain_id": "d_init",
+        "name_cn": "系统装配（__init__）",
+        "role": "orchestrator",
+        "confidence": "inferred-low",
+        "children": 1,
+        "name_status": "from_structural_role",
+        "evidence": [
+          "identifier_root=init",
+          "merge=call_adjacent(2)"
+        ]
+      }
+    ],
+    "capabilities_detail": [
+      {
+        "capability_id": "c_d_atom_query_general",
+        "name_cn": "查询/读取操作",
+        "parent_id": "d_atom",
+        "verb_class": "query",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "resolve",
+          "resolve",
+          "resolve",
+          "parse_variables"
+        ]
+      },
+      {
+        "capability_id": "c_d_binding_create_general",
+        "name_cn": "提交/创建操作",
+        "parent_id": "d_binding",
+        "verb_class": "create",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "make_regex"
+        ]
+      },
+      {
+        "capability_id": "c_d_binding_misc_unclassified",
+        "name_cn": "其他能力（待归类：advance、has_next、peek）",
+        "parent_id": "d_binding",
+        "verb_class": "misc",
+        "entity": "unclassified",
+        "confidence": "inferred-low",
+        "members": [
+          "advance",
+          "has_next",
+          "peek"
+        ]
+      },
+      {
+        "capability_id": "c_d_binding_query_general",
+        "name_cn": "查询/读取操作",
+        "parent_id": "d_binding",
+        "verb_class": "query",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "get_marked",
+          "read",
+          "read_regex",
+          "parse_binding",
+          "parse_stream"
+        ]
+      },
+      {
+        "capability_id": "c_d_binding_query_value",
+        "name_cn": "查询数据项",
+        "parent_id": "d_binding",
+        "verb_class": "query",
+        "entity": "value",
+        "confidence": "inferred",
+        "members": [
+          "parse_key",
+          "parse_unquoted_value",
+          "parse_value"
+        ]
+      },
+      {
+        "capability_id": "c_d_binding_serialize_general",
+        "name_cn": "序列化/格式化操作",
+        "parent_id": "d_binding",
+        "verb_class": "serialize",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "decode_escapes"
+        ]
+      },
+      {
+        "capability_id": "c_d_binding_transition_general",
+        "name_cn": "状态流转操作",
+        "parent_id": "d_binding",
+        "verb_class": "transition",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "start"
+        ]
+      },
+      {
+        "capability_id": "c_d_binding_update_general",
+        "name_cn": "更新/修改操作",
+        "parent_id": "d_binding",
+        "verb_class": "update",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "set",
+          "set_mark"
+        ]
+      },
+      {
+        "capability_id": "c_d_cli_misc_config",
+        "name_cn": "配置相关操作",
+        "parent_id": "d_cli",
+        "verb_class": "misc",
+        "entity": "config",
+        "confidence": "inferred",
+        "members": [
+          "enumerate_env"
+        ]
+      },
+      {
+        "capability_id": "c_d_cli_misc_file",
+        "name_cn": "文件相关操作",
+        "parent_id": "d_cli",
+        "verb_class": "misc",
+        "entity": "file",
+        "confidence": "inferred",
+        "members": [
+          "stream_file"
+        ]
+      },
+      {
+        "capability_id": "c_d_cli_misc_unclassified",
+        "name_cn": "其他能力（待归类：cli、unset、run、run_command）",
+        "parent_id": "d_cli",
+        "verb_class": "misc",
+        "entity": "unclassified",
+        "confidence": "inferred-low",
+        "members": [
+          "cli",
+          "unset",
+          "run",
+          "run_command"
+        ]
+      },
+      {
+        "capability_id": "c_d_cli_query_general",
+        "name_cn": "查询/读取操作",
+        "parent_id": "d_cli",
+        "verb_class": "query",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "list_values",
+          "get"
+        ]
+      },
+      {
+        "capability_id": "c_d_cli_update_value",
+        "name_cn": "修改数据项",
+        "parent_id": "d_cli",
+        "verb_class": "update",
+        "entity": "value",
+        "confidence": "inferred",
+        "members": [
+          "set_value"
+        ]
+      },
+      {
+        "capability_id": "c_d_dot_env_misc_file",
+        "name_cn": "文件相关操作",
+        "parent_id": "d_dot_env",
+        "verb_class": "misc",
+        "entity": "file",
+        "confidence": "inferred-low",
+        "members": [
+          "_is_file_or_fifo"
+        ]
+      },
+      {
+        "capability_id": "c_d_dot_env_misc_unclassified",
+        "name_cn": "其他能力（待归类：dict、rewrite、dotenv_values）",
+        "parent_id": "d_dot_env",
+        "verb_class": "misc",
+        "entity": "unclassified",
+        "confidence": "inferred-low",
+        "members": [
+          "dict",
+          "rewrite",
+          "dotenv_values"
+        ]
+      },
+      {
+        "capability_id": "c_d_dot_env_misc_value",
+        "name_cn": "数据项相关操作",
+        "parent_id": "d_dot_env",
+        "verb_class": "misc",
+        "entity": "value",
+        "confidence": "inferred",
+        "members": [
+          "unset_key"
+        ]
+      },
+      {
+        "capability_id": "c_d_dot_env_notify_general",
+        "name_cn": "通知/告警操作",
+        "parent_id": "d_dot_env",
+        "verb_class": "notify",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "with_warn_for_invalid_lines"
+        ]
+      },
+      {
+        "capability_id": "c_d_dot_env_query_general",
+        "name_cn": "查询/读取操作",
+        "parent_id": "d_dot_env",
+        "verb_class": "query",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "_load_dotenv_disabled",
+          "_get_stream",
+          "parse",
+          "get",
+          "resolve_variables",
+          "_walk_to_root",
+          "find_dotenv",
+          "load_dotenv",
+          "_is_file_or_fifo"
+        ]
+      },
+      {
+        "capability_id": "c_d_dot_env_query_value",
+        "name_cn": "查询数据项",
+        "parent_id": "d_dot_env",
+        "verb_class": "query",
+        "entity": "value",
+        "confidence": "inferred",
+        "members": [
+          "get_key"
+        ]
+      },
+      {
+        "capability_id": "c_d_dot_env_update_general",
+        "name_cn": "更新/修改操作",
+        "parent_id": "d_dot_env",
+        "verb_class": "update",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "set_as_environment_variables"
+        ]
+      },
+      {
+        "capability_id": "c_d_dot_env_update_value",
+        "name_cn": "修改数据项",
+        "parent_id": "d_dot_env",
+        "verb_class": "update",
+        "entity": "value",
+        "confidence": "inferred",
+        "members": [
+          "set_key"
+        ]
+      },
+      {
+        "capability_id": "c_d_i_python_dot_env_misc_unclassified",
+        "name_cn": "其他能力（待归类：dotenv）",
+        "parent_id": "d_i_python_dot_env",
+        "verb_class": "misc",
+        "entity": "unclassified",
+        "confidence": "inferred-low",
+        "members": [
+          "dotenv"
+        ]
+      },
+      {
+        "capability_id": "c_d_i_python_dot_env_query_general",
+        "name_cn": "查询/读取操作",
+        "parent_id": "d_i_python_dot_env",
+        "verb_class": "query",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "load_ipython_extension"
+        ]
+      },
+      {
+        "capability_id": "c_d_init_query_general",
+        "name_cn": "查询/读取操作",
+        "parent_id": "d_init",
+        "verb_class": "query",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "load_ipython_extension",
+          "get_cli_string"
+        ]
+      }
+    ]
+  },
+  {
+    "project": "validation/flask",
+    "self_made": false,
+    "status": "needs_review",
+    "level": "L3",
+    "complexity_raw": 324.8,
+    "elapsed_sec": 0.79,
+    "files": 24,
+    "lines": 9513,
+    "domains": 12,
+    "capabilities": 54,
+    "cards": 66,
+    "facts": 459,
+    "relations": 23,
+    "flows": 9,
+    "flow_types": {
+      "normal": 9
+    },
+    "domain_name_status": {
+      "from_identifier": 8,
+      "from_structural_role": 4
+    },
+    "capability_name_status": {
+      "from_lexicon": 43,
+      "unconfirmed": 11
+    },
+    "domain_confidence": {
+      "inferred": 10,
+      "inferred-low": 2
+    },
+    "capability_confidence": {
+      "inferred": 33,
+      "inferred-low": 21
+    },
+    "members_with_lines": "318/318 (100.0%)",
+    "cap_cards_with_evidence": "54/54 (100.0%)",
+    "facts_with_lines": "459/459 (100.0%)",
+    "flat_domains": "5/12",
+    "unclassified_caps": "11/54 (20.4%)",
+    "unconfirmed_objectives": "13/54 (24.1%)",
+    "deterministic": true,
+    "domains_detail": [
+      {
+        "domain_id": "d_app",
+        "name_cn": "App",
+        "role": "core",
+        "confidence": "inferred",
+        "children": 15,
+        "name_status": "from_identifier",
+        "evidence": [
+          "identifier_root=app",
+          "identifier_root=app",
+          "identifier_root=app",
+          "identifier_root=app_context"
+        ]
+      },
+      {
+        "domain_id": "d_app_context_proxy",
+        "name_cn": "App Context Proxy",
+        "role": "core",
+        "confidence": "inferred",
+        "children": 1,
+        "name_status": "from_identifier",
+        "evidence": [
+          "identifier_root=app_context_proxy",
+          "identifier_root=app_ctx_globals_proxy",
+          "identifier_root=flask_proxy",
+          "identifier_root=globals"
+        ]
+      },
+      {
+        "domain_id": "d_app_group",
+        "name_cn": "App Group",
+        "role": "core",
+        "confidence": "inferred",
+        "children": 8,
+        "name_status": "from_identifier",
+        "evidence": [
+          "identifier_root=app_group",
+          "identifier_root=cert_param_type",
+          "identifier_root=cli",
+          "identifier_root=flask_group"
+        ]
+      },
+      {
+        "domain_id": "d_collect_errors",
+        "name_cn": "Collect Errors",
+        "role": "core",
+        "confidence": "inferred",
+        "children": 7,
+        "name_status": "from_identifier",
+        "evidence": [
+          "identifier_root=collect_errors",
+          "identifier_root=helpers",
+          "merge=call_adjacent(2)",
+          "merge=same_file(5)"
+        ]
+      },
+      {
+        "domain_id": "d_debug_files_key_error",
+        "name_cn": "Debug Files Key Error",
+        "role": "core",
+        "confidence": "inferred",
+        "children": 2,
+        "name_status": "from_identifier",
+        "evidence": [
+          "identifier_root=debug_files_key_error",
+          "identifier_root=debughelpers",
+          "identifier_root=form_data_routing_redirect",
+          "identifier_root=unexpected_unicode_error"
+        ]
+      },
+      {
+        "domain_id": "d_default_j_s_o_n",
+        "name_cn": "系统装配（provider）",
+        "role": "orchestrator",
+        "confidence": "inferred",
+        "children": 3,
+        "name_status": "from_structural_role",
+        "evidence": [
+          "identifier_root=default_j_s_o_n",
+          "identifier_root=j_s_o_n",
+          "identifier_root=provider",
+          "merge=call_adjacent(2)"
+        ]
+      },
+      {
+        "domain_id": "d_init",
+        "name_cn": "系统装配（__init__）",
+        "role": "orchestrator",
+        "confidence": "inferred-low",
+        "children": 3,
+        "name_status": "from_structural_role",
+        "evidence": [
+          "identifier_root=init",
+          "merge=call_adjacent(2)"
+        ]
+      },
+      {
+        "domain_id": "d_j_s_o_n_tag",
+        "name_cn": "JSON Tag",
+        "role": "core",
+        "confidence": "inferred",
+        "children": 5,
+        "name_status": "from_identifier",
+        "evidence": [
+          "identifier_root=j_s_o_n_tag",
+          "identifier_root=pass_dict",
+          "identifier_root=pass_list",
+          "identifier_root=tag_bytes"
+        ]
+      },
+      {
+        "domain_id": "d_logging",
+        "name_cn": "系统装配（logging）",
+        "role": "orchestrator",
+        "confidence": "inferred-low",
+        "children": 2,
+        "name_status": "from_structural_role",
+        "evidence": [
+          "identifier_root=logging",
+          "merge=call_adjacent(2)"
+        ]
+      },
+      {
+        "domain_id": "d_method_view",
+        "name_cn": "系统装配（views）",
+        "role": "orchestrator",
+        "confidence": "inferred",
+        "children": 1,
+        "name_status": "from_structural_role",
+        "evidence": [
+          "identifier_root=method_view",
+          "identifier_root=view",
+          "merge=call_adjacent(2)",
+          "merge=same_file(5)"
+        ]
+      },
+      {
+        "domain_id": "d_null_session",
+        "name_cn": "Null Session",
+        "role": "core",
+        "confidence": "inferred",
+        "children": 5,
+        "name_status": "from_identifier",
+        "evidence": [
+          "identifier_root=null_session",
+          "identifier_root=secure_cookie_session",
+          "identifier_root=secure_cookie_session_interface",
+          "identifier_root=session_interface"
+        ]
+      },
+      {
+        "domain_id": "d_request",
+        "name_cn": "Request",
+        "role": "core",
+        "confidence": "inferred",
+        "children": 2,
+        "name_status": "from_identifier",
+        "evidence": [
+          "identifier_root=request",
+          "identifier_root=response",
+          "merge=call_adjacent(2)",
+          "merge=same_file(5)"
+        ]
+      }
+    ],
+    "capabilities_detail": [
+      {
+        "capability_id": "c_d_app_configure_general",
+        "name_cn": "配置/装配操作",
+        "parent_id": "d_app",
+        "verb_class": "configure",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "_check_setup_finished",
+          "_check_setup_finished",
+          "setupmethod",
+          "_check_setup_finished"
+        ]
+      },
+      {
+        "capability_id": "c_d_app_create_config",
+        "name_cn": "提交配置",
+        "parent_id": "d_app",
+        "verb_class": "create",
+        "entity": "config",
+        "confidence": "inferred",
+        "members": [
+          "make_config",
+          "add_template_filter",
+          "add_template_test",
+          "add_template_global"
+        ]
+      },
+      {
+        "capability_id": "c_d_app_create_general",
+        "name_cn": "提交/创建/删除/移除操作",
+        "parent_id": "d_app",
+        "verb_class": "create",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "_make_timedelta",
+          "remove_ctx",
+          "add_ctx",
+          "open_resource",
+          "open_instance_resource",
+          "create_jinja_environment",
+          "create_url_adapter",
+          "update_template_context",
+          "make_shell_context",
+          "make_default_options_response",
+          "make_response",
+          "process_response",
+          "open_resource",
+          "setdefault",
+          "_get_session",
+          "_make_timedelta",
+          "create_jinja_environment",
+          "make_aborter",
+          "create_global_jinja_loader",
+          "register_blueprint",
+          "add_url_rule",
+          "handle_url_build_error",
+          "add_url_rule",
+          "make_setup_state",
+          "register_blueprint",
+          "register",
+          "_merge_blueprint_funcs",
+          "add_url_rule",
+          "add_app_template_filter",
+          "add_app_template_test",
+          "add_app_template_global",
+          "_method_route",
+          "delete",
+          "patch",
+          "add_url_rule",
+          "register_error_handler",
+          "_get_exc_class_and_code",
+          "_endpoint_from_view_func",
+          "_copy_environ",
+          "_request_from_builder_args",
+          "open"
+        ]
+      },
+      {
+        "capability_id": "c_d_app_misc_config",
+        "name_cn": "配置相关操作",
+        "parent_id": "d_app",
+        "verb_class": "misc",
+        "entity": "config",
+        "confidence": "inferred",
+        "members": [
+          "from_prefixed_env",
+          "jinja_env",
+          "debug",
+          "debug"
+        ]
+      },
+      {
+        "capability_id": "c_d_app_misc_file",
+        "name_cn": "文件相关操作",
+        "parent_id": "d_app",
+        "verb_class": "misc",
+        "entity": "file",
+        "confidence": "inferred",
+        "members": [
+          "from_file",
+          "static_folder",
+          "static_folder",
+          "has_static_folder",
+          "static_url_path",
+          "static_url_path"
+        ]
+      },
+      {
+        "capability_id": "c_d_app_misc_record",
+        "name_cn": "记录相关操作",
+        "parent_id": "d_app",
+        "verb_class": "misc",
+        "entity": "record",
+        "confidence": "inferred",
+        "members": [
+          "log_exception",
+          "record",
+          "record_once"
+        ]
+      },
+      {
+        "capability_id": "c_d_app_misc_unclassified",
+        "name_cn": "其他能力（待归类：raise_routing_exception、run、test_client、test_cli_runner 等 89 个）",
+        "parent_id": "d_app",
+        "verb_class": "misc",
+        "entity": "unclassified",
+        "confidence": "inferred-low",
+        "members": [
+          "raise_routing_exception",
+          "run",
+          "test_client",
+          "test_cli_runner",
+          "handle_http_exception",
+          "handle_exception",
+          "dispatch_request",
+          "full_dispatch_request",
+          "finalize_request",
+          "async_to_sync",
+          "url_for",
+          "preprocess_request",
+          "do_teardown_request",
+          "do_teardown_appcontext",
+          "app_context",
+          "request_context",
+          "test_request_context",
+          "wsgi_app",
+          "from_envvar",
+          "from_pyfile",
+          "from_object",
+          "from_mapping",
+          "pop",
+          "after_this_request",
+          "copy_current_request_context",
+          "has_request_context",
+          "has_app_context",
+          "from_environ",
+          "has_request",
+          "copy",
+          "request",
+          "session",
+          "match_request",
+          "push",
+          "pop",
+          "name",
+          "logger",
+          "select_jinja_autoescape",
+          "iter_blueprints",
+          "template_filter",
+          "template_filter",
+          "template_filter",
+          "template_test",
+          "template_test",
+          "template_test",
+          "template_global",
+          "template_global",
+          "template_global",
+          "teardown_appcontext",
+          "shell_context_processor",
+          "trap_http_exception",
+          "redirect",
+          "inject_url_defaults",
+          "app_template_filter",
+          "app_template_filter",
+          "app_template_filter",
+          "app_template_test",
+          "app_template_test",
+          "app_template_test",
+          "app_template_global",
+          "app_template_global",
+          "app_template_global",
+          "before_app_request",
+          "after_app_request",
+          "teardown_app_request",
+          "app_context_processor",
+          "app_errorhandler",
+          "app_url_defaults",
+          "jinja_loader",
+          "post",
+          "put",
+          "route",
+          "endpoint",
+          "before_request",
+          "after_request",
+          "teardown_request",
+          "context_processor",
+          "url_defaults",
+          "errorhandler",
+          "_default_template_ctx_processor",
+          "_iter_loaders",
+          "_render",
+          "render_template",
+          "render_template_string",
+          "_stream",
+          "stream_template",
+          "stream_template_string",
+          "session_transaction",
+          "invoke"
+        ]
+      },
+      {
+        "capability_id": "c_d_app_misc_user",
+        "name_cn": "用户相关操作",
+        "parent_id": "d_app",
+        "verb_class": "misc",
+        "entity": "user",
+        "confidence": "inferred",
+        "members": [
+          "handle_user_exception",
+          "_find_error_handler"
+        ]
+      },
+      {
+        "capability_id": "c_d_app_misc_value",
+        "name_cn": "数据项相关操作",
+        "parent_id": "d_app",
+        "verb_class": "misc",
+        "entity": "value",
+        "confidence": "inferred",
+        "members": [
+          "app_url_value_preprocessor",
+          "url_value_preprocessor"
+        ]
+      },
+      {
+        "capability_id": "c_d_app_notify_file",
+        "name_cn": "通知文件",
+        "parent_id": "d_app",
+        "verb_class": "notify",
+        "entity": "file",
+        "confidence": "inferred",
+        "members": [
+          "send_static_file",
+          "send_static_file"
+        ]
+      },
+      {
+        "capability_id": "c_d_app_query_file",
+        "name_cn": "查询文件",
+        "parent_id": "d_app",
+        "verb_class": "query",
+        "entity": "file",
+        "confidence": "inferred",
+        "members": [
+          "get_send_file_max_age",
+          "get_send_file_max_age",
+          "auto_find_instance_path",
+          "_find_package_path"
+        ]
+      },
+      {
+        "capability_id": "c_d_app_query_general",
+        "name_cn": "查询/读取操作",
+        "parent_id": "d_app",
+        "verb_class": "query",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "get_namespace",
+          "get",
+          "_get_session",
+          "_find_error_handler",
+          "get",
+          "query",
+          "_get_exc_class_and_code",
+          "_find_package_path",
+          "find_package",
+          "get_source",
+          "_get_source_explained",
+          "_get_source_fast",
+          "list_templates",
+          "_get_werkzeug_version"
+        ]
+      },
+      {
+        "capability_id": "c_d_app_serialize_general",
+        "name_cn": "序列化/格式化操作",
+        "parent_id": "d_app",
+        "verb_class": "serialize",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "json_dumps"
+        ]
+      },
+      {
+        "capability_id": "c_d_app_validate_check",
+        "name_cn": "校验检查",
+        "parent_id": "d_app",
+        "verb_class": "validate",
+        "entity": "check",
+        "confidence": "inferred-low",
+        "members": [
+          "_check_setup_finished",
+          "_check_setup_finished",
+          "_check_setup_finished"
+        ]
+      },
+      {
+        "capability_id": "c_d_app_validate_general",
+        "name_cn": "校验/检测操作",
+        "parent_id": "d_app",
+        "verb_class": "validate",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "ensure_sync"
+        ]
+      },
+      {
+        "capability_id": "c_d_app_context_proxy_query_general",
+        "name_cn": "查询/读取操作",
+        "parent_id": "d_app_context_proxy",
+        "verb_class": "query",
+        "entity": "",
+        "confidence": "inferred-low",
+        "members": [
+          "_get_current_object"
+        ]
+      },
+      {
+        "capability_id": "c_d_app_group_create_general",
+        "name_cn": "提交/创建操作",
+        "parent_id": "d_app_group",
+        "verb_class": "create",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "make_context"
+        ]
+      },
+      {
+        "capability_id": "c_d_app_group_misc_config",
+        "name_cn": "配置相关操作",
+        "parent_id": "d_app_group",
+        "verb_class": "misc",
+        "entity": "config",
+        "confidence": "inferred-low",
+        "members": [
+          "_env_file_callback"
+        ]
+      },
+      {
+        "capability_id": "c_d_app_group_misc_file",
+        "name_cn": "文件相关操作",
+        "parent_id": "d_app_group",
+        "verb_class": "misc",
+        "entity": "file",
+        "confidence": "inferred-low",
+        "members": [
+          "_path_is_ancestor"
+        ]
+      },
+      {
+        "capability_id": "c_d_app_group_misc_role",
+        "name_cn": "角色权限相关操作",
+        "parent_id": "d_app_group",
+        "verb_class": "misc",
+        "entity": "role",
+        "confidence": "inferred",
+        "members": [
+          "group"
+        ]
+      },
+      {
+        "capability_id": "c_d_app_group_misc_unclassified",
+        "name_cn": "其他能力（待归类：prepare_import、locate_app、locate_app、locate_app 等 13 个）",
+        "parent_id": "d_app_group",
+        "verb_class": "misc",
+        "entity": "unclassified",
+        "confidence": "inferred-low",
+        "members": [
+          "prepare_import",
+          "locate_app",
+          "locate_app",
+          "locate_app",
+          "with_appcontext",
+          "command",
+          "show_server_banner",
+          "convert",
+          "convert",
+          "run_command",
+          "shell_command",
+          "routes_command",
+          "main"
+        ]
+      },
+      {
+        "capability_id": "c_d_app_group_query_general",
+        "name_cn": "查询/读取操作",
+        "parent_id": "d_app_group",
+        "verb_class": "query",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "find_best_app",
+          "_called_with_wrong_args",
+          "find_app_by_string",
+          "get_version",
+          "load_app",
+          "_load_plugin_commands",
+          "get_command",
+          "list_commands",
+          "parse_args",
+          "load_dotenv"
+        ]
+      },
+      {
+        "capability_id": "c_d_app_group_update_general",
+        "name_cn": "更新/修改操作",
+        "parent_id": "d_app_group",
+        "verb_class": "update",
+        "entity": "",
+        "confidence": "inferred-low",
+        "members": [
+          "_set_app",
+          "_set_debug"
+        ]
+      },
+      {
+        "capability_id": "c_d_app_group_validate_value",
+        "name_cn": "校验数据项",
+        "parent_id": "d_app_group",
+        "verb_class": "validate",
+        "entity": "value",
+        "confidence": "inferred-low",
+        "members": [
+          "_validate_key"
+        ]
+      },
+      {
+        "capability_id": "c_d_collect_errors_cancel_general",
+        "name_cn": "取消/撤回操作",
+        "parent_id": "d_collect_errors",
+        "verb_class": "cancel",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "abort"
+        ]
+      },
+      {
+        "capability_id": "c_d_collect_errors_create_general",
+        "name_cn": "提交/创建操作",
+        "parent_id": "d_collect_errors",
+        "verb_class": "create",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "make_response"
+        ]
+      },
+      {
+        "capability_id": "c_d_collect_errors_misc_file",
+        "name_cn": "文件相关操作",
+        "parent_id": "d_collect_errors",
+        "verb_class": "misc",
+        "entity": "file",
+        "confidence": "inferred-low",
+        "members": [
+          "_split_blueprint_path"
+        ]
+      },
+      {
+        "capability_id": "c_d_collect_errors_misc_unclassified",
+        "name_cn": "其他能力（待归类：stream_with_context、stream_with_context、stream_with_context、url_for 等 7 个）",
+        "parent_id": "d_collect_errors",
+        "verb_class": "misc",
+        "entity": "unclassified",
+        "confidence": "inferred-low",
+        "members": [
+          "stream_with_context",
+          "stream_with_context",
+          "stream_with_context",
+          "url_for",
+          "redirect",
+          "flash",
+          "raise_any"
+        ]
+      },
+      {
+        "capability_id": "c_d_collect_errors_notify_file",
+        "name_cn": "通知文件",
+        "parent_id": "d_collect_errors",
+        "verb_class": "notify",
+        "entity": "file",
+        "confidence": "inferred",
+        "members": [
+          "_prepare_send_file_kwargs",
+          "send_file",
+          "send_from_directory"
+        ]
+      },
+      {
+        "capability_id": "c_d_collect_errors_query_file",
+        "name_cn": "查询文件",
+        "parent_id": "d_collect_errors",
+        "verb_class": "query",
+        "entity": "file",
+        "confidence": "inferred",
+        "members": [
+          "get_root_path"
+        ]
+      },
+      {
+        "capability_id": "c_d_collect_errors_query_general",
+        "name_cn": "查询/读取操作",
+        "parent_id": "d_collect_errors",
+        "verb_class": "query",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "get_debug_flag",
+          "get_load_dotenv",
+          "get_template_attribute",
+          "get_flashed_messages"
+        ]
+      },
+      {
+        "capability_id": "c_d_debug_files_key_error_misc_unclassified",
+        "name_cn": "其他能力（待归类：attach_enctype_error_multidict、explain_template_loading_attempts）",
+        "parent_id": "d_debug_files_key_error",
+        "verb_class": "misc",
+        "entity": "unclassified",
+        "confidence": "inferred-low",
+        "members": [
+          "attach_enctype_error_multidict",
+          "explain_template_loading_attempts"
+        ]
+      },
+      {
+        "capability_id": "c_d_debug_files_key_error_serialize_general",
+        "name_cn": "序列化/格式化操作",
+        "parent_id": "d_debug_files_key_error",
+        "verb_class": "serialize",
+        "entity": "",
+        "confidence": "inferred-low",
+        "members": [
+          "_dump_loader_info"
+        ]
+      },
+      {
+        "capability_id": "c_d_default_j_s_o_n_misc_unclassified",
+        "name_cn": "其他能力（待归类：_prepare_response_obj、response、_default、response）",
+        "parent_id": "d_default_j_s_o_n",
+        "verb_class": "misc",
+        "entity": "unclassified",
+        "confidence": "inferred-low",
+        "members": [
+          "_prepare_response_obj",
+          "response",
+          "_default",
+          "response"
+        ]
+      },
+      {
+        "capability_id": "c_d_default_j_s_o_n_query_general",
+        "name_cn": "查询/读取操作",
+        "parent_id": "d_default_j_s_o_n",
+        "verb_class": "query",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "load"
+        ]
+      },
+      {
+        "capability_id": "c_d_default_j_s_o_n_serialize_general",
+        "name_cn": "序列化/格式化操作",
+        "parent_id": "d_default_j_s_o_n",
+        "verb_class": "serialize",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "dumps",
+          "dump",
+          "loads",
+          "dumps",
+          "loads"
+        ]
+      },
+      {
+        "capability_id": "c_d_init_misc_unclassified",
+        "name_cn": "其他能力（待归类：jsonify）",
+        "parent_id": "d_init",
+        "verb_class": "misc",
+        "entity": "unclassified",
+        "confidence": "inferred-low",
+        "members": [
+          "jsonify"
+        ]
+      },
+      {
+        "capability_id": "c_d_init_query_general",
+        "name_cn": "查询/读取操作",
+        "parent_id": "d_init",
+        "verb_class": "query",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "load"
+        ]
+      },
+      {
+        "capability_id": "c_d_init_serialize_general",
+        "name_cn": "序列化/格式化操作",
+        "parent_id": "d_init",
+        "verb_class": "serialize",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "dumps",
+          "dump",
+          "loads"
+        ]
+      },
+      {
+        "capability_id": "c_d_j_s_o_n_tag_create_general",
+        "name_cn": "提交/创建操作",
+        "parent_id": "d_j_s_o_n_tag",
+        "verb_class": "create",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "register"
+        ]
+      },
+      {
+        "capability_id": "c_d_j_s_o_n_tag_misc_unclassified",
+        "name_cn": "其他能力（待归类：to_json、to_python、tag、to_json 等 19 个）",
+        "parent_id": "d_j_s_o_n_tag",
+        "verb_class": "misc",
+        "entity": "unclassified",
+        "confidence": "inferred-low",
+        "members": [
+          "to_json",
+          "to_python",
+          "tag",
+          "to_json",
+          "to_python",
+          "to_json",
+          "to_json",
+          "to_python",
+          "to_json",
+          "to_json",
+          "to_python",
+          "to_json",
+          "to_python",
+          "to_json",
+          "to_python",
+          "to_json",
+          "to_python",
+          "tag",
+          "untag"
+        ]
+      },
+      {
+        "capability_id": "c_d_j_s_o_n_tag_query_general",
+        "name_cn": "查询/读取操作",
+        "parent_id": "d_j_s_o_n_tag",
+        "verb_class": "query",
+        "entity": "",
+        "confidence": "inferred-low",
+        "members": [
+          "_untag_scan"
+        ]
+      },
+      {
+        "capability_id": "c_d_j_s_o_n_tag_serialize_general",
+        "name_cn": "序列化/格式化操作",
+        "parent_id": "d_j_s_o_n_tag",
+        "verb_class": "serialize",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "_untag_scan",
+          "dumps",
+          "loads"
+        ]
+      },
+      {
+        "capability_id": "c_d_j_s_o_n_tag_validate_check",
+        "name_cn": "校验检查",
+        "parent_id": "d_j_s_o_n_tag",
+        "verb_class": "validate",
+        "entity": "check",
+        "confidence": "inferred",
+        "members": [
+          "check",
+          "check",
+          "check",
+          "check",
+          "check",
+          "check",
+          "check",
+          "check",
+          "check"
+        ]
+      },
+      {
+        "capability_id": "c_d_logging_create_general",
+        "name_cn": "提交/创建操作",
+        "parent_id": "d_logging",
+        "verb_class": "create",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "create_logger"
+        ]
+      },
+      {
+        "capability_id": "c_d_logging_misc_unclassified",
+        "name_cn": "其他能力（待归类：wsgi_errors_stream、has_level_handler）",
+        "parent_id": "d_logging",
+        "verb_class": "misc",
+        "entity": "unclassified",
+        "confidence": "inferred-low",
+        "members": [
+          "wsgi_errors_stream",
+          "has_level_handler"
+        ]
+      },
+      {
+        "capability_id": "c_d_method_view_misc_unclassified",
+        "name_cn": "其他能力（待归类：dispatch_request、as_view、dispatch_request）",
+        "parent_id": "d_method_view",
+        "verb_class": "misc",
+        "entity": "unclassified",
+        "confidence": "inferred-low",
+        "members": [
+          "dispatch_request",
+          "as_view",
+          "dispatch_request"
+        ]
+      },
+      {
+        "capability_id": "c_d_null_session_create_general",
+        "name_cn": "提交/创建操作",
+        "parent_id": "d_null_session",
+        "verb_class": "create",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "make_null_session",
+          "open_session",
+          "open_session"
+        ]
+      },
+      {
+        "capability_id": "c_d_null_session_misc_unclassified",
+        "name_cn": "其他能力（待归类：permanent、permanent、_fail、is_null_session 等 7 个）",
+        "parent_id": "d_null_session",
+        "verb_class": "misc",
+        "entity": "unclassified",
+        "confidence": "inferred-low",
+        "members": [
+          "permanent",
+          "permanent",
+          "_fail",
+          "is_null_session",
+          "save_session",
+          "_lazy_sha1",
+          "save_session"
+        ]
+      },
+      {
+        "capability_id": "c_d_null_session_query_file",
+        "name_cn": "查询文件",
+        "parent_id": "d_null_session",
+        "verb_class": "query",
+        "entity": "file",
+        "confidence": "inferred",
+        "members": [
+          "get_cookie_path"
+        ]
+      },
+      {
+        "capability_id": "c_d_null_session_query_general",
+        "name_cn": "查询/读取操作",
+        "parent_id": "d_null_session",
+        "verb_class": "query",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "get_cookie_name",
+          "get_cookie_domain",
+          "get_cookie_httponly",
+          "get_cookie_secure",
+          "get_cookie_samesite",
+          "get_cookie_partitioned",
+          "get_expiration_time",
+          "get_signing_serializer"
+        ]
+      },
+      {
+        "capability_id": "c_d_null_session_update_general",
+        "name_cn": "更新/修改操作",
+        "parent_id": "d_null_session",
+        "verb_class": "update",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "should_set_cookie"
+        ]
+      },
+      {
+        "capability_id": "c_d_request_misc_unclassified",
+        "name_cn": "其他能力（待归类：max_content_length、max_content_length、max_form_memory_size、max_form_memory_size 等 11 个）",
+        "parent_id": "d_request",
+        "verb_class": "misc",
+        "entity": "unclassified",
+        "confidence": "inferred-low",
+        "members": [
+          "max_content_length",
+          "max_content_length",
+          "max_form_memory_size",
+          "max_form_memory_size",
+          "max_form_parts",
+          "max_form_parts",
+          "endpoint",
+          "blueprint",
+          "blueprints",
+          "on_json_loading_failed",
+          "max_cookie_size"
+        ]
+      },
+      {
+        "capability_id": "c_d_request_query_general",
+        "name_cn": "查询/读取操作",
+        "parent_id": "d_request",
+        "verb_class": "query",
+        "entity": "",
+        "confidence": "inferred-low",
+        "members": [
+          "_load_form_data"
+        ]
+      }
+    ]
+  },
+  {
+    "project": "validation/urllib3",
+    "self_made": false,
+    "status": "needs_review",
+    "level": "L3",
+    "complexity_raw": 619.1,
+    "elapsed_sec": 1.4,
+    "files": 42,
+    "lines": 13940,
+    "domains": 19,
+    "capabilities": 69,
+    "cards": 88,
+    "facts": 1044,
+    "relations": 22,
+    "flows": 8,
+    "flow_types": {
+      "normal": 8
+    },
+    "domain_name_status": {
+      "from_structural_role": 7,
+      "from_identifier": 12
+    },
+    "capability_name_status": {
+      "from_lexicon": 50,
+      "unconfirmed": 19
+    },
+    "domain_confidence": {
+      "inferred-low": 6,
+      "inferred": 13
+    },
+    "capability_confidence": {
+      "inferred": 40,
+      "inferred-low": 29
+    },
+    "members_with_lines": "495/495 (100.0%)",
+    "cap_cards_with_evidence": "69/69 (100.0%)",
+    "facts_with_lines": "1044/1044 (100.0%)",
+    "flat_domains": "5/19",
+    "unclassified_caps": "19/69 (27.5%)",
+    "unconfirmed_objectives": "28/69 (40.6%)",
+    "deterministic": true,
+    "domains_detail": [
+      {
+        "domain_id": "d_app",
+        "name_cn": "系统装配（app）",
+        "role": "orchestrator",
+        "confidence": "inferred-low",
+        "children": 3,
+        "name_status": "from_structural_role",
+        "evidence": [
+          "identifier_root=app",
+          "merge=call_adjacent(2)"
+        ]
+      },
+      {
+        "domain_id": "d_asgi_proxy",
+        "name_cn": "Asgi Proxy",
+        "role": "core",
+        "confidence": "inferred",
+        "children": 9,
+        "name_status": "from_identifier",
+        "evidence": [
+          "identifier_root=asgi_proxy",
+          "identifier_root=base_h_t_t_p_response",
+          "identifier_root=base_s_s_l_error",
+          "identifier_root=body_not_httplib_compatible"
+        ]
+      },
+      {
+        "domain_id": "d_base_h_t_t_p_connection",
+        "name_cn": "Base HTTP Connection",
+        "role": "core",
+        "confidence": "inferred",
+        "children": 4,
+        "name_status": "from_identifier",
+        "evidence": [
+          "identifier_root=base_h_t_t_p_connection",
+          "identifier_root=base_h_t_t_p_s_connection",
+          "identifier_root=proxy_config",
+          "identifier_root=response_options"
+        ]
+      },
+      {
+        "domain_id": "d_certificate_error",
+        "name_cn": "Certificate Error",
+        "role": "core",
+        "confidence": "inferred",
+        "children": 1,
+        "name_status": "from_identifier",
+        "evidence": [
+          "identifier_root=certificate_error",
+          "identifier_root=ssl_match_hostname",
+          "merge=same_file(5)",
+          "merge=shared_token:error(1)"
+        ]
+      },
+      {
+        "domain_id": "d_chunks_and_content_length",
+        "name_cn": "Chunks And Content Length",
+        "role": "core",
+        "confidence": "inferred",
+        "children": 3,
+        "name_status": "from_identifier",
+        "evidence": [
+          "identifier_root=chunks_and_content_length",
+          "identifier_root=request",
+          "identifier_root=t_y_p_e_f_a_i_l_e_d_t_e_l_l",
+          "merge=same_file(5)"
+        ]
+      },
+      {
+        "domain_id": "d_config",
+        "name_cn": "系统装配（hypercornserver）",
+        "role": "orchestrator",
+        "confidence": "inferred",
+        "children": 3,
+        "name_status": "from_structural_role",
+        "evidence": [
+          "identifier_root=config",
+          "identifier_root=hypercornserver",
+          "merge=call_adjacent(2)",
+          "merge=same_file(5)"
+        ]
+      },
+      {
+        "domain_id": "d_connection_marker",
+        "name_cn": "Connection Marker",
+        "role": "core",
+        "confidence": "inferred",
+        "children": 6,
+        "name_status": "from_identifier",
+        "evidence": [
+          "identifier_root=connection_marker",
+          "identifier_root=h_t_t_p_s_hypercorn_dummy_server_test_case",
+          "identifier_root=hypercorn_dummy_proxy_test_case",
+          "identifier_root=hypercorn_dummy_server_test_case"
+        ]
+      },
+      {
+        "domain_id": "d_emscripten_request",
+        "name_cn": "Emscripten Request",
+        "role": "core",
+        "confidence": "inferred",
+        "children": 3,
+        "name_status": "from_identifier",
+        "evidence": [
+          "identifier_root=emscripten_request",
+          "identifier_root=request_methods",
+          "merge=call_adjacent(3)",
+          "merge=shared_state:headers(4)"
+        ]
+      },
+      {
+        "domain_id": "d_fields",
+        "name_cn": "Fields",
+        "role": "core",
+        "confidence": "inferred",
+        "children": 3,
+        "name_status": "from_identifier",
+        "evidence": [
+          "identifier_root=fields",
+          "identifier_root=request_field",
+          "merge=call_adjacent(7)",
+          "merge=same_file(7)"
+        ]
+      },
+      {
+        "domain_id": "d_filepost",
+        "name_cn": "系统装配（filepost）",
+        "role": "orchestrator",
+        "confidence": "inferred-low",
+        "children": 2,
+        "name_status": "from_structural_role",
+        "evidence": [
+          "identifier_root=filepost",
+          "merge=call_adjacent(2)"
+        ]
+      },
+      {
+        "domain_id": "d_h_t_t_p2_probe_cache",
+        "name_cn": "HTTP2 Probe Cache",
+        "role": "core",
+        "confidence": "inferred-low",
+        "children": 3,
+        "name_status": "from_identifier",
+        "evidence": [
+          "identifier_root=h_t_t_p2_probe_cache",
+          "merge=call_adjacent(2)",
+          "merge=call_adjacent(3)",
+          "merge=shared_token:h,p2(3)"
+        ]
+      },
+      {
+        "domain_id": "d_init",
+        "name_cn": "Init",
+        "role": "core",
+        "confidence": "inferred",
+        "children": 3,
+        "name_status": "from_identifier",
+        "evidence": [
+          "identifier_root=init",
+          "identifier_root=init",
+          "identifier_root=init",
+          "merge=call_adjacent(2)"
+        ]
+      },
+      {
+        "domain_id": "d_noxfile",
+        "name_cn": "系统装配（noxfile）",
+        "role": "orchestrator",
+        "confidence": "inferred-low",
+        "children": 2,
+        "name_status": "from_structural_role",
+        "evidence": [
+          "identifier_root=noxfile",
+          "merge=call_adjacent(2)"
+        ]
+      },
+      {
+        "domain_id": "d_py_open_s_s_l_context",
+        "name_cn": "Py Open SSL Context",
+        "role": "core",
+        "confidence": "inferred",
+        "children": 7,
+        "name_status": "from_identifier",
+        "evidence": [
+          "identifier_root=py_open_s_s_l_context",
+          "identifier_root=pyopenssl",
+          "identifier_root=s_s_l_transport",
+          "identifier_root=unsupported_extension"
+        ]
+      },
+      {
+        "domain_id": "d_ssl",
+        "name_cn": "Ssl",
+        "role": "core",
+        "confidence": "inferred",
+        "children": 6,
+        "name_status": "from_identifier",
+        "evidence": [
+          "identifier_root=ssl",
+          "identifier_root=t_y_p_e_p_e_e_r_c_e_r_t_r_e_t_d_i_c_t",
+          "merge=call_adjacent(2)",
+          "merge=same_file(5)"
+        ]
+      },
+      {
+        "domain_id": "d_t_y_p_e_d_e_f_a_u_l_t",
+        "name_cn": "TYPEDEFAULT",
+        "role": "core",
+        "confidence": "inferred",
+        "children": 4,
+        "name_status": "from_identifier",
+        "evidence": [
+          "identifier_root=t_y_p_e_d_e_f_a_u_l_t",
+          "identifier_root=timeout",
+          "merge=same_file(5)",
+          "merge=shared_token:a,d(1)"
+        ]
+      },
+      {
+        "domain_id": "d_url",
+        "name_cn": "系统装配（url）",
+        "role": "orchestrator",
+        "confidence": "inferred",
+        "children": 4,
+        "name_status": "from_structural_role",
+        "evidence": [
+          "identifier_root=url",
+          "identifier_root=url",
+          "merge=call_adjacent(2)"
+        ]
+      },
+      {
+        "domain_id": "d_util",
+        "name_cn": "系统装配（util）",
+        "role": "orchestrator",
+        "confidence": "inferred-low",
+        "children": 1,
+        "name_status": "from_structural_role",
+        "evidence": [
+          "identifier_root=util",
+          "merge=call_adjacent(2)"
+        ]
+      },
+      {
+        "domain_id": "d_wait",
+        "name_cn": "系统装配（wait）",
+        "role": "orchestrator",
+        "confidence": "inferred-low",
+        "children": 2,
+        "name_status": "from_structural_role",
+        "evidence": [
+          "identifier_root=wait",
+          "merge=call_adjacent(2)"
+        ]
+      }
+    ],
+    "capabilities_detail": [
+      {
+        "capability_id": "c_d_app_create_general",
+        "name_cn": "提交/创建操作",
+        "parent_id": "d_app",
+        "verb_class": "create",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "apply_caching"
+        ]
+      },
+      {
+        "capability_id": "c_d_app_misc_unclassified",
+        "name_cn": "其他能力（待归类：index、alpn_protocol、certificate、specific_method 等 30 个）",
+        "parent_id": "d_app",
+        "verb_class": "misc",
+        "entity": "unclassified",
+        "confidence": "inferred-low",
+        "members": [
+          "index",
+          "alpn_protocol",
+          "certificate",
+          "specific_method",
+          "upload",
+          "chunked",
+          "chunked_gzip",
+          "keepalive",
+          "echo",
+          "echo_json",
+          "echo_uri",
+          "echo_params",
+          "headers",
+          "headers_and_params",
+          "multi_headers",
+          "multi_redirect",
+          "encodingrequest",
+          "redirect",
+          "redirect_after",
+          "retry_after",
+          "status",
+          "source_address",
+          "successful_retry",
+          "slow",
+          "dripfeed",
+          "bigfile",
+          "mediumfile",
+          "pyodide_upload",
+          "pyodide",
+          "wheel"
+        ]
+      },
+      {
+        "capability_id": "c_d_app_query_general",
+        "name_cn": "查询/读取操作",
+        "parent_id": "d_app",
+        "verb_class": "query",
+        "entity": "",
+        "confidence": "inferred-low",
+        "members": [
+          "_find_built_wheel",
+          "_get_pyodide_template"
+        ]
+      },
+      {
+        "capability_id": "c_d_asgi_proxy_create_general",
+        "name_cn": "提交/创建/删除/移除操作",
+        "parent_id": "d_asgi_proxy",
+        "verb_class": "create",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "_start_server",
+          "clear",
+          "setdefault",
+          "add",
+          "_prepare_for_method_change",
+          "_new_conn",
+          "set_tunnel",
+          "close",
+          "close",
+          "_new_pool_queue",
+          "_new_conn",
+          "_make_request",
+          "close",
+          "_new_conn",
+          "_close_pool_connections",
+          "set_tunnel",
+          "close",
+          "set_cert",
+          "_obj_from_dict",
+          "closed",
+          "close",
+          "closed",
+          "close",
+          "_init_length",
+          "close",
+          "_new_conn",
+          "_new_h2_conn",
+          "set_tunnel",
+          "close",
+          "close",
+          "_new_pool",
+          "clear",
+          "_set_proxy_headers",
+          "close",
+          "_init_decoder",
+          "_init_length",
+          "close",
+          "closed",
+          "_update_chunk_length",
+          "create_connection",
+          "_set_socket_options",
+          "new"
+        ]
+      },
+      {
+        "capability_id": "c_d_asgi_proxy_misc_unclassified",
+        "name_cn": "其他能力（待归类：absolute_uri、connect、_resolves_to_ipv6、_has_ipv6 等 151 个）",
+        "parent_id": "d_asgi_proxy",
+        "verb_class": "misc",
+        "entity": "unclassified",
+        "confidence": "inferred-low",
+        "members": [
+          "absolute_uri",
+          "connect",
+          "_resolves_to_ipv6",
+          "_has_ipv6",
+          "run",
+          "ssl_options_to_context",
+          "keys",
+          "keys",
+          "discard",
+          "extend",
+          "_copy_from",
+          "copy",
+          "iteritems",
+          "itermerged",
+          "items",
+          "host",
+          "host",
+          "_wrap_ipv6",
+          "_tunnel",
+          "_tunnel",
+          "connect",
+          "is_closed",
+          "is_connected",
+          "has_connected_to_proxy",
+          "proxy_is_forwarding",
+          "proxy_is_tunneling",
+          "putrequest",
+          "putheader",
+          "request",
+          "request_chunked",
+          "connect",
+          "_connect_tls_proxy",
+          "_ssl_wrap_socket_and_match_hostname",
+          "_match_hostname",
+          "_wrap_proxy_error",
+          "_put_conn",
+          "_prepare_proxy",
+          "_raise_timeout",
+          "is_same_host",
+          "urlopen",
+          "_prepare_proxy",
+          "connection_from_url",
+          "_normalize_host",
+          "_normalize_host",
+          "_normalize_host",
+          "_url_from_pool",
+          "connect",
+          "request",
+          "is_closed",
+          "is_connected",
+          "has_connected_to_proxy",
+          "is_closed",
+          "writable",
+          "seekable",
+          "is_closed",
+          "writable",
+          "seekable",
+          "is_in_browser_main_thread",
+          "is_cross_origin_isolated",
+          "is_in_node",
+          "is_worker_available",
+          "has_jspi",
+          "streaming_ready",
+          "wait_for_streaming_ready",
+          "url",
+          "url",
+          "connection",
+          "retries",
+          "retries",
+          "stream",
+          "release_conn",
+          "drain_conn",
+          "data",
+          "json",
+          "pool",
+          "_is_legal_header_name",
+          "connect",
+          "putrequest",
+          "putheader",
+          "endheaders",
+          "request",
+          "data",
+          "connection_from_host",
+          "connection_from_context",
+          "connection_from_url",
+          "_merge_pool_kwargs",
+          "_proxy_requires_url_absolute_form",
+          "urlopen",
+          "connection_from_host",
+          "urlopen",
+          "proxy_from_url",
+          "decompress",
+          "has_unconsumed_tail",
+          "flush",
+          "decompress",
+          "has_unconsumed_tail",
+          "flush",
+          "decompress",
+          "has_unconsumed_tail",
+          "flush",
+          "_decompress",
+          "decompress",
+          "has_unconsumed_tail",
+          "flush",
+          "decompress",
+          "has_unconsumed_tail",
+          "flush",
+          "flush",
+          "decompress",
+          "has_unconsumed_tail",
+          "put",
+          "data",
+          "json",
+          "url",
+          "url",
+          "connection",
+          "retries",
+          "retries",
+          "stream",
+          "release_conn",
+          "drain_conn",
+          "shutdown",
+          "info",
+          "release_conn",
+          "drain_conn",
+          "data",
+          "connection",
+          "isclosed",
+          "tell",
+          "stream",
+          "shutdown",
+          "fileno",
+          "flush",
+          "supports_chunked_reads",
+          "url",
+          "url",
+          "is_connection_dropped",
+          "allowed_gai_family",
+          "_has_ipv6",
+          "connection_requires_http_tunnel",
+          "is_fp_closed",
+          "is_response_to_head",
+          "from_int",
+          "sleep_for_retry",
+          "_sleep_backoff",
+          "sleep",
+          "_is_connection_error",
+          "_is_method_retryable",
+          "is_retry",
+          "is_exhausted",
+          "increment"
+        ]
+      },
+      {
+        "capability_id": "c_d_asgi_proxy_misc_value",
+        "name_cn": "数据项相关操作",
+        "parent_id": "d_asgi_proxy",
+        "verb_class": "misc",
+        "entity": "value",
+        "confidence": "inferred",
+        "members": [
+          "encrypt_key_pem",
+          "_has_value_for_header",
+          "_normalize_header_value",
+          "_is_illegal_header_value",
+          "_default_key_normalizer",
+          "_new_pool",
+          "connection_from_pool_key"
+        ]
+      },
+      {
+        "capability_id": "c_d_asgi_proxy_notify_general",
+        "name_cn": "通知/告警操作",
+        "parent_id": "d_asgi_proxy",
+        "verb_class": "notify",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "send",
+          "send_streaming_request",
+          "_show_timeout_warning",
+          "_show_streaming_warning",
+          "send_request",
+          "send_jspi_request",
+          "_run_sync_with_timeout",
+          "_is_node_js",
+          "send"
+        ]
+      },
+      {
+        "capability_id": "c_d_asgi_proxy_query_general",
+        "name_cn": "查询/读取操作",
+        "parent_id": "d_asgi_proxy",
+        "verb_class": "query",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "_read_body",
+          "get_unreachable_address",
+          "getlist",
+          "getlist",
+          "getlist",
+          "_normalize_header_values",
+          "getresponse",
+          "_url_from_connection",
+          "_get_conn",
+          "_get_timeout",
+          "getresponse",
+          "readable",
+          "readinto",
+          "readable",
+          "_get_next_buffer",
+          "readinto",
+          "read",
+          "read_chunked",
+          "_error_catcher",
+          "getresponse",
+          "get_redirect_location",
+          "_get_decoder",
+          "get",
+          "get_all",
+          "get_redirect_location",
+          "read",
+          "read1",
+          "read_chunked",
+          "_init_decoder",
+          "_decode",
+          "_flush_decoder",
+          "readinto",
+          "getheaders",
+          "getheader",
+          "geturl",
+          "_error_catcher",
+          "_fp_read",
+          "_raw_read",
+          "read",
+          "read1",
+          "readable",
+          "_update_chunk_length",
+          "_handle_chunk",
+          "read_chunked",
+          "get_backoff_time",
+          "parse_retry_after",
+          "get_retry_after",
+          "_is_read_error"
+        ]
+      },
+      {
+        "capability_id": "c_d_asgi_proxy_query_user",
+        "name_cn": "查询用户",
+        "parent_id": "d_asgi_proxy",
+        "verb_class": "query",
+        "entity": "user",
+        "confidence": "inferred-low",
+        "members": [
+          "_get_default_user_agent"
+        ]
+      },
+      {
+        "capability_id": "c_d_asgi_proxy_serialize_general",
+        "name_cn": "序列化/格式化操作",
+        "parent_id": "d_asgi_proxy",
+        "verb_class": "serialize",
+        "entity": "",
+        "confidence": "inferred-low",
+        "members": [
+          "_decode"
+        ]
+      },
+      {
+        "capability_id": "c_d_asgi_proxy_update_file",
+        "name_cn": "修改文件",
+        "parent_id": "d_asgi_proxy",
+        "verb_class": "update",
+        "entity": "file",
+        "confidence": "inferred",
+        "members": [
+          "set_cert"
+        ]
+      },
+      {
+        "capability_id": "c_d_asgi_proxy_validate_general",
+        "name_cn": "校验/检测操作",
+        "parent_id": "d_asgi_proxy",
+        "verb_class": "validate",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "ensure_can_construct_http_header_dict",
+          "_validate_conn",
+          "_validate_conn",
+          "assert_header_parsing"
+        ]
+      },
+      {
+        "capability_id": "c_d_base_h_t_t_p_connection_misc_unclassified",
+        "name_cn": "其他能力（待归类：connect、request、is_closed、is_connected 等 5 个）",
+        "parent_id": "d_base_h_t_t_p_connection",
+        "verb_class": "misc",
+        "entity": "unclassified",
+        "confidence": "inferred-low",
+        "members": [
+          "connect",
+          "request",
+          "is_closed",
+          "is_connected",
+          "has_connected_to_proxy"
+        ]
+      },
+      {
+        "capability_id": "c_d_base_h_t_t_p_connection_query_general",
+        "name_cn": "查询/读取操作",
+        "parent_id": "d_base_h_t_t_p_connection",
+        "verb_class": "query",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "getresponse"
+        ]
+      },
+      {
+        "capability_id": "c_d_base_h_t_t_p_connection_transition_general",
+        "name_cn": "状态流转操作",
+        "parent_id": "d_base_h_t_t_p_connection",
+        "verb_class": "transition",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "close"
+        ]
+      },
+      {
+        "capability_id": "c_d_base_h_t_t_p_connection_update_general",
+        "name_cn": "更新/修改操作",
+        "parent_id": "d_base_h_t_t_p_connection",
+        "verb_class": "update",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "set_tunnel"
+        ]
+      },
+      {
+        "capability_id": "c_d_certificate_error_misc_unclassified",
+        "name_cn": "其他能力（待归类：_dnsname_match、_ipaddress_match、match_hostname）",
+        "parent_id": "d_certificate_error",
+        "verb_class": "misc",
+        "entity": "unclassified",
+        "confidence": "inferred-low",
+        "members": [
+          "_dnsname_match",
+          "_ipaddress_match",
+          "match_hostname"
+        ]
+      },
+      {
+        "capability_id": "c_d_chunks_and_content_length_create_general",
+        "name_cn": "提交/创建操作",
+        "parent_id": "d_chunks_and_content_length",
+        "verb_class": "create",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "make_headers"
+        ]
+      },
+      {
+        "capability_id": "c_d_chunks_and_content_length_misc_unclassified",
+        "name_cn": "其他能力（待归类：rewind_body、body_to_chunks）",
+        "parent_id": "d_chunks_and_content_length",
+        "verb_class": "misc",
+        "entity": "unclassified",
+        "confidence": "inferred-low",
+        "members": [
+          "rewind_body",
+          "body_to_chunks"
+        ]
+      },
+      {
+        "capability_id": "c_d_chunks_and_content_length_update_file",
+        "name_cn": "修改文件",
+        "parent_id": "d_chunks_and_content_length",
+        "verb_class": "update",
+        "entity": "file",
+        "confidence": "inferred",
+        "members": [
+          "set_file_position"
+        ]
+      },
+      {
+        "capability_id": "c_d_config_create_general",
+        "name_cn": "提交/创建操作",
+        "parent_id": "d_config",
+        "verb_class": "create",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "create_sockets",
+          "_retry_create_urllib3_sockets",
+          "_create_urllib3_sockets"
+        ]
+      },
+      {
+        "capability_id": "c_d_config_misc_unclassified",
+        "name_cn": "其他能力（待归类：run_hypercorn_in_thread、main）",
+        "parent_id": "d_config",
+        "verb_class": "misc",
+        "entity": "unclassified",
+        "confidence": "inferred-low",
+        "members": [
+          "run_hypercorn_in_thread",
+          "main"
+        ]
+      },
+      {
+        "capability_id": "c_d_config_transition_general",
+        "name_cn": "状态流转操作",
+        "parent_id": "d_config",
+        "verb_class": "transition",
+        "entity": "",
+        "confidence": "inferred-low",
+        "members": [
+          "_start_server"
+        ]
+      },
+      {
+        "capability_id": "c_d_connection_marker_configure_general",
+        "name_cn": "配置/装配操作",
+        "parent_id": "d_connection_marker",
+        "verb_class": "configure",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "setup_class",
+          "setup_class"
+        ]
+      },
+      {
+        "capability_id": "c_d_connection_marker_misc_unclassified",
+        "name_cn": "其他能力（待归类：consume_socket、quit_server_thread、teardown_class、teardown_method 等 7 个）",
+        "parent_id": "d_connection_marker",
+        "verb_class": "misc",
+        "entity": "unclassified",
+        "confidence": "inferred-low",
+        "members": [
+          "consume_socket",
+          "quit_server_thread",
+          "teardown_class",
+          "teardown_method",
+          "teardown_class",
+          "teardown_class",
+          "consume_request"
+        ]
+      },
+      {
+        "capability_id": "c_d_connection_marker_query_general",
+        "name_cn": "查询/读取操作",
+        "parent_id": "d_connection_marker",
+        "verb_class": "query",
+        "entity": "",
+        "confidence": "inferred-low",
+        "members": [
+          "_get_socket_mark"
+        ]
+      },
+      {
+        "capability_id": "c_d_connection_marker_transition_general",
+        "name_cn": "状态流转操作",
+        "parent_id": "d_connection_marker",
+        "verb_class": "transition",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "_start_server",
+          "start_response_handler",
+          "start_basic_handler",
+          "_start_server"
+        ]
+      },
+      {
+        "capability_id": "c_d_connection_marker_update_general",
+        "name_cn": "更新/修改操作",
+        "parent_id": "d_connection_marker",
+        "verb_class": "update",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "mark",
+          "_get_socket_mark"
+        ]
+      },
+      {
+        "capability_id": "c_d_connection_marker_validate_general",
+        "name_cn": "校验/检测操作",
+        "parent_id": "d_connection_marker",
+        "verb_class": "validate",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "assert_header_received"
+        ]
+      },
+      {
+        "capability_id": "c_d_emscripten_request_misc_unclassified",
+        "name_cn": "其他能力（待归类：urlopen、request）",
+        "parent_id": "d_emscripten_request",
+        "verb_class": "misc",
+        "entity": "unclassified",
+        "confidence": "inferred-low",
+        "members": [
+          "urlopen",
+          "request"
+        ]
+      },
+      {
+        "capability_id": "c_d_emscripten_request_serialize_general",
+        "name_cn": "序列化/格式化操作",
+        "parent_id": "d_emscripten_request",
+        "verb_class": "serialize",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "request_encode_url",
+          "request_encode_body"
+        ]
+      },
+      {
+        "capability_id": "c_d_emscripten_request_update_general",
+        "name_cn": "更新/修改操作",
+        "parent_id": "d_emscripten_request",
+        "verb_class": "update",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "set_header",
+          "set_body"
+        ]
+      },
+      {
+        "capability_id": "c_d_fields_create_general",
+        "name_cn": "提交/创建操作",
+        "parent_id": "d_fields",
+        "verb_class": "create",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "_render_parts",
+          "make_multipart"
+        ]
+      },
+      {
+        "capability_id": "c_d_fields_misc_unclassified",
+        "name_cn": "其他能力（待归类：guess_content_type、from_tuples、_render_part、render_headers）",
+        "parent_id": "d_fields",
+        "verb_class": "misc",
+        "entity": "unclassified",
+        "confidence": "inferred-low",
+        "members": [
+          "guess_content_type",
+          "from_tuples",
+          "_render_part",
+          "render_headers"
+        ]
+      },
+      {
+        "capability_id": "c_d_fields_serialize_general",
+        "name_cn": "序列化/格式化操作",
+        "parent_id": "d_fields",
+        "verb_class": "serialize",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "format_header_param_rfc2231",
+          "format_multipart_header_param",
+          "format_header_param_html5",
+          "format_header_param"
+        ]
+      },
+      {
+        "capability_id": "c_d_filepost_misc_unclassified",
+        "name_cn": "其他能力（待归类：choose_boundary、iter_field_objects）",
+        "parent_id": "d_filepost",
+        "verb_class": "misc",
+        "entity": "unclassified",
+        "confidence": "inferred-low",
+        "members": [
+          "choose_boundary",
+          "iter_field_objects"
+        ]
+      },
+      {
+        "capability_id": "c_d_filepost_serialize_general",
+        "name_cn": "序列化/格式化操作",
+        "parent_id": "d_filepost",
+        "verb_class": "serialize",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "encode_multipart_formdata"
+        ]
+      },
+      {
+        "capability_id": "c_d_h_t_t_p2_probe_cache_misc_unclassified",
+        "name_cn": "其他能力（待归类：_values、_reset）",
+        "parent_id": "d_h_t_t_p2_probe_cache",
+        "verb_class": "misc",
+        "entity": "unclassified",
+        "confidence": "inferred-low",
+        "members": [
+          "_values",
+          "_reset"
+        ]
+      },
+      {
+        "capability_id": "c_d_h_t_t_p2_probe_cache_query_general",
+        "name_cn": "查询/读取操作",
+        "parent_id": "d_h_t_t_p2_probe_cache",
+        "verb_class": "query",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "acquire_and_get"
+        ]
+      },
+      {
+        "capability_id": "c_d_h_t_t_p2_probe_cache_update_general",
+        "name_cn": "更新/修改操作",
+        "parent_id": "d_h_t_t_p2_probe_cache",
+        "verb_class": "update",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "set_and_release"
+        ]
+      },
+      {
+        "capability_id": "c_d_init_create_general",
+        "name_cn": "提交/创建操作",
+        "parent_id": "d_init",
+        "verb_class": "create",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "add_stderr_logger"
+        ]
+      },
+      {
+        "capability_id": "c_d_init_misc_unclassified",
+        "name_cn": "其他能力（待归类：request、inject_into_urllib3、inject_into_urllib3、extract_from_urllib3）",
+        "parent_id": "d_init",
+        "verb_class": "misc",
+        "entity": "unclassified",
+        "confidence": "inferred-low",
+        "members": [
+          "request",
+          "inject_into_urllib3",
+          "inject_into_urllib3",
+          "extract_from_urllib3"
+        ]
+      },
+      {
+        "capability_id": "c_d_init_transition_general",
+        "name_cn": "状态流转操作",
+        "parent_id": "d_init",
+        "verb_class": "transition",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "disable_warnings"
+        ]
+      },
+      {
+        "capability_id": "c_d_noxfile_misc_unclassified",
+        "name_cn": "其他能力（待归类：tests_impl、test、test_integration、test_min_pyopenssl 等 13 个）",
+        "parent_id": "d_noxfile",
+        "verb_class": "misc",
+        "entity": "unclassified",
+        "confidence": "inferred-low",
+        "members": [
+          "tests_impl",
+          "test",
+          "test_integration",
+          "test_min_pyopenssl",
+          "test_brotlipy",
+          "git_clone",
+          "downstream_botocore",
+          "downstream_requests",
+          "lint",
+          "pyodideconsole",
+          "emscripten",
+          "mypy",
+          "docs"
+        ]
+      },
+      {
+        "capability_id": "c_d_noxfile_serialize_general",
+        "name_cn": "序列化/格式化操作",
+        "parent_id": "d_noxfile",
+        "verb_class": "serialize",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "format"
+        ]
+      },
+      {
+        "capability_id": "c_d_py_open_s_s_l_context_create_general",
+        "name_cn": "提交/创建操作",
+        "parent_id": "d_py_open_s_s_l_context",
+        "verb_class": "create",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "makefile"
+        ]
+      },
+      {
+        "capability_id": "c_d_py_open_s_s_l_context_misc_unclassified",
+        "name_cn": "其他能力（待归类：inject_into_urllib3、extract_from_urllib3、_dnsname_to_stdlib、fileno 等 27 个）",
+        "parent_id": "d_py_open_s_s_l_context",
+        "verb_class": "misc",
+        "entity": "unclassified",
+        "confidence": "inferred-low",
+        "members": [
+          "inject_into_urllib3",
+          "extract_from_urllib3",
+          "_dnsname_to_stdlib",
+          "fileno",
+          "_decref_socketios",
+          "recv",
+          "recv_into",
+          "shutdown",
+          "version",
+          "selected_alpn_protocol",
+          "options",
+          "options",
+          "wrap_socket",
+          "minimum_version",
+          "minimum_version",
+          "maximum_version",
+          "maximum_version",
+          "fileno",
+          "recv",
+          "recv_into",
+          "unwrap",
+          "version",
+          "cipher",
+          "selected_alpn_protocol",
+          "shared_ciphers",
+          "compression",
+          "_decref_socketios"
+        ]
+      },
+      {
+        "capability_id": "c_d_py_open_s_s_l_context_notify_general",
+        "name_cn": "通知/告警操作",
+        "parent_id": "d_py_open_s_s_l_context",
+        "verb_class": "notify",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "_send_until_done",
+          "sendall",
+          "sendall",
+          "send",
+          "_ssl_io_loop",
+          "_ssl_io_loop",
+          "_ssl_io_loop",
+          "_ssl_io_loop"
+        ]
+      },
+      {
+        "capability_id": "c_d_py_open_s_s_l_context_query_general",
+        "name_cn": "查询/读取操作",
+        "parent_id": "d_py_open_s_s_l_context",
+        "verb_class": "query",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "get_subj_alt_name",
+          "_get_common_name",
+          "getpeercert",
+          "getpeercert",
+          "getpeercert",
+          "load_verify_locations",
+          "load_cert_chain",
+          "read",
+          "getpeercert",
+          "getpeercert",
+          "getpeercert",
+          "gettimeout",
+          "_wrap_ssl_read"
+        ]
+      },
+      {
+        "capability_id": "c_d_py_open_s_s_l_context_transition_general",
+        "name_cn": "状态流转操作",
+        "parent_id": "d_py_open_s_s_l_context",
+        "verb_class": "transition",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "close",
+          "_real_close",
+          "close"
+        ]
+      },
+      {
+        "capability_id": "c_d_py_open_s_s_l_context_update_general",
+        "name_cn": "更新/修改操作",
+        "parent_id": "d_py_open_s_s_l_context",
+        "verb_class": "update",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "settimeout",
+          "set_default_verify_paths",
+          "set_ciphers",
+          "set_alpn_protocols",
+          "_set_ctx_options",
+          "settimeout"
+        ]
+      },
+      {
+        "capability_id": "c_d_py_open_s_s_l_context_validate_general",
+        "name_cn": "校验/检测操作",
+        "parent_id": "d_py_open_s_s_l_context",
+        "verb_class": "validate",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "_validate_dependencies_met",
+          "verify_flags",
+          "verify_flags",
+          "verify_mode",
+          "verify_mode",
+          "_verify_callback",
+          "_validate_ssl_context_for_tls_in_tls"
+        ]
+      },
+      {
+        "capability_id": "c_d_ssl_create_general",
+        "name_cn": "提交/创建操作",
+        "parent_id": "d_ssl",
+        "verb_class": "create",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "create_urllib3_context"
+        ]
+      },
+      {
+        "capability_id": "c_d_ssl_misc_file",
+        "name_cn": "文件相关操作",
+        "parent_id": "d_ssl",
+        "verb_class": "misc",
+        "entity": "file",
+        "confidence": "inferred-low",
+        "members": [
+          "_is_key_file_encrypted"
+        ]
+      },
+      {
+        "capability_id": "c_d_ssl_misc_unclassified",
+        "name_cn": "其他能力（待归类：ssl_wrap_socket、ssl_wrap_socket、ssl_wrap_socket、is_ipaddress 等 5 个）",
+        "parent_id": "d_ssl",
+        "verb_class": "misc",
+        "entity": "unclassified",
+        "confidence": "inferred-low",
+        "members": [
+          "ssl_wrap_socket",
+          "ssl_wrap_socket",
+          "ssl_wrap_socket",
+          "is_ipaddress",
+          "_ssl_wrap_socket_impl"
+        ]
+      },
+      {
+        "capability_id": "c_d_ssl_query_general",
+        "name_cn": "查询/读取操作",
+        "parent_id": "d_ssl",
+        "verb_class": "query",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "resolve_cert_reqs",
+          "resolve_ssl_version"
+        ]
+      },
+      {
+        "capability_id": "c_d_ssl_validate_check",
+        "name_cn": "校验检查",
+        "parent_id": "d_ssl",
+        "verb_class": "validate",
+        "entity": "check",
+        "confidence": "inferred-low",
+        "members": [
+          "_is_has_never_check_common_name_reliable"
+        ]
+      },
+      {
+        "capability_id": "c_d_ssl_validate_general",
+        "name_cn": "校验/检测操作",
+        "parent_id": "d_ssl",
+        "verb_class": "validate",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "assert_fingerprint"
+        ]
+      },
+      {
+        "capability_id": "c_d_t_y_p_e_d_e_f_a_u_l_t_misc_unclassified",
+        "name_cn": "其他能力（待归类：from_float、clone、connect_timeout）",
+        "parent_id": "d_t_y_p_e_d_e_f_a_u_l_t",
+        "verb_class": "misc",
+        "entity": "unclassified",
+        "confidence": "inferred-low",
+        "members": [
+          "from_float",
+          "clone",
+          "connect_timeout"
+        ]
+      },
+      {
+        "capability_id": "c_d_t_y_p_e_d_e_f_a_u_l_t_query_general",
+        "name_cn": "查询/读取操作",
+        "parent_id": "d_t_y_p_e_d_e_f_a_u_l_t",
+        "verb_class": "query",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "resolve_default_timeout",
+          "get_connect_duration",
+          "read_timeout"
+        ]
+      },
+      {
+        "capability_id": "c_d_t_y_p_e_d_e_f_a_u_l_t_transition_general",
+        "name_cn": "状态流转操作",
+        "parent_id": "d_t_y_p_e_d_e_f_a_u_l_t",
+        "verb_class": "transition",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "start_connect"
+        ]
+      },
+      {
+        "capability_id": "c_d_t_y_p_e_d_e_f_a_u_l_t_validate_general",
+        "name_cn": "校验/检测操作",
+        "parent_id": "d_t_y_p_e_d_e_f_a_u_l_t",
+        "verb_class": "validate",
+        "entity": "",
+        "confidence": "inferred-low",
+        "members": [
+          "_validate_timeout"
+        ]
+      },
+      {
+        "capability_id": "c_d_url_delete_file",
+        "name_cn": "删除文件",
+        "parent_id": "d_url",
+        "verb_class": "delete",
+        "entity": "file",
+        "confidence": "inferred-low",
+        "members": [
+          "_remove_path_dot_segments"
+        ]
+      },
+      {
+        "capability_id": "c_d_url_misc_unclassified",
+        "name_cn": "其他能力（待归类：auth_decoded、auth_decoded_joined、hostname、request_uri 等 9 个）",
+        "parent_id": "d_url",
+        "verb_class": "misc",
+        "entity": "unclassified",
+        "confidence": "inferred-low",
+        "members": [
+          "auth_decoded",
+          "auth_decoded_joined",
+          "hostname",
+          "request_uri",
+          "authority",
+          "netloc",
+          "url",
+          "_normalize_host_percent_encoding",
+          "_normalize_zone_id_percent_encoding"
+        ]
+      },
+      {
+        "capability_id": "c_d_url_query_general",
+        "name_cn": "查询/读取操作",
+        "parent_id": "d_url",
+        "verb_class": "query",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "_encode_invalid_chars",
+          "_encode_invalid_chars",
+          "_encode_invalid_chars",
+          "_remove_path_dot_segments",
+          "_normalize_host",
+          "_normalize_host",
+          "_normalize_host",
+          "parse_url"
+        ]
+      },
+      {
+        "capability_id": "c_d_url_serialize_general",
+        "name_cn": "序列化/格式化操作",
+        "parent_id": "d_url",
+        "verb_class": "serialize",
+        "entity": "",
+        "confidence": "inferred-low",
+        "members": [
+          "_encode_invalid_chars",
+          "_encode_invalid_chars",
+          "_encode_invalid_chars",
+          "_decode_percent_encoding",
+          "_idna_encode",
+          "_encode_target"
+        ]
+      },
+      {
+        "capability_id": "c_d_util_misc_unclassified",
+        "name_cn": "其他能力（待归类：to_bytes、to_str、reraise）",
+        "parent_id": "d_util",
+        "verb_class": "misc",
+        "entity": "unclassified",
+        "confidence": "inferred-low",
+        "members": [
+          "to_bytes",
+          "to_str",
+          "reraise"
+        ]
+      },
+      {
+        "capability_id": "c_d_wait_misc_unclassified",
+        "name_cn": "其他能力（待归类：select_wait_for_socket、poll_wait_for_socket、_have_working_poll、wait_for_socket 等 5 个）",
+        "parent_id": "d_wait",
+        "verb_class": "misc",
+        "entity": "unclassified",
+        "confidence": "inferred-low",
+        "members": [
+          "select_wait_for_socket",
+          "poll_wait_for_socket",
+          "_have_working_poll",
+          "wait_for_socket",
+          "wait_for_write"
+        ]
+      },
+      {
+        "capability_id": "c_d_wait_query_general",
+        "name_cn": "查询/读取操作",
+        "parent_id": "d_wait",
+        "verb_class": "query",
+        "entity": "",
+        "confidence": "inferred",
+        "members": [
+          "wait_for_read"
+        ]
+      }
+    ]
+  }
+]

@@ -1,0 +1,11 @@
+{
+  "_comment": "模块类型 → 核心流程名（原 module_analyzer.py 的 type_flow_names）。这些名字是 inferred 级别，教师可改。",
+  "version": "1.0",
+  "names": {
+    "reservation": "实验室预约流程",
+    "user_management": "用户注册登录流程",
+    "equipment": "设备借用归还流程",
+    "safety_check": "安全检查与整改流程"
+  },
+  "fallback_template": "{module_name}核心流程"
+}

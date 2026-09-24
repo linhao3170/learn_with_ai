@@ -1,0 +1,76 @@
+{
+  "_comment": "能力动词词典（README5 §3.2）。用途：把函数名词根映射成「能力类别」，从而把一级业务域切成二级功能点。教师可按本校命名习惯增删。",
+  "version": "1.0",
+  "classes": {
+    "create": {
+      "names": ["create", "add", "new", "register", "submit", "apply", "book", "reserve", "insert", "make", "build", "open", "init", "initialize"],
+      "cn": "提交/创建",
+      "cluster": "lifecycle"
+    },
+    "query": {
+      "names": ["get", "find", "query", "list", "search", "fetch", "lookup", "read", "load", "resolve", "parse", "scan"],
+      "cn": "查询/读取",
+      "cluster": "inquiry"
+    },
+    "validate": {
+      "names": ["check", "verify", "validate", "detect", "ensure", "assert", "guard", "confirm_rule", "is_valid"],
+      "cn": "校验/检测",
+      "cluster": "integrity"
+    },
+    "approve": {
+      "names": ["approve", "accept", "pass", "grant", "authorize"],
+      "cn": "审批通过",
+      "cluster": "governance"
+    },
+    "reject": {
+      "names": ["reject", "refuse", "deny", "decline", "block"],
+      "cn": "审批拒绝",
+      "cluster": "governance"
+    },
+    "cancel": {
+      "names": ["cancel", "abort", "revoke", "withdraw", "rollback"],
+      "cn": "取消/撤回",
+      "cluster": "lifecycle"
+    },
+    "update": {
+      "names": ["update", "modify", "edit", "change", "set", "patch", "assign", "allocate", "mark", "fix", "repair"],
+      "cn": "更新/修改",
+      "cluster": "lifecycle"
+    },
+    "transition": {
+      "names": ["complete", "finish", "close", "start", "activate", "deactivate", "enable", "disable", "transition", "perform", "process", "borrow", "lend", "return", "publish"],
+      "cn": "状态流转",
+      "cluster": "lifecycle"
+    },
+    "delete": {
+      "names": ["delete", "remove", "drop", "clear", "purge", "destroy"],
+      "cn": "删除/移除",
+      "cluster": "lifecycle"
+    },
+    "identity": {
+      "names": ["login", "logout", "authenticate", "signin", "signout", "permission", "role"],
+      "cn": "认证与权限",
+      "cluster": "identity"
+    },
+    "notify": {
+      "names": ["notify", "send", "emit", "publish_event", "alert", "warn"],
+      "cn": "通知/告警",
+      "cluster": "governance"
+    },
+    "calculate": {
+      "names": ["calculate", "compute", "count", "sum", "average", "aggregate", "score", "rate", "statistics"],
+      "cn": "统计/计算",
+      "cluster": "inquiry"
+    },
+    "serialize": {
+      "names": ["serialize", "deserialize", "encode", "decode", "dump", "dumps", "loads", "to_dict", "from_dict", "format"],
+      "cn": "序列化/格式化",
+      "cluster": "integrity"
+    },
+    "configure": {
+      "names": ["config", "configure", "setup", "install", "register_plugin", "bind", "mount"],
+      "cn": "配置/装配",
+      "cluster": "infrastructure"
+    }
+  }
+}

@@ -3,6 +3,12 @@ Test script for the deep analyzer modules.
 
 Runs the full deep analysis pipeline on the lab_safety_assistant sample project
 and prints a summary of results for quick verification.
+
+Output (P0-15): this script OWNS ``validation/results/deep_analysis_test.json``
+(debug/report shape: ``{project, call_graph, flows, state_analysis, ...}``).
+It must NOT write ``deep_analysis.json`` -- that canonical DeepAnalysisResult
+artifact belongs to ``scripts/generate_deep_data.py``. Two scripts writing the
+same path silently overwrote each other's (differently shaped) output.
 """
 
 import sys
@@ -146,7 +152,11 @@ def main():
         print(f"    {edge.from_module} -> {edge.to_module}: strength={edge.strength:.2f}, calls={edge.call_count}, methods={edge.unique_methods}")
 
     # Save full JSON for debugging
-    output_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "frontend", "public", "demo")
+    # P0-16: 引擎产物写到 validation/results/，不再污染 frontend/public/（Web 根目录）
+    output_dir = os.path.join(
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+        "validation", "results",
+    )
     os.makedirs(output_dir, exist_ok=True)
 
     output = {
@@ -166,7 +176,9 @@ def main():
         ),
     }
 
-    output_path = os.path.join(output_dir, "deep_analysis.json")
+    # P0-15: this script OWNS validation/results/deep_analysis_test.json (debug shape:
+    # {project, call_graph, flows, ...}); generate_deep_data.py owns the canonical deep_analysis.json.
+    output_path = os.path.join(output_dir, "deep_analysis_test.json")
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(output, f, ensure_ascii=False, indent=2)
     print(f"\nFull analysis saved to: {output_path}")

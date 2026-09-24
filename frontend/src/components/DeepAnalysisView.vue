@@ -612,6 +612,11 @@
               <div v-if="impl.design_pattern">
                 <div class="text-xs text-gray-500 mb-2 uppercase tracking-wider">Design Pattern</div>
                 <div class="text-sm text-neon-purple font-semibold">{{ impl.design_pattern }}</div>
+                <!-- 检测器结论未经教师审核，且误报偏高（README §16.2 / §19.1 #16）：
+                     按 §6.2 必须显式标出，不许当已确认事实展示 -->
+                <div class="text-xs mt-2 px-2 py-0.5 rounded inline-block bg-amber-900/30 text-amber-400">
+                  需教师确认（来自模式检测器，误报偏高）
+                </div>
               </div>
               <div v-if="impl.edge_cases?.length">
                 <div class="text-xs text-gray-500 mb-2 uppercase tracking-wider">Edge Cases</div>
@@ -1129,13 +1134,16 @@
 </template>
 
 <!-- Source code viewer modal -->
+<!-- P0-09：改为传【项目 id + 项目内相对路径 + 行区间】，不再让弹窗自己从绝对路径取 basename -->
 <SourceViewerModal
   :visible="showSourceViewer"
-  :filepath="sourceViewerFilepath"
-  :line="sourceViewerLine"
-  :end-line="sourceViewerEndLine"
+  :project-id="props.projectId"
+  :path="sourceViewerPath"
+  :start="sourceViewerLine"
+  :end="sourceViewerEndLine"
   :hint="sourceViewerHint"
   @close="closeSourceViewer"
+  @loaded="onSourceLoaded"
 />
 
 <script setup>
@@ -1146,8 +1154,21 @@ const props = defineProps({
   deepAnalysis: {
     type: Object,
     default: () => ({})
+  },
+  // P0-09：证据跳转需要项目 id（API 模式按项目取源码）
+  projectId: {
+    type: String,
+    default: ''
+  },
+  // P0-01：模块显示名/配色不再写死某个项目的 5 个模块，改由契约 modules 提供
+  modules: {
+    type: Array,
+    default: () => []
   }
 })
+
+// 证据被打开时上报（父级写进学习会话 viewed_evidence）
+const emit = defineEmits(['evidence-viewed'])
 
 const tabs = [
   { id: 'architecture', label: '模块架构' },
@@ -1168,18 +1189,49 @@ const Math_round = Math.round
 
 // Source viewer modal
 const showSourceViewer = ref(false)
-const sourceViewerFilepath = ref('')
+const sourceViewerPath = ref('')        // 项目内相对路径（POSIX）
 const sourceViewerLine = ref(null)
 const sourceViewerEndLine = ref(null)
 const sourceViewerHint = ref('')
 
+// 契约中已知的项目内相对文件（P0-10 之后 files 一律是相对路径），用于把绝对路径还原成相对路径
+const knownFiles = computed(() => {
+  const set = new Set()
+  ;(props.modules || []).forEach(m => {
+    (m.files || []).forEach(f => {
+      if (f) set.add(String(f).replace(/\\/g, '/').replace(/^\.\//, ''))
+    })
+  })
+  return set
+})
+
+/**
+ * P0-09：不再"取 basename"（那正是只能对 5 个手工复制的 demo 文件生效的根因）。
+ * 这里只做两件事：反斜杠归一化 + 若拿到绝对路径则按契约 files 还原成相对路径。
+ */
+function toProjectRelative(filepath) {
+  const p = String(filepath || '').replace(/\\/g, '/').replace(/^\.\//, '')
+  if (!p) return ''
+  if (knownFiles.value.has(p)) return p
+  for (const f of knownFiles.value) {
+    if (p.endsWith('/' + f)) return f
+  }
+  // 契约保证相对路径；真拿到绝对路径且无法匹配时原样交给后端，由后端回 404，弹窗会显式报错
+  return p
+}
+
 function openSource(filepath, line, endLine, hint) {
   if (!filepath) return
-  sourceViewerFilepath.value = filepath
+  sourceViewerPath.value = toProjectRelative(filepath)
   sourceViewerLine.value = line || null
   sourceViewerEndLine.value = endLine || null
   sourceViewerHint.value = hint || ''
   showSourceViewer.value = true
+}
+
+/** 证据被成功打开 → 通知父级记一次会话事件（能力报告用） */
+function onSourceLoaded(payload) {
+  emit('evidence-viewed', payload)
 }
 
 function openSourceFromLocation(location, hint) {
@@ -1265,20 +1317,42 @@ const priorityFlows = computed(() => businessPriority.value?.flow_scores || [])
 const priorityGaps = computed(() => businessPriority.value?.evidence_gaps || [])
 
 // ---- Call graph: module color map ----
-const cgModuleColors = {
-  app: '#8b5cf6',
-  reservation_manager: '#06b6d4',
-  equipment_manager: '#f59e0b',
-  safety_checker: '#ec4899',
-  user_manager: '#22c55e',
+// P0-01：原来这里是按某个具体 demo 项目的那几个 module_id 写死的颜色 + 名称映射（键就是硬编码的模块 id），
+// 换个项目名字就全错。现在：颜色按下标从调色板取；名字按"契约 modules → deep_analysis → 原始 module_id"取值，
+// 三级都拿不到时**回落到 module_id 本身**，绝不回落到写死的名称。
+const MODULE_PALETTE = ['#06b6d4', '#a855f7', '#f59e0b', '#ec4899', '#22c55e', '#8b5cf6', '#38bdf8', '#fb7185']
+
+// deep_analysis.architecture.nodes[<module_id>].display_name（引擎给的模块展示名，第二来源）
+const archModuleNames = computed(() => {
+  const nodes = props.deepAnalysis?.architecture?.nodes || {}
+  const names = {}
+  Object.values(nodes).forEach(n => {
+    const id = n?.module_id
+    if (id && n.display_name) names[id] = n.display_name
+  })
+  return names
+})
+
+const moduleMeta = computed(() => {
+  const meta = {}
+  ;(props.modules || []).forEach((m, i) => {
+    const id = m.module_id || m.id
+    if (!id) return
+    meta[id] = {
+      color: MODULE_PALETTE[i % MODULE_PALETTE.length],
+      name: m.name || archModuleNames.value[id] || id,
+    }
+  })
+  return meta
+})
+
+function moduleColor(id) {
+  return moduleMeta.value[id]?.color || '#64748b'
 }
 
-const cgModuleShortNames = {
-  app: '系统编排',
-  reservation_manager: '预约管理',
-  equipment_manager: '设备管理',
-  safety_checker: '安全检查',
-  user_manager: '用户管理',
+// 契约 modules 里没有该 id（例如只传了 deep_analysis）时，仍从 deep_analysis 找名字，最后才回落 module_id
+function moduleName(id) {
+  return moduleMeta.value[id]?.name || archModuleNames.value[id] || id
 }
 
 const cgModuleList = computed(() => {
@@ -1287,8 +1361,8 @@ const cgModuleList = computed(() => {
   Object.values(callGraph.value.nodes).forEach(n => mods.add(n.module))
   return Array.from(mods).map(id => ({
     id,
-    color: cgModuleColors[id] || '#64748b',
-    shortName: cgModuleShortNames[id] || id,
+    color: moduleColor(id),
+    shortName: moduleName(id),
   }))
 })
 
@@ -1457,13 +1531,13 @@ const cgLayoutData = computed(() => {
   const enrichedNodes = nodeIds.map(id => {
     const n = rawNodes[id]
     const pos = positioned[id]
-    const color = cgModuleColors[n.module] || '#64748b'
+    const color = moduleColor(n.module)
     return {
       id,
       name: n.name,
       shortName: n.name.length > 18 ? n.name.slice(0, 16) + '…' : n.name,
       module: n.module,
-      moduleShort: cgModuleShortNames[n.module] || n.module,
+      moduleShort: moduleName(n.module),
       class: n.class || '',
       isEntry: n.is_entry_point,
       tags: n.tags || [],
@@ -1664,18 +1738,16 @@ function stepDotClass(step) {
 // ---- State Machine View ----
 const stateAnalysis = computed(() => props.deepAnalysis?.state_analysis || null)
 
-const stateModuleColors = {
-  reservation_manager: '#06b6d4',
-  equipment_manager: '#f59e0b',
-  safety_checker: '#ec4899',
-  user_manager: '#22c55e',
+// P0-01：原来这里写死了模块 id → 状态标签的映射（只对某一个 demo 项目成立，换项目就变成假信息）。
+// 现在标签 = 数据里的模块名 + "状态"（"状态"是视图词，不属于业务内容），
+// 取不到名字时回落原始 module_id，绝不回落到写死的中文名；颜色同样由数据决定。
+function stateModuleColor(id) {
+  return moduleColor(id)
 }
 
-const stateModuleLabels = {
-  reservation_manager: '预约状态',
-  equipment_manager: '设备状态',
-  safety_checker: '隐患状态',
-  user_manager: '用户状态',
+function stateModuleLabel(id) {
+  const name = moduleName(id)
+  return name === id ? id : `${name}状态`
 }
 
 const stateMachineModules = computed(() => {
@@ -1690,8 +1762,8 @@ const stateMachineModules = computed(() => {
         const modId = cls.module
         result.push({
           id: modId,
-          label: stateModuleLabels[modId] || modId,
-          color: stateModuleColors[modId] || '#64748b',
+          label: stateModuleLabel(modId),
+          color: stateModuleColor(modId),
           classKey: key,
         })
       }

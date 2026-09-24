@@ -1,0 +1,26 @@
+{
+  "_comment": "模块类型关键词（原 engine/project_analyzer/module_analyzer.py 的 MODULE_TYPE_KEYWORDS）。教师可按本校课程命名习惯增删关键词，无需改代码。",
+  "version": "1.0",
+  "default_type": "management",
+  "types": {
+    "user_management": ["user", "account", "auth", "login", "register", "权限", "用户", "账户", "认证"],
+    "reservation": ["reservation", "booking", "order", "appointment", "预约", "订单", "预订"],
+    "equipment": ["equipment", "device", "machine", "tool", "设备", "器材", "仪器"],
+    "safety_check": ["safety", "check", "inspect", "hazard", "security", "安全", "检查", "隐患"],
+    "data_persistence": ["storage", "repository", "dao", "database", "db", "存储", "数据库"],
+    "api": ["api", "route", "view", "controller", "handler", "接口", "路由"],
+    "utils": ["util", "helper", "common", "tools", "工具", "通用"],
+    "management": ["manager", "管理", "处理"]
+  },
+  "names": {
+    "user_management": "用户管理模块",
+    "reservation": "预约管理模块",
+    "equipment": "设备管理模块",
+    "safety_check": "安全检查模块",
+    "data_persistence": "数据持久化模块",
+    "api": "接口模块",
+    "utils": "工具模块",
+    "management": "管理模块"
+  },
+  "_names_comment": "类型 → 中文模块名。README5 §3.1 要求：这些名字置信度是 inferred，必须可被教师改写；Sprint 1 起改为由业务图谱引擎生成，这里只作为兜底映射。"
+}

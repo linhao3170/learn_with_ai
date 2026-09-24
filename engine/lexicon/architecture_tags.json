@@ -1,0 +1,30 @@
+{
+  "_comment": "模块职责标签关键词（原 engine/deep_analyzer/module_architecture.py 的 keyword_map）。P0-12 外置。注意这些是英文展示标签、置信度为 inferred，README4 要求学生看到的中文职责由业务图谱引擎（engine/business_graph/，Sprint 1）生成。",
+  "version": "1.0",
+  "fallback_tags": ["Business Logic"],
+  "modules": [
+    {"keyword": "app", "tags": ["System Entry", "Orchestration"]},
+    {"keyword": "main", "tags": ["Main Entry", "Coordination"]},
+    {"keyword": "user", "tags": ["User Management", "Authentication"]},
+    {"keyword": "auth", "tags": ["Authentication", "Authorization"]},
+    {"keyword": "reservation", "tags": ["Booking", "Scheduling"]},
+    {"keyword": "booking", "tags": ["Booking", "Scheduling"]},
+    {"keyword": "order", "tags": ["Order Processing"]},
+    {"keyword": "equipment", "tags": ["Equipment Tracking", "Inventory"]},
+    {"keyword": "device", "tags": ["Device Management"]},
+    {"keyword": "safety", "tags": ["Safety Checks", "Compliance"]},
+    {"keyword": "check", "tags": ["Validation", "Verification"]},
+    {"keyword": "report", "tags": ["Reporting", "Analytics"]},
+    {"keyword": "notification", "tags": ["Notifications", "Alerts"]},
+    {"keyword": "db", "tags": ["Data Storage"]},
+    {"keyword": "database", "tags": ["Data Storage"]},
+    {"keyword": "repository", "tags": ["Data Access"]},
+    {"keyword": "util", "tags": ["Utilities"]},
+    {"keyword": "helper", "tags": ["Helpers"]},
+    {"keyword": "api", "tags": ["API Layer", "Endpoints"]},
+    {"keyword": "route", "tags": ["Routing", "Endpoints"]},
+    {"keyword": "controller", "tags": ["Request Handling"]},
+    {"keyword": "service", "tags": ["Business Logic"]},
+    {"keyword": "manager", "tags": ["Management"]}
+  ]
+}

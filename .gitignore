@@ -48,16 +48,20 @@ output/
 results/
 .cache/
 
-# Local task scripts
+# 走查/测试产物（P0-16：不该进仓库，也不该进 dist）
+frontend/.smoke-dist/
+
+# 业务逻辑分析平台的运行时产物（Sprint 6）
+# ⚠️ 必须忽略，理由是隐私而不只是体积：该目录下的 source/ 是**用户所上传项目源码的副本**，
+#    把它提交进公开仓库等于把别人上传的代码公开出去。
+#    这些文件都可再生（重新调用 /api/logic-platform/analyze 或跑接口自测即可）。
+backend/data/logic_platform/
+
+# 讲稿导出产物（scripts/test_logic_platform.py --out .lp_render.txt 生成，供人工走查排版）
+.lp_render.txt
+
+# 浏览器走查脚本的临时产物目录（scripts/browser_walkthrough.ps1 按需创建）
 _task_scripts/
-_check_repo.py
-_fix_dp_source.py
-_patch_metrics.py
-_patch_step.py
-_test_layer3.py
-_update_readme.py
 
 # Backup files
 *.bak
-README.bak.md
-README.v1.md

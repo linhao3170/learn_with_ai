@@ -29,6 +29,8 @@ import re
 from dataclasses import dataclass, field
 from typing import List, Dict, Set, Optional, Tuple
 
+from ..parser.ast_cache import get_tree
+
 
 @dataclass
 class PatternEvidence:
@@ -94,6 +96,20 @@ class ClassInfo:
     start_line: int = 0
     end_line: int = 0
     docstring: str = ""
+
+    @property
+    def sorted_instance_attributes(self) -> List[str]:
+        """``instance_attributes`` 的**确定性**读取顺序（字典序）。
+
+        为什么必须有：这个字段是 ``set``，而 Python 的字符串哈希**每个进程都不同**，
+        凡是"遍历它 → 拼进文本"的地方，同一份输入在两个进程里就会得到不同的字符串 ——
+        直接违反 README §8.9「禁止依赖 set 迭代顺序」与 §7.7「字节级相同输出」。
+        ``design_approach`` / 模式证据里那些 ``a, b, c`` 列表就是这么来的（见 README §19.2 ⑳）。
+
+        读取方一律用它，不要直接迭代 ``instance_attributes``；
+        只判"在不在集合里"（``in``）的地方不受影响，可以继续用原字段。
+        """
+        return sorted(self.instance_attributes)
 
 
 @dataclass
@@ -203,27 +219,17 @@ class DesignPatternDetector:
             if not parsed or not filepath:
                 continue
 
-            # Read source from file (most reliable for AST analysis)
-            source = ''
-            if os.path.exists(filepath):
-                try:
-                    with open(filepath, 'r', encoding='utf-8') as sf:
-                        source = sf.read()
-                except (IOError, UnicodeDecodeError):
-                    pass
-
-            if not source:
-                # Fallback: join source_lines
+            # P0-14：优先走共享 AST 缓存；缓存不可用时回落到 source_lines
+            tree = get_tree(filepath) if filepath else None
+            if tree is None:
                 sl = getattr(parsed, 'source_lines', []) or []
                 source = '\n'.join(sl) if sl else ''
-
-            if not source:
-                continue
-
-            try:
-                tree = ast.parse(source)
-            except SyntaxError:
-                continue
+                if not source:
+                    continue
+                try:
+                    tree = ast.parse(source)
+                except SyntaxError:
+                    continue
 
             for node in ast.iter_child_nodes(tree):
                 if isinstance(node, ast.ClassDef):
@@ -342,12 +348,14 @@ class DesignPatternDetector:
                 ))
 
             # Dict/list storage for data
-            storage_attrs = [a for a in cls.instance_attributes
+            # （全部走 sorted_instance_attributes：这个字段是 set，直接迭代会带进
+            #   跨进程的哈希顺序，见该属性的 docstring）
+            storage_attrs = [a for a in cls.sorted_instance_attributes
                              if re.search(r'(_dict|_list|_store|_data|_items|_records|_map|_table|s$)',
                                           a, re.IGNORECASE)]
             if not storage_attrs:
                 # Also check for plural nouns as storage
-                storage_attrs = [a for a in cls.instance_attributes
+                storage_attrs = [a for a in cls.sorted_instance_attributes
                                  if a.endswith('s') and len(a) > 3]
 
             if len(storage_attrs) >= 1 and len(crud_methods) >= 3:
@@ -482,7 +490,7 @@ class DesignPatternDetector:
                 ))
 
             # Composes multiple other objects (has many self.xxx managers)
-            composed_attrs = [a for a in cls.instance_attributes
+            composed_attrs = [a for a in cls.sorted_instance_attributes
                               if any(suffix in a.lower() for suffix in
                                      ('_manager', '_service', '_handler', '_controller'))]
             if len(composed_attrs) >= 2:
@@ -602,7 +610,7 @@ class DesignPatternDetector:
             evidence: List[PatternEvidence] = []
 
             # State attribute(s)
-            state_attrs = [a for a in cls.instance_attributes
+            state_attrs = [a for a in cls.sorted_instance_attributes
                            if re.search(r'(state|status|_status|current_state|phase|stage)',
                                         a, re.IGNORECASE)]
             if state_attrs:
@@ -867,7 +875,7 @@ class DesignPatternDetector:
                 ))
 
             # Listener storage
-            listener_attrs = [a for a in cls.instance_attributes
+            listener_attrs = [a for a in cls.sorted_instance_attributes
                               if re.search(r'listener|observer|subscriber|callback|handler',
                                            a, re.IGNORECASE)]
             if listener_attrs:
@@ -991,7 +999,7 @@ class DesignPatternDetector:
                 ))
 
             # Has adaptee attribute
-            adaptee_attrs = [a for a in cls.instance_attributes
+            adaptee_attrs = [a for a in cls.sorted_instance_attributes
                              if re.search(r'(adaptee|wrapped|_target|_adaptee|_obj|_original)',
                                           a, re.IGNORECASE)]
             if adaptee_attrs:
@@ -1029,7 +1037,7 @@ class DesignPatternDetector:
             evidence: List[PatternEvidence] = []
 
             # Children container
-            children_attrs = [a for a in cls.instance_attributes
+            children_attrs = [a for a in cls.sorted_instance_attributes
                               if re.search(r'(children|items|nodes|components|members|parts)',
                                            a, re.IGNORECASE)]
             if children_attrs:

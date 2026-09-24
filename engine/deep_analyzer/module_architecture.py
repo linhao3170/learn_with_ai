@@ -18,6 +18,7 @@ from dataclasses import dataclass, field
 from typing import List, Dict, Set, Optional, Tuple
 
 from .dependency_strength import DependencyStrengthResult, ModuleDepNode
+from .. import lexicon
 
 
 @dataclass
@@ -158,44 +159,27 @@ class ModuleArchitectureAnalyzer:
         return name
 
     def _generate_responsibilities(self, module_id: str, mod: ModuleDepNode) -> List[str]:
-        """Generate brief responsibility tags based on module name."""
+        """Generate brief responsibility tags based on module name.
+
+        P0-12：关键词表已外置到 ``engine/lexicon/architecture_tags.json``。
+        这里的标签是英文展示用、置信度为 inferred；README4 要求学生看到的
+        中文职责由业务图谱引擎（``engine/business_graph/``，Sprint 1）生成。
+        """
         name_lower = module_id.lower()
-        tags = []
+        tags: List[str] = []
 
-        keyword_map = [
-            ("app", ["System Entry", "Orchestration"]),
-            ("main", ["Main Entry", "Coordination"]),
-            ("user", ["User Management", "Authentication"]),
-            ("auth", ["Authentication", "Authorization"]),
-            ("reservation", ["Booking", "Scheduling"]),
-            ("booking", ["Booking", "Scheduling"]),
-            ("order", ["Order Processing"]),
-            ("equipment", ["Equipment Tracking", "Inventory"]),
-            ("device", ["Device Management"]),
-            ("safety", ["Safety Checks", "Compliance"]),
-            ("check", ["Validation", "Verification"]),
-            ("report", ["Reporting", "Analytics"]),
-            ("notification", ["Notifications", "Alerts"]),
-            ("db", ["Data Storage"]),
-            ("database", ["Data Storage"]),
-            ("repository", ["Data Access"]),
-            ("util", ["Utilities"]),
-            ("helper", ["Helpers"]),
-            ("api", ["API Layer", "Endpoints"]),
-            ("route", ["Routing", "Endpoints"]),
-            ("controller", ["Request Handling"]),
-            ("service", ["Business Logic"]),
-            ("manager", ["Management"]),
-        ]
+        keyword_map = lexicon.load_lexicon("architecture_tags").get("modules", [])
+        fallback_tags = lexicon.load_lexicon("architecture_tags").get("fallback_tags", [])
 
-        for keyword, kws in keyword_map:
-            if keyword in name_lower:
-                tags.extend(kws)
+        for item in keyword_map:
+            keyword = item.get("keyword", "")
+            if keyword and keyword in name_lower:
+                tags.extend(item.get("tags", []))
                 if len(tags) >= 4:
                     break
 
         if not tags:
-            tags = ["Business Logic"]
+            tags = list(fallback_tags) or ["Business Logic"]
 
         # Deduplicate while preserving order
         seen = set()
