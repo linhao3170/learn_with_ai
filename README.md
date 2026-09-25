@@ -1396,7 +1396,7 @@ match 优先级：
 | `POST` | `/api/analyses/{analysis_id}/checkpoints/{i}/answer` | 实时分析结果的判题（`live_` 前缀） |
 
 > 应用版本已升到 **`0.5.0`**（`main.py`）：Sprint 3 加阶段一两个路由、Sprint 4 加阶段二两个路由、
-> **Sprint 5 加阶段四 / 五三个路由**、**Sprint 6 加业务逻辑分析平台 10 个路由**（见第二十一章）。
+> **Sprint 5 加阶段四 / 五三个路由**、**Sprint 6 加业务逻辑分析平台 13 个路由**（见第二十一章）。
 > 「训练链路」接口总数 **17 个**；业务逻辑分析平台另有一套独立路由（`/api/logic-platform/*`），
 > 两者共用同一份 `business_graph`，不各自造一套。
 
@@ -3188,7 +3188,7 @@ python scripts/validation_report.py --input validation/results/python_dotenv_che
    所以「L4 的 24 板块 / 8 课程预算」这条路径**只经代码级验证，没有真实项目实测**，
    对外表述时不许说成"已验证支持大型项目"。
 
-### 21.5 后端接口（8 个新路由，应用版本 → `0.5.0`）
+### 21.5 后端接口（13 个新路由，应用版本 → `0.5.0`）
 
 | 方法 | 路径 | 作用 |
 |---|---|---|
