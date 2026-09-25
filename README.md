@@ -3387,6 +3387,34 @@ cd frontend && npm run build
 - `sample_projects/lab_safety_assistant/README.md`：被分析样本自身的说明；
 - `validation/flask/**`、`validation/urllib3/**` 里的 README：真实第三方项目的源码副本。
 
+### 附录 C.1 · 旧**代码与产物**的清理（Sprint 6）
+
+上面那张表处理的是**文档**。旧**代码/产物**另做了一轮，按「零引用才删」的口径逐个查过：
+
+| 已删除 | 体积 | 为什么可以删 |
+|---|---|---|
+| `web/index.html` | 68.7 KB | 最早的独立静态页面（「LearnWithAI · 业务逻辑分析引擎」），已被 Vue 应用取代；**全仓库 0 处引用**，只自己 `fetch('../demo/analysis_output.json')` |
+| `demo/analysis_output.json` | 47.5 KB | 只喂给上面那个死页面。注意 `scripts/generate_web_data.py` 写的是 `frontend/public/demo/analysis_output.json`（**另一个文件，仍在用**），根目录这份是过期副本 |
+| `fact_table.csv`（根目录） | 13 KB | 旧 schema 遗留（表头 `id,type,description,...`）；现行的是 `validation/fact_table.csv`（表头含 `fact_id,category,...,source`），根目录这份 **0 处代码引用** |
+
+**查过、但确认「不能删」的**（记在这里，免得下次再来查一遍）：
+
+| 看着像旧的 | 为什么必须留 |
+|---|---|
+| `engine/analyzer/` | `scripts/test_full_engine.py` 在 §17.2「旧管线冒烟（**保持通过**）」清单里，删了那条验收命令直接挂 |
+| `demo/student_manager.py` | 它不是产物而是**输入**：`scripts/generate_web_data.py` 读它（`generate_web_data.py:27,36`）来生成 `frontend/public/demo/analysis_output.json` |
+| `frontend/public/demo/analysis_output.json` + `student_manager.py` | App 里「查看完整分析 →」那个页面**真的在读**（`dataSource.js` 的 `LEGACY_DEMO_PATHS` / `loadLegacyDemo()`），删了功能就断 |
+| `engine/business_logic/` | 契约骨架；`verify_sprint0.py` 的 A4 项专门断言它可导入、契约别名正确、坏引用已清除 |
+| `scripts/generate_web_data.py` | README §20 登记的工具，且产出上面那个仍在用的文件 |
+
+> **想删得更多，那不是「清理」而是「砍功能」。** 真正的旧子系统是**函数级分析视图**：
+> `App.vue` 的分析分支 + `OverviewView` / `PatternsView` / `FlowchartView` / `CodeView` /
+> `KnowledgeView` / `QuizView` + `stores/analysis.js` + `stores/quiz.js` + `loadLegacyDemo`，
+> 以及上表「必须留」那一整列 —— 它们互相咬合，合计约五千行。
+> 砍掉它要先改 §17.2 的验收清单与 `browser_clickthrough.mjs` 的断言，
+> 属于**产品决策**，不要当成清理顺手做。
+
+
 ---
 
 **最后提醒**：任何新功能，如果没时间充分测试，就不要加。
