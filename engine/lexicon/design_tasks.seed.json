@@ -205,6 +205,161 @@
         },
         "_order_note": "must_have 的顺序不是随手排的：它还是「一项能力一个模块、连成链」这种规范设计的默认顺序，所以规范设计能同时满足上面两条必备依赖（否则一件合格的作业会在依赖维度上被扣分）。改动顺序前先看 _evidence 与 required_relations。"
       }
+    ],
+    "python_dotenv": [
+      {
+        "task_id": "dt_python_dotenv_L2_module_split",
+        "type": "module_split",
+        "level": "L2",
+        "must_have": [
+          {
+            "key": "mh_parse_line",
+            "name_cn": "解析 .env 语法",
+            "aliases": ["解析 .env", "键值解析", ".env 解析", "语法解析"],
+            "cluster": "integrity",
+            "verb_class": "serialize",
+            "verb_cn": "解析与还原",
+            "entity": "value",
+            "entity_cn": "数据项",
+            "related_flow": ""
+          },
+          {
+            "key": "mh_query_config",
+            "name_cn": "读取 .env 配置",
+            "aliases": ["读取配置", ".env 读取", "读取键值表", "加载配置项"],
+            "cluster": "inquiry",
+            "verb_class": "query",
+            "verb_cn": "查询与读取",
+            "entity": "config",
+            "entity_cn": "配置",
+            "related_flow": "list_values Flow"
+          },
+          {
+            "key": "mh_interpolate_value",
+            "name_cn": "变量插值",
+            "aliases": ["变量展开", "变量替换", "默认值回退", "POSIX 变量展开"],
+            "cluster": "inquiry",
+            "verb_class": "query",
+            "verb_cn": "求值与解析",
+            "entity": "value",
+            "entity_cn": "数据项",
+            "related_flow": "DotEnv set_as_environment_variables Flow"
+          },
+          {
+            "key": "mh_find_env_file",
+            "name_cn": "查找 .env 文件位置",
+            "aliases": ["定位 .env", "查找配置文件", "向上查找 .env", "搜索 .env"],
+            "cluster": "inquiry",
+            "verb_class": "query",
+            "verb_cn": "查找与定位",
+            "entity": "file",
+            "entity_cn": "文件",
+            "related_flow": "IPythonDotEnv dotenv Flow"
+          },
+          {
+            "key": "mh_configure_env",
+            "name_cn": "载入进程环境变量",
+            "aliases": ["设置环境变量", "写入环境变量", "环境变量注入", "加载到 env"],
+            "cluster": "infrastructure",
+            "verb_class": "configure",
+            "verb_cn": "配置与装配",
+            "entity": "config",
+            "entity_cn": "配置",
+            "related_flow": "DotEnv set_as_environment_variables Flow"
+          },
+          {
+            "key": "mh_update_value",
+            "name_cn": "写入或更新键值",
+            "aliases": ["设置键值", "修改配置项", "更新 .env 键", "新增键值"],
+            "cluster": "lifecycle",
+            "verb_class": "update",
+            "verb_cn": "更新与修改",
+            "entity": "value",
+            "entity_cn": "数据项",
+            "related_flow": "set_value Flow"
+          },
+          {
+            "key": "mh_delete_value",
+            "name_cn": "删除键值",
+            "aliases": ["移除键值", "删除配置项", "删除 .env 键", "unset 键"],
+            "cluster": "lifecycle",
+            "verb_class": "delete",
+            "verb_cn": "删除与移除",
+            "entity": "value",
+            "entity_cn": "数据项",
+            "related_flow": "unset Flow"
+          },
+          {
+            "key": "mh_rewrite_file",
+            "name_cn": "回写文件并保住未改动的行",
+            "aliases": ["改写 .env", "重写文件", "原子替换文件", "保留原文件格式"],
+            "cluster": "lifecycle",
+            "verb_class": "update",
+            "verb_cn": "回写与替换",
+            "entity": "file",
+            "entity_cn": "文件",
+            "related_flow": "set_value Flow"
+          }
+        ],
+        "required_relations": [
+          {
+            "from_key": "mh_query_config",
+            "to_key": "mh_interpolate_value",
+            "reason_cn": "读出来的值还是原文，要经过 ${VAR} 展开才是最终值：读取依赖插值（代码事实：main.py:82-85 DotEnv.dict() 调用 resolve_variables）"
+          },
+          {
+            "from_key": "mh_update_value",
+            "to_key": "mh_parse_line",
+            "reason_cn": "改一个键不是就地改一行，而是把原文件逐行重新解析一遍再重写：写键依赖解析（代码事实：main.py:238 set_key 里 for mapping in parse_stream(source)）"
+          }
+        ],
+        "required_edge_cases": ["文件不存在", "没有值"],
+        "forbidden_merges": [
+          {
+            "a": "mh_configure_env",
+            "b": "mh_query_config",
+            "reason_cn": "一个是「把值写进进程全局环境」的副作用操作，一个是「把 .env 读成一张表」的纯查询：变化原因不同（加载与覆盖策略变了不该动读取逻辑），合并之后任何一次「只想读一下 .env」都会顺带改进程环境"
+          }
+        ],
+        "acceptable_alternatives": [
+          {
+            "alternative_id": "alt_parse_standalone",
+            "name_cn": "解析独立成模块",
+            "separate_keys": ["mh_parse_line", "mh_query_config"]
+          },
+          {
+            "alternative_id": "alt_parse_merged",
+            "name_cn": "解析并入读取",
+            "merge_keys": ["mh_parse_line", "mh_query_config"]
+          }
+        ],
+        "review_status": "confirmed",
+        "reviewed_by": "教师（工单发起人，WO-05 会话内逐条确认）",
+        "reviewed_at": "2026-09-26",
+        "_review_note": "八项必备能力、两条必备依赖、两个必备边界、一条禁止合并项与两条可接受替代结构，均由教师（工单发起人）在 WO-05 会话内**逐条确认**后才标 confirmed；候选清单与逐项源码证据见 scripts/export_seed_candidates.py（可用 --check 复核每一条出处）。按 docs/02 §9.1 第 ③ 条，这份清单没有让 LLM 直接生成后当成评分基准——AI 只交候选与出处，判断权在人和这份文件里。⚠️ 本段的落盘会让 scripts/test_design_seed.py 第 7 项断言（「python_dotenv 仍走自动提炼」）失效：那条断言钉的是「没有种子时的行为」，现在这个项目有种子了，断言本身需要改口径（列在 WO-05 的集成轮待办里）。",
+        "_evidence": {
+          "_comment": "每一项必备能力的源码出处（本项目内相对路径 + 行号），供教师复核与答辩引用；引擎不读这一段。",
+          "mh_parse_line": ["parser.py:144-178（parse_binding：把一行文本读成 (key, value, original, error)）", "parser.py:181-184（parse_stream：逐行产出绑定，是解析的唯一入口）", "parser.py:25-34（单双引号与转义的处理规则都写在词法正则里）"],
+          "mh_query_config": ["main.py:438-472（dotenv_values：把 .env 读成 dict（值可以是 None））", "main.py:75-95（DotEnv.dict / DotEnv.parse：读取结果带进程内缓存）", "cli.py:93-109（list_values：读出来之后按 simple / json / shell / export 渲染）"],
+          "mh_interpolate_value": ["variables.py:5-15（只认 ${NAME} 与 ${NAME:-默认值} 两种写法）", "variables.py:48-67（Variable.resolve：先查环境表，取不到用默认值，再取不到给空串）", "main.py:294-316（resolve_variables：override 为真时环境变量优先，否则已解析出的值优先）"],
+          "mh_find_env_file": ["main.py:337-385（find_dotenv：按交互式 / 调试器 / 冻结等情形决定起点目录）", "main.py:319-334（_walk_to_root：从起点目录逐级向上到根）", "main.py:475-487（_is_file_or_fifo：普通文件或 FIFO 都算「找到了」）"],
+          "mh_configure_env": ["main.py:388-435（load_dotenv：本库最常用的入口，读完就写进进程环境）", "main.py:97-110（set_as_environment_variables：值为 None 的键不写入；override=False 时不覆盖已有值）", "main.py:22-29（_load_dotenv_disabled：PYTHON_DOTENV_DISABLED 为真值时整个加载直接关掉）"],
+          "mh_update_value": ["main.py:193-250（set_key：按 quote_mode 决定加不加引号，再整文件重写）", "main.py:211-216（quote_mode 只认 always / auto / never，其它值直接报错）", "cli.py:112-131（set_value：命令行的写入口，失败以退出码 1 结束）"],
+          "mh_delete_value": ["main.py:253-291（unset_key：文件不存在或键不存在都返回 (None, key)，并留下告警日志）", "cli.py:151-167（unset：命令行的删入口，删不掉退出码 1）"],
+          "mh_rewrite_file": ["main.py:138-190（rewrite：写到临时文件再 os.replace；成功才落盘，出错删临时文件）", "main.py:150-155（落盘前把原文件的权限位记下来，替换后 os.chmod 还原）", "main.py:236-248（未命中的行用 mapping.original.string 原样写回，缺尾换行时补一个）"]
+        },
+        "_evidence_other": {
+          "_comment": "必备依赖 / 必备边界 / 禁止合并 / 替代结构的源码出处；key 的格式由 scripts/export_seed_candidates.py --check 约定并核对。",
+          "relation:mh_query_config->mh_interpolate_value": ["main.py:82-88（dict()：interpolate 打开时才走 resolve_variables，否则直接 OrderedDict(raw_values)）", "main.py:393（load_dotenv(interpolate=True)：默认就是要插值的）"],
+          "relation:mh_update_value->mh_parse_line": ["main.py:238-244（set_key 用 parse_stream 逐行读原文，命中的行换成新行、其余原样写回）", "main.py:279-283（unset_key 同样先 parse_stream 再决定哪些行留下）"],
+          "edge_case:文件不存在": ["main.py:159-161（rewrite：FileNotFoundError 时改用空流，等于从零新建）", "main.py:270-272（unset_key：文件不存在就告警并返回 None）", "main.py:382-385（find_dotenv：找不到时按 raise_error_if_not_found 抛 IOError 或返回空串）"],
+          "edge_case:没有值": ["parser.py:158-162（没有 = 号时 value 记为 None（而不是空串））", "main.py:107-108（值为 None 的键不写进 os.environ）", "main.py:448-450（dotenv_values 文档：foo=bar 得 'bar'，只写 foo 得 None）"],
+          "forbidden:mh_configure_env+mh_query_config": ["main.py:97-110（set_as_environment_variables：真的写 os.environ）", "main.py:75-95（dict()/parse()：只读文件，不碰环境）"],
+          "alternative:alt_parse_standalone": ["parser.py:144-184（解析器自成一份：只依赖正则与流，不认识 dict、也不认识文件系统）"],
+          "alternative:alt_parse_merged": ["main.py:91-95（DotEnv.parse 只做一层 for 循环转手调 parse_stream，样式上确实贴近「读取」）"]
+        },
+        "_order_note": "must_have 的顺序是**推荐的阅读 / 教学顺序**，它**不是**「连成一条链就自动满足上面两条必备依赖」的保证。⚠️ 本轮实测过：把 8 项能力各做成一个模块、再按本列表顺序连成一条链（m(i+1) → m(i)），两条必备依赖的方向**都是反的**，依赖维度会被判 DEP_REQUIRED_MISSING。这两条依赖要的是**分层设计**：解析（mh_parse_line）与插值（mh_interpolate_value）是底层，谁也不依赖；读取（mh_query_config）依赖插值、写入（mh_update_value）依赖解析；查找与回写各自独立。按这个分层画出来的依赖图无环，两条必备依赖都能命中。改动顺序前先看 _evidence 与 required_relations。⚠️ 题干与场景刻意不写，用 design_tasks.json 里 module_split 的模板；rubric_weights 也刻意不写，唯一来源是 design_dimensions.json —— 在这里再写一份等于出现第二份定义。"
+      }
     ]
   }
 }

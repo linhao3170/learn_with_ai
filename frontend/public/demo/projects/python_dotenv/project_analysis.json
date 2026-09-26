@@ -6578,7 +6578,7 @@
     "domains": [
       {
         "domain_id": "d_atom",
-        "name_cn": "Atom",
+        "name_cn": "变量插值（POSIX 展开）",
         "name_status": "from_identifier",
         "role": "core",
         "level": 1,
@@ -6642,11 +6642,12 @@
             "detail": "域合并依据"
           }
         ],
-        "confidence": "inferred"
+        "confidence": "inferred",
+        "source": "teacher"
       },
       {
         "domain_id": "d_binding",
-        "name_cn": "Binding",
+        "name_cn": ".env 语法解析",
         "name_status": "from_identifier",
         "role": "core",
         "level": 1,
@@ -6718,11 +6719,12 @@
             "detail": "域合并依据"
           }
         ],
-        "confidence": "inferred"
+        "confidence": "inferred",
+        "source": "teacher"
       },
       {
         "domain_id": "d_cli",
-        "name_cn": "系统装配（cli）",
+        "name_cn": "命令行工具（dotenv 命令）",
         "name_status": "from_structural_role",
         "role": "orchestrator",
         "level": 1,
@@ -6751,11 +6753,12 @@
             "detail": "域合并依据"
           }
         ],
-        "confidence": "inferred-low"
+        "confidence": "inferred-low",
+        "source": "teacher"
       },
       {
         "domain_id": "d_dot_env",
-        "name_cn": "系统装配（main）",
+        "name_cn": "配置文件读取与回写",
         "name_status": "from_structural_role",
         "role": "orchestrator",
         "level": 1,
@@ -6812,11 +6815,12 @@
             "detail": "域合并依据"
           }
         ],
-        "confidence": "inferred"
+        "confidence": "inferred",
+        "source": "teacher"
       },
       {
         "domain_id": "d_i_python_dot_env",
-        "name_cn": "I Python Dot Env",
+        "name_cn": "IPython 魔法命令（%dotenv）",
         "name_status": "from_identifier",
         "role": "core",
         "level": 1,
@@ -6867,11 +6871,12 @@
             "detail": "域合并依据"
           }
         ],
-        "confidence": "inferred"
+        "confidence": "inferred",
+        "source": "teacher"
       },
       {
         "domain_id": "d_init",
-        "name_cn": "系统装配（__init__）",
+        "name_cn": "包装配与对外接口",
         "name_status": "from_structural_role",
         "role": "orchestrator",
         "level": 1,
@@ -6896,7 +6901,8 @@
             "detail": "域合并依据"
           }
         ],
-        "confidence": "inferred-low"
+        "confidence": "inferred-low",
+        "source": "teacher"
       }
     ],
     "capabilities": [
@@ -7882,15 +7888,15 @@
     "module_cards": {
       "d_atom": {
         "module_id": "d_atom",
-        "name_cn": "Atom",
+        "name_cn": "变量插值（POSIX 展开）",
         "level": 1,
         "parent_id": null,
         "entity": "",
         "entity_cn": "",
         "verb_class": "",
         "verb_cn": "",
-        "objective": "",
-        "objective_confidence": "unconfirmed",
+        "objective": "把值里的 ${NAME} 与 ${NAME:-默认值} 拆成字面量与变量两类原子再求值：.env 里写的不是死字符串，最终值取决于当时的变量表",
+        "objective_confidence": "confirmed",
         "inputs": [
           "value",
           "default",
@@ -7990,20 +7996,20 @@
           }
         ],
         "confidence": "inferred",
-        "review_status": "needs_review",
-        "source": "auto"
+        "review_status": "approved",
+        "source": "teacher"
       },
       "d_binding": {
         "module_id": "d_binding",
-        "name_cn": "Binding",
+        "name_cn": ".env 语法解析",
         "level": 1,
         "parent_id": null,
         "entity": "",
         "entity_cn": "",
         "verb_class": "",
         "verb_cn": "",
-        "objective": "",
-        "objective_confidence": "unconfirmed",
+        "objective": "把 .env 文本切成「键 = 值」绑定：既给出键与值，也留住每一行的原文与行号，好让写回时没有改动的行能原样保留",
+        "objective_confidence": "confirmed",
         "inputs": [
           "chars",
           "line",
@@ -8310,20 +8316,20 @@
           }
         ],
         "confidence": "inferred",
-        "review_status": "needs_review",
-        "source": "auto"
+        "review_status": "approved",
+        "source": "teacher"
       },
       "d_cli": {
         "module_id": "d_cli",
-        "name_cn": "系统装配（cli）",
+        "name_cn": "命令行工具（dotenv 命令）",
         "level": 1,
         "parent_id": null,
         "entity": "",
         "entity_cn": "",
         "verb_class": "",
         "verb_cn": "",
-        "objective": "",
-        "objective_confidence": "unconfirmed",
+        "objective": "把「列 / 查 / 写 / 删 / 带环境跑命令」暴露成 dotenv 子命令：命令行只是同一套读写能力的入口，自己不实现文件格式",
+        "objective_confidence": "confirmed",
         "inputs": [],
         "outputs": [],
         "business_rules": [
@@ -8495,20 +8501,20 @@
           }
         ],
         "confidence": "inferred-low",
-        "review_status": "needs_review",
-        "source": "auto"
+        "review_status": "approved",
+        "source": "teacher"
       },
       "d_dot_env": {
         "module_id": "d_dot_env",
-        "name_cn": "系统装配（main）",
+        "name_cn": "配置文件读取与回写",
         "level": 1,
         "parent_id": null,
         "entity": "",
         "entity_cn": "",
         "verb_class": "",
         "verb_cn": "",
-        "objective": "",
-        "objective_confidence": "unconfirmed",
+        "objective": "对外提供一组文件级操作：找到 .env、读成键值表、按需载入进程环境变量，以及改写 / 删除单个键 —— 改写走「临时文件 + 原子替换」，不跟随符号链接",
+        "objective_confidence": "confirmed",
         "inputs": [],
         "outputs": [],
         "business_rules": [
@@ -8863,20 +8869,20 @@
           }
         ],
         "confidence": "inferred",
-        "review_status": "needs_review",
-        "source": "auto"
+        "review_status": "approved",
+        "source": "teacher"
       },
       "d_i_python_dot_env": {
         "module_id": "d_i_python_dot_env",
-        "name_cn": "I Python Dot Env",
+        "name_cn": "IPython 魔法命令（%dotenv）",
         "level": 1,
         "parent_id": null,
         "entity": "",
         "entity_cn": "",
         "verb_class": "",
         "verb_cn": "",
-        "objective": "",
-        "objective_confidence": "unconfirmed",
+        "objective": "在 IPython / Jupyter 里注册一个 %dotenv 魔法命令：复用同一套「找 .env + 载入」逻辑，让交互式环境也能一行加载配置",
+        "objective_confidence": "confirmed",
         "inputs": [],
         "outputs": [],
         "business_rules": [],
@@ -8938,20 +8944,20 @@
           }
         ],
         "confidence": "inferred",
-        "review_status": "needs_review",
-        "source": "auto"
+        "review_status": "approved",
+        "source": "teacher"
       },
       "d_init": {
         "module_id": "d_init",
-        "name_cn": "系统装配（__init__）",
+        "name_cn": "包装配与对外接口",
         "level": 1,
         "parent_id": null,
         "entity": "",
         "entity_cn": "",
         "verb_class": "",
         "verb_cn": "",
-        "objective": "",
-        "objective_confidence": "unconfirmed",
+        "objective": "把包内实现收敛成一组对外符号（load_dotenv / dotenv_values / get_key / set_key / unset_key / find_dotenv），并从这里同时暴露 IPython 扩展与命令行字符串拼接",
+        "objective_confidence": "confirmed",
         "inputs": [],
         "outputs": [],
         "business_rules": [
@@ -9063,8 +9069,8 @@
           }
         ],
         "confidence": "inferred-low",
-        "review_status": "needs_review",
-        "source": "auto"
+        "review_status": "approved",
+        "source": "teacher"
       },
       "c_d_atom_query_general": {
         "module_id": "c_d_atom_query_general",
@@ -13771,11 +13777,43 @@
       "d_dot_env",
       "d_init"
     ],
-    "status": "needs_review",
+    "status": "mixed",
     "caveats": [
       "domain / capability 的划分与命名是 inferred，必须经教师审核后才进学生视图；",
       "objective 与 does_not 默认是 unconfirmed，规则引擎给不出业务含义时不编；",
       "复杂度阈值未经第三方项目校准。"
-    ]
+    ],
+    "seed_report": {
+      "seed_loaded": true,
+      "locked_fields": 18,
+      "teacher_kept": [],
+      "auto_kept": [],
+      "unmatched_auto": [
+        "c_d_atom_query_general",
+        "c_d_binding_create_general",
+        "c_d_binding_misc_unclassified",
+        "c_d_binding_query_general",
+        "c_d_binding_query_value",
+        "c_d_binding_serialize_general",
+        "c_d_binding_transition_general",
+        "c_d_binding_update_general",
+        "c_d_cli_misc_config",
+        "c_d_cli_misc_file",
+        "c_d_cli_misc_unclassified",
+        "c_d_cli_query_general",
+        "c_d_cli_update_value",
+        "c_d_dot_env_misc_file",
+        "c_d_dot_env_misc_unclassified",
+        "c_d_dot_env_misc_value",
+        "c_d_dot_env_notify_general",
+        "c_d_dot_env_query_general",
+        "c_d_dot_env_query_value",
+        "c_d_dot_env_update_general",
+        "c_d_dot_env_update_value",
+        "c_d_i_python_dot_env_misc_unclassified",
+        "c_d_i_python_dot_env_query_general",
+        "c_d_init_query_general"
+      ]
+    }
   }
 }

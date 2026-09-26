@@ -1,0 +1,91 @@
+{
+  "_comment": "教师种子图谱（docs/02 §8.8 / docs/03 附录 A）。它由教师/人工维护，运行时按 domain_id / capability_id 与自动结果对齐，**种子优先**，合并后每个节点带 source 徽章（teacher / auto），图谱整体 status 变成 mixed（前端显示「部分已审核」）。本文件只覆盖 `python_dotenv`（仓库里第二份种子图谱，第一份是 sample_projects/lab_safety_assistant/business_graph.seed.json）。⚠️ 三个纪律：① 本文件**不参与** source_hash（`compute_source_hash` 只哈希被解析的 .py 源文件），所以填了它不会让已有审核失效；② 它放在**被分析的项目目录里**，`project_parser.py:167` 会跳过非 .py 文件，不会被当成源码；③ objective 是**业务含义**，必须由人写——引擎推不出来时留空并标 unconfirmed，绝不自编（docs/00-index.md §3.4 禁止事项第 1 条、docs/02 §9.1 第 ③ 条）。⚠️ 本文件里的 6 条域目标**只覆盖一级域**：本项目的二级功能点是按动词类别自动切出来的「函数桶」（24 张里 8 张叫「查询/读取操作」、4 张叫「其他能力（待归类：…）」），给桶写业务目标就是编业务含义，所以二级卡片继续用自动结果并如实标 source: auto。",
+  "version": "1.0",
+  "project_id": "python_dotenv",
+  "reviewed_by": "教师（工单发起人，WO-05 会话内逐条确认）",
+  "reviewed_at": "2026-09-26",
+  "schema": {
+    "domains": [
+      {"domain_id": "d_x", "name_cn": "教师确认的域名", "role": "core", "locked": ["name_cn"]}
+    ],
+    "module_cards": {
+      "d_x": {
+        "name_cn": "教师确认的域名",
+        "objective": "教师写的模块目标（它为什么存在）",
+        "objective_confidence": "confirmed",
+        "review_status": "approved",
+        "locked": ["name_cn", "objective", "objective_confidence"]
+      }
+    }
+  },
+  "_schema_notes": [
+    "`domains` 只用于**锁定已有的域名 / 角色**：域对象本身没有 `objective` 字段（阶段一读的是 `module_cards[<domain_id>].objective`，见 engine/teaching/coverage.py:188），所以域目标必须填在 `module_cards` 里、不要填在 `domains` 里。",
+    "`objective_confidence` 必须显式写 `confirmed`：`coverage.py` 只把 `_UNCONFIRMED_TOKENS`（'', unconfirmed, unknown, none, null, 未标注, 待确认）当「待确认」，而这个字段**不在 LOCKABLE_FIELDS 里**——它靠 merge 的「种子显式提供的其它字段照抄」那条规则生效，所以必须**显式写出来**，写成空字符串等于没填。⚠️ 那条判定是**白名单**：写一个自造的标记（例如 pending_human_review）不在名单里，会被当成「已确认」而悄悄参与比对。",
+    "`locked` 只对 LOCKABLE_FIELDS（name_cn / objective / does_not / parent_id / role / entity_cn / inputs / outputs / business_rules_text）生效，并会累加进 `seed_report.locked_fields`；`objective_confidence` 是靠上面那条「照抄」规则生效的，写进 locked 只是如实表达意图。",
+    "**不要在每个节点里写 `_comment` / `_evidence` 之类的下划线键**：merge 会把「锁定字段之外的字段」原样照抄进节点，下划线键会顺着契约漏到前端。要写说明就写在本文件的**顶层**（`_comment` / `_schema_notes` / `_evidence`），merge 只读 `domains` 与 `module_cards`，顶层其它键一律忽略。",
+    "只覆盖需要教师定调的内容（这里是「域为什么存在」）；**没有写进本文件的字段继续由引擎自动生成**，节点会如实标成 `source: auto`（前端显示「系统推断」）。",
+    "域目标文本是**整句子串比对**（engine/teaching/coverage.py 的 `_hit`），学生几乎不可能逐字命中，所以它的价值是「让这个域从不可比对变成可比对」+「学生用自己的话描述目标时可能命中」，**不是「理解了就算命中」**。"
+  ],
+  "_evidence": {
+    "_comment": "每一条 objective 的出处（用于教师复核与答辩引用；引擎不读这一段）。格式为「项目内相对路径:行号（它证明了什么）」，逐条由 scripts/export_seed_candidates.py --check 核对过：文件存在、行号在范围内、指向的不是空白。",
+    "d_binding": ["parser.py:37-46（Original（string / line）与 Binding（key / value / original / error）两个命名元组）", "parser.py:14-34（词法正则：注释、export 前缀、单/双引号值、转义序列）", "parser.py:114-141（parse_key / parse_unquoted_value / parse_value：三种取值写法）", "parser.py:144-178（parse_binding：读一条绑定，读不动就整行标 error）", "parser.py:181-184（parse_stream：把整个流逐条产出绑定）"],
+    "d_atom": ["variables.py:5-15（_posix_variable 正则：${name} 与 ${name:-default} 两种写法）", "variables.py:18-26（Atom 抽象基类：resolve(env) 是唯一的求值入口）", "variables.py:48-67（Variable.resolve：名字取不到就用默认值，默认值也没有则空串）", "variables.py:70-86（parse_variables：按正则把值切成 Literal / Variable）", "main.py:294-316（resolve_variables：override 决定环境变量与自己解析出的值谁优先）"],
+    "d_dot_env": ["main.py:75-95（DotEnv.dict / parse：读成有序键值表，interpolate 打开时做插值）", "main.py:97-110（set_as_environment_variables：写进 os.environ，override=False 时不覆盖既有值）", "main.py:138-190（rewrite：临时文件 + os.replace，保留原文件权限位，默认不跟随符号链接）", "main.py:193-250（set_key：新增或更新一个键）", "main.py:253-291（unset_key：删除一个键）", "main.py:319-385（_walk_to_root + find_dotenv：从当前目录逐级向上找 .env）", "main.py:388-472（load_dotenv / dotenv_values：两个对外读取入口）"],
+    "d_cli": ["cli.py:24-35（enumerate_env：默认取当前工作目录下的 .env）", "cli.py:62-64（cli：-f / -q / -e 三个全局选项进 ctx.obj）", "cli.py:83-109（list：四种输出格式 simple / json / shell / export）", "cli.py:112-148（set 与 get 两个子命令）", "cli.py:151-167（unset 子命令：删不掉就以退出码 1 结束）", "cli.py:170-201（run：带上 .env 的变量去跑一条外部命令）", "cli.py:204-247（run_command：win32 走 Popen，其它平台走 os.execvpe）"],
+    "d_i_python_dot_env": ["ipython.py:11-45（IPythonDotEnv.dotenv：-o / -v / dotenv_path 三个参数，找不到文件就打印提示并返回）", "ipython.py:48-50（load_ipython_extension：注册魔法命令）", "__init__.py:6-9（包入口转发 load_ipython_extension）"],
+    "d_init": ["__init__.py:3（从 .main 收进六个对外函数）", "__init__.py:42-51（__all__：对外符号的唯一清单）", "__init__.py:12-39（get_cli_string：把参数拼成一条 dotenv 命令）", "__main__.py:1-6（python -m dotenv 的入口）"]
+  },
+  "_review_note": "本文件里的 6 条域目标由教师（工单发起人）在 WO-05 会话内**逐条确认**后才写入，确认的候选出处见 scripts/export_seed_candidates.py.按 docs/02 §9.1 第 ③ 条的同一条纪律：业务含义只能由人给，引擎负责的是「给什么用什么、没给就不编」。候选清单本身是 AI 起草的，**但它不是评分基准**——评分基准是这份经人确认后的文件。",
+  "domains": [
+    {"domain_id": "d_binding", "name_cn": ".env 语法解析", "role": "core", "locked": ["name_cn"]},
+    {"domain_id": "d_atom", "name_cn": "变量插值（POSIX 展开）", "role": "core", "locked": ["name_cn"]},
+    {"domain_id": "d_dot_env", "name_cn": "配置文件读取与回写", "role": "orchestrator", "locked": ["name_cn"]},
+    {"domain_id": "d_cli", "name_cn": "命令行工具（dotenv 命令）", "role": "orchestrator", "locked": ["name_cn"]},
+    {"domain_id": "d_i_python_dot_env", "name_cn": "IPython 魔法命令（%dotenv）", "role": "core", "locked": ["name_cn"]},
+    {"domain_id": "d_init", "name_cn": "包装配与对外接口", "role": "orchestrator", "locked": ["name_cn"]}
+  ],
+  "module_cards": {
+    "d_binding": {
+      "name_cn": ".env 语法解析",
+      "objective": "把 .env 文本切成「键 = 值」绑定：既给出键与值，也留住每一行的原文与行号，好让写回时没有改动的行能原样保留",
+      "objective_confidence": "confirmed",
+      "review_status": "approved",
+      "locked": ["name_cn", "objective", "objective_confidence"]
+    },
+    "d_atom": {
+      "name_cn": "变量插值（POSIX 展开）",
+      "objective": "把值里的 ${NAME} 与 ${NAME:-默认值} 拆成字面量与变量两类原子再求值：.env 里写的不是死字符串，最终值取决于当时的变量表",
+      "objective_confidence": "confirmed",
+      "review_status": "approved",
+      "locked": ["name_cn", "objective", "objective_confidence"]
+    },
+    "d_dot_env": {
+      "name_cn": "配置文件读取与回写",
+      "objective": "对外提供一组文件级操作：找到 .env、读成键值表、按需载入进程环境变量，以及改写 / 删除单个键 —— 改写走「临时文件 + 原子替换」，不跟随符号链接",
+      "objective_confidence": "confirmed",
+      "review_status": "approved",
+      "locked": ["name_cn", "objective", "objective_confidence"]
+    },
+    "d_cli": {
+      "name_cn": "命令行工具（dotenv 命令）",
+      "objective": "把「列 / 查 / 写 / 删 / 带环境跑命令」暴露成 dotenv 子命令：命令行只是同一套读写能力的入口，自己不实现文件格式",
+      "objective_confidence": "confirmed",
+      "review_status": "approved",
+      "locked": ["name_cn", "objective", "objective_confidence"]
+    },
+    "d_i_python_dot_env": {
+      "name_cn": "IPython 魔法命令（%dotenv）",
+      "objective": "在 IPython / Jupyter 里注册一个 %dotenv 魔法命令：复用同一套「找 .env + 载入」逻辑，让交互式环境也能一行加载配置",
+      "objective_confidence": "confirmed",
+      "review_status": "approved",
+      "locked": ["name_cn", "objective", "objective_confidence"]
+    },
+    "d_init": {
+      "name_cn": "包装配与对外接口",
+      "objective": "把包内实现收敛成一组对外符号（load_dotenv / dotenv_values / get_key / set_key / unset_key / find_dotenv），并从这里同时暴露 IPython 扩展与命令行字符串拼接",
+      "objective_confidence": "confirmed",
+      "review_status": "approved",
+      "locked": ["name_cn", "objective", "objective_confidence"]
+    }
+  }
+}
