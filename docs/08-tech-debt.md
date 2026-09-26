@@ -186,7 +186,8 @@
    **`WO-01` 一轮已把上述改动按轮次分次提交**（`git log --oneline` 可见每一轮的 message），
    并已清理根目录零引用残留（`aud.m4s` / `vid.m4s` / `generated_assets_motion_tiles_20260926/` / 空目录 `assets/`，
    均已清理并登记在 `docs/90-archive.md` 附录 C.2）。
-   repo 层面谈论「工程完成度」时，只能说成「已提交为本地基线」——**没有远端、没有发布**。
+   repo 层面谈论「工程完成度」时，只能说成「已提交为本地基线」：远端 `origin`（GitHub）仍停在 `1d640fb`，
+   `WO-01` 的这几个提交**只在本地、还没有 push**。
    **并行开工前先提交**：任何一条线都不许带着未提交的改动开分支 / 开 worktree
    （`docs/10-work-orders.md` §22.5 的 worktree 规则的前提就是这一条）。
 2. **`sample_projects/flask_crud_demo` 的源码已丢失，并已决定「不再恢复」（WO-01 一轮）**——
