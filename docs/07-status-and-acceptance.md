@@ -1,6 +1,6 @@
 # 现状与验收（原 README 第十六 ~ 十八章 + 附录 B）
 
-> 更新触发：**每轮**（改了功能行为 / 跑了验收 / 调了优先级就要动这份） | 上次更新：克隆完整性一轮（2026-09-26）
+> 更新触发：**每轮**（改了功能行为 / 跑了验收 / 调了优先级就要动这份） | 上次更新：部署说明一轮（2026-09-26：§16.1 末补部署文档与正式构建实测）
 > 来源：原 `README.md` 的 §16 / §17 / §18 / 附录 B **整章搬移，逐字未改**；章节号保持不变，
 > 所以 `§16.1` / `§17.2` / `§18` 这类引用（README 正文、代码注释、脚本里都有）仍然解析得到这里。
 > **数字规矩**：验收数字**不许手抄** —— 以 `validation/acceptance_latest.md` 为唯一来源
@@ -414,6 +414,33 @@ backend/data/logic_platform/*
 > **明确没验的**：① 没在第二台机器或干净系统上验（仍是同一台机器、同一个 python 与 node 版本）；
 > ② 克隆里的产物构建只验了走查 bundle，**没有**验 `frontend/dist` 的正式构建；
 > ③ 没验 macOS / Linux（脚本与文档目前都是 Windows 口径，`bootstrap.ps1` 也只有 PowerShell 版）。
+
+**部署说明一轮（2026-09-26）：把「怎么装到另一台机器上」写成一份文档，并补上正式构建的实测**
+
+> 起因是**仓库里根本没有一份部署说明**：`README.md` §0.3 讲的是"作者本机怎么跑"，
+> `docs/06-runbook.md` 是命令手册与排障，两者都**没有**回答"换一台机器要装什么、起哪几个进程、
+> 前端产物怎么构建、能不能放到局域网/公网"。于是新增 `docs/11-deployment.md`（第二十五章），
+> 并顺手补掉了上一轮明确留下的那条空档 —— **正式构建（`frontend/dist`）此前没验过**。
+> 这一轮**只加文档、不改任何产品行为、不改任何判定口径**。
+
+| 这一轮补上什么 | 依据 / 实测 |
+|---|---|
+| 支持 / 未做的部署形态一次说清 | 未做：容器化、反向代理、HTTPS、鉴权、进程守护、多副本（依据是仓库里确实没有这些文件，且 `backend/app/main.py` 模块头写着 no auth） |
+| **前端正式构建首次实测** | `node node_modules/vite/bin/vite.js build`：`2156 modules transformed`、`built in 11.27s`、退出码 0；`frontend/dist` 合计 **4.89 MB**；设了 `VITE_API_BASE` 之后该字符串确实出现在产物的 JS 里（构建时烘入） |
+| **静态托管路径实测** | `vite preview --port 4173`：`/` 返回 200；`/demo/project_analysis.json` 返回 200（473914 字节）；带 `Origin` 的跨源请求被后端回显 `Access-Control-Allow-Origin` |
+| 启动方式的两种写法 | 从仓库根目录 `python -m uvicorn backend.app.main:app ...` **成功**；`python backend/app/main.py` **失败**（`ModuleNotFoundError: No module named 'app'`） |
+| **安全边界写成部署前置条件** | 实测 `?mode=teacher` 的响应里有 `correct_answers`，默认 `mode=student` 没有；接口层无鉴权 → 文档明写"只在本机或可信局域网用，**现在不要上公网**" |
+| 数据与可写目录 | 后端按仓库目录定位数据（`project_store.py:42` 的 `parents[3]`），所以**不能只拷 `backend/`**；唯一"跑出来又不在 git 里"的是 `backend/data` |
+| **完整验收组重跑通过** | `python scripts/build_acceptance_report.py --with-backend --with-node` **全部通过（18/18）**：含 4 条走查（在线 109/109 ×2、离线 55/55 ×2）与平台接口测试 37/37；数字以 `validation/acceptance_latest.md` 为准 |
+| **负向对照：走查失败≠前端坏了** | 中途只起了 8000 后端、没起 5173 dev server，四条走查**全部** FAIL 在 `waitFor 超时: 题目渲染`；把 dev server 起回来，同一条命令**恢复通过**。原因：走查的 `/demo/...` 请求走 5173（`scripts/browser_clickthrough.mjs` 默认 `--base http://127.0.0.1:5173`），与后端无关。这条已写进 `docs/11-deployment.md` §25.7 |
+
+> **这一轮明确没做的**：① 没有验真实反向代理（nginx / Caddy 同源单端口）—— 仓库里没有配置，只说明了"没做"；
+> ② 没有验 macOS / Linux；③ 没有验第二台机器（也没重跑 `bootstrap.ps1` 从零装一遍，
+> 它的实测证据在克隆完整性一轮）；④ 没有做并发/压力实测；
+> ⑤ **没有把前端产物提交进仓库**（仍靠现场构建，`frontend/dist` 不在 git 里）；
+> ⑥ 部署文档里的命令与端口**没有机器化门禁**（`verify_docs.py` 只保证路径不悬空、数字不漂移，
+> 不保证"这条命令真的能起服务"）—— 靠本表这轮实测留痕；
+> ⑦ **没有在真实浏览器里渲染过**：界面行为仍是 jsdom 走查的结论（本轮跑过、全绿），CSS 与像素级效果仍未验。
 
 ### 16.2 ⚠️ 部分完成
 

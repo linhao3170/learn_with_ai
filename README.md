@@ -207,6 +207,7 @@ node scripts/check_evidence_fold.mjs           # 讲稿逐条证据 / 反幻觉�
 | 接口有哪些、页面怎么排 | `docs/04-api-and-frontend.md` |
 | 业务逻辑分析平台怎么工作 | `docs/05-logic-platform.md` |
 | 怎么跑起来、怎么验收、环境报错怎么办 | `docs/06-runbook.md` |
+| **换一台机器部署 / 局域网演示 / 能不能上公网** | `docs/11-deployment.md` |
 | **现在到哪一步了、下一次做什么** | `docs/07-status-and-acceptance.md` |
 | 哪里会踩坑、哪些实现反直觉 | `docs/08-tech-debt.md` |
 | 对外能说什么、答辩怎么讲 | `docs/09-discipline-and-defense.md` |
@@ -246,6 +247,7 @@ node scripts/check_evidence_fold.mjs           # 讲稿逐条证据 / 反幻觉�
 | `docs/09-discipline-and-defense.md` | 表述纪律 / 风险与禁区 / 答辩与演示（第十三 ~ 十五章 + `§21.8`） | 很少改 |
 | `docs/90-archive.md` | 旧文档与旧产物处置（附录 C，一次性历史） | 几乎不改 |
 | `docs/10-work-orders.md` | **并行工单与执行编排**：把 `§16.2` / `§16.3` / `§19.1` 里还没做的事拆成 `WO-01` ~ `WO-15` + 集成轮，写明每单的独占文件、波次顺序、验收命令与发单模板（供多任务同时开工） | 工单增删 / 波次调整时 |
+| `docs/11-deployment.md` | **部署说明**（第二十五章）：支持的部署形态与**明确没做的**、拓扑与端口、前置依赖、`scripts/bootstrap.ps1`、两条部署路径（单机双进程 / 前端静态产物 + 跨源直连）、装完自检清单、数据与可写目录、环境变量、**安全边界（接口无鉴权 → 现在不许上公网）**、更新部署与排障索引 | 启动方式 / 构建产物 / 端口 / 依赖 / 反代变了才动 |
 | `docs/features/_TEMPLATE.md` | 单个功能的设计卡模板（目标 / 不变式 / 契约 / 判定口径 / 可见性 / 验收 / 边界） | 每做一个功能填一篇 |
 | `docs/features/ui-shell-redesign.md` | **系统主页面与界面重设计**（默认落地页 / 两大核心功能大模块化 / 可折叠的来源依据 / 链式拉动与层进式动画） | 界面结构或动画约定变动时 |
 | `docs/features/evidence-fold.md` | **证据折叠与口径说明**（讲稿逐条证据与反幻觉面板明细默认收起 / 摘要常驻 + 详述收起 / 失败默认展开 / 折叠自查脚本） | 折叠口径或自查断言变动时 |
