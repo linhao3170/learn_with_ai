@@ -397,6 +397,24 @@ backend/data/logic_platform/*
 再重建锁文件；实测**既有包 0 个版本变化**、新增 38 个是 jsdom 29 的依赖子树、删掉的 50 个是 P0-16
 早已记录的死依赖树，`npm ci` 在**全新克隆**里通过。台账见 `docs/08` §19.1 第 30 条。
 
+**本轮实测：全新克隆（从 GitHub 拉，不是本地目录）**
+
+| 检查项 | 实测结果 |
+|---|---|
+| 克隆下来的跟踪文件数 | 688（= 本地的 431 + flask 236 + 证据层 10 + demo 11），**0 个 gitlink** |
+| 以前会缺的那三块 | `validation/flask` 的源码、`validation/results/` 的 10 个证据文件、两个 `source_kind=demo` 的平台项目 —— **全部就位** |
+| 隐私红线 | 克隆里 `lp_` 前缀的上传件目录数：**0**（仍被忽略） |
+| 克隆后 `git status` | 干净可跑，**不需要** `--ignore-submodules=all`（老约束确实解除了） |
+| 那"一条命令" | `powershell -ExecutionPolicy Bypass -File scripts\bootstrap.ps1` **退出码 0** |
+| `npm ci` | **通过**；装出来的 `jsdom@29.1.1` 与作者本机**一致**（修复前装到的是 24.1.3 —— 这就是第 30 条那个缺陷的实证） |
+| 克隆里跑默认验收组 | 全部通过，**逐项数字与作者本机相同**（含依赖 flask 源码的 `scripts/test_business_graph.py` —— 它的 4 个验证项目里就有 `validation/flask`，修复前那是个空目录） |
+| 克隆里构建走查 bundle + 跑走查 | 构建成功；走查 **109 条断言全部通过**（用的是克隆自己装出来的依赖、克隆自己构建的产物） |
+
+> 临时克隆目录验完即删，可 1:1 重现（`git clone` + 上面那条 bootstrap）。
+> **明确没验的**：① 没在第二台机器或干净系统上验（仍是同一台机器、同一个 python 与 node 版本）；
+> ② 克隆里的产物构建只验了走查 bundle，**没有**验 `frontend/dist` 的正式构建；
+> ③ 没验 macOS / Linux（脚本与文档目前都是 Windows 口径，`bootstrap.ps1` 也只有 PowerShell 版）。
+
 ### 16.2 ⚠️ 部分完成
 
 **入口完善一轮（2026-09-26）**：系统首页新增本地演示登录窗口（可游客继续）、`/` 快捷搜索和业务模块快捷跳转。搜索直接复用现有契约与图谱卡片，不新增业务判定；登录明确标注为本地演示身份。编译验证：`node node_modules/vite/bin/vite.js build` 通过。完整边界见 `docs/features/login-and-quick-navigation.md`。
