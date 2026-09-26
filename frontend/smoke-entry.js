@@ -20,3 +20,13 @@ export function mount(el) {
 }
 
 export { App }
+
+// 证据折叠一轮：两个逻辑平台组件 + 它们的挂载助手也从这里导出，
+// 好让 `scripts/check_evidence_fold.mjs` 能复用同一个走查 bundle（不另建打包配置）。
+export {
+  ImmersiveLesson,
+  VerificationPanel,
+  mountInto,
+  NegativeControlFold,
+  mountNegativeControl,
+} from './evidence-check-entry.js'

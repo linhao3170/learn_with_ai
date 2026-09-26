@@ -89,6 +89,18 @@
         </span>
       </div>
 
+      <!--
+        证据口径：摘要常驻（一句话），详述收起（点开才是完整边界）。
+        这一屏的"复杂"集中在每条结论下面那串 `文件:行号` 上，所以先把
+        「这些行号能证明什么、不能证明什么」讲清楚，再把逐条证据收进折叠区。
+      -->
+      <EvidenceNote
+        test-id="lesson-evidence-note"
+        label="证据口径"
+        :summary="EVIDENCE_SUMMARY"
+        :lines="EVIDENCE_LINES"
+      />
+
       <!-- 拦截项：不许静默删除，必须显示出来 -->
       <ul
         v-if="review.blocking_issues?.length"
@@ -271,6 +283,13 @@
                         已拦截：{{ claim.reject_reason }}
                       </span>
                     </p>
+                    <!--
+                      佐证收进折叠区，主张留在外面：
+                      - **常驻**：断言原文 + 置信度 / 生成主体 / 已拦截徽章（判断该用多严的眼光看它，
+                        靠的就是这三个标记，收起来等于把判断依据藏了）；
+                      - **收起**：逐条 `文件:行号` 证据 + 教师标注按钮（数量写在折叠头上，
+                        收起不等于删掉，它们仍然在 DOM 里，点一下就能跳源码）。
+                    -->
                     <div class="flex items-center gap-1.5 flex-wrap">
                       <ClaimBadge
                         :confidence="claim.confidence"
@@ -279,36 +298,53 @@
                         :reject-reason="claim.reject_reason"
                         :review-decision="decisions[claim.claim_id]?.decision || ''"
                       />
-                      <button
-                        v-for="(item, index) in claim.evidence || []"
-                        :key="`${claim.claim_id}-ev-${index}`"
-                        class="text-[10px] font-mono px-1.5 py-0.5 rounded border border-deep-border text-gray-500 hover:text-neon-blue hover:border-neon-blue/40 transition-all"
-                        :title="evidenceTitle(item)"
-                        data-test="claim-evidence"
-                        @click="openEvidence(item, `断言 ${claim.claim_id} 的证据`)"
+                      <EvidenceFold
+                        class="w-full"
+                        label="逐条证据与教师标注"
+                        :count="(claim.evidence || []).length"
+                        :test-id="`claim-fold-${claim.claim_id}`"
+                        :default-open="claim.verified === false"
+                        hint="点开看这条结论引用的代码位置，并对它做教师标注"
                       >
-                        {{ item.file }}:{{ item.start_line }}-{{ item.end_line }}
-                      </button>
-                    </div>
-                    <div class="flex items-center gap-2 pt-0.5" data-test="claim-review-actions">
-                      <button
-                        class="text-[10px] px-1.5 py-0.5 rounded border transition-all"
-                        :class="decisions[claim.claim_id]?.decision === 'confirm'
-                          ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
-                          : 'border-deep-border text-gray-500 hover:text-emerald-300 hover:border-emerald-500/40'"
-                        @click="setDecision(claim.claim_id, 'confirm')"
-                      >
-                        确认
-                      </button>
-                      <button
-                        class="text-[10px] px-1.5 py-0.5 rounded border transition-all"
-                        :class="decisions[claim.claim_id]?.decision === 'reject'
-                          ? 'bg-red-500/20 text-red-300 border-red-500/40'
-                          : 'border-deep-border text-gray-500 hover:text-red-300 hover:border-red-500/40'"
-                        @click="setDecision(claim.claim_id, 'reject')"
-                      >
-                        有问题
-                      </button>
+                        <div class="flex items-center gap-1.5 flex-wrap">
+                          <button
+                            v-for="(item, index) in claim.evidence || []"
+                            :key="`${claim.claim_id}-ev-${index}`"
+                            class="text-[10px] font-mono px-1.5 py-0.5 rounded border border-deep-border text-gray-500 hover:text-neon-blue hover:border-neon-blue/40 transition-all"
+                            :title="evidenceTitle(item)"
+                            data-test="claim-evidence"
+                            @click="openEvidence(item, `断言 ${claim.claim_id} 的证据`)"
+                          >
+                            {{ item.file }}:{{ item.start_line }}-{{ item.end_line }}
+                          </button>
+                          <span
+                            v-if="!(claim.evidence || []).length"
+                            class="text-[10px] text-gray-500"
+                          >
+                            这条断言没有证据条目（无证据的断言不会被当作结论）。
+                          </span>
+                        </div>
+                        <div class="flex items-center gap-2 pt-1" data-test="claim-review-actions">
+                          <button
+                            class="text-[10px] px-1.5 py-0.5 rounded border transition-all"
+                            :class="decisions[claim.claim_id]?.decision === 'confirm'
+                              ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
+                              : 'border-deep-border text-gray-500 hover:text-emerald-300 hover:border-emerald-500/40'"
+                            @click="setDecision(claim.claim_id, 'confirm')"
+                          >
+                            确认
+                          </button>
+                          <button
+                            class="text-[10px] px-1.5 py-0.5 rounded border transition-all"
+                            :class="decisions[claim.claim_id]?.decision === 'reject'
+                              ? 'bg-red-500/20 text-red-300 border-red-500/40'
+                              : 'border-deep-border text-gray-500 hover:text-red-300 hover:border-red-500/40'"
+                            @click="setDecision(claim.claim_id, 'reject')"
+                          >
+                            有问题
+                          </button>
+                        </div>
+                      </EvidenceFold>
                     </div>
                   </div>
                 </li>
@@ -492,6 +528,9 @@
  */
 import { computed, reactive } from 'vue'
 import ClaimBadge from './ClaimBadge.vue'
+// 证据折叠一轮：佐证默认收起、口径摘要常驻（两个组件在反幻觉面板里同样复用）
+import EvidenceFold from './EvidenceFold.vue'
+import EvidenceNote from './EvidenceNote.vue'
 
 const props = defineProps({
   /** 讲稿契约（GET /api/logic-platform/{id}/lessons/{capability_id}） */
@@ -505,6 +544,39 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['close', 'open-source', 'verify', 'review'])
+
+/**
+ * 证据口径（摘要常驻 + 详述收起）
+ * ================================
+ * 这张讲稿上每一句结论下面都挂着一串 `文件:行号`。**引用成立 ≠ 解释正确**——
+ * 这句话必须写在证据旁边，否则读的人会把"机械复核通过"当成"业务解释也是对的"。
+ *
+ * 下面每一条都对应可执行的事实，不是形容词：
+ * - 复核了什么：`engine/logic_platform/verify.py` 的检查项（路径纪律 / 行区间 / 摘录逐字符 /
+ *   哈希 / 段落摘录 / 符号存在 / return 行与序号 / 「不会执行」的区间 / 每条断言必须有可核验的证据）；
+ * - 模型把关：`engine/logic_platform/narration.py` 的四条规则（只给行号不给代码、行范围必须落在本段内、
+ *   落不到证据上的条目直接拒绝并留痕、合并后必须重跑校验器）。
+ */
+const EVIDENCE_SUMMARY =
+  '断言下面的证据只证明一件事：那几行代码确实存在、且与磁盘上的源码逐字符一致。' +
+  '它不证明「这句业务解释是对的」—— 那只有教师能判。'
+
+const EVIDENCE_LINES = [
+  '证据是一段「文件:行号」，点它就打开源码：看的是磁盘上此刻的内容，而不是讲稿里抄下来的一份副本。',
+  '机械复核逐项检查：文件是否为项目内相对路径、行区间是否合法、摘录是否与磁盘源码逐字符一致、摘录哈希是否对得上、' +
+    '被引用的函数是否真的存在于语法树里、声称的 return 行与它的序号是否真的对得上、「后面不会执行」的区间是否真实，' +
+    '以及每一条断言是否至少带一条可核验的证据（空壳证据按失败处理，不静默跳过）。',
+  '机械复核**检查不到**的是：这几行代码是否真的支持这句话的结论。行号是真的、摘录是真的，' +
+    '但「由它推出这条业务解释」这一步是语义判断，机器不做这个判断 —— 这就是发布权交给教师的原因。',
+  '当徽章写「模型草稿」时（讲解措辞由语言模型渲染）：模型只允许给行号、不允许给代码；' +
+    '它给的行范围必须落在本段自己的行范围内；每段摘录都由引擎重新从磁盘读取并再次比对，模型返回的代码文本一律丢弃。' +
+    '所以「引用了一段根本不存在的代码」这类幻觉会被机械复核拦下。',
+  '仍然可能残留的幻觉风险（据实写出，不粉饰）：行号真实但相关性不成立——这句结论其实不是这几行支持的；' +
+    '段标题若标着「标题：引擎推断」，那个名字本身是引擎推断的；分支的真假不断言（静态阅读看不到运行时的输入）。' +
+    '遇到这类地方，请点开行号自己核一遍，或用「有问题」把它标出来。',
+  '被拦截的断言不会被删掉：它标红显示，并带上后端给出的拦截原因 —— 评审要能看到系统抓到了什么。' +
+    '机械复核未通过的内容进不了「已发布」；即使全部通过，也要教师确认过才会变成已确认。',
+]
 
 /** 教师对单条断言的标记（提交前只存在本地） */
 const decisions = reactive({})

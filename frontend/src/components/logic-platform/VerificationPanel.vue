@@ -10,12 +10,6 @@
         <div class="min-w-0">
           <div class="text-xs text-gray-500 font-mono tracking-widest uppercase mb-1">Verification · 反幻觉面板</div>
           <h3 class="text-base font-bold text-white">确定性校验与人工审核</h3>
-          <p class="text-[11px] text-gray-400 mt-1.5 leading-relaxed max-w-2xl">
-            机械复核只证明一件事：<b class="text-gray-200">讲稿里引用的代码确实存在，且与磁盘上的源码逐字符一致</b>。
-            它<b class="text-amber-300/90">不能</b>证明"这句业务解释是对的"—— 那只有教师能判。
-            所以下面的通过数只说明"这台机器检查了什么"，不构成对内容的评价；
-            引擎也永远不会把 <span class="font-mono">can_publish</span> 置为 true。
-          </p>
         </div>
         <div class="flex items-center gap-2 flex-wrap">
           <button
@@ -29,11 +23,20 @@
           </button>
         </div>
       </div>
-      <p class="text-[10px] text-gray-500 mt-2 leading-relaxed">
-        「重新校验」会调用后端把源码<b>重新从磁盘读一遍</b>再逐字符比对，
-        因此它给出的是"现在这一刻引用是否仍然成立"，而不是复用讲稿里上一次的结论。
-        源码一旦变化，此前的人工审核会自动失效（stale）。
-      </p>
+
+      <!--
+        证据折叠一轮：原来铺在标题下面的一整段口径，变成
+        **一行常驻摘要 + 可展开的完整说明** —— 口径一条没删，只是不再占满首屏。
+      -->
+      <div class="mt-2">
+        <EvidenceNote
+          test-id="logic-verification-note"
+          label="完整口径"
+          :summary="VERIFICATION_SUMMARY"
+          :lines="VERIFICATION_LINES"
+        />
+      </div>
+
       <div v-if="verifyError" class="mt-2 text-[11px] text-red-400 break-all font-mono" data-test="logic-verify-error">
         {{ verifyError }}
       </div>
@@ -145,50 +148,64 @@
           这份载荷没有校验明细（checks 为空）—— 如实说明，不在这里补一行"全部通过"。
         </div>
 
-        <div v-else class="space-y-1.5">
-          <div
-            v-for="check in sortedChecks"
-            :key="check.check_id + '|' + (check.target_id || '')"
-            class="rounded-lg border px-3 py-2"
-            :class="checkRowCls(check)"
-            data-test="logic-check"
-            :data-status="check.status || ''"
-            :data-check-id="check.check_id || ''"
-          >
-            <div class="flex items-start justify-between gap-3 flex-wrap">
-              <div class="min-w-0">
-                <div class="flex items-center gap-2 flex-wrap">
-                  <span
-                    class="text-[10px] px-1.5 py-0.5 rounded border font-medium"
-                    :class="statusMeta(check.status).cls"
-                    data-test="logic-check-status"
-                  >{{ statusMeta(check.status).label }}</span>
-                  <span class="text-[11.5px] text-gray-200">{{ check.check_name || check.check_id }}</span>
-                  <span v-if="check.scope" class="text-[10px] text-gray-600 font-mono">{{ check.scope }}</span>
+        <!--
+          逐项明细默认收起（它是最长的一块），但**失败项例外**：
+          `default-open` 在有失败时为真 —— 失败不许藏在一次点击之后。
+          收起只是把高度归零，检查项一条都没少，仍然在 DOM 里。
+        -->
+        <EvidenceFold
+          v-else
+          label="逐项检查明细（失败与跳过在前）"
+          :count="checks.length"
+          test-id="logic-checks-fold"
+          :default-open="failedCount > 0"
+          hint="有失败项时默认展开：失败不藏在一次点击之后"
+        >
+          <div class="space-y-1.5">
+            <div
+              v-for="check in sortedChecks"
+              :key="check.check_id + '|' + (check.target_id || '')"
+              class="rounded-lg border px-3 py-2"
+              :class="checkRowCls(check)"
+              data-test="logic-check"
+              :data-status="check.status || ''"
+              :data-check-id="check.check_id || ''"
+            >
+              <div class="flex items-start justify-between gap-3 flex-wrap">
+                <div class="min-w-0">
+                  <div class="flex items-center gap-2 flex-wrap">
+                    <span
+                      class="text-[10px] px-1.5 py-0.5 rounded border font-medium"
+                      :class="statusMeta(check.status).cls"
+                      data-test="logic-check-status"
+                    >{{ statusMeta(check.status).label }}</span>
+                    <span class="text-[11.5px] text-gray-200">{{ check.check_name || check.check_id }}</span>
+                    <span v-if="check.scope" class="text-[10px] text-gray-600 font-mono">{{ check.scope }}</span>
+                  </div>
+                  <div v-if="check.target_id" class="text-[10px] text-gray-600 font-mono mt-0.5 truncate">
+                    target: {{ check.target_id }}
+                  </div>
                 </div>
-                <div v-if="check.target_id" class="text-[10px] text-gray-600 font-mono mt-0.5 truncate">
-                  target: {{ check.target_id }}
-                </div>
+                <!-- 失败/跳过的检查必须能直接跳到它校验的那几行 -->
+                <button
+                  v-if="check.file"
+                  type="button"
+                  class="text-[10px] font-mono text-gray-500 hover:text-neon-blue transition-colors flex-shrink-0"
+                  data-test="logic-check-location"
+                  :data-file="check.file"
+                  :data-line="check.line ?? ''"
+                  @click="$emit('open-source', check.file, check.line, check.line, `校验项 ${check.check_id}`)"
+                >{{ checkLocation(check) }} ↗</button>
               </div>
-              <!-- 失败/跳过的检查必须能直接跳到它校验的那几行 -->
-              <button
-                v-if="check.file"
-                type="button"
-                class="text-[10px] font-mono text-gray-500 hover:text-neon-blue transition-colors flex-shrink-0"
-                data-test="logic-check-location"
-                :data-file="check.file"
-                :data-line="check.line ?? ''"
-                @click="$emit('open-source', check.file, check.line, check.line, `校验项 ${check.check_id}`)"
-              >{{ checkLocation(check) }} ↗</button>
+              <p
+                v-if="check.detail"
+                class="text-[11px] mt-1 leading-relaxed"
+                :class="check.status === 'fail' ? 'text-red-200/85' : 'text-gray-500'"
+                data-test="logic-check-detail"
+              >{{ check.detail }}</p>
             </div>
-            <p
-              v-if="check.detail"
-              class="text-[11px] mt-1 leading-relaxed"
-              :class="check.status === 'fail' ? 'text-red-200/85' : 'text-gray-500'"
-              data-test="logic-check-detail"
-            >{{ check.detail }}</p>
           </div>
-        </div>
+        </EvidenceFold>
       </div>
 
       <!-- ===============================================================
@@ -202,17 +219,27 @@
         <div class="text-[11px] font-semibold text-red-300">
           本次被拦截的内容（照原样列出，不删除）
         </div>
-        <div v-if="rejectedClaimIds.length" class="text-[11px] text-red-200/80 leading-relaxed">
-          被拦截的断言 {{ rejectedClaimIds.length }} 条：
-          <span class="font-mono break-all">{{ rejectedClaimIds.join('、') }}</span>
-        </div>
-        <div v-if="rejectedSegmentIds.length" class="text-[11px] text-red-200/80 leading-relaxed">
-          被拦截的段落 {{ rejectedSegmentIds.length }} 段：
-          <span class="font-mono break-all">{{ rejectedSegmentIds.join('、') }}</span>
-        </div>
+        <!-- 事实（有几条被拦）常驻；具体是哪几条收进折叠区 -->
         <p class="text-[10px] text-gray-500 leading-relaxed">
           被拦截不等于"已删除"：讲稿里它们仍然显示（标红），因为评审要能看到系统抓到了什么。
         </p>
+        <EvidenceFold
+          label="被拦截的 id 清单"
+          :count="rejectedClaimIds.length + rejectedSegmentIds.length"
+          test-id="logic-rejected-ids-fold"
+          hint="点开看具体是哪几条断言 / 哪几段被拦下"
+        >
+          <div class="space-y-1">
+            <div v-if="rejectedClaimIds.length" class="text-[11px] text-red-200/80 leading-relaxed">
+              被拦截的断言 {{ rejectedClaimIds.length }} 条：
+              <span class="font-mono break-all">{{ rejectedClaimIds.join('、') }}</span>
+            </div>
+            <div v-if="rejectedSegmentIds.length" class="text-[11px] text-red-200/80 leading-relaxed">
+              被拦截的段落 {{ rejectedSegmentIds.length }} 段：
+              <span class="font-mono break-all">{{ rejectedSegmentIds.join('、') }}</span>
+            </div>
+          </div>
+        </EvidenceFold>
       </div>
 
       <!-- ===============================================================
@@ -382,7 +409,44 @@
  */
 import { computed } from 'vue'
 import CaveatsPanel from './CaveatsPanel.vue'
+// 证据折叠一轮：口径收成「常驻摘要 + 可展开说明」，逐项明细与被拦截清单默认收起
+import EvidenceFold from './EvidenceFold.vue'
+import EvidenceNote from './EvidenceNote.vue'
 import { toProjectRelative } from '../../utils/businessGraph'
+
+/**
+ * 完整口径（摘要常驻在面板顶部，这六条收在抽屉里）
+ * ==================================================
+ * 原来它们是铺在标题下面的一整段。收敛成抽屉**不是为了少说**，
+ * 而是为了"第一眼看到的是结论，边界在点开之后一条不少"。
+ * 每一条都对应可执行的事实，没有一句是形容词：
+ * - `can_publish` 恒为 false：`engine/logic_platform/verify.py` 的 `apply_verification`；
+ * - 重新校验重读磁盘：`verify.py` 刻意绕开解析缓存（`_read_lines` 直接开文件）；
+ * - `stale`：`backend/app/services/logic_platform_service.py` 的 `_apply_reviews` 按 `source_hash` 判定；
+ * - 模型把关四条规则：`engine/logic_platform/narration.py` 模块 docstring。
+ */
+const VERIFICATION_SUMMARY =
+  '机械复核只证明一件事：讲稿里引用的代码确实存在，且与磁盘上的源码逐字符一致。' +
+  '它不能证明「这句业务解释是对的」—— 那只有教师能判；' +
+  '下面的通过数只说明「这台机器检查了什么」，不构成对内容的评价。'
+
+const VERIFICATION_LINES = [
+  '引擎永远不会把「可发布」置为真：只有教师走审核接口确认过、且机械复核通过，这一课才会变成已确认；' +
+    '发布权属于人，引擎只负责把证据摆齐。',
+  '「重新校验」会调用后端把源码重新从磁盘读一遍再逐字符比对，' +
+    '因此它给出的是"现在这一刻引用是否仍然成立"，而不是复用讲稿里上一次的结论。',
+  '源码一旦变化，此前的人工审核会自动失效（stale）：界面会明写「审核已失效」并退回待确认，' +
+    '绝不沿用一份已经作废的确认。',
+  '机械复核逐项检查：文件是否为项目内相对路径、行区间是否合法、摘录是否与磁盘源码逐字符一致、' +
+    '摘录哈希是否对得上、被引用的函数是否真的存在于语法树里、声称的 return 行与它的序号是否对得上、' +
+    '「后面不会执行」的区间是否真实，以及每条断言是否至少带一条可核验的证据（空壳证据按失败处理，不静默跳过）。',
+  '它仍然检查不到"这几行代码是否真的支持这句话的结论"：行号与摘录是真的，' +
+    '但语义上的推导只有人能判。所以任何一项失败只说明"引用层面不成立"，全部通过也只说明"引用层面成立"。',
+  '当这一课是模型草稿（generated_by = llm_draft）时：模型只允许给行号、不允许给代码，' +
+    '行范围必须落在本段内，摘录由引擎从磁盘重读并复核，模型返回的代码文本一律丢弃；' +
+    '落不到段内证据上的条目会被拦下，并留在拦截清单里供评审查看。',
+  '被拦截不等于"已删除"：被拦下的断言在讲稿里仍然显示（标红），因为评审要能看到系统抓到了什么。',
+]
 
 const props = defineProps({
   /** 当前讲稿（review / verification 都在它里面） */
@@ -519,6 +583,9 @@ const countEntries = computed(() => {
 })
 
 const checks = computed(() => (Array.isArray(report.value?.checks) ? report.value.checks : []))
+
+/** 失败项数：用来决定「逐项明细」要不要默认展开（失败不许藏在一次点击之后）。 */
+const failedCount = computed(() => checks.value.filter((c) => String(c?.status || '') === 'fail').length)
 
 /**
  * 失败最前，然后 skipped，最后 pass。

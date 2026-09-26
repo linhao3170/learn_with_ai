@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-grid relative overflow-hidden" data-test="logic-platform" :data-stage="store.stage">
+  <div ref="rootRef" class="min-h-screen bg-grid relative overflow-hidden" data-test="logic-platform" :data-stage="store.stage">
     <!-- 背景装饰（与 App.vue / TrainingView 同一套 glow-orb 语言） -->
     <div class="glow-orb w-[640px] h-[640px] -top-48 right-[-180px] bg-neon-purple opacity-20"></div>
     <div class="glow-orb w-[520px] h-[520px] bottom-[-160px] left-[-120px] bg-neon-blue opacity-20"></div>
@@ -41,48 +41,88 @@
 
     <div class="relative z-10 max-w-6xl mx-auto px-6 pt-20 pb-16 space-y-6">
       <!-- =================================================================
-           这一步通往哪一步（六步流程）+ 口径立场
+           这一步通往哪一步（六步流程，现在是一条"链"）+ 口径立场（可折叠）
            ================================================================= -->
       <section class="space-y-3">
-        <ol class="flex flex-wrap items-center gap-x-2 gap-y-2" data-test="logic-stage-steps">
-          <li
-            v-for="(item, index) in STEPS"
-            :key="item.stage"
-            class="flex items-center gap-2"
-            data-test="logic-stage-step"
-            :data-stage="item.stage"
-            :data-active="String(activeStepIndex === index)"
-            :data-done="String(activeStepIndex > index)"
-          >
-            <span
-              class="text-[11px] px-2.5 py-1 rounded-lg border transition-all"
-              :class="activeStepIndex === index
-                ? 'border-neon-blue/60 bg-neon-blue/10 text-neon-blue'
-                : activeStepIndex > index
-                  ? 'border-emerald-500/30 bg-emerald-500/5 text-emerald-400/80'
-                  : 'border-deep-border bg-deep-card/40 text-gray-500'"
-            >{{ index + 1 }}. {{ item.label }}</span>
-            <svg v-if="index < STEPS.length - 1" width="12" height="12" viewBox="0 0 24 24" fill="none"
-                 stroke="currentColor" stroke-width="2" class="text-gray-700" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="9 18 15 12 9 6"></polyline>
-            </svg>
-          </li>
-        </ol>
+        <!-- 六步链：当前步高亮、走过的步打勾，链上跑一个光点表示"通往下一步" -->
+        <div class="glass-card px-4 py-3 space-y-3" data-layer data-test="logic-flow-card">
+          <div class="flex items-center justify-between gap-3 flex-wrap">
+            <div class="text-[11px] font-mono tracking-wider text-gray-400">
+              当前进度 · 第 {{ activeStepIndex + 1 }} / {{ STEPS.length }} 步
+            </div>
+            <div class="text-[11px] text-gray-500">
+              {{ STEPS[activeStepIndex]?.label }}
+            </div>
+          </div>
 
-        <!-- 立场声明：这个平台的可信度全押在这三句话上，所以放在第一屏 -->
-        <div class="glass-card px-4 py-3 flex flex-wrap gap-x-5 gap-y-1.5" data-test="logic-mode-banner">
-          <span class="text-[11px] text-gray-400">
-            <span class="text-emerald-400">事实来自 AST，可复现</span>
-          </span>
-          <span class="text-[11px] text-gray-400">
-            <span class="text-amber-400">板块划分为引擎推断，待教师确认</span>
-          </span>
-          <span class="text-[11px] text-gray-400">
-            <span class="text-neon-blue">核心度排序是讲解顺序的参考信号</span>
-          </span>
-          <span class="text-[11px] text-gray-500">
-            页面上只出现可追溯到契约字段的事实与置信度，不出现任何没有依据的自动结论。
-          </span>
+          <ol class="flow-chain" data-test="logic-stage-steps">
+            <li
+              v-for="(item, index) in STEPS"
+              :key="item.stage"
+              class="flex items-center gap-1.5"
+              data-test="logic-stage-step"
+              :data-stage="item.stage"
+              :data-active="String(activeStepIndex === index)"
+              :data-done="String(activeStepIndex > index)"
+            >
+              <span
+                class="flow-node"
+                :class="{ 'is-active': activeStepIndex === index, 'is-done': activeStepIndex > index }"
+              >
+                <span class="font-mono">{{ index + 1 }}</span>
+                <span>{{ item.label }}</span>
+              </span>
+              <svg v-if="index < STEPS.length - 1" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                   stroke="currentColor" stroke-width="2" class="flow-arrow" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </li>
+          </ol>
+        </div>
+
+        <!--
+          立场声明：这个平台的可信度全押在这三句话上。
+          UI 重设计一轮把它从"铺满一行的大横幅"改成**一行摘要 + 可展开的完整口径**：
+          摘要常驻（`data-test="logic-mode-banner"` 仍然指得到它），细节默认收起。
+        -->
+        <div>
+          <button
+            class="drawer-head"
+            data-test="logic-mode-banner"
+            :aria-expanded="String(stanceOpen)"
+            @click="stanceOpen = !stanceOpen"
+          >
+            <span class="flex flex-wrap items-center gap-x-4 gap-y-1 min-w-0 text-left">
+              <span class="text-[11px] text-emerald-400">事实来自 AST，可复现</span>
+              <span class="text-[11px] text-amber-400">板块划分为引擎推断，待教师确认</span>
+              <span class="text-[11px] text-neon-blue">核心度排序是讲解顺序的参考信号</span>
+            </span>
+            <span class="flex items-center gap-2 flex-shrink-0">
+              <span class="text-[10px] text-gray-500 font-mono">{{ stanceOpen ? '收起' : '完整口径' }}</span>
+              <svg
+                class="drawer-chevron text-gray-500" :class="{ open: stanceOpen }"
+                width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"
+              >
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </span>
+          </button>
+
+          <div class="drawer-body" :class="{ open: stanceOpen }" data-test="logic-stance-body">
+            <div class="drawer-inner">
+              <div class="pt-2 space-y-2">
+                <div
+                  v-for="(line, li) in STANCE_LINES"
+                  :key="li"
+                  class="drawer-row glass-card px-3 py-2 text-[11px] text-gray-400 leading-relaxed"
+                  :style="{ '--i': li }"
+                >
+                  {{ line }}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- 项目身份（选中之后一直显示，避免"看的是哪个项目"变成记忆题） -->
@@ -109,6 +149,7 @@
         v-if="!online"
         class="rounded-xl border border-amber-500/30 bg-amber-500/5 px-4 py-3"
         data-test="logic-platform-offline-banner"
+        data-layer
       >
         <div class="text-xs font-semibold text-amber-300">离线演示模式：业务逻辑分析平台不可用</div>
         <p class="text-[11px] text-amber-200/80 mt-1 leading-relaxed">
@@ -120,55 +161,62 @@
 
       <!-- =================================================================
            阶段 1：投入项目
+           （每个阶段外面套一层 data-layer 的 wrapper：切阶段时新面板会"层进"出现；
+             套 wrapper 而不是把属性写在组件上，是为了不依赖各组件是否有单一根节点）
            ================================================================= -->
-      <PlatformIntake v-if="store.stage === 'intake'" />
+      <div v-if="store.stage === 'intake'" data-layer>
+        <PlatformIntake />
+      </div>
 
       <!-- =================================================================
            阶段 2 / 3：分析项目大小 + 按大小分流
            ================================================================= -->
-      <SizeReport
-        v-else-if="store.stage === 'size'"
-        :size="store.size"
-        :loading="store.loading"
-        :error="store.error"
-        @next="store.setStage('sections')"
-        @reload="onReload"
-      />
+      <div v-else-if="store.stage === 'size'" data-layer>
+        <SizeReport
+          :size="store.size"
+          :loading="store.loading"
+          :error="store.error"
+          @next="store.setStage('sections')"
+          @reload="onReload"
+        />
+      </div>
 
       <!-- =================================================================
            阶段 4：业务板块看板
            ================================================================= -->
-      <SectionBoard
-        v-else-if="store.stage === 'sections'"
-        :board="store.board"
-        :lessons-index="store.lessonsIndex"
-        :loading="store.loading"
-        :error="store.error"
-        @select-section="onSelectSection"
-      />
+      <div v-else-if="store.stage === 'sections'" data-layer>
+        <SectionBoard
+          :board="store.board"
+          :lessons-index="store.lessonsIndex"
+          :loading="store.loading"
+          :error="store.error"
+          @select-section="onSelectSection"
+        />
+      </div>
 
       <!-- =================================================================
            阶段 5：板块分析
            ================================================================= -->
-      <SectionAnalysis
-        v-else-if="store.stage === 'section'"
-        :section="store.currentSection"
-        :caveats="store.board?.caveats || []"
-        :lessons-index="store.lessonsIndex"
-        :notice="store.sectionNotice"
-        :loading="store.loading"
-        :error="store.error"
-        @open-source="openSource"
-        @start-lesson="onStartLesson"
-        @back="store.backToBoard()"
-      />
+      <div v-else-if="store.stage === 'section'" data-layer>
+        <SectionAnalysis
+          :section="store.currentSection"
+          :caveats="store.board?.caveats || []"
+          :lessons-index="store.lessonsIndex"
+          :notice="store.sectionNotice"
+          :loading="store.loading"
+          :error="store.error"
+          @open-source="openSource"
+          @start-lesson="onStartLesson"
+          @back="store.backToBoard()"
+        />
+      </div>
 
       <!-- =================================================================
            阶段 6：沉浸式讲稿（组件由另一位工程师维护，这里只按契约挂载）
            + 反幻觉面板
            ================================================================= -->
       <template v-else-if="store.stage === 'lesson'">
-        <div class="space-y-4" data-test="logic-lesson-mount">
+        <div class="space-y-4" data-test="logic-lesson-mount" data-layer>
           <ImmersiveLesson
             v-if="store.currentLesson"
             :lesson="store.currentLesson"
@@ -282,6 +330,8 @@ import ImmersiveLesson from '../components/logic-platform/ImmersiveLesson.vue'
 import SourceViewerModal from '../components/SourceViewerModal.vue'
 import { useDataSource } from '../api/dataSource'
 import { useLogicPlatformStore } from '../stores/logicPlatform'
+// UI 重设计一轮：层进式展现（六步链与各阶段面板进入视口时逐层点亮）
+import { useLayeredReveal } from '../composables/useReveal'
 
 defineEmits(['back'])
 
@@ -289,6 +339,29 @@ const store = useLogicPlatformStore()
 const ds = useDataSource()
 
 const online = computed(() => ds.mode.value === 'api')
+
+/**
+ * 口径立场（三句话的完整版本）。
+ *
+ * UI 重设计一轮把它们从"第一屏的大横幅"收进可折叠抽屉：
+ * 摘要常驻在 `logic-mode-banner` 上（三句话一句不少），完整措辞点开就有。
+ * **没有删掉任何一条** —— 这个平台的可信度全押在这几条上。
+ */
+const STANCE_LINES = [
+  '事实来自 AST，可复现：调用图 / 状态写入 / 流程 / 依赖都由解析层给出，同一输入字节级相同。',
+  '板块划分为引擎推断，待教师确认：页面上的板块与核心度带置信度徽章，不写成"已验证的业务结构"。',
+  '核心度排序是讲解顺序的参考信号：它决定"先讲哪块"，不等于重要性结论。',
+  '页面上只出现可追溯到契约字段的事实与置信度，不出现任何没有依据的自动结论。',
+  '讲稿与校验都在后端执行；校验不过的内容不会被标成"已通过"。',
+]
+
+/** 立场抽屉（默认收起）。 */
+const stanceOpen = ref(false)
+
+/** 层进式展现：进入视口逐层点亮（不支持 IntersectionObserver 时保持默认可见）。 */
+const rootRef = ref(null)
+useLayeredReveal(rootRef, { watchSource: () => store.stage })
+
 
 /** 六步流程（第 3 步"按大小分流"与第 2 步同屏：它们本来就是同一个决定的两面）。 */
 const STEPS = [
