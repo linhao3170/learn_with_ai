@@ -391,6 +391,12 @@ backend/data/logic_platform/*
 ② `validation/urllib3` 按它自己 `.gitignore` 的 `.*` 规则仍不含点文件（沿用原有处置，这一轮没动它）；
 ③ 前端构建产物仍靠 `-Build` 现场生成，**没有**提交 `dist`。
 
+**顺带修掉一个「克隆下来装不上」的根因（本轮第二次提交）**：全新克隆里 `npm ci` **必然失败** ——
+`frontend/package-lock.json` 里没有 `jsdom`，而 `package.json` 声明的 `^24.1.3` 又与本机实际在跑的
+**29.1.1** 对不上（`npm ls --depth=0` 直接标 `invalid`）。修法是把声明改成与实跑一致的 `^29.1.1`
+再重建锁文件；实测**既有包 0 个版本变化**、新增 38 个是 jsdom 29 的依赖子树、删掉的 50 个是 P0-16
+早已记录的死依赖树，`npm ci` 在**全新克隆**里通过。台账见 `docs/08` §19.1 第 30 条。
+
 ### 16.2 ⚠️ 部分完成
 
 **入口完善一轮（2026-09-26）**：系统首页新增本地演示登录窗口（可游客继续）、`/` 快捷搜索和业务模块快捷跳转。搜索直接复用现有契约与图谱卡片，不新增业务判定；登录明确标注为本地演示身份。编译验证：`node node_modules/vite/bin/vite.js build` 通过。完整边界见 `docs/features/login-and-quick-navigation.md`。
