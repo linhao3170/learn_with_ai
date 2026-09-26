@@ -32,11 +32,19 @@ P0-14  随机源改为独立的 ``random.Random(seed)`` 实例，不再污染全
 
 诚实边界
 --------
-- 第 4 关的干扰项是**通用反模式**（固定文案），不是从代码推导出来的；
-  这一点必须如实说明。README5 Sprint 1 计划把它换成"从其他模块的真实实现
-  中派生干扰项"。
-- 任何一关如果**凑不出足够的数据**，就返回 ``None``（少一题），
-  **绝不编造**。
+- 第 4 关的干扰项**由该条关键实现自己的"已核实事实"派生**（校验 / 提前返回 /
+  异常 / 状态写入 / 循环 / 分支六类，全部来自 deep_analyzer 的真实统计）：
+  每条干扰项都必须与目标方法的一项真实事实**相反**，因此它对这道题**可证明是错的**
+  （``scripts/test_training_questions.py`` 逐条断言这件事）。
+  **但句式仍是固定文案** —— 所以 ``source`` 仍如实标 ``template``，
+  不许为了让文档好看而改标 ``data_driven``。
+  **明确没做**：没有采用"把其他模块的真实实现直接当作干扰项"那种做法 ——
+  题干问的是"最**合理**的实现思路"，另一个方法的真实做法对它**也可能算合理**，
+  会让正确答案不唯一（工单诚实边界：宁可少一点"真实感"，也不能一题两解）。
+- 任何一关如果**凑不出足够的数据**，就不出这一题，**绝不编造**。
+  第 2 关更进一步：出题与否和**原因**都记在 :meth:`TrainingGenerator.level2_report`
+  与 :meth:`TrainingGenerator.level2_summary` 里 —— "一道都不出"必须是
+  **能解释的退化**，而不是一个静默的空列表（``python_dotenv`` 就是这种情况）。
 """
 
 from __future__ import annotations
@@ -77,8 +85,18 @@ _CRUD_LABELS = frozenset({
     "新增/创建操作", "删除/停用操作", "更新/修改操作", "查询/获取操作",
 })
 
-#: 每道职责题的干扰项数量（与第 1 关的"多选"不同，第 2 关是四选一）。
+#: 每道四选一题的干扰项数量（第 2 关的职责题与第 4 关的实现题都是四选一）。
 _DISTRACTOR_COUNT = 3
+
+# ------------------------------------------------------------
+# 第 2 关「为什么不出题」的原因码
+# ------------------------------------------------------------
+#: 这些字面量会被 ``scripts/test_training_questions.py`` 与文档引用，
+#: **不要改字面量**（改了就等于把机器可读的结论改成了不可读的）。
+LEVEL2_ASKED = "asked"
+LEVEL2_OVER_LIMIT = "over_limit"
+LEVEL2_NO_BUSINESS_TEXT = "no_business_text"
+LEVEL2_DISTRACTOR_POOL_TOO_SMALL = "distractor_pool_too_small"
 
 #: 第 2 关最多出几道题（README 优先级 4：以前"一道题只问一个模块"）。
 #:
@@ -99,10 +117,22 @@ _MAX_LEVEL2_QUESTIONS = 4
 _MAX_LEVEL3_QUESTIONS = 4
 
 #: 第 4 关：**每条够格的关键实现各一道**（优先级 4 二轮）。上限比第 2/3 关小。
-#: 为什么更小：这一关的干扰项目前是**固定模板**（``source: template``，
-#: 见 ``_generate_distractors_deep`` 的 TODO），题出得越多，"认出那几句反模式"
-#: 的套路收益越大。所以只取最靠前的 3 条关键实现，并逐题轮换干扰项三元组。
+#: 为什么更小：足够支撑 3 条"可证明为错的干扰项"的实现本就集中在重要度最高的那几条，
+#: 题出得越多，同一个知识点被反复练的边际收益越低。取最靠前的 3 条，
+#: 并逐题轮换干扰项三元组（见 :func:`derive_deep_distractors`）。
+#: ⚠️ 这里的"3 条"是**够格**的 3 条：某条关键实现的已核实事实不足 3 项时**跳过它**，
+#: 由后面够格的实现顶上（凑不出就不出题，不编造）。
 _MAX_LEVEL4_QUESTIONS = 3
+
+#: 原因码 → 一句人话（``level2_summary()`` 用）。放在上限常量之后：它引用了它们。
+_LEVEL2_REASON_TEXT = {
+    LEVEL2_ASKED: "已出题",
+    LEVEL2_OVER_LIMIT: f"核心度排在本次训练上限（{_MAX_LEVEL2_QUESTIONS} 道）之后",
+    LEVEL2_NO_BUSINESS_TEXT: "没有业务语义文本（只有 CRUD 分类标签或空串）",
+    LEVEL2_DISTRACTOR_POOL_TOO_SMALL: (
+        f"凑不出 {_DISTRACTOR_COUNT} 个来自其他业务模块的真实职责文本"
+    ),
+}
 
 
 def _unique_question_title(base: str, used: Dict[str, int]) -> str:
@@ -294,6 +324,8 @@ class TrainingGenerator:
         self._rel_path = lambda p: (str(p).replace("\\", "/").split("/")[-1] if p else "")
         #: 本次生成使用的唯一模块显示名（由 :func:`_unique_module_names` 填入）
         self._display_names: Dict[str, str] = {}
+        #: 第 2 关每个业务模块的出题结果与原因（由 ``_generate_level2`` 填入）
+        self._level2_report: List[Dict[str, object]] = []
 
     def set_path_formatter(self, formatter) -> None:
         """注入路径格式化函数（P0-10）。"""
@@ -303,6 +335,51 @@ class TrainingGenerator:
     def _name_of(self, module: ModuleInfo) -> str:
         """取模块在**本次训练里**的显示名（重名时带限定后缀）。"""
         return self._display_names.get(module.module_id, module.name)
+
+    def level2_report(self) -> List[Dict[str, object]]:
+        """第 2 关**每个业务模块**的出题结果与原因（副本，调用方改不动内部状态）。
+
+        为什么要有它（WO-03 一轮的诚实要求）：`python_dotenv` 的第 2 关**一道题都不出**
+        是**诚实退化**（凑不出数据就不出题，不编造）。但"静默地返回空列表"与
+        "漏做了"在下游看来一模一样 —— 所以这里把每个模块**为什么没被问到**
+        如实记下来，供测试 / 排查 / 后续接进契约使用。
+
+        每条的字段：
+
+        ``module_id`` / ``module_name`` / ``core_score``
+            候选模块与它在本次训练里的显示名；
+        ``has_business_text``
+            它自己有没有业务语义文本（``_business_text`` 非空）；
+        ``distinct_texts_in_project``
+            **全项目**不同的非空业务语义文本有几种（判断"凑不凑得出干扰项"要看它）；
+        ``distractors_found``
+            实际凑出的干扰项条数（只算"其他业务模块"的真实文本）；
+        ``asked`` / ``reason`` / ``detail``
+            是否出了题 + 原因码（见模块级 ``LEVEL2_*`` 常量）+ 一句人话。
+        """
+        return [dict(item) for item in self._level2_report]
+
+    def level2_summary(self) -> str:
+        """第 2 关出题结果的一句话总结；**不出题时必须说明为什么**。"""
+        report = self._level2_report
+        asked = [item for item in report if item.get("asked")]
+        if asked:
+            return (
+                f"第 2 关出题 {len(asked)} 道"
+                f"（每个够格的业务模块各一道，上限 {_MAX_LEVEL2_QUESTIONS}）"
+            )
+        if not report:
+            return "第 2 关不出题：这个项目里没有业务模块"
+        counts: Dict[str, int] = {}
+        for item in report:
+            code = str(item.get("reason") or "")
+            counts[code] = counts.get(code, 0) + 1
+        # 排序后再拼：不许依赖 dict 的插入顺序之外的东西，也不许依赖 set 迭代顺序
+        parts = [
+            f"{_LEVEL2_REASON_TEXT.get(code, code)} {count} 个"
+            for code, count in sorted(counts.items())
+        ]
+        return f"第 2 关不出题（业务模块 {len(report)} 个）：" + "；".join(parts)
 
     def generate(
         self,
@@ -429,19 +506,57 @@ class TrainingGenerator:
 
         上限见 ``_MAX_LEVEL2_QUESTIONS``；排序是"核心度降序 + module_id 升序"，
         与改造前的选主体规则一致，因此**确定性不变**（同分不再靠运气，靠 id）。
+
+        **WO-03 一轮新增**：每个业务模块"出题 / 不出题以及为什么"都记进
+        ``self._level2_report``（见 :meth:`level2_report`）。行为一字未改 ——
+        仍然是不出就不出，只是不再**静默**地不出。
         """
         business = _business_modules(modules)
+        self._level2_report = []
         if not business:
             return []
 
         ranked = sorted(business, key=lambda m: (-float(m.core_score or 0.0), m.module_id))
         texts = {m.module_id: _business_text(m) for m in ranked}
+        # 全项目"不同的非空业务语义文本"有几种 —— 干扰项只能从这里来，
+        # 所以它直接决定"凑不凑得出"。排序是为了确定性（不许依赖 set 迭代顺序）。
+        distinct_texts = sorted({text for text in texts.values() if text})
 
         questions: List[TrainingQuestion] = []
-        for target in ranked[:_MAX_LEVEL2_QUESTIONS]:
+        for position, target in enumerate(ranked):
             correct_text = texts.get(target.module_id, "")
+            entry: Dict[str, object] = {
+                "module_id": target.module_id,
+                "module_name": self._name_of(target),
+                "core_score": float(target.core_score or 0.0),
+                "has_business_text": bool(correct_text),
+                "distinct_texts_in_project": len(distinct_texts),
+                "distractors_found": 0,
+            }
+
             if not correct_text:
                 # 没有业务语义文本就没有正确答案可言（P0-05：不许退回 CRUD 标签）
+                entry.update(
+                    asked=False,
+                    reason=LEVEL2_NO_BUSINESS_TEXT,
+                    detail=(
+                        "这个模块没有业务语义文本（描述与职责都只有 CRUD 分类标签或空串），"
+                        "连正确答案都没有，不能出题"
+                    ),
+                )
+                self._level2_report.append(entry)
+                continue
+
+            if position >= _MAX_LEVEL2_QUESTIONS:
+                entry.update(
+                    asked=False,
+                    reason=LEVEL2_OVER_LIMIT,
+                    detail=(
+                        f"按核心度排序它在第 {position + 1} 位，超出本次训练上限"
+                        f"（{_MAX_LEVEL2_QUESTIONS} 道），本次不覆盖"
+                    ),
+                )
+                self._level2_report.append(entry)
                 continue
 
             distractors: List[str] = []
@@ -454,12 +569,33 @@ class TrainingGenerator:
                 if len(distractors) >= _DISTRACTOR_COUNT:
                     break
 
+            entry["distractors_found"] = len(distractors)
+
             # 凑不出 3 个来自真实模块的干扰项就放弃这一题（不再用编造的通用描述填充）
             if len(distractors) < _DISTRACTOR_COUNT:
+                entry.update(
+                    asked=False,
+                    reason=LEVEL2_DISTRACTOR_POOL_TOO_SMALL,
+                    detail=(
+                        f"需要 {_DISTRACTOR_COUNT} 个来自其他业务模块的真实职责文本，"
+                        f"实际只凑出 {len(distractors)} 个"
+                        f"（全项目不同的非空业务语义文本只有 {len(distinct_texts)} 种）；"
+                        "**不编造干扰项**，所以这一题不出"
+                    ),
+                )
+                self._level2_report.append(entry)
                 continue
 
             question = self._build_level2_question(target, correct_text, distractors)
             questions.append(question)
+            entry.update(
+                asked=True,
+                reason=LEVEL2_ASKED,
+                detail=(
+                    f"选项 = 正确答案 + {len(distractors)} 个来自其他业务模块的真实职责文本"
+                ),
+            )
+            self._level2_report.append(entry)
 
         return questions
 
@@ -734,6 +870,10 @@ class TrainingGenerator:
         优先级 4 二轮（本函数）把"只问最重要那一条实现"改成**逐条出题**：
         改造前 `lab_safety_assistant` 有 10 条关键实现却只练到 1 条。
         上限见 ``_MAX_LEVEL4_QUESTIONS``，**凑不出 3 个干扰项的实现直接跳过**。
+
+        **WO-03 一轮**把"凑不出 3 个干扰项"从"写死 4 句反模式里总够"改成了一条真实门槛：
+        干扰项由该实现**自己的已核实事实**派生（见 :func:`derive_deep_distractors`），
+        事实不足 3 项的实现会被跳过、由后面够格的实现顶上。
         """
         if key_implementations is not None and hasattr(key_implementations, "top_implementations"):
             return self._generate_level4_deep(key_implementations, modules)
@@ -797,20 +937,23 @@ class TrainingGenerator:
             return None
 
         correct = "；".join(correct_parts)
-        distractors = self._generate_distractors_deep(ki)
-        if len(distractors) < 3:
+        pool = derive_deep_distractors(ki)
+        if len(pool) < _DISTRACTOR_COUNT:
+            # 这条实现的"已核实事实"不足以派生 3 条**可证明为错**的干扰项 → 跳过它，
+            # 让后面够格的实现顶上（凑不出就不出题，不编造）。
             return None
 
-        # ⚠️ 干扰项是**通用反模式**（固定文案，``source: "template"``，见
-        # ``_generate_distractors_deep`` 的 TODO）。多道题共用同一组干扰项时，
-        # 学生只要认出"那三句反模式"就能用排除法选出正确项 —— 所以这里按题号
-        # **轮换三元组**（4 条里取 3 条，共 4 种组合），让每道题的选项集合不同。
-        # 这**降低**了而不是消除了可被套路的风险：只要干扰项还是模板，
-        # 就不能把它宣传成"从代码里推导出来的干扰项"。
-        start = index % len(distractors)
-        rotated = [distractors[(start + offset) % len(distractors)] for offset in range(3)]
+        # ⚠️ 干扰项的**句式**是固定文案（``source: "template"``，不许改标 data_driven），
+        # 但**选哪三条由这条实现自己的已核实事实决定**（见 ``derive_deep_distractors``）：
+        # 每条干扰项都与本方法的一项真实事实相反，所以对本方法可证明是错的。
+        # 多条实现共用同一组句式时，学生仍可能靠"认出句式"排除 —— 因此按题号
+        # **轮换三元组**，让每道题的选项集合不同（只是降低、不是消除可被套路的风险）。
+        start = index % len(pool)
+        rotated = [
+            pool[(start + offset) % len(pool)] for offset in range(_DISTRACTOR_COUNT)
+        ]
 
-        all_options = [correct] + rotated
+        all_options = [correct] + [item.text for item in rotated]
         self._rng.shuffle(all_options)
 
         options: List[TrainingOption] = []
@@ -833,9 +976,14 @@ class TrainingGenerator:
             f"  - 代码位于 {self._rel_path(ki.filepath)} 第 {ki.start_line}-{ki.end_line} 行"
         )
         explanation_parts.append(
-            "\n⚠️ 本关的三个干扰项是**通用反模式**（固定文案），"
-            "不是从代码里推导出来的；正确项才是由真实代码证据生成的。"
-            "（多道题之间会轮换这三条，避免用排除法认出固定的一组）"
+            "\n⚠️ 本关的三个干扰项**都与你这个方法的一项已核实事实相反** ——"
+            "所以它们不是「另一种合理的做法」，而是**可证明不适合本方法**的做法："
+        )
+        for item in rotated:
+            explanation_parts.append(f"  - 「{item.label}」× {item.contradicts}")
+        explanation_parts.append(
+            "  （干扰项的**句式**是固定文案，但选哪三条由本方法的真实分析结果决定："
+            "校验 / 提前返回 / 异常 / 状态写入 / 循环 / 分支，全部来自 deep_analyzer 的实测统计）"
         )
 
         knowledge_points: List[str] = []
@@ -918,15 +1066,157 @@ class TrainingGenerator:
                 cleaned.append(text)
         return cleaned
 
-    def _generate_distractors_deep(self, ki) -> List[str]:
-        """第 4 关的干扰项：**通用反模式**。
 
-        TODO(Sprint 1)：改为从"其他模块的真实实现"派生干扰项，
-        让它也变成 data_driven。当前明确标记为固定文案。
-        """
-        return [
-            "直接操作数据即可，不需要校验参数和状态，让调用方自己保证合法",
-            "把所有逻辑都写在一个大函数里，不用拆分成小方法，一次性完成所有操作",
-            "先返回结果，后台异步执行实际操作，这样性能更好",
-            "用 try-except 捕获所有异常，有异常就返回 None，不区分错误类型",
-        ]
+# ============================================================
+# 第 4 关干扰项：由**目标方法自己的已核实事实**派生（WO-03 一轮）
+# ============================================================
+
+
+@dataclass(frozen=True)
+class DeepDistractor:
+    """一条第 4 关干扰项：固定句式 + 它**必须与之相反**的那项已核实事实。"""
+
+    #: 规则 id（``scripts/test_training_questions.py`` 逐条断言时引用，不要改字面量）
+    rule: str
+    #: 短标签（讲解里逐条列出"这条为什么错"）
+    label: str
+    #: 选项正文（固定句式）
+    text: str
+    #: 这条干扰项**与哪一项真实事实相反**（来自 deep_analyzer 的实测字段）
+    contradicts: str
+
+
+def derive_deep_distractors(ki) -> List[DeepDistractor]:
+    """从**目标方法自己的已核实事实**派生第 4 关的干扰项池。
+
+    改造前是什么样
+    --------------
+    改造前由 ``_generate_distractors_deep()``（WO-03 一轮已删除）返回 4 句
+    **写死的通用反模式**，与目标方法实际是什么样毫无关系：对"本来就不做校验"的
+    方法说"不校验"，那句话对它其实**是成立的** —— 于是它不再是干扰项，而是一句误导。
+
+    现在是什么样（WO-03 一轮）
+    --------------------
+    每条规则都挂在**一项已核实的事实**上（全部来自 deep_analyzer 的真实统计）：
+    有前置校验 → 才能说"不校验"是错的；有异常抛出 → 才能说"吞异常"是错的；
+    有状态写入 → 才能说"不改状态"是错的；有循环 / 分支 / 提前返回同理。
+    因此：
+
+    1. **每条干扰项都对这道题可证明是错的**（测试逐条回指到真实字段）；
+    2. 干扰项池**逐题不同**（一个只有循环和分支的方法拿不到"吞异常"这一条），
+       学生不能再靠"认出那三句固定反模式"用排除法做出来；
+    3. 事实不足 3 项的实现 **跳过不出题**（凑不出就不出题，不编造）。
+
+    **为什么不用"其他模块的真实实现"当干扰项**：题干问的是"最**合理**的实现思路"，
+    而另一个方法的真实做法对它**也可能是合理的** → 正确答案会不唯一。
+    宁可少一点"真实感"，也不能让一道题有两个正确答案（工单诚实边界）。
+    """
+    out: List[DeepDistractor] = []
+
+    checks = [_clean(item) for item in _as_list(getattr(ki, "validation_checks", None))]
+    checks = [item for item in checks if item]
+    if checks:
+        out.append(
+            DeepDistractor(
+                rule="skip_validation",
+                label="不校验",
+                text="不做参数与状态校验，把调用方传入的数据直接当作合法数据处理",
+                contradicts=(
+                    f"本方法实际有 {len(checks)} 处前置校验（{'、'.join(checks[:3])}）"
+                ),
+            )
+        )
+
+    guards = [_clean(item) for item in _as_list(getattr(ki, "guard_clauses", None))]
+    guards = [item for item in guards if item]
+    if guards:
+        out.append(
+            DeepDistractor(
+                rule="no_early_return",
+                label="不提前返回",
+                text="校验不通过时也继续往下执行，不做提前返回",
+                contradicts=(
+                    f"本方法实际有 {len(guards)} 处提前返回（{'、'.join(guards[:2])}）"
+                ),
+            )
+        )
+
+    errors = [
+        _clean(item).split(":")[0]
+        for item in _as_list(getattr(ki, "error_handling", None))
+    ]
+    errors = [item for item in errors if item]
+    if errors:
+        out.append(
+            DeepDistractor(
+                rule="swallow_errors",
+                label="吞异常",
+                text="遇到非法输入时不抛异常，统一返回 None，由调用方自行判断是否成功",
+                contradicts=(
+                    f"本方法实际会抛出 {len(errors)} 处异常（{'、'.join(errors[:3])}）"
+                ),
+            )
+        )
+
+    # 状态字段要按 P0-07 过滤内部标记：过滤后为空就不能声称"它修改了状态"
+    writes = TrainingGenerator._public_state_names(
+        [str(item) for item in _as_list(getattr(ki, "state_writes", None))]
+    )
+    if writes:
+        out.append(
+            DeepDistractor(
+                rule="no_state_write",
+                label="不改状态",
+                text="只返回计算结果，不修改任何状态字段，状态更新交给调用方完成",
+                contradicts=(
+                    f"本方法实际会修改 {len(writes)} 个状态字段（{'、'.join(writes[:3])}）"
+                ),
+            )
+        )
+
+    loops = _as_int(getattr(ki, "loop_count", 0))
+    if loops > 0:
+        out.append(
+            DeepDistractor(
+                rule="handle_first_only",
+                label="只处理第一条",
+                text="不遍历集合，只处理第一条记录，其余记录忽略",
+                contradicts=f"本方法实际有 {loops} 处遍历（核心逻辑在循环里）",
+            )
+        )
+
+    branches = _as_int(getattr(ki, "branch_count", 0))
+    if branches > 0:
+        out.append(
+            DeepDistractor(
+                rule="no_branch",
+                label="无分支",
+                text="不做任何条件判断，按单一顺序把流程执行到底",
+                contradicts=f"本方法实际有 {branches} 个条件分支",
+            )
+        )
+
+    return out
+
+
+def _as_list(value) -> List[object]:
+    """把可能是 ``None`` / 单值 / 列表的字段统一成列表（不依赖调用方传对类型）。"""
+    if value is None:
+        return []
+    if isinstance(value, (list, tuple)):
+        return list(value)
+    return [value]
+
+
+def _as_int(value) -> int:
+    """把统计字段安全地取成 int（``None``/空串都当 0）。"""
+    try:
+        return int(value or 0)
+    except (TypeError, ValueError):
+        return 0
+
+
+def _clean(value) -> str:
+    """去掉首尾空白，并折叠成一个不含换行的短文本（防止把源码整段塞进选项）。"""
+    return " ".join(str(value).split())
+

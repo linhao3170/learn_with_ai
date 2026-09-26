@@ -75,7 +75,7 @@
       "answers": [
         "D"
       ],
-      "explanation": "正确思路：先进行边界条件校验（self._dict is not None）\n\n\n代码证据：\n  - medium complexity\n  - includes boundary validation\n  - core method called by many\n  - 代码位于 main.py 第 75-89 行\n\n⚠️ 本关的三个干扰项是**通用反模式**（固定文案），不是从代码里推导出来的；正确项才是由真实代码证据生成的。（多道题之间会轮换这三条，避免用排除法认出固定的一组）",
+      "explanation": "正确思路：先进行边界条件校验（self._dict is not None）\n\n\n代码证据：\n  - medium complexity\n  - includes boundary validation\n  - core method called by many\n  - 代码位于 main.py 第 75-89 行\n\n⚠️ 本关的三个干扰项**都与你这个方法的一项已核实事实相反** ——所以它们不是「另一种合理的做法」，而是**可证明不适合本方法**的做法：\n  - 「不校验」× 本方法实际有 1 处前置校验（self._dict is not None）\n  - 「不提前返回」× 本方法实际有 1 处提前返回（self._dict is not None -> early return）\n  - 「无分支」× 本方法实际有 2 个条件分支\n  （干扰项的**句式**是固定文案，但选哪三条由本方法的真实分析结果决定：校验 / 提前返回 / 异常 / 状态写入 / 循环 / 分支，全部来自 deep_analyzer 的实测统计）",
       "knowledge_points": [
         "边界条件"
       ]
@@ -86,7 +86,7 @@
       "answers": [
         "A"
       ],
-      "explanation": "正确思路：先进行边界条件校验（not self.dict()）；通过遍历/循环实现核心算法逻辑\n\n\n代码证据：\n  - high complexity implementation\n  - includes boundary validation\n  - 代码位于 main.py 第 97-110 行\n\n⚠️ 本关的三个干扰项是**通用反模式**（固定文案），不是从代码里推导出来的；正确项才是由真实代码证据生成的。（多道题之间会轮换这三条，避免用排除法认出固定的一组）",
+      "explanation": "正确思路：先进行边界条件校验（not self.dict()）；通过遍历/循环实现核心算法逻辑\n\n\n代码证据：\n  - high complexity implementation\n  - includes boundary validation\n  - 代码位于 main.py 第 97-110 行\n\n⚠️ 本关的三个干扰项**都与你这个方法的一项已核实事实相反** ——所以它们不是「另一种合理的做法」，而是**可证明不适合本方法**的做法：\n  - 「不提前返回」× 本方法实际有 1 处提前返回（not self.dict() -> early return）\n  - 「只处理第一条」× 本方法实际有 1 处遍历（核心逻辑在循环里）\n  - 「无分支」× 本方法实际有 3 个条件分支\n  （干扰项的**句式**是固定文案，但选哪三条由本方法的真实分析结果决定：校验 / 提前返回 / 异常 / 状态写入 / 循环 / 分支，全部来自 deep_analyzer 的实测统计）",
       "knowledge_points": [
         "算法设计",
         "边界条件"
@@ -98,9 +98,9 @@
       "answers": [
         "A"
       ],
-      "explanation": "正确思路：通过遍历/循环实现核心算法逻辑\n\n\n代码证据：\n  - medium complexity\n  - 代码位于 main.py 第 91-95 行\n\n⚠️ 本关的三个干扰项是**通用反模式**（固定文案），不是从代码里推导出来的；正确项才是由真实代码证据生成的。（多道题之间会轮换这三条，避免用排除法认出固定的一组）",
+      "explanation": "正确思路：先进行边界条件校验（key in data）\n\n\n代码证据：\n  - medium complexity\n  - includes boundary validation\n  - 代码位于 main.py 第 112-122 行\n\n⚠️ 本关的三个干扰项**都与你这个方法的一项已核实事实相反** ——所以它们不是「另一种合理的做法」，而是**可证明不适合本方法**的做法：\n  - 「不校验」× 本方法实际有 1 处前置校验（key in data）\n  - 「不提前返回」× 本方法实际有 1 处提前返回（key in data -> early return）\n  - 「无分支」× 本方法实际有 2 个条件分支\n  （干扰项的**句式**是固定文案，但选哪三条由本方法的真实分析结果决定：校验 / 提前返回 / 异常 / 状态写入 / 循环 / 分支，全部来自 deep_analyzer 的实测统计）",
       "knowledge_points": [
-        "算法设计"
+        "边界条件"
       ]
     }
   }

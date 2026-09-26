@@ -17,15 +17,29 @@
 - 第 3 关：按 `flow_filter.sort_flows_business_first` 的**唯一排序口径**逐条流程出题；
   只有整个项目一条业务流都没有时才退回生命周期流程（拿初始化流程当核心业务教
   是教学性错误）。上限 `_MAX_LEVEL3_QUESTIONS`；
-- 第 4 关：逐条关键实现出题，上限 `_MAX_LEVEL4_QUESTIONS`（比 2/3 关小，
-  因为这一关的干扰项目前是**固定模板**）；多题之间**轮换干扰项三元组**，
-  避免学生靠"认出那几句反模式"用排除法做出来。
+- 第 4 关：逐条关键实现出题，上限 `_MAX_LEVEL4_QUESTIONS`（比 2/3 关小）。
+
+WO-03 一轮改了两处（都不放宽纪律，只把"没做的"变成"看得见的"）
+--------------------------------------------------------------
+① **第 2 关"为什么不出题"必须能查**：出题结果与原因由引擎的
+   `TrainingGenerator.level2_report()` / `level2_summary()` 给出（原因码见引擎里的
+   `LEVEL2_*` 常量）。`python_dotenv` 仍然**一道第 2 关题都不出** ——
+   本测试不把它"修好"，而是断言它的退化是**有理由、有数字**的：
+   全项目不同的非空业务语义文本只有 1 种，凑不出 3 个真实干扰项；
+   另一条候选模块则根本没有业务语义文本。**不编造干扰项**。
+② **第 4 关干扰项不再是写死的 4 句反模式**，而是由**目标方法自己的已核实事实**
+   派生（`derive_deep_distractors()`）：每条干扰项都必须与目标方法的一项真实事实
+   **相反**（校验 / 提前返回 / 异常 / 状态写入 / 循环 / 分支），因此对本方法
+   **可证明是错的**。事实不足 3 项的实现**跳过不出题**（本测试断言这条门槛）。
+   ⚠️ 干扰项**句式仍是固定文案**，所以 `source` 仍必须是 `template` ——
+   本测试专门断言它**没有**被改成 `data_driven`（不许为了让文档好看而改标口径）。
 
 测什么
 ------
 1. **覆盖**：够格的对象各出一道，且各题问的是**不同**的对象（靠正确项文本两两不同断言）；
 2. **不编造**：第 2 关每个选项都必须等于本项目某个模块的业务语义文本；
    第 3 关每个选项都必须由本项目的**真实流程步骤标签**拼成；
+   第 4 关每个干扰项都必须能回指到目标方法的一项**真实存在**的事实字段；
 3. **不用 CRUD 标签当职责**（P0-05）：`新增/创建操作` 这类内部信号不进选项与讲解；
 4. **可作答**：4 个选项 / 文本互不相同 / 有且只有一个正确项；
    正确答案与答案表（`answer_key()`）**逐题按下标**一致（判题靠下标，错位就是判错分）；
@@ -34,7 +48,10 @@
 7. **上限与顺序**：三关各自的上限都生效；关卡顺序恒为 1 → 2… → 3… → 4…；
 8. **只问业务模块**：编排 / 支撑模块永远不作为第 2 关主体（与第 1 关口径一致）；
 9. **第 4 关的反套路断言**：干扰项逐题轮换（至少两种不同组合），
-   且证据必须是项目内相对路径 —— 但**不假装**干扰项来自真实代码（它还是模板）。
+   且证据必须是项目内相对路径；
+10. **退化必须可解释**：凑不出数据时**不出题**，且原因码 + 真实数字能被取到
+    （合成用例里用两条对照把"没文本"与"文本不够"分开断言 ——
+    如果引擎把两种原因混成一个，其中一条必 FAIL）。
 
 用法
 ----
@@ -63,13 +80,19 @@ from engine.project_analyzer import ProjectAnalyzer  # noqa: E402
 from engine.project_analyzer.module_analyzer import ModuleInfo  # noqa: E402
 from engine.project_analyzer.training_generator import (  # noqa: E402
     _CRUD_LABELS,
+    _DISTRACTOR_COUNT,
     _MAX_LEVEL2_QUESTIONS,
     _MAX_LEVEL3_QUESTIONS,
     _MAX_LEVEL4_QUESTIONS,
+    LEVEL2_ASKED,
+    LEVEL2_DISTRACTOR_POOL_TOO_SMALL,
+    LEVEL2_NO_BUSINESS_TEXT,
+    LEVEL2_OVER_LIMIT,
     TrainingGenerator,
     _business_modules,
     _business_text,
     _step_label,
+    derive_deep_distractors,
 )
 from engine.flow_filter import is_lifecycle_flow, sort_flows_business_first  # noqa: E402
 
@@ -243,7 +266,8 @@ def assert_questions_wellformed(
 def run_project(project: str, checker: Checker, verbose: bool) -> None:
     name = Path(project).name
     print(f"\n=== 校验对象：{project} ===")
-    result = ProjectAnalyzer().analyze(project)
+    analyzer = ProjectAnalyzer()
+    result = analyzer.analyze(project)
     payload = result.to_dict()
     questions = (payload.get("training") or {}).get("questions", []) or []
     answer_key = result.training_answer_key
@@ -262,6 +286,18 @@ def run_project(project: str, checker: Checker, verbose: bool) -> None:
     print(
         f"    题目 {len(questions)} 道（第 2 关 {len(level2_questions(questions))} 道）"
     )
+
+    # ---- 0) 第 2 关"为什么不出题"：如实打印引擎记录的原因（WO-03 一轮）----
+    generator = analyzer.training_generator
+    report = generator.level2_report()
+    print(f"    第 2 关出题结论：{generator.level2_summary()}")
+    for item in report:
+        print(
+            f"      - {item['module_name']} [id={item['module_id']}]"
+            f" asked={item['asked']} reason={item['reason']}"
+            f" 干扰项 {item['distractors_found']}/{_DISTRACTOR_COUNT}"
+            f"（全项目不同职责文本 {item['distinct_texts_in_project']} 种）"
+        )
 
     lv2 = level2_questions(questions)
 
@@ -284,6 +320,47 @@ def run_project(project: str, checker: Checker, verbose: bool) -> None:
             f"{name} 业务语义文本不足 4 种时不出第 2 关题（诚实退化）",
             not lv2,
             f"去重 {len(distinct_texts)} 种 → 出题 {len(lv2)} 道",
+        )
+
+    # ---- 1b) WO-03 一轮：退化必须是**可解释的**，而且理由要与真实数据对得上 ----
+    #  ① 每个业务模块都有一条结论，原因码必须来自引擎的枚举（不许是随手写的字符串）；
+    #  ② 结论与"实际出题数"必须自洽（出的题 == 标记为 asked 的数量）；
+    #  ③ 说"凑不出干扰项"的模块，必须真的凑不出：全项目不同的非空职责文本
+    #     连"正确答案 1 条 + 干扰项 _DISTRACTOR_COUNT 条"都凑不满 ——
+    #     这条把"我们没编造"变成了**可验证的数字关系**，而不是一句声明。
+    valid_reasons = {
+        LEVEL2_ASKED,
+        LEVEL2_OVER_LIMIT,
+        LEVEL2_NO_BUSINESS_TEXT,
+        LEVEL2_DISTRACTOR_POOL_TOO_SMALL,
+    }
+    checker.check(
+        f"{name} 第 2 关每个业务模块都有出题结论、原因码来自引擎枚举",
+        bool(report)
+        and all(str(item.get("reason") or "") in valid_reasons for item in report)
+        and len(report) == len(business),
+        f"结论 {len(report)} 条 / 业务模块 {len(business)} 个；"
+        f"原因码 {sorted({str(i.get('reason')) for i in report})}",
+    )
+    checker.check(
+        f"{name} 第 2 关的结论与实际出题数自洽（asked 几条就出几道）",
+        sum(1 for item in report if item.get("asked")) == len(lv2),
+        f"asked={sum(1 for item in report if item.get('asked'))} / 实际 {len(lv2)} 道",
+    )
+    too_small = [
+        item for item in report if item.get("reason") == LEVEL2_DISTRACTOR_POOL_TOO_SMALL
+    ]
+    if too_small:
+        checker.check(
+            f"{name} 说「凑不出干扰项」的模块，数字上确实凑不出（不编造而不是漏做）",
+            len(distinct_texts) < 1 + _DISTRACTOR_COUNT
+            and all(
+                int(item.get("distractors_found") or 0) < _DISTRACTOR_COUNT
+                for item in too_small
+            ),
+            f"全项目不同职责文本 {len(distinct_texts)} 种 < 1 答案 + "
+            f"{_DISTRACTOR_COUNT} 干扰项 = {1 + _DISTRACTOR_COUNT} 种 → "
+            f"最多只能凑出 {len(distinct_texts) - 1} 个干扰项",
         )
 
     # ---- 2) 前端把标题当关卡名与雷达维度名，因此不许重名 ----
@@ -319,15 +396,13 @@ def run_project(project: str, checker: Checker, verbose: bool) -> None:
     # 不是 deep_analysis.business_flows —— 那是另一个产物，别混）。
     assert_level3(name, questions, answer_key, payload.get("core_flows") or [], checker)
 
-    # ---- 7) 第 4 关：每条够格的关键实现各一道 + 干扰项逐题轮换（优先级 4 二轮）----
+    # ---- 7) 第 4 关：每条够格的关键实现各一道 + 干扰项由真实事实派生（WO-03 一轮）----
     ki_bundle = (payload.get("deep_analysis") or {}).get("key_implementations") or {}
     # 契约里的字段名是 `method`（`KeyImplementation.to_dict()`），不是 `method_name`
-    ki_methods = [
-        str(item.get("method") or "")
-        for item in (ki_bundle.get("implementations") or [])
-        if isinstance(item, dict)
+    ki_payloads = [
+        item for item in (ki_bundle.get("implementations") or []) if isinstance(item, dict)
     ]
-    assert_level4(name, questions, answer_key, ki_methods, checker)
+    assert_level4(name, questions, answer_key, ki_payloads, checker)
 
 
 # ---------------------------------------------------------------------------
@@ -437,68 +512,123 @@ def assert_level3(
 
 
 # ---------------------------------------------------------------------------
-# 第 4 关：关键实现（每条够格实现一道 + 干扰项轮换）
+# 第 4 关：关键实现（每条够格实现一道 + 干扰项由真实事实派生）
 # ---------------------------------------------------------------------------
 
-#: 第 4 关干扰项目前是**固定模板**（引擎里 `_generate_distractors_deep` 的 TODO），
-#: 所以这里断言的是"逐题轮换"，而不是"干扰项来自真实代码"——后者还做不到，不许假装做到。
-_TEMPLATE_DISTRACTOR_PREFIXES = (
-    "直接操作数据即可",
-    "把所有逻辑都写在一个大函数里",
-    "先返回结果，后台异步执行",
-    "用 try-except 捕获所有异常",
-)
+#: 规则 → 它必须与之相反的那项**已核实事实**在契约里的字段名与判定。
+#:
+#: 为什么在这里另写一份字段名：这是**独立核对**用的 —— 引擎的 `derive_deep_distractors`
+#: 说"这条干扰项与某事实相反"是它的声明，本表拿**原始契约字段**再验一遍
+#: （不是为了替引擎判够格，够格口径仍然复用引擎的实现）。字段名对不上就会 FAIL。
+_RULE_FACT_FIELDS: Dict[str, tuple] = {
+    "skip_validation": ("validation_checks", lambda v: bool(v)),
+    "no_early_return": ("guard_clauses", lambda v: bool(v)),
+    "swallow_errors": ("error_handling", lambda v: bool(v)),
+    "no_state_write": ("state_writes", lambda v: bool(v)),
+    "handle_first_only": ("loop_count", lambda v: int(v or 0) > 0),
+    "no_branch": ("branch_count", lambda v: int(v or 0) > 0),
+}
+
+
+class _KiLike:
+    """把契约里的关键实现 dict 包成 `derive_deep_distractors` 能读的形状。
+
+    与 `_FlowLike` 同一个套路：**只透传引擎真正读的那几个字段**，
+    这样测试不需要复制一份"什么算够格"的判断，也不需要依赖契约里其余的键。
+    """
+
+    def __init__(self, payload: Dict[str, Any]) -> None:
+        self.method_name = str(payload.get("method") or "")
+        self.module_name = str(payload.get("module") or "")
+        for field in (
+            "validation_checks",
+            "guard_clauses",
+            "error_handling",
+            "state_writes",
+            "loop_count",
+            "branch_count",
+        ):
+            setattr(self, field, payload.get(field))
 
 
 def assert_level4(
     name: str,
     questions: Sequence[Dict[str, Any]],
     answer_key: Dict[str, Any],
-    ki_methods: Sequence[str],
+    ki_payloads: Sequence[Dict[str, Any]],
     checker: Checker,
 ) -> None:
-    """第 4 关的结构性断言（含"模板干扰项逐题轮换"这条反套路断言）。
+    """第 4 关的结构性断言。
 
-    ``ki_methods`` = 该项目全部关键实现的**重要度降序**方法名
-    （来自契约 `deep_analysis.key_implementations.implementations`）。
+    ``ki_payloads`` = 契约里 `deep_analysis.key_implementations.implementations`
+    （**重要度降序**）。"哪条够格"复用引擎的 `derive_deep_distractors`：
+    够格 = 它的已核实事实足以派生 ``_DISTRACTOR_COUNT`` 条**可证明为错**的干扰项。
     """
-    lv4 = level_of(questions, 4)
-    upper = min(len(ki_methods), _MAX_LEVEL4_QUESTIONS)
-    checker.check(
-        f"{name} 第 4 关：够格的关键实现各出一道（上限内）",
-        (upper == 0 and not lv4) or (1 <= len(lv4) <= upper),
-        f"关键实现 {len(ki_methods)} 条 → 出题 {len(lv4)} 道（上限 {_MAX_LEVEL4_QUESTIONS}）",
-    )
+    kis = [_KiLike(item) for item in ki_payloads]
+    ki_methods = [ki.method_name for ki in kis]
+    pools = [derive_deep_distractors(ki) for ki in kis]
+    eligible = [
+        ki.method_name
+        for ki, pool in zip(kis, pools)
+        if len(pool) >= _DISTRACTOR_COUNT
+    ]
+    expected = eligible[: min(len(eligible), _MAX_LEVEL4_QUESTIONS)]
 
-    # 只能按重要度取前 N 条，且不许重复问同一条实现
+    lv4 = level_of(questions, 4)
     asked = [str(q.get("title") or "").split("·")[-1] for q in lv4]
     checker.check(
-        f"{name} 第 4 关按重要度取前 N 条关键实现，且不重复问同一条",
-        asked == list(ki_methods[: len(asked)]) and len(set(asked)) == len(asked),
-        f"问到的实现：{'、'.join(asked)}",
+        f"{name} 第 4 关：够格（已核实事实 ≥{_DISTRACTOR_COUNT} 项）的实现各一道、按重要度取前 N 条",
+        asked == expected,
+        f"关键实现 {len(ki_methods)} 条 / 够格 {len(eligible)} 条 → 出题 {len(lv4)} 道"
+        f"（上限 {_MAX_LEVEL4_QUESTIONS}）；预期 {'、'.join(expected) or '无'}，"
+        f"实得 {'、'.join(asked) or '无'}",
     )
+
+    pool_by_method = {ki.method_name: pool for ki, pool in zip(kis, pools)}
+    payload_by_method = {ki.method_name: item for ki, item in zip(kis, ki_payloads)}
 
     bad_shape: List[str] = []
     bad_answer: List[str] = []
+    fabricated: List[str] = []
+    unproven: List[str] = []
     distractor_sets: List[frozenset] = []
     evidence_ok = True
     for question in lv4:
         index = questions.index(question)
+        # 标题形如「第4关：关键实现·<方法名>」（多题时可能带 #2 后缀）
+        asked_method = str(question.get("title") or "").split("·")[-1].split("#")[0]
         texts = _option_texts(question)
         if question.get("question_type") != "key_implementation" or len(texts) != 4 or len(set(texts)) != 4:
             bad_shape.append(f"#{index}")
         correct = _answer_texts(questions, answer_key, index)
         if len(correct) != 1:
             bad_answer.append(f"#{index} correct={correct}")
+
+        # 干扰项必须取自引擎的**规则表**（不是编造的句子），而且每条都要能证明
+        # "它相反的那项事实真的存在" —— 用原始契约字段独立验一遍。
+        pool = pool_by_method.get(asked_method) or []
+        rule_by_text = {item.text: item for item in pool}
+        raw = payload_by_method.get(asked_method) or {}
         distractors = [t for t in texts if t not in set(correct)]
         distractor_sets.append(frozenset(distractors))
-        if any(not any(t.startswith(prefix) for prefix in _TEMPLATE_DISTRACTOR_PREFIXES) for t in distractors):
-            # 出现了不属于模板池的"干扰项" → 要么是模板改了没同步这里，要么是编造的
-            evidence_ok = False
+        for text in distractors:
+            item = rule_by_text.get(text)
+            if item is None:
+                fabricated.append(f"#{index} {text[:24]!r}")
+                continue
+            field, predicate = _RULE_FACT_FIELDS.get(item.rule, ("", None))
+            if predicate is None or not predicate(raw.get(field)):
+                unproven.append(f"#{index} {item.rule}→{field}={raw.get(field)!r}")
+
+        # 干扰项句式仍是固定文案 → source 必须还是 template（不许改标 data_driven）
+        if question.get("source") != "template":
+            unproven.append(f"#{index} source={question.get('source')!r}（应为 template）")
+
         for item in question.get("evidence") or []:
             path = str(item.get("file") or "")
             if path and (path.startswith("/") or ":" in path):
                 evidence_ok = False
+
     checker.check(
         f"{name} 第 4 关每题都是 4 选 1、选项互不相同",
         not bad_shape,
@@ -510,9 +640,19 @@ def assert_level4(
         "、".join(bad_answer) if bad_answer else f"{len(lv4)} 道题正确答案都能逐题对上",
     )
     checker.check(
+        f"{name} 第 4 关每个干扰项都来自引擎的规则表（不是编造的句子）",
+        not fabricated,
+        "、".join(fabricated) if fabricated else f"{len(lv4) * _DISTRACTOR_COUNT} 个干扰项全部可回指到规则",
+    )
+    checker.check(
+        f"{name} 第 4 关每条干扰项都与目标方法的一项**真实存在**的事实相反",
+        not unproven,
+        "、".join(unproven) if unproven else "逐条用契约原始字段验过：反着说的那项事实确实存在",
+    )
+    checker.check(
         f"{name} 第 4 关证据是项目内相对路径",
         evidence_ok,
-        "" if evidence_ok else "发现绝对路径或非模板干扰项",
+        "" if evidence_ok else "发现绝对路径",
     )
     if len(lv4) >= 2:
         checker.check(
@@ -634,6 +774,250 @@ def run_synthetic(checker: Checker, verbose: bool) -> None:
         json.dumps(first, ensure_ascii=False, sort_keys=True)
         == json.dumps(second, ensure_ascii=False, sort_keys=True),
         "一致",
+    )
+
+    # ---- G) WO-03 一轮要求的负向对照：**够格但无文本** → 不出题 ----
+    #      "够格"指它确实是业务模块（角色 / 方法数都够）；缺的是**业务语义文本**。
+    #      造得像真的一样：4 个业务模块，描述与职责全是 CRUD 分类标签或空串。
+    eligible_but_textless = [
+        _module("n1", "甲模块", "新增/创建操作", responsibilities=["新增/创建操作"]),
+        _module("n2", "乙模块", "", responsibilities=["查询/获取操作"]),
+        _module("n3", "丙模块", "更新/修改操作", responsibilities=["删除/停用操作"]),
+        _module("n4", "丁模块", "", responsibilities=[]),
+    ]
+    gen_textless = TrainingGenerator(seed=42)
+    textless_payload = gen_textless.generate(
+        eligible_but_textless, [], project_name="合成项目"
+    ).to_dict()
+    textless_report = gen_textless.level2_report()
+    checker.check(
+        "合成（负向对照）：够格但无业务语义文本 → 一道第 2 关题都不出",
+        not level2_questions(textless_payload["questions"]),
+        f"出题 {len(level2_questions(textless_payload['questions']))} 道",
+    )
+    checker.check(
+        "合成（负向对照）：不出题的原因是 no_business_text，且**每个模块都有结论**",
+        len(textless_report) == len(eligible_but_textless)
+        and all(item["reason"] == LEVEL2_NO_BUSINESS_TEXT for item in textless_report)
+        and all(item["has_business_text"] is False for item in textless_report),
+        f"{len(textless_report)} 条结论，原因码 "
+        f"{sorted({str(i['reason']) for i in textless_report})}",
+    )
+    checker.check(
+        "合成（负向对照）：没出题时 summary 会把原因说出来（不是静默空列表）",
+        "不出题" in gen_textless.level2_summary()
+        and "业务语义文本" in gen_textless.level2_summary(),
+        gen_textless.level2_summary(),
+    )
+
+    # ---- H) WO-03 一轮：有文本、但**数目不够** → 原因必须是另一条 ------------------
+    #      这条与 G 是一对**区分性对照**：若引擎把"没文本"和"文本不够"混成一个原因，
+    #      G 与 H 里必有一条 FAIL。
+    two_texts = [
+        _module("t1", "甲模块", "甲的职责：处理甲类对象"),
+        _module("t2", "乙模块", "乙的职责：处理乙类对象"),
+    ]
+    gen_two = TrainingGenerator(seed=42)
+    two_payload = gen_two.generate(two_texts, [], project_name="合成项目").to_dict()
+    two_report = {item["module_id"]: item for item in gen_two.level2_report()}
+    checker.check(
+        "合成：只有 2 种职责文本 → 不出题，原因是 distractor_pool_too_small（与 G 区分开）",
+        not level2_questions(two_payload["questions"])
+        and two_report["t1"]["reason"] == LEVEL2_DISTRACTOR_POOL_TOO_SMALL
+        and two_report["t1"]["distractors_found"] == 1
+        and two_report["t1"]["distinct_texts_in_project"] == 2,
+        f"出题 {len(level2_questions(two_payload['questions']))} 道；"
+        f"t1: {two_report['t1']['reason']}（凑出 {two_report['t1']['distractors_found']} 个，"
+        f"全项目 {two_report['t1']['distinct_texts_in_project']} 种文本）",
+    )
+
+    # ---- I) WO-03 一轮：第 4 关的够格门槛（合成关键实现，快且能造真实项目里没有的边界）----
+    run_synthetic_level4(checker)
+
+
+#: 第 4 关合成用例用的最小关键实现替身：只带引擎真正读的字段。
+_STUB_KI_LIST_FIELDS = (
+    "validation_checks",
+    "guard_clauses",
+    "error_handling",
+    "state_writes",
+)
+_STUB_KI_INT_FIELDS = ("loop_count", "branch_count")
+
+
+class _StubKi:
+    """合成一条关键实现（**只带 `derive_deep_distractors` 真正读的字段**）。"""
+
+    def __init__(self, method: str, **facts) -> None:
+        self.method_name = method
+        self.module_name = "m1"
+        self.design_approach = str(facts.pop("design_approach", ""))
+        self.categories = list(facts.pop("categories", []))
+        self.importance_reasons = list(facts.pop("importance_reasons", []))
+        self.filepath = str(facts.pop("filepath", "m1.py"))
+        self.start_line = int(facts.pop("start_line", 1))
+        self.end_line = int(facts.pop("end_line", 2))
+        for field in _STUB_KI_LIST_FIELDS:
+            value = facts.pop(field, None)
+            setattr(self, field, None if value is None else list(value))
+        for field in _STUB_KI_INT_FIELDS:
+            setattr(self, field, int(facts.pop(field, 0) or 0))
+        if facts:
+            raise TypeError(f"未识别的字段：{sorted(facts)}")
+
+
+class _StubKiBundle:
+    def __init__(self, kis: List[_StubKi]) -> None:
+        self.top_implementations = kis
+
+
+def run_synthetic_level4(checker: Checker) -> None:
+    """第 4 关干扰项派生规则的边界（够格 / 不够格 / 轮换）。"""
+    print("\n=== 合成用例：第 4 关干扰项由已核实事实派生 ===")
+
+    modules = [_module("m1", "甲模块", "甲的职责：处理甲类对象")]
+    empty_flows: List = []
+
+    # ---- I0) 六条规则各自只由**自己的那项事实**触发（规则 ↔ 事实字段一一对应）----
+    #      为什么要有这条：真实项目不一定用到每一条规则（例如 `no_branch` 可能
+    #      一次都没被选中），只靠真实项目就会漏掉"规则改名了 / 测试的字段表写错了"。
+    #      每条只给一项事实，引擎就必须只回这一个规则 id。
+    only_fact = {
+        "skip_validation": {"validation_checks": ["a is None"]},
+        "no_early_return": {"guard_clauses": ["a is None -> raise"]},
+        "swallow_errors": {"error_handling": ["ValueError"]},
+        "no_state_write": {"state_writes": ["items"]},
+        "handle_first_only": {"loop_count": 1},
+        "no_branch": {"branch_count": 2},
+    }
+    mismatched: List[str] = []
+    for rule, facts in sorted(only_fact.items()):
+        emitted = [
+            item.rule
+            for item in derive_deep_distractors(
+                _KiLike({**facts, "method": f"only_{rule}", "module": "m1"})
+            )
+        ]
+        field, predicate = _RULE_FACT_FIELDS.get(rule, ("", None))
+        if emitted != [rule] or predicate is None or not predicate(facts.get(field)):
+            mismatched.append(f"{rule}→{emitted or '无'}")
+    checker.check(
+        "合成：六条规则各自只由自己的那项事实触发（规则 ↔ 事实字段一一对应）",
+        not mismatched,
+        "、".join(mismatched) if mismatched else f"{len(only_fact)} 条规则逐条对上",
+    )
+
+    # ---- I1) 事实足够（校验 + 异常 + 循环 = 3 项）→ 出一道，干扰项只许来自这三条 ----
+    rich = _StubKi(
+        "rich_method",
+        validation_checks=["x is None"],
+        error_handling=["ValueError"],
+        loop_count=1,
+        guard_clauses=None,
+        state_writes=None,
+        branch_count=0,
+    )
+    gen_rich = TrainingGenerator(seed=42)
+    rich_training = gen_rich.generate(
+        modules, empty_flows, project_name="合成项目", key_implementations=_StubKiBundle([rich])
+    )
+    rich_questions = rich_training.to_dict()["questions"]
+    key_rich = rich_training.answer_key()
+    lv4_rich = level_of(rich_questions, 4)
+    rich_pool = {item.text: item for item in derive_deep_distractors(rich)}
+    rich_distractors = [
+        text
+        for question in lv4_rich
+        for text in _option_texts(question)
+        if text
+        not in {
+            str(o["text"])
+            for o in question["options"]
+            if str(o["id"]) in {str(a) for a in key_rich[str(rich_questions.index(question))]["answers"]}
+        }
+    ]
+    checker.check(
+        "合成：3 项已核实事实 → 出一道第 4 关题，且干扰项全部来自规则表",
+        len(lv4_rich) == 1
+        and len(rich_distractors) == _DISTRACTOR_COUNT
+        and all(text in rich_pool for text in rich_distractors),
+        f"出题 {len(lv4_rich)} 道 / 干扰项 {len(rich_distractors)} 个"
+        f"（规则池 {len(rich_pool)} 条）",
+    )
+    checker.check(
+        "合成：第 4 关每条干扰项都能说出它反的是哪一项事实（contradicts 非空）",
+        all(rich_pool[text].contradicts.strip() for text in rich_distractors if text in rich_pool)
+        and {item.rule for item in derive_deep_distractors(rich)}
+        == {"skip_validation", "swallow_errors", "handle_first_only"},
+        "规则：" + "、".join(sorted({item.rule for item in derive_deep_distractors(rich)})),
+    )
+
+    # ---- I2) 事实只有 2 项（循环 + 分支）→ **不够格**，一道都不出（不编造）----
+    thin = _StubKi(
+        "thin_method",
+        validation_checks=None,
+        error_handling=None,
+        state_writes=None,
+        guard_clauses=None,
+        loop_count=1,
+        branch_count=1,
+    )
+    gen_thin = TrainingGenerator(seed=42)
+    thin_payload = gen_thin.generate(
+        modules, empty_flows, project_name="合成项目", key_implementations=_StubKiBundle([thin])
+    ).to_dict()
+    checker.check(
+        "合成（负向对照）：已核实事实只有 2 项 → 第 4 关不出题（凑不出 3 个可证明为错的干扰项）",
+        not level_of(thin_payload["questions"], 4)
+        and len(derive_deep_distractors(thin)) == 2,
+        f"出题 {len(level_of(thin_payload['questions'], 4))} 道 / 规则池 {len(derive_deep_distractors(thin))} 条",
+    )
+
+    # ---- I3) 事实不足的实现被跳过时，由**后面够格的实现顶上** ----
+    gen_mixed = TrainingGenerator(seed=42)
+    mixed_payload = gen_mixed.generate(
+        modules,
+        empty_flows,
+        project_name="合成项目",
+        key_implementations=_StubKiBundle([thin, rich]),
+    ).to_dict()
+    asked = [str(q.get("title") or "").split("·")[-1] for q in level_of(mixed_payload["questions"], 4)]
+    checker.check(
+        "合成：不够格的实现被跳过，后面够格的顶上（不是整关不出）",
+        asked == ["rich_method"],
+        f"实得 {'、'.join(asked) or '无'}",
+    )
+
+    # ---- I4) 轮换：多条实现的干扰项三元组不共用同一组 ----
+    many = [
+        _StubKi(
+            f"m{i}_method",
+            validation_checks=["a is None"],
+            guard_clauses=["a is None -> raise"],
+            error_handling=["ValueError"],
+            state_writes=["items"],
+            loop_count=1,
+            branch_count=2,
+        )
+        for i in range(3)
+    ]
+    gen_many = TrainingGenerator(seed=42)
+    many_payload = gen_many.generate(
+        modules, empty_flows, project_name="合成项目", key_implementations=_StubKiBundle(many)
+    )
+    many_questions = many_payload.to_dict()["questions"]
+    key = many_payload.answer_key()
+    combos = set()
+    for index, question in enumerate(many_questions):
+        if question.get("level") != 4:
+            continue
+        answers = set(key[str(index)]["answers"])
+        correct = {str(o["text"]) for o in question["options"] if str(o["id"]) in answers}
+        combos.add(frozenset(str(o["text"]) for o in question["options"] if str(o["text"]) not in correct))
+    checker.check(
+        "合成：第 4 关多题之间干扰项三元组**不共用同一组**（轮换生效）",
+        len(combos) >= 2,
+        f"{len([q for q in many_questions if q.get('level') == 4])} 道题 / {len(combos)} 种组合",
     )
 
 
