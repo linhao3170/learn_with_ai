@@ -48,7 +48,7 @@
 |---|---|---|---|
 | 后端 | `python -m uvicorn app.main:app --host 127.0.0.1 --port 8000`（工作目录 `backend`） | `http://127.0.0.1:8000` | 判题 / 源码切片 / 业务图谱 / 教学阶段 / 业务逻辑分析平台都要它 |
 | 前端（开发） | `npm run dev`（工作目录 `frontend`） | `http://127.0.0.1:5173` | `/api/*` 由 dev server 代理到后端（默认 `http://127.0.0.1:8000`），所以**同源**、不触发 CORS |
-| 前端（静态产物） | `node node_modules/vite/bin/vite.js preview --port 4173` | `http://127.0.0.1:4173` | 只是把构建产物发出去；它**不代理** `/api`，跨源要靠构建时烘进去的 `VITE_API_BASE` |
+| 前端（静态产物） | `npm.cmd run preview`（等价于直接调 vite 的 preview 入口，完整命令见 §25.6） | `http://127.0.0.1:4173` | 只是把构建产物发出去；它**不代理** `/api`，跨源要靠构建时烘进去的 `VITE_API_BASE` |
 
 ⚠️ **后端不能只把 `backend/` 拷到别的机器上跑**：它按仓库目录定位数据 ——
 `REPO_ROOT = Path(__file__).resolve().parents[3]`（`backend/app/services/project_store.py:42`），
@@ -99,6 +99,13 @@ powershell -ExecutionPolicy Bypass -File scripts/bootstrap.ps1 -Build -Verify
 
 > 为什么依赖装进 `.venv` 而不装系统 python：作者本机两者恰好都装齐了，别人机器上不一定；
 > 装进 `.venv` 才是"克隆下来就能重现"的做法（理由与实测见 `docs/06-runbook.md` §19.5）。
+>
+> ⚠️ **门禁有环境前提，别在裸克隆里下结论**：刚 `git clone` 完、还没跑 bootstrap 时，
+> `python scripts/verify_docs.py` 会报一批 D1「路径不存在」—— 因为文档里提到的
+> `frontend/node_modules/`、`frontend/.smoke-dist/`、`frontend/dist` 这些**故意不进来**的东西
+> 那时**确实不存在**（部署说明一轮实测：裸克隆里 18 条，全是这一类；跑完
+> `bootstrap.ps1`（要用前端产物就再加 `-Build`）再跑同一份文档就恢复正常）。
+> **这不是文档写错了，是"依赖还没装"** —— 先 bootstrap，再跑门禁。
 
 ### 25.5 路径 A：单机双进程（默认；开发与答辩演示）
 
@@ -155,17 +162,19 @@ node node_modules/vite/bin/vite.js build --config vite.smoke.config.js
 ```
 
 **实测结果**：`2156 modules transformed`、`built in 11.27s`、退出码 0；
-`frontend/dist` 合计 **4.89 MB**（含 `assets/`、`index.html`、以及从 `frontend/public/` 复制过来的 `demo/`，
+产物合计 **4.89 MB**（含打包出来的静态资源目录、产物根下的 `index.html`，以及从 `frontend/public/` 复制过来的 `demo/`，
 所以**离线演示数据在静态产物里也在**）。
 
 **② 静态服务器发送产物**（`vite preview` 只是其中一个选项，任何静态服务器都行）：
 
 ```powershell
-# 在 frontend 目录
-node node_modules/vite/bin/vite.js preview --port 4173 --strictPort
+# 在 frontend 目录；两种写法等价
+npm.cmd run preview                       # 用 package.json 里的 preview 脚本（实测可用）
+node node_modules/vite/bin/vite.js preview --port 4173 --strictPort   # 直接调 node 入口（绕开 npm.ps1）
 
 # 实测：GET http://127.0.0.1:4173/                       → 200，返回 index.html
 #       GET http://127.0.0.1:4173/demo/project_analysis.json → 200，473914 字节（离线快照就位）
+#       vite preview 同时会打印一个 Network 地址（本机实测形如 http://10.x.x.x:4173/），局域网可直接用
 ```
 
 **③ 跨源必须被后端放行**（后端已经允许，但要知道为什么能通）：
@@ -181,7 +190,7 @@ node node_modules/vite/bin/vite.js preview --port 4173 --strictPort
 
 1. **`VITE_API_BASE` 是"构建时"烘进 bundle 的**，不是运行时读的 —— 换后端地址要**重新构建**
    （`frontend/src/api/client.js` 读的是 `import.meta.env.VITE_API_BASE`）。
-   本轮实测：设了 `VITE_API_BASE=http://127.0.0.1:8000` 构建后，该字符串确实出现在 `frontend/dist/assets/` 的 JS 里。
+   本轮实测：设了 `VITE_API_BASE=http://127.0.0.1:8000` 构建后，该字符串确实出现在产物 JS 文件里（dist 的静态资源目录下）。
 2. **不设 `VITE_API_BASE` 时，产物走同源 `/api`** —— 也就是说它默认依赖"有一个反代把 `/api` 转到后端"。
    没有反代就会退化成**离线演示模式**（不是白屏，但判题、阶段二/四、覆盖报告都明确显示不可用，
    见 `README.md` §0.3 的离线/在线对照表）。
@@ -277,7 +286,7 @@ node node_modules/vite/bin/vite.js preview --port 4173 --strictPort
 
 | 现象 | 原因 / 绕法 |
 |---|---|
-| `npm` 报 `npm.ps1 cannot be loaded ... running scripts is disabled` | PowerShell 执行策略，与沙箱无关：改用 `npm.cmd`，或直接 `node node_modules/vite/bin/vite.js build` |
+| `npm` 报 `npm.ps1 cannot be loaded ... running scripts is disabled` | PowerShell 执行策略，与沙箱无关：改用 `npm.cmd`（`npm.cmd run dev` / `npm.cmd run build` / `npm.cmd run preview` 都可用），或直接调 vite 的 node 入口（完整命令见 §25.6 的代码块） |
 | 构建报 `spawn EPERM`（esbuild） | 受限（沙箱）会话里 esbuild 起不了子进程；放开进程权限的终端里重跑同一命令即可 |
 | 端口被占（8000 / 5173 / 4173） | 先确认那个进程**确实是本项目的**，再决定重启；并发工作线场景下别误杀别人的服务。也可以显式给前端加 `VITE_API_TARGET` 指到别的后端端口 |
 | 后端起了但"新接口 404、版本号还是旧的" | 8000 上跑着旧进程 —— 重启 uvicorn |
