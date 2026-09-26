@@ -1,0 +1,12 @@
+{
+  "lessons": {
+    "c_d_binding_query_general": {
+      "capability_id": "c_d_binding_query_general",
+      "section_id": "",
+      "generated": true,
+      "can_publish": false,
+      "review_status": "needs_review",
+      "segments": 16
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "analysis_id": "lab_safety_assistant",
+  "project_id": "lab_safety_assistant",
+  "project_name": "lab_safety_assistant",
+  "source_kind": "demo",
+  "source_root_rel": "frontend/public/demo/source",
+  "source_hash": "sha256:5bdd3e89a09db9dd6d9d51a699411a0d",
+  "platform_version": "lp-1.0"
+}

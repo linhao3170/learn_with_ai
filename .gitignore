@@ -48,14 +48,29 @@ output/
 results/
 .cache/
 
+# ⚠️ 例外（克隆完整性一轮）：validation/results/ 不是"运行产物"，是**证据层** ——
+#    docs/00-index.md §3.6 写明该目录"每个数字都要能回指到这里，不许删"，
+#    而 docs/06-runbook.md §20.3 ⑥ 把里面的 python_dotenv_facts.csv 当作**输入**用。
+#    上面的 `results/` 是"任何层级都叫 results"的无差别规则，会把它一起排掉 —— 那不是本意。
+#    放行它，才能做到"别人克隆下来就能跑通手册里写的那条命令"。
+!validation/results/
+
 # 走查/测试产物（P0-16：不该进仓库，也不该进 dist）
 frontend/.smoke-dist/
 
 # 业务逻辑分析平台的运行时产物（Sprint 6）
-# ⚠️ 必须忽略，理由是隐私而不只是体积：该目录下的 source/ 是**用户所上传项目源码的副本**，
+# ⚠️ 默认忽略，理由是隐私而不只是体积：`lp_*` 目录下的 source/ 是**用户所上传项目源码的副本**，
 #    把它提交进公开仓库等于把别人上传的代码公开出去。
 #    这些文件都可再生（重新调用 /api/logic-platform/analyze 或跑接口自测即可）。
-backend/data/logic_platform/
+#    ⚠️ 写法必须是「忽略子项 + 逐项放行」，**不能**忽略整个目录：
+#       git 的规则是"父目录被排除时，子目录上的 ! 放行不生效"（克隆完整性一轮实测踩到）。
+backend/data/logic_platform/*
+# 例外（克隆完整性一轮）：下面两个项目 `meta.json` 里 source_kind = "demo"，
+# **不含任何上传源码副本**（没有 source/ 子目录），且 source_root_rel 指向仓库内
+# 已跟踪的相对路径（frontend/public/demo/source、frontend/public/demo/projects/python_dotenv/source），
+# 不含绝对路径。提交它们不泄露任何东西，却能让别人克隆后看到同样的平台 demo 状态。
+!backend/data/logic_platform/lab_safety_assistant/
+!backend/data/logic_platform/python_dotenv/
 
 # 讲稿导出产物（scripts/test_logic_platform.py --out .lp_render.txt 生成，供人工走查排版）
 .lp_render.txt

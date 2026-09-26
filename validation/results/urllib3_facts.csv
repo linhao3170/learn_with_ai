@@ -1,0 +1,720 @@
+﻿fact_id,category,type,description,location,confidence,evidence,source
+F0001,模块架构,分层架构,系统采用 3 层架构: 编排层 / 业务层 / 支撑层,全局,verified,基于模块依赖方向和角色自动分层,architecture
+F0002,模块架构,模块分层,模块 connection: 位于编排层，角色为编排器，33 个方法,connection,verified,推断职责: Business Logic,architecture
+F0003,模块架构,模块分层,模块 connectionpool: 位于编排层，角色为编排器，28 个方法,connectionpool,verified,推断职责: Business Logic,architecture
+F0004,模块架构,模块分层,模块 exceptions: 位于支撑层，角色为外围模块，21 个方法,exceptions,verified,推断职责: Business Logic,architecture
+F0005,模块架构,模块分层,模块 fields: 位于支撑层，角色为外围模块，11 个方法,fields,verified,推断职责: Business Logic,architecture
+F0006,模块架构,模块分层,模块 filepost: 位于业务层，角色为中间模块，3 个方法,filepost,verified,推断职责: Business Logic,architecture
+F0007,模块架构,模块分层,模块 poolmanager: 位于编排层，角色为编排器，18 个方法,poolmanager,verified,推断职责: Management,architecture
+F0008,模块架构,模块分层,模块 response: 位于支撑层，角色为外围模块，82 个方法,response,verified,推断职责: Business Logic,architecture
+F0009,模块架构,模块分层,模块 _base_connection: 位于支撑层，角色为外围模块，10 个方法,_base_connection,verified,推断职责: Business Logic,architecture
+F0010,模块架构,模块分层,模块 _collections: 位于业务层，角色为中间模块，42 个方法,_collections,verified,推断职责: Business Logic,architecture
+F0011,模块架构,模块分层,模块 _request_methods: 位于支撑层，角色为外围模块，5 个方法,_request_methods,verified,推断职责: Business Logic,architecture
+F0012,模块架构,模块分层,模块 contrib.pyopenssl: 位于支撑层，角色为外围模块，41 个方法,contrib.pyopenssl,verified,推断职责: Business Logic,architecture
+F0013,模块架构,模块分层,模块 contrib.socks: 位于支撑层，角色为外围模块，3 个方法,contrib.socks,verified,推断职责: Business Logic,architecture
+F0014,模块架构,模块分层,模块 contrib.emscripten.connection: 位于支撑层，角色为外围模块，11 个方法,contrib.emscripten.connection,verified,推断职责: Business Logic,architecture
+F0015,模块架构,模块分层,模块 contrib.emscripten.fetch: 位于支撑层，角色为外围模块，37 个方法,contrib.emscripten.fetch,verified,推断职责: Business Logic,architecture
+F0016,模块架构,模块分层,模块 contrib.emscripten.request: 位于支撑层，角色为外围模块，2 个方法,contrib.emscripten.request,verified,推断职责: Business Logic,architecture
+F0017,模块架构,模块分层,模块 contrib.emscripten.response: 位于支撑层，角色为外围模块，16 个方法,contrib.emscripten.response,verified,推断职责: Business Logic,architecture
+F0018,模块架构,模块分层,模块 http2.connection: 位于支撑层，角色为外围模块，20 个方法,http2.connection,verified,推断职责: Business Logic,architecture
+F0019,模块架构,模块分层,模块 http2.probe: 位于支撑层，角色为外围模块，5 个方法,http2.probe,verified,推断职责: Business Logic,architecture
+F0020,模块架构,模块分层,模块 util.connection: 位于业务层，角色为中间模块，5 个方法,util.connection,verified,推断职责: Utilities,architecture
+F0021,模块架构,模块分层,模块 util.proxy: 位于业务层，角色为中间模块，1 个方法,util.proxy,verified,推断职责: Utilities,architecture
+F0022,模块架构,模块分层,模块 util.request: 位于业务层，角色为中间模块，4 个方法,util.request,verified,推断职责: Utilities,architecture
+F0023,模块架构,模块分层,模块 util.response: 位于业务层，角色为中间模块，3 个方法,util.response,verified,推断职责: Utilities,architecture
+F0024,模块架构,模块分层,模块 util.retry: 位于支撑层，角色为外围模块，16 个方法,util.retry,verified,推断职责: Utilities,architecture
+F0025,模块架构,模块分层,模块 util.ssltransport: 位于支撑层，角色为外围模块，29 个方法,util.ssltransport,verified,推断职责: Utilities,architecture
+F0026,模块架构,模块分层,模块 util.ssl_: 位于业务层，角色为中间模块，11 个方法,util.ssl_,verified,推断职责: Utilities,architecture
+F0027,模块架构,模块分层,模块 util.ssl_match_hostname: 位于业务层，角色为中间模块，3 个方法,util.ssl_match_hostname,verified,推断职责: Utilities,architecture
+F0028,模块架构,模块分层,模块 util.timeout: 位于支撑层，角色为外围模块，10 个方法,util.timeout,verified,推断职责: Utilities,architecture
+F0029,模块架构,模块分层,模块 util.url: 位于业务层，角色为核心模块，22 个方法,util.url,verified,推断职责: Utilities,architecture
+F0030,模块架构,模块分层,模块 util.util: 位于业务层，角色为中间模块，3 个方法,util.util,verified,推断职责: Utilities,architecture
+F0031,模块架构,模块分层,模块 util.wait: 位于业务层，角色为中间模块，6 个方法,util.wait,verified,推断职责: Utilities,architecture
+F0032,模块架构,模块依赖,connection → util.ssl_（编排依赖，强度 1.00，9 次调用）,connection → util.ssl_,verified,基于调用图的依赖强度计算,architecture
+F0033,模块架构,模块依赖,connectionpool → util.url（编排依赖，强度 0.43，4 次调用）,connectionpool → util.url,verified,基于调用图的依赖强度计算,architecture
+F0034,模块架构,模块依赖,poolmanager → util.url（编排依赖，强度 0.41，5 次调用）,poolmanager → util.url,verified,基于调用图的依赖强度计算,architecture
+F0035,模块架构,模块依赖,response → util.response（工具依赖，强度 0.36，3 次调用）,response → util.response,verified,基于调用图的依赖强度计算,architecture
+F0036,模块架构,模块依赖,connection → util.util（编排依赖，强度 0.21，2 次调用）,connection → util.util,verified,基于调用图的依赖强度计算,architecture
+F0037,模块架构,模块依赖,connectionpool → connection（编排依赖，强度 0.21，2 次调用）,connectionpool → connection,verified,基于调用图的依赖强度计算,architecture
+F0038,模块架构,模块依赖,connectionpool → util.util（编排依赖，强度 0.21，2 次调用）,connectionpool → util.util,verified,基于调用图的依赖强度计算,architecture
+F0039,模块架构,模块依赖,poolmanager → util.proxy（编排依赖，强度 0.21，2 次调用）,poolmanager → util.proxy,verified,基于调用图的依赖强度计算,architecture
+F0040,模块架构,模块依赖,connection → util.wait（编排依赖，强度 0.15，1 次调用）,connection → util.wait,verified,基于调用图的依赖强度计算,architecture
+F0041,模块架构,模块依赖,connection → util.request（编排依赖，强度 0.15，1 次调用）,connection → util.request,verified,基于调用图的依赖强度计算,architecture
+F0042,模块架构,模块依赖,connection → util.response（编排依赖，强度 0.15，1 次调用）,connection → util.response,verified,基于调用图的依赖强度计算,architecture
+F0043,模块架构,模块依赖,connection → util.ssl_match_hostname（编排依赖，强度 0.15，1 次调用）,connection → util.ssl_match_hostname,verified,基于调用图的依赖强度计算,architecture
+F0044,模块架构,模块依赖,connectionpool → util.connection（编排依赖，强度 0.15，1 次调用）,connectionpool → util.connection,verified,基于调用图的依赖强度计算,architecture
+F0045,模块架构,模块依赖,connectionpool → util.proxy（编排依赖，强度 0.15，1 次调用）,connectionpool → util.proxy,verified,基于调用图的依赖强度计算,architecture
+F0046,模块架构,模块依赖,connectionpool → util.request（编排依赖，强度 0.15，1 次调用）,connectionpool → util.request,verified,基于调用图的依赖强度计算,architecture
+F0047,模块架构,模块依赖,poolmanager → _collections（编排依赖，强度 0.15，1 次调用）,poolmanager → _collections,verified,基于调用图的依赖强度计算,architecture
+F0048,模块架构,模块依赖,_request_methods → filepost（工具依赖，强度 0.15，1 次调用）,_request_methods → filepost,verified,基于调用图的依赖强度计算,architecture
+F0049,模块架构,模块依赖,contrib.socks → util.url（工具依赖，强度 0.15，1 次调用）,contrib.socks → util.url,verified,基于调用图的依赖强度计算,architecture
+F0050,模块架构,模块依赖,http2.connection → connection（工具依赖，强度 0.15，1 次调用）,http2.connection → connection,verified,基于调用图的依赖强度计算,architecture
+F0051,调用链,调用链-模块内,HTTPHeaderDict.__eq__ 调用 ensure_can_construct_http_header_dict,urllib3/_collections.py:279,verified,调用类型: direct,call_graph
+F0052,调用链,调用链-模块内,HTTPHeaderDict.__eq__ 调用 HTTPHeaderDict.itermerged,urllib3/_collections.py:285,verified,调用类型: self_method,call_graph
+F0053,调用链,调用链-模块内,HTTPHeaderDict.__init__ 调用 HTTPHeaderDict._copy_from,urllib3/_collections.py:245,verified,调用类型: self_method,call_graph
+F0054,调用链,调用链-模块内,HTTPHeaderDict.__init__ 调用 HTTPHeaderDict.extend,urllib3/_collections.py:249,verified,调用类型: self_method,call_graph
+F0055,调用链,调用链-模块内,HTTPHeaderDict.__ior__ 调用 ensure_can_construct_http_header_dict,urllib3/_collections.py:466,verified,调用类型: direct,call_graph
+F0056,调用链,调用链-模块内,HTTPHeaderDict.__ior__ 调用 HTTPHeaderDict.extend,urllib3/_collections.py:469,verified,调用类型: self_method,call_graph
+F0057,调用链,调用链-模块内,HTTPHeaderDict.__ne__ 调用 HTTPHeaderDict.__eq__,urllib3/_collections.py:290,verified,调用类型: self_method,call_graph
+F0058,调用链,调用链-模块内,HTTPHeaderDict.__or__ 调用 ensure_can_construct_http_header_dict,urllib3/_collections.py:475,verified,调用类型: direct,call_graph
+F0059,调用链,调用链-模块内,HTTPHeaderDict.__or__ 调用 HTTPHeaderDict.copy,urllib3/_collections.py:478,verified,调用类型: self_method,call_graph
+F0060,调用链,调用链-模块内,HTTPHeaderDict.__repr__ 调用 HTTPHeaderDict.itermerged,urllib3/_collections.py:430,verified,调用类型: self_method,call_graph
+F0061,调用链,调用链-模块内,HTTPHeaderDict.__ror__ 调用 ensure_can_construct_http_header_dict,urllib3/_collections.py:485,verified,调用类型: direct,call_graph
+F0062,调用链,调用链-模块内,HTTPHeaderDict._prepare_for_method_change 调用 HTTPHeaderDict.discard,urllib3/_collections.py:418,verified,调用类型: self_method,call_graph
+F0063,调用链,调用链-模块内,HTTPHeaderDict.extend 调用 HTTPHeaderDict.add,urllib3/_collections.py:371,verified,调用类型: self_method,call_graph
+F0064,调用链,调用链-模块内,RequestMethods.request 调用 RequestMethods.request_encode_url,urllib3/_request_methods.py:135,verified,调用类型: self_method,call_graph
+F0065,调用链,调用链-模块内,RequestMethods.request 调用 RequestMethods.request_encode_body,urllib3/_request_methods.py:143,verified,调用类型: self_method,call_graph
+F0066,调用链,调用链-跨模块,RequestMethods.request_encode_body 调用 encode_multipart_formdata（跨模块）,urllib3/_request_methods.py:264,verified,调用类型: imported,call_graph
+F0067,调用链,调用链-模块内,RequestMethods.request_encode_body 调用 RequestMethods.urlopen,urllib3/_request_methods.py:278,verified,调用类型: self_method,call_graph
+F0068,调用链,调用链-模块内,RequestMethods.request_encode_url 调用 RequestMethods.urlopen,urllib3/_request_methods.py:182,verified,调用类型: self_method,call_graph
+F0069,调用链,调用链-模块内,HTTPConnection.connect 调用 HTTPConnection._new_conn,urllib3/connection.py:398,verified,调用类型: self_method,call_graph
+F0070,调用链,调用链-模块内,HTTPConnection.connect 调用 HTTPConnection._tunnel,urllib3/connection.py:404,verified,调用类型: self_method,call_graph
+F0071,调用链,调用链-跨模块,HTTPConnection.getresponse 调用 assert_header_parsing（跨模块）,urllib3/connection.py:641,verified,调用类型: imported,call_graph
+F0072,调用链,调用链-模块内,HTTPConnection.getresponse 调用 _url_from_connection,urllib3/connection.py:645,verified,调用类型: direct,call_graph
+F0073,调用链,调用链-模块内,HTTPConnection.getresponse 调用 _normalize_header_values,urllib3/connection.py:650,verified,调用类型: direct,call_graph
+F0074,调用链,调用链-跨模块,HTTPConnection.is_connected 调用 wait_for_read（跨模块）,urllib3/connection.py:422,verified,调用类型: imported,call_graph
+F0075,调用链,调用链-跨模块,HTTPConnection.putheader 调用 to_str（跨模块）,urllib3/connection.py:481,verified,调用类型: imported,call_graph
+F0076,调用链,调用链-跨模块,HTTPConnection.request 调用 to_str（跨模块）,urllib3/connection.py:526,verified,调用类型: imported,call_graph
+F0077,调用链,调用链-模块内,HTTPConnection.request 调用 HTTPConnection.putrequest,urllib3/connection.py:529,verified,调用类型: self_method,call_graph
+F0078,调用链,调用链-跨模块,HTTPConnection.request 调用 body_to_chunks（跨模块）,urllib3/connection.py:535,verified,调用类型: imported,call_graph
+F0079,调用链,调用链-模块内,HTTPConnection.request 调用 HTTPConnection.putheader,urllib3/connection.py:564,verified,调用类型: self_method,call_graph
+F0080,调用链,调用链-模块内,HTTPConnection.request 调用 _get_default_user_agent,urllib3/connection.py:564,verified,调用类型: direct,call_graph
+F0081,调用链,调用链-模块内,HTTPConnection.request_chunked 调用 HTTPConnection.request,urllib3/connection.py:605,verified,调用类型: self_method,call_graph
+F0082,调用链,调用链-跨模块,HTTPSConnection.__init__ 调用 resolve_cert_reqs（跨模块）,urllib3/connection.py:747,verified,调用类型: imported,call_graph
+F0083,调用链,调用链-模块内,HTTPSConnection._connect_tls_proxy 调用 _ssl_wrap_socket_and_match_hostname,urllib3/connection.py:973,verified,调用类型: direct,call_graph
+F0084,调用链,调用链-模块内,HTTPSConnection.connect 调用 HTTPSConnection._connect_tls_proxy,urllib3/connection.py:875,verified,调用类型: self_method,call_graph
+F0085,调用链,调用链-模块内,HTTPSConnection.connect 调用 _ssl_wrap_socket_and_match_hostname,urllib3/connection.py:878,verified,调用类型: direct,call_graph
+F0086,调用链,调用链-跨模块,HTTPSConnection.set_cert 调用 resolve_cert_reqs（跨模块）,urllib3/connection.py:780,verified,调用类型: imported,call_graph
+F0087,调用链,调用链-跨模块,_match_hostname 调用 is_ipaddress（跨模块）,urllib3/connection.py:1140,verified,调用类型: imported,call_graph
+F0088,调用链,调用链-跨模块,_match_hostname 调用 match_hostname（跨模块）,urllib3/connection.py:1144,verified,调用类型: imported,call_graph
+F0089,调用链,调用链-模块内,_normalize_header_values 调用 _normalize_header_value,urllib3/connection.py:97,verified,调用类型: direct,call_graph
+F0090,调用链,调用链-跨模块,_ssl_wrap_socket_and_match_hostname 调用 create_urllib3_context（跨模块）,urllib3/connection.py:1033,verified,调用类型: imported,call_graph
+F0091,调用链,调用链-跨模块,_ssl_wrap_socket_and_match_hostname 调用 resolve_ssl_version（跨模块）,urllib3/connection.py:1034,verified,调用类型: imported,call_graph
+F0092,调用链,调用链-跨模块,_ssl_wrap_socket_and_match_hostname 调用 resolve_cert_reqs（跨模块）,urllib3/connection.py:1042,verified,调用类型: imported,call_graph
+F0093,调用链,调用链-跨模块,_ssl_wrap_socket_and_match_hostname 调用 is_ipaddress（跨模块）,urllib3/connection.py:1077,verified,调用类型: imported,call_graph
+F0094,调用链,调用链-跨模块,_ssl_wrap_socket_and_match_hostname 调用 ssl_wrap_socket（跨模块）,urllib3/connection.py:1080,verified,调用类型: imported,call_graph
+F0095,调用链,调用链-模块内,_ssl_wrap_socket_and_match_hostname 调用 _match_hostname,urllib3/connection.py:1115,verified,调用类型: direct,call_graph
+F0096,调用链,调用链-模块内,ConnectionPool.__exit__ 调用 ConnectionPool.close,urllib3/connectionpool.py:107,verified,调用类型: self_method,call_graph
+F0097,调用链,调用链-模块内,ConnectionPool.__init__ 调用 _normalize_host,urllib3/connectionpool.py:86,verified,调用类型: direct,call_graph
+F0098,调用链,调用链-跨模块,HTTPConnectionPool._get_conn 调用 is_connection_dropped（跨模块）,urllib3/connectionpool.py:294,verified,调用类型: imported,call_graph
+F0099,调用链,调用链-模块内,HTTPConnectionPool._get_conn 调用 HTTPConnectionPool._new_conn,urllib3/connectionpool.py:298,verified,调用类型: self_method,call_graph
+F0100,调用链,调用链-模块内,HTTPConnectionPool._make_request 调用 HTTPConnectionPool._get_timeout,urllib3/connectionpool.py:463,verified,调用类型: self_method,call_graph
+F0101,调用链,调用链-模块内,HTTPConnectionPool._make_request 调用 HTTPConnectionPool._validate_conn,urllib3/connectionpool.py:470,verified,调用类型: self_method,call_graph
+F0102,调用链,调用链-跨模块,HTTPConnectionPool._make_request 调用 _wrap_proxy_error（跨模块）,urllib3/connectionpool.py:493,verified,调用类型: imported,call_graph
+F0103,调用链,调用链-模块内,HTTPConnectionPool._make_request 调用 HTTPConnectionPool._raise_timeout,urllib3/connectionpool.py:542,verified,调用类型: self_method,call_graph
+F0104,调用链,调用链-模块内,HTTPConnectionPool.close 调用 _close_pool_connections,urllib3/connectionpool.py:574,verified,调用类型: direct,call_graph
+F0105,调用链,调用链-跨模块,HTTPConnectionPool.is_same_host 调用 parse_url（跨模块）,urllib3/connectionpool.py:585,verified,调用类型: imported,call_graph
+F0106,调用链,调用链-模块内,HTTPConnectionPool.is_same_host 调用 _normalize_host,urllib3/connectionpool.py:588,verified,调用类型: direct,call_graph
+F0107,调用链,调用链-跨模块,HTTPConnectionPool.urlopen 调用 to_str（跨模块）,urllib3/connectionpool.py:714,verified,调用类型: imported,call_graph
+F0108,调用链,调用链-跨模块,HTTPConnectionPool.urlopen 调用 _encode_target（跨模块）,urllib3/connectionpool.py:714,verified,调用类型: imported,call_graph
+F0109,调用链,调用链-跨模块,HTTPConnectionPool.urlopen 调用 parse_url（跨模块）,urllib3/connectionpool.py:717,verified,调用类型: imported,call_graph
+F0110,调用链,调用链-模块内,HTTPConnectionPool.urlopen 调用 HTTPConnectionPool.is_same_host,urllib3/connectionpool.py:731,verified,调用类型: self_method,call_graph
+F0111,调用链,调用链-跨模块,HTTPConnectionPool.urlopen 调用 connection_requires_http_tunnel（跨模块）,urllib3/connectionpool.py:747,verified,调用类型: imported,call_graph
+F0112,调用链,调用链-跨模块,HTTPConnectionPool.urlopen 调用 set_file_position（跨模块）,urllib3/connectionpool.py:768,verified,调用类型: imported,call_graph
+F0113,调用链,调用链-模块内,HTTPConnectionPool.urlopen 调用 HTTPConnectionPool._get_timeout,urllib3/connectionpool.py:770,verified,调用类型: self_method,call_graph
+F0114,调用链,调用链-模块内,HTTPConnectionPool.urlopen 调用 HTTPConnectionPool._get_conn,urllib3/connectionpool.py:773,verified,调用类型: self_method,call_graph
+F0115,调用链,调用链-模块内,HTTPConnectionPool.urlopen 调用 HTTPConnectionPool._prepare_proxy,urllib3/connectionpool.py:779,verified,调用类型: self_method,call_graph
+F0116,调用链,调用链-模块内,HTTPConnectionPool.urlopen 调用 HTTPConnectionPool._raise_timeout,urllib3/connectionpool.py:781,verified,调用类型: self_method,call_graph
+F0117,调用链,调用链-模块内,HTTPConnectionPool.urlopen 调用 HTTPConnectionPool._make_request,urllib3/connectionpool.py:793,verified,调用类型: self_method,call_graph
+F0118,调用链,调用链-跨模块,HTTPConnectionPool.urlopen 调用 _wrap_proxy_error（跨模块）,urllib3/connectionpool.py:843,verified,调用类型: imported,call_graph
+F0119,调用链,调用链-模块内,HTTPConnectionPool.urlopen 调用 HTTPConnectionPool._put_conn,urllib3/connectionpool.py:870,verified,调用类型: self_method,call_graph
+F0120,调用链,调用链-模块内,HTTPConnectionPool.urlopen 调用 HTTPConnectionPool.urlopen,urllib3/connectionpool.py:886,verified,调用类型: self_method,call_graph
+F0121,调用链,调用链-跨模块,connection_from_url 调用 parse_url（跨模块）,urllib3/connectionpool.py:1160,verified,调用类型: imported,call_graph
+F0122,调用链,调用链-模块内,_JSPIReadStream.__del__ 调用 _JSPIReadStream.close,emscripten/fetch.py:343,verified,调用类型: self_method,call_graph
+F0123,调用链,调用链-模块内,_JSPIReadStream._get_next_buffer 调用 _run_sync_with_timeout,emscripten/fetch.py:377,verified,调用类型: direct,call_graph
+F0124,调用链,调用链-模块内,_JSPIReadStream.close 调用 _JSPIReadStream.is_closed,emscripten/fetch.py:355,verified,调用类型: self_method,call_graph
+F0125,调用链,调用链-模块内,_JSPIReadStream.closed 调用 _JSPIReadStream.is_closed,emscripten/fetch.py:352,verified,调用类型: self_method,call_graph
+F0126,调用链,调用链-模块内,_JSPIReadStream.readinto 调用 _JSPIReadStream._get_next_buffer,emscripten/fetch.py:394,verified,调用类型: self_method,call_graph
+F0127,调用链,调用链-模块内,_JSPIReadStream.readinto 调用 _JSPIReadStream.close,emscripten/fetch.py:395,verified,调用类型: self_method,call_graph
+F0128,调用链,调用链-模块内,_ReadStream.__del__ 调用 _ReadStream.close,emscripten/fetch.py:119,verified,调用类型: self_method,call_graph
+F0129,调用链,调用链-模块内,_ReadStream.close 调用 _ReadStream.is_closed,emscripten/fetch.py:131,verified,调用类型: self_method,call_graph
+F0130,调用链,调用链-模块内,_ReadStream.close 调用 _obj_from_dict,emscripten/fetch.py:140,verified,调用类型: direct,call_graph
+F0131,调用链,调用链-模块内,_ReadStream.closed 调用 _ReadStream.is_closed,emscripten/fetch.py:128,verified,调用类型: self_method,call_graph
+F0132,调用链,调用链-模块内,_ReadStream.readinto 调用 _obj_from_dict,emscripten/fetch.py:163,verified,调用类型: direct,call_graph
+F0133,调用链,调用链-模块内,_ReadStream.readinto 调用 _ReadStream.close,emscripten/fetch.py:187,verified,调用类型: self_method,call_graph
+F0134,调用链,调用链-模块内,_StreamingFetcher.__init__ 调用 _obj_from_dict,emscripten/fetch.py:211,verified,调用类型: direct,call_graph
+F0135,调用链,调用链-模块内,_StreamingFetcher.send 调用 _obj_from_dict,emscripten/fetch.py:246,verified,调用类型: direct,call_graph
+F0136,调用链,调用链-模块内,_show_streaming_warning 调用 is_cross_origin_isolated,emscripten/fetch.py:485,verified,调用类型: direct,call_graph
+F0137,调用链,调用链-模块内,_show_streaming_warning 调用 is_in_browser_main_thread,emscripten/fetch.py:487,verified,调用类型: direct,call_graph
+F0138,调用链,调用链-模块内,_show_streaming_warning 调用 is_worker_available,emscripten/fetch.py:489,verified,调用类型: direct,call_graph
+F0139,调用链,调用链-模块内,_show_streaming_warning 调用 streaming_ready,emscripten/fetch.py:491,verified,调用类型: direct,call_graph
+F0140,调用链,调用链-模块内,send_jspi_request 调用 _is_node_js,emscripten/fetch.py:577,verified,调用类型: direct,call_graph
+F0141,调用链,调用链-模块内,send_jspi_request 调用 _obj_from_dict,emscripten/fetch.py:580,verified,调用类型: direct,call_graph
+F0142,调用链,调用链-模块内,send_jspi_request 调用 _run_sync_with_timeout,emscripten/fetch.py:583,verified,调用类型: direct,call_graph
+F0143,调用链,调用链-模块内,send_request 调用 has_jspi,emscripten/fetch.py:500,verified,调用类型: direct,call_graph
+F0144,调用链,调用链-模块内,send_request 调用 send_jspi_request,emscripten/fetch.py:501,verified,调用类型: direct,call_graph
+F0145,调用链,调用链-模块内,send_request 调用 is_in_node,emscripten/fetch.py:502,verified,调用类型: direct,call_graph
+F0146,调用链,调用链-模块内,send_request 调用 is_in_browser_main_thread,emscripten/fetch.py:511,verified,调用类型: direct,call_graph
+F0147,调用链,调用链-模块内,send_request 调用 _show_timeout_warning,emscripten/fetch.py:520,verified,调用类型: direct,call_graph
+F0148,调用链,调用链-模块内,send_streaming_request 调用 has_jspi,emscripten/fetch.py:450,verified,调用类型: direct,call_graph
+F0149,调用链,调用链-模块内,send_streaming_request 调用 send_jspi_request,emscripten/fetch.py:451,verified,调用类型: direct,call_graph
+F0150,调用链,调用链-模块内,send_streaming_request 调用 is_in_node,emscripten/fetch.py:452,verified,调用类型: direct,call_graph
+F0151,调用链,调用链-模块内,send_streaming_request 调用 streaming_ready,emscripten/fetch.py:459,verified,调用类型: direct,call_graph
+F0152,调用链,调用链-模块内,send_streaming_request 调用 _show_streaming_warning,emscripten/fetch.py:462,verified,调用类型: direct,call_graph
+F0153,调用链,调用链-模块内,EmscriptenHttpResponseWrapper.__init__ 调用 EmscriptenHttpResponseWrapper._init_length,emscripten/response.py:53,verified,调用类型: self_method,call_graph
+F0154,调用链,调用链-模块内,EmscriptenHttpResponseWrapper._error_catcher 调用 EmscriptenHttpResponseWrapper.release_conn,emscripten/response.py:273,verified,调用类型: self_method,call_graph
+F0155,调用链,调用链-模块内,EmscriptenHttpResponseWrapper.data 调用 EmscriptenHttpResponseWrapper.read,emscripten/response.py:207,verified,调用类型: self_method,call_graph
+F0156,调用链,调用链-模块内,EmscriptenHttpResponseWrapper.drain_conn 调用 EmscriptenHttpResponseWrapper.close,emscripten/response.py:200,verified,调用类型: self_method,call_graph
+F0157,调用链,调用链-模块内,EmscriptenHttpResponseWrapper.read 调用 EmscriptenHttpResponseWrapper._error_catcher,emscripten/response.py:153,verified,调用类型: self_method,call_graph
+F0158,调用链,调用链-模块内,EmscriptenHttpResponseWrapper.read_chunked 调用 EmscriptenHttpResponseWrapper.read,emscripten/response.py:187,verified,调用类型: self_method,call_graph
+F0159,调用链,调用链-模块内,EmscriptenHttpResponseWrapper.stream 调用 EmscriptenHttpResponseWrapper.read,emscripten/response.py:96,verified,调用类型: self_method,call_graph
+F0160,调用链,调用链-模块内,WrappedSocket._decref_socketios 调用 WrappedSocket.close,contrib/pyopenssl.py:308,verified,调用类型: self_method,call_graph
+F0161,调用链,调用链-模块内,WrappedSocket.close 调用 WrappedSocket._real_close,contrib/pyopenssl.py:389,verified,调用类型: self_method,call_graph
+F0162,调用链,调用链-模块内,WrappedSocket.recv 调用 WrappedSocket.recv,contrib/pyopenssl.py:327,verified,调用类型: self_method,call_graph
+F0163,调用链,调用链-模块内,WrappedSocket.recv_into 调用 WrappedSocket.recv_into,contrib/pyopenssl.py:352,verified,调用类型: self_method,call_graph
+F0164,调用链,调用链-模块内,WrappedSocket.sendall 调用 WrappedSocket._send_until_done,contrib/pyopenssl.py:375,verified,调用类型: self_method,call_graph
+F0165,调用链,调用链-模块内,inject_into_urllib3 调用 _validate_dependencies_met,contrib/pyopenssl.py:144,verified,调用类型: direct,call_graph
+F0166,调用链,调用链-跨模块,SOCKSProxyManager.__init__ 调用 parse_url（跨模块）,contrib/socks.py:193,verified,调用类型: imported,call_graph
+F0167,调用链,调用链-模块内,RequestField._render_parts 调用 RequestField._render_part,urllib3/fields.py:287,verified,调用类型: self_method,call_graph
+F0168,调用链,调用链-模块内,RequestField.from_tuples 调用 guess_content_type,urllib3/fields.py:231,verified,调用类型: direct,call_graph
+F0169,调用链,调用链-模块内,RequestField.make_multipart 调用 RequestField._render_parts,urllib3/fields.py:333,verified,调用类型: self_method,call_graph
+F0170,调用链,调用链-模块内,format_header_param 调用 format_multipart_header_param,urllib3/fields.py:150,verified,调用类型: direct,call_graph
+F0171,调用链,调用链-模块内,format_header_param_html5 调用 format_multipart_header_param,urllib3/fields.py:132,verified,调用类型: direct,call_graph
+F0172,调用链,调用链-模块内,encode_multipart_formdata 调用 choose_boundary,urllib3/filepost.py:67,verified,调用类型: direct,call_graph
+F0173,调用链,调用链-模块内,encode_multipart_formdata 调用 iter_field_objects,urllib3/filepost.py:69,verified,调用类型: direct,call_graph
+F0174,调用链,调用链-模块内,HTTP2Connection.__init__ 调用 HTTP2Connection._new_h2_conn,http2/connection.py:89,verified,调用类型: self_method,call_graph
+F0175,调用链,调用链-模块内,HTTP2Connection.close 调用 HTTP2Connection._new_h2_conn,http2/connection.py:318,verified,调用类型: self_method,call_graph
+F0176,调用链,调用链-模块内,HTTP2Connection.putheader 调用 _is_legal_header_name,http2/connection.py:148,verified,调用类型: direct,call_graph
+F0177,调用链,调用链-模块内,HTTP2Connection.putheader 调用 _is_illegal_header_value,http2/connection.py:153,verified,调用类型: direct,call_graph
+F0178,调用链,调用链-模块内,HTTP2Connection.request 调用 HTTP2Connection.putrequest,http2/connection.py:290,verified,调用类型: self_method,call_graph
+F0179,调用链,调用链-模块内,HTTP2Connection.request 调用 HTTP2Connection.putheader,http2/connection.py:300,verified,调用类型: self_method,call_graph
+F0180,调用链,调用链-跨模块,HTTP2Connection.request 调用 _get_default_user_agent（跨模块）,http2/connection.py:300,verified,调用类型: imported,call_graph
+F0181,调用链,调用链-模块内,HTTP2Connection.request 调用 HTTP2Connection.endheaders,http2/connection.py:303,verified,调用类型: self_method,call_graph
+F0182,调用链,调用链-模块内,HTTP2Connection.request 调用 HTTP2Connection.send,http2/connection.py:304,verified,调用类型: self_method,call_graph
+F0183,调用链,调用链-模块内,PoolManager.__exit__ 调用 PoolManager.clear,urllib3/poolmanager.py:241,verified,调用类型: self_method,call_graph
+F0184,调用链,调用链-跨模块,PoolManager._proxy_requires_url_absolute_form 调用 connection_requires_http_tunnel（跨模块）,urllib3/poolmanager.py:421,verified,调用类型: imported,call_graph
+F0185,调用链,调用链-跨模块,PoolManager.clear 调用 RecentlyUsedContainer.clear（跨模块）,urllib3/poolmanager.py:290,verified,调用类型: composite_attr,call_graph
+F0186,调用链,调用链-模块内,PoolManager.connection_from_context 调用 PoolManager.connection_from_pool_key,urllib3/poolmanager.py:344,verified,调用类型: self_method,call_graph
+F0187,调用链,调用链-模块内,PoolManager.connection_from_host 调用 PoolManager._merge_pool_kwargs,urllib3/poolmanager.py:312,verified,调用类型: self_method,call_graph
+F0188,调用链,调用链-模块内,PoolManager.connection_from_host 调用 PoolManager.connection_from_context,urllib3/poolmanager.py:319,verified,调用类型: self_method,call_graph
+F0189,调用链,调用链-模块内,PoolManager.connection_from_pool_key 调用 PoolManager._new_pool,urllib3/poolmanager.py:367,verified,调用类型: self_method,call_graph
+F0190,调用链,调用链-跨模块,PoolManager.connection_from_url 调用 parse_url（跨模块）,urllib3/poolmanager.py:385,verified,调用类型: imported,call_graph
+F0191,调用链,调用链-模块内,PoolManager.connection_from_url 调用 PoolManager.connection_from_host,urllib3/poolmanager.py:386,verified,调用类型: self_method,call_graph
+F0192,调用链,调用链-跨模块,PoolManager.urlopen 调用 parse_url（跨模块）,urllib3/poolmanager.py:436,verified,调用类型: imported,call_graph
+F0193,调用链,调用链-模块内,PoolManager.urlopen 调用 PoolManager.connection_from_host,urllib3/poolmanager.py:448,verified,调用类型: self_method,call_graph
+F0194,调用链,调用链-模块内,PoolManager.urlopen 调用 PoolManager._proxy_requires_url_absolute_form,urllib3/poolmanager.py:456,verified,调用类型: self_method,call_graph
+F0195,调用链,调用链-模块内,PoolManager.urlopen 调用 PoolManager.urlopen,urllib3/poolmanager.py:510,verified,调用类型: self_method,call_graph
+F0196,调用链,调用链-跨模块,ProxyManager.__init__ 调用 parse_url（跨模块）,urllib3/poolmanager.py:586,verified,调用类型: imported,call_graph
+F0197,调用链,调用链-跨模块,ProxyManager._set_proxy_headers 调用 parse_url（跨模块）,urllib3/poolmanager.py:653,verified,调用类型: imported,call_graph
+F0198,调用链,调用链-跨模块,ProxyManager.urlopen 调用 parse_url（跨模块）,urllib3/poolmanager.py:665,verified,调用类型: imported,call_graph
+F0199,调用链,调用链-跨模块,ProxyManager.urlopen 调用 connection_requires_http_tunnel（跨模块）,urllib3/poolmanager.py:666,verified,调用类型: imported,call_graph
+F0200,调用链,调用链-模块内,ProxyManager.urlopen 调用 ProxyManager._set_proxy_headers,urllib3/poolmanager.py:671,verified,调用类型: self_method,call_graph
+F0201,调用链,调用链-模块内,BaseHTTPResponse._decode 调用 BaseHTTPResponse._flush_decoder,urllib3/response.py:675,verified,调用类型: self_method,call_graph
+F0202,调用链,调用链-模块内,BaseHTTPResponse._init_decoder 调用 _get_decoder,urllib3/response.py:630,verified,调用类型: direct,call_graph
+F0203,调用链,调用链-模块内,BaseHTTPResponse.readinto 调用 BaseHTTPResponse.read,urllib3/response.py:690,verified,调用类型: self_method,call_graph
+F0204,调用链,调用链-模块内,BrotliDecoder.decompress 调用 BrotliDecoder._decompress,urllib3/response.py:231,verified,调用类型: self_method,call_graph
+F0205,调用链,调用链-模块内,DeflateDecoder.decompress 调用 DeflateDecoder.decompress,urllib3/response.py:123,verified,调用类型: self_method,call_graph
+F0206,调用链,调用链-模块内,HTTPResponse.__init__ 调用 HTTPResponse._init_length,urllib3/response.py:801,verified,调用类型: self_method,call_graph
+F0207,调用链,调用链-模块内,HTTPResponse.__init__ 调用 HTTPResponse.read,urllib3/response.py:808,verified,调用类型: self_method,call_graph
+F0208,调用链,调用链-模块内,HTTPResponse.__iter__ 调用 HTTPResponse.stream,urllib3/response.py:1513,verified,调用类型: self_method,call_graph
+F0209,调用链,调用链-模块内,HTTPResponse._error_catcher 调用 HTTPResponse.release_conn,urllib3/response.py:976,verified,调用类型: self_method,call_graph
+F0210,调用链,调用链-模块内,HTTPResponse._raw_read 调用 HTTPResponse._error_catcher,urllib3/response.py:1045,verified,调用类型: self_method,call_graph
+F0211,调用链,调用链-模块内,HTTPResponse._raw_read 调用 HTTPResponse._fp_read,urllib3/response.py:1046,verified,调用类型: self_method,call_graph
+F0212,调用链,调用链-模块内,HTTPResponse._update_chunk_length 调用 HTTPResponse.close,urllib3/response.py:1369,verified,调用类型: self_method,call_graph
+F0213,调用链,调用链-模块内,HTTPResponse.data 调用 HTTPResponse.read,urllib3/response.py:841,verified,调用类型: self_method,call_graph
+F0214,调用链,调用链-模块内,HTTPResponse.drain_conn 调用 HTTPResponse._raw_read,urllib3/response.py:824,verified,调用类型: self_method,call_graph
+F0215,调用链,调用链-跨模块,HTTPResponse.isclosed 调用 is_fp_closed（跨模块）,urllib3/response.py:850,verified,调用类型: imported,call_graph
+F0216,调用链,调用链-模块内,HTTPResponse.read 调用 HTTPResponse._raw_read,urllib3/response.py:1134,verified,调用类型: self_method,call_graph
+F0217,调用链,调用链-模块内,HTTPResponse.read1 调用 HTTPResponse._raw_read,urllib3/response.py:1242,verified,调用类型: self_method,call_graph
+F0218,调用链,调用链-模块内,HTTPResponse.read_chunked 调用 HTTPResponse.supports_chunked_reads,urllib3/response.py:1430,verified,调用类型: self_method,call_graph
+F0219,调用链,调用链-模块内,HTTPResponse.read_chunked 调用 HTTPResponse._error_catcher,urllib3/response.py:1436,verified,调用类型: self_method,call_graph
+F0220,调用链,调用链-跨模块,HTTPResponse.read_chunked 调用 is_response_to_head（跨模块）,urllib3/response.py:1438,verified,调用类型: imported,call_graph
+F0221,调用链,调用链-模块内,HTTPResponse.read_chunked 调用 HTTPResponse._update_chunk_length,urllib3/response.py:1459,verified,调用类型: self_method,call_graph
+F0222,调用链,调用链-模块内,HTTPResponse.read_chunked 调用 HTTPResponse._handle_chunk,urllib3/response.py:1463,verified,调用类型: self_method,call_graph
+F0223,调用链,调用链-模块内,HTTPResponse.stream 调用 HTTPResponse.supports_chunked_reads,urllib3/response.py:1283,verified,调用类型: self_method,call_graph
+F0224,调用链,调用链-模块内,HTTPResponse.stream 调用 HTTPResponse.read_chunked,urllib3/response.py:1284,verified,调用类型: self_method,call_graph
+F0225,调用链,调用链-跨模块,HTTPResponse.stream 调用 is_fp_closed（跨模块）,urllib3/response.py:1287,verified,调用类型: imported,call_graph
+F0226,调用链,调用链-模块内,HTTPResponse.stream 调用 HTTPResponse.read,urllib3/response.py:1291,verified,调用类型: self_method,call_graph
+F0227,调用链,调用链-模块内,MultiDecoder.__init__ 调用 _get_decoder,urllib3/response.py:336,verified,调用类型: direct,call_graph
+F0228,调用链,调用链-模块内,create_connection 调用 allowed_gai_family,util/connection.py:53,verified,调用类型: direct,call_graph
+F0229,调用链,调用链-模块内,create_connection 调用 _set_socket_options,util/connection.py:67,verified,调用类型: direct,call_graph
+F0230,调用链,调用链-模块内,set_file_position 调用 rewind_body,util/request.py:184,verified,调用类型: direct,call_graph
+F0231,调用链,调用链-模块内,Retry._sleep_backoff 调用 Retry.get_backoff_time,util/retry.py:380,verified,调用类型: self_method,call_graph
+F0232,调用链,调用链-模块内,Retry.get_retry_after 调用 Retry.parse_retry_after,util/retry.py:369,verified,调用类型: self_method,call_graph
+F0233,调用链,调用链-模块内,Retry.increment 调用 Retry._is_connection_error,util/retry.py:500,verified,调用类型: self_method,call_graph
+F0234,调用链,调用链-模块内,Retry.increment 调用 Retry._is_read_error,util/retry.py:507,verified,调用类型: self_method,call_graph
+F0235,调用链,调用链-模块内,Retry.increment 调用 Retry._is_method_retryable,util/retry.py:509,verified,调用类型: self_method,call_graph
+F0236,调用链,调用链-模块内,Retry.increment 调用 Retry.new,util/retry.py:543,verified,调用类型: self_method,call_graph
+F0237,调用链,调用链-模块内,Retry.is_retry 调用 Retry._is_method_retryable,util/retry.py:432,verified,调用类型: self_method,call_graph
+F0238,调用链,调用链-模块内,Retry.sleep 调用 Retry.sleep_for_retry,util/retry.py:395,verified,调用类型: self_method,call_graph
+F0239,调用链,调用链-模块内,Retry.sleep 调用 Retry._sleep_backoff,util/retry.py:399,verified,调用类型: self_method,call_graph
+F0240,调用链,调用链-模块内,Retry.sleep_for_retry 调用 Retry.get_retry_after,util/retry.py:372,verified,调用类型: self_method,call_graph
+F0241,调用链,调用链-模块内,match_hostname 调用 _dnsname_match,util/ssl_match_hostname.py:125,verified,调用类型: direct,call_graph
+F0242,调用链,调用链-模块内,match_hostname 调用 _ipaddress_match,util/ssl_match_hostname.py:129,verified,调用类型: direct,call_graph
+F0243,调用链,调用链-模块内,SSLTransport.__exit__ 调用 SSLTransport.close,util/ssltransport.py:76,verified,调用类型: self_method,call_graph
+F0244,调用链,调用链-模块内,SSLTransport.__init__ 调用 SSLTransport._ssl_io_loop,util/ssltransport.py:70,verified,调用类型: self_method,call_graph
+F0245,调用链,调用链-模块内,SSLTransport._wrap_ssl_read 调用 SSLTransport._ssl_io_loop,util/ssltransport.py:211,verified,调用类型: self_method,call_graph
+F0246,调用链,调用链-模块内,SSLTransport.read 调用 SSLTransport._wrap_ssl_read,util/ssltransport.py:82,verified,调用类型: self_method,call_graph
+F0247,调用链,调用链-模块内,SSLTransport.recv 调用 SSLTransport._wrap_ssl_read,util/ssltransport.py:87,verified,调用类型: self_method,call_graph
+F0248,调用链,调用链-模块内,SSLTransport.recv_into 调用 SSLTransport.read,util/ssltransport.py:99,verified,调用类型: self_method,call_graph
+F0249,调用链,调用链-模块内,SSLTransport.send 调用 SSLTransport._ssl_io_loop,util/ssltransport.py:114,verified,调用类型: self_method,call_graph
+F0250,调用链,调用链-模块内,SSLTransport.sendall 调用 SSLTransport.send,util/ssltransport.py:108,verified,调用类型: self_method,call_graph
+F0251,调用链,调用链-模块内,SSLTransport.unwrap 调用 SSLTransport._ssl_io_loop,util/ssltransport.py:169,verified,调用类型: self_method,call_graph
+F0252,调用链,调用链-模块内,Timeout.__init__ 调用 Timeout._validate_timeout,util/timeout.py:115,verified,调用类型: self_method,call_graph
+F0253,调用链,调用链-模块内,Timeout.read_timeout 调用 Timeout.get_connect_duration,util/timeout.py:271,verified,调用类型: self_method,call_graph
+F0254,调用链,调用链-模块内,Timeout.read_timeout 调用 Timeout.resolve_default_timeout,util/timeout.py:275,verified,调用类型: self_method,call_graph
+F0255,调用链,调用链-模块内,_encode_target 调用 _encode_invalid_chars,util/url.py:464,verified,调用类型: direct,call_graph
+F0256,调用链,调用链-模块内,_normalize_host_percent_encoding 调用 _decode_percent_encoding,util/url.py:419,verified,调用类型: direct,call_graph
+F0257,调用链,调用链-模块内,_normalize_zone_id_percent_encoding 调用 _decode_percent_encoding,util/url.py:428,verified,调用类型: direct,call_graph
+F0258,调用链,调用链-模块内,parse_url 调用 _normalize_host,util/url.py:549,verified,调用类型: direct,call_graph
+F0259,调用链,调用链-模块内,parse_url 调用 _remove_path_dot_segments,util/url.py:552,verified,调用类型: direct,call_graph
+F0260,调用链,调用链-模块内,parse_url 调用 _encode_invalid_chars,util/url.py:553,verified,调用类型: direct,call_graph
+F0261,调用链,调用链-模块内,wait_for_read 调用 wait_for_socket,util/wait.py:117,verified,调用类型: direct,call_graph
+F0262,调用链,调用链-模块内,wait_for_socket 调用 _have_working_poll,util/wait.py:106,verified,调用类型: direct,call_graph
+F0263,调用链,调用链-模块内,wait_for_socket 调用 wait_for_socket,util/wait.py:110,verified,调用类型: direct,call_graph
+F0264,调用链,调用链-模块内,wait_for_write 调用 wait_for_socket,util/wait.py:124,verified,调用类型: direct,call_graph
+F0265,调用链,入口点,HTTPConnection.host 是系统入口点,urllib3/connection.py:224,verified,出度 0，标签: 无,call_graph
+F0266,调用链,入口点,HTTPConnection.connect 是系统入口点,urllib3/connection.py:397,verified,出度 2，标签: 无,call_graph
+F0267,调用链,入口点,HTTPConnection.is_connected 是系统入口点,urllib3/connection.py:419,verified,出度 1，标签: 无,call_graph
+F0268,调用链,入口点,HTTPConnection.proxy_is_forwarding 是系统入口点,urllib3/connection.py:429,verified,出度 0，标签: 无,call_graph
+F0269,调用链,入口点,HTTPConnection.proxy_is_tunneling 是系统入口点,urllib3/connection.py:436,verified,出度 0，标签: 无,call_graph
+F0270,调用链,入口点,HTTPConnection.request_chunked 是系统入口点,urllib3/connection.py:588,verified,出度 1，标签: 无,call_graph
+F0271,调用链,入口点,HTTPConnection.getresponse 是系统入口点,urllib3/connection.py:607,verified,"出度 3，标签: orchestrator, query",call_graph
+F0272,调用链,入口点,HTTPSConnection.set_cert 是系统入口点,urllib3/connection.py:751,verified,出度 1，标签: update,call_graph
+F0273,调用链,入口点,HTTPSConnection.connect 是系统入口点,urllib3/connection.py:792,verified,出度 3，标签: orchestrator,call_graph
+F0274,调用链,入口点,connection_from_url 是系统入口点,urllib3/connectionpool.py:1140,verified,出度 1，标签: 无,call_graph
+F0275,调用链,入口点,HTTPConnectionPool.close 是系统入口点,urllib3/connectionpool.py:564,verified,"出度 1，标签: state_change, update",call_graph
+F0276,调用链,入口点,format_header_param_rfc2231 是系统入口点,urllib3/fields.py:31,verified,出度 0，标签: 无,call_graph
+F0277,调用链,入口点,format_header_param_html5 是系统入口点,urllib3/fields.py:117,verified,出度 1，标签: 无,call_graph
+F0278,调用链,入口点,format_header_param 是系统入口点,urllib3/fields.py:135,verified,出度 1，标签: 无,call_graph
+F0279,调用链,入口点,RequestField.from_tuples 是系统入口点,urllib3/fields.py:200,verified,出度 1，标签: 无,call_graph
+F0280,调用链,入口点,RequestField.render_headers 是系统入口点,urllib3/fields.py:291,verified,出度 0，标签: 无,call_graph
+F0281,调用链,入口点,RequestField.make_multipart 是系统入口点,urllib3/fields.py:310,verified,出度 1，标签: 无,call_graph
+F0282,调用链,入口点,PoolManager.connection_from_url 是系统入口点,urllib3/poolmanager.py:372,verified,出度 2，标签: 无,call_graph
+F0283,调用链,入口点,ProxyManager.urlopen 是系统入口点,urllib3/poolmanager.py:661,verified,"出度 3，标签: orchestrator, state_change",call_graph
+F0284,调用链,入口点,BrotliDecoder.decompress 是系统入口点,urllib3/response.py:228,verified,出度 3，标签: orchestrator,call_graph
+F0285,调用链,入口点,BaseHTTPResponse.json 是系统入口点,urllib3/response.py:535,verified,出度 0，标签: 无,call_graph
+F0286,调用链,入口点,BaseHTTPResponse.readinto 是系统入口点,urllib3/response.py:689,verified,出度 1，标签: 无,call_graph
+F0287,调用链,入口点,HTTPResponse.drain_conn 是系统入口点,urllib3/response.py:817,verified,出度 1，标签: 无,call_graph
+F0288,调用链,入口点,HTTPResponse.data 是系统入口点,urllib3/response.py:835,verified,出度 1，标签: 无,call_graph
+F0289,调用链,入口点,HTTPResponse.isclosed 是系统入口点,urllib3/response.py:849,verified,"出度 1，标签: state_change, update",call_graph
+F0290,调用链,入口点,HTTPResponse.tell 是系统入口点,urllib3/response.py:852,verified,出度 0，标签: 无,call_graph
+F0291,调用链,入口点,HTTPResponse.read1 是系统入口点,urllib3/response.py:1191,verified,出度 2，标签: 无,call_graph
+F0292,调用链,入口点,BaseHTTPConnection.is_closed 是系统入口点,urllib3/_base_connection.py:100,verified,"出度 0，标签: state_change, update",call_graph
+F0293,调用链,入口点,BaseHTTPConnection.is_connected 是系统入口点,urllib3/_base_connection.py:107,verified,出度 0，标签: 无,call_graph
+F0294,调用链,入口点,BaseHTTPConnection.has_connected_to_proxy 是系统入口点,urllib3/_base_connection.py:111,verified,出度 0，标签: query,call_graph
+F0295,调用链,入口点,HTTPHeaderDict.getlist 是系统入口点,urllib3/_collections.py:379,verified,出度 0，标签: query,call_graph
+F0296,调用链,入口点,HTTPHeaderDict.iteritems 是系统入口点,urllib3/_collections.py:442,verified,出度 0，标签: 无,call_graph
+F0297,调用链,入口点,RequestMethods.request 是系统入口点,urllib3/_request_methods.py:69,verified,出度 2，标签: 无,call_graph
+F0298,调用链,入口点,add_stderr_logger 是系统入口点,urllib3/__init__.py:74,verified,出度 0，标签: creation,call_graph
+F0299,调用链,入口点,disable_warnings 是系统入口点,urllib3/__init__.py:107,verified,出度 0，标签: 无,call_graph
+F0300,调用链,入口点,request 是系统入口点,urllib3/__init__.py:117,verified,出度 0，标签: 无,call_graph
+F0301,调用链,入口点,inject_into_urllib3 是系统入口点,contrib/pyopenssl.py:141,verified,出度 1，标签: 无,call_graph
+F0302,调用链,入口点,extract_from_urllib3 是系统入口点,contrib/pyopenssl.py:152,verified,出度 0，标签: 无,call_graph
+F0303,调用链,入口点,WrappedSocket.sendall 是系统入口点,contrib/pyopenssl.py:372,verified,出度 1，标签: 无,call_graph
+F0304,调用链,入口点,EmscriptenHTTPConnection.is_closed 是系统入口点,emscripten/connection.py:144,verified,"出度 0，标签: state_change, update",call_graph
+F0305,调用链,入口点,EmscriptenHTTPConnection.is_connected 是系统入口点,emscripten/connection.py:152,verified,出度 0，标签: 无,call_graph
+F0306,调用链,入口点,EmscriptenHTTPConnection.has_connected_to_proxy 是系统入口点,emscripten/connection.py:157,verified,出度 0，标签: query,call_graph
+F0307,调用链,入口点,send_streaming_request 是系统入口点,emscripten/fetch.py:449,verified,出度 5，标签: orchestrator,call_graph
+F0308,调用链,入口点,send_request 是系统入口点,emscripten/fetch.py:499,verified,出度 6，标签: orchestrator,call_graph
+F0309,调用链,入口点,_ReadStream.closed 是系统入口点,emscripten/fetch.py:127,verified,"出度 1，标签: state_change, update",call_graph
+F0310,调用链,入口点,_ReadStream.readinto 是系统入口点,emscripten/fetch.py:153,verified,出度 2，标签: 无,call_graph
+F0311,调用链,入口点,_StreamingFetcher.send 是系统入口点,emscripten/fetch.py:229,verified,出度 1，标签: 无,call_graph
+F0312,调用链,入口点,_JSPIReadStream.closed 是系统入口点,emscripten/fetch.py:351,verified,"出度 1，标签: state_change, update",call_graph
+F0313,调用链,入口点,_JSPIReadStream.readinto 是系统入口点,emscripten/fetch.py:392,verified,出度 2，标签: 无,call_graph
+F0314,调用链,入口点,EmscriptenHttpResponseWrapper.stream 是系统入口点,emscripten/response.py:77,verified,出度 1，标签: 无,call_graph
+F0315,调用链,入口点,EmscriptenHttpResponseWrapper.read_chunked 是系统入口点,emscripten/response.py:180,verified,出度 1，标签: 无,call_graph
+F0316,调用链,入口点,EmscriptenHttpResponseWrapper.drain_conn 是系统入口点,emscripten/response.py:199,verified,出度 1，标签: 无,call_graph
+F0317,调用链,入口点,EmscriptenHttpResponseWrapper.data 是系统入口点,emscripten/response.py:203,verified,出度 1，标签: 无,call_graph
+F0318,调用链,入口点,EmscriptenHttpResponseWrapper.json 是系统入口点,emscripten/response.py:209,verified,出度 0，标签: 无,call_graph
+F0319,调用链,入口点,HTTP2Connection.request 是系统入口点,http2/connection.py:269,verified,出度 7，标签: orchestrator,call_graph
+F0320,调用链,入口点,HTTP2Connection.close 是系统入口点,http2/connection.py:308,verified,"出度 1，标签: state_change, update",call_graph
+F0321,调用链,入口点,create_connection 是系统入口点,util/connection.py:27,verified,出度 2，标签: creation,call_graph
+F0322,调用链,入口点,make_headers 是系统入口点,util/request.py:60,verified,出度 0，标签: 无,call_graph
+F0323,调用链,入口点,Retry.from_int 是系统入口点,util/retry.py:303,verified,出度 0，标签: 无,call_graph
+F0324,调用链,入口点,Retry.sleep 是系统入口点,util/retry.py:385,verified,出度 2，标签: 无,call_graph
+F0325,调用链,入口点,Retry.is_retry 是系统入口点,util/retry.py:423,verified,出度 1，标签: 无,call_graph
+F0326,调用链,入口点,Retry.is_exhausted 是系统入口点,util/retry.py:445,verified,出度 0，标签: 无,call_graph
+F0327,调用链,入口点,Retry.increment 是系统入口点,util/retry.py:464,verified,出度 4，标签: orchestrator,call_graph
+F0328,调用链,入口点,SSLTransport.recv 是系统入口点,util/ssltransport.py:84,verified,出度 1，标签: 无,call_graph
+F0329,调用链,入口点,SSLTransport.recv_into 是系统入口点,util/ssltransport.py:89,verified,出度 1，标签: 无,call_graph
+F0330,调用链,入口点,SSLTransport.sendall 是系统入口点,util/ssltransport.py:101,verified,出度 1，标签: 无,call_graph
+F0331,调用链,入口点,SSLTransport.makefile 是系统入口点,util/ssltransport.py:116,verified,出度 0，标签: 无,call_graph
+F0332,调用链,入口点,SSLTransport.unwrap 是系统入口点,util/ssltransport.py:168,verified,出度 1，标签: 无,call_graph
+F0333,调用链,入口点,assert_fingerprint 是系统入口点,util/ssl_.py:108,verified,出度 0，标签: 无,call_graph
+F0334,调用链,入口点,Timeout.from_float 是系统入口点,util/timeout.py:173,verified,出度 0，标签: 无,call_graph
+F0335,调用链,入口点,Timeout.clone 是系统入口点,util/timeout.py:188,verified,出度 0，标签: 无,call_graph
+F0336,调用链,入口点,Timeout.start_connect 是系统入口点,util/timeout.py:202,verified,出度 0，标签: 无,call_graph
+F0337,调用链,入口点,Timeout.connect_timeout 是系统入口点,util/timeout.py:228,verified,出度 0，标签: 无,call_graph
+F0338,调用链,入口点,Timeout.read_timeout 是系统入口点,util/timeout.py:246,verified,出度 3，标签: orchestrator,call_graph
+F0339,调用链,入口点,Url.auth_decoded 是系统入口点,util/url.py:127,verified,出度 0，标签: 无,call_graph
+F0340,调用链,入口点,Url.auth_decoded_joined 是系统入口点,util/url.py:144,verified,出度 0，标签: 无,call_graph
+F0341,调用链,入口点,Url.hostname 是系统入口点,util/url.py:167,verified,出度 0，标签: 无,call_graph
+F0342,调用链,入口点,Url.request_uri 是系统入口点,util/url.py:172,verified,出度 0，标签: 无,call_graph
+F0343,调用链,入口点,Url.authority 是系统入口点,util/url.py:182,verified,出度 0，标签: 无,call_graph
+F0344,调用链,入口点,Url.netloc 是系统入口点,util/url.py:198,verified,出度 0，标签: 无,call_graph
+F0345,调用链,入口点,Url.url 是系统入口点,util/url.py:212,verified,出度 0，标签: 无,call_graph
+F0346,调用链,入口点,wait_for_write 是系统入口点,util/wait.py:120,verified,出度 1，标签: 无,call_graph
+F0347,状态变更,状态属性,"HTTPConnection 拥有 5 个状态属性: _has_connected_to_proxy, _response_options, proxy, proxy_config, socket_options",urllib3/connection.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0348,状态变更,属性写入,"HTTPConnection.__init__() 修改 5 个属性: _has_connected_to_proxy, _response_options, proxy, proxy_config, socket_options",urllib3/connection.py:167,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0349,状态变更,属性写入,"HTTPConnection.close() 修改 2 个属性: _has_connected_to_proxy, _response_options",urllib3/connection.py:442,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0350,状态变更,属性写入,HTTPConnection.connect() 修改 1 个属性: _has_connected_to_proxy,urllib3/connection.py:397,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0351,状态变更,属性写入,HTTPConnection.getresponse() 修改 1 个属性: _response_options,urllib3/connection.py:607,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0352,状态变更,属性写入,HTTPConnection.request() 修改 1 个属性: _response_options,urllib3/connection.py:491,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0353,状态变更,查询方法,"HTTPConnection 有 2 个纯查询方法: has_connected_to_proxy, proxy_is_forwarding",urllib3/connection.py,verified,方法体中只读取不修改状态属性,state_tracker
+F0354,状态变更,状态属性,"HTTPSConnection 拥有 15 个状态属性: _connect_callback, assert_fingerprint, assert_hostname, ca_cert_data, ca_cert_dir, ca_certs",urllib3/connection.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0355,状态变更,属性写入,"HTTPSConnection.__init__() 修改 15 个属性: _connect_callback, assert_fingerprint, assert_hostname, ca_cert_data, ca_cert_dir",urllib3/connection.py:689,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0356,状态变更,属性写入,"HTTPSConnection.set_cert() 修改 9 个属性: assert_fingerprint, assert_hostname, ca_cert_data, ca_cert_dir, ca_certs",urllib3/connection.py:751,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0357,状态变更,查询方法,HTTPSConnection 有 1 个纯查询方法: connect,urllib3/connection.py,verified,方法体中只读取不修改状态属性,state_tracker
+F0358,状态变更,状态属性,"ConnectionPool 拥有 3 个状态属性: _tunnel_host, host, port",urllib3/connectionpool.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0359,状态变更,属性写入,"ConnectionPool.__init__() 修改 3 个属性: _tunnel_host, host, port",urllib3/connectionpool.py:82,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0360,状态变更,状态属性,"HTTPConnectionPool 拥有 9 个状态属性: block, conn_kw, num_connections, num_requests, proxy, proxy_config",urllib3/connectionpool.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0361,状态变更,属性写入,"HTTPConnectionPool.__init__() 修改 11 个属性: block, conn_kw, conn_kw.proxy, conn_kw.proxy_config, num_connections",urllib3/connectionpool.py:181,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0362,状态变更,属性写入,HTTPConnectionPool._make_request() 修改 1 个属性: num_requests,urllib3/connectionpool.py:383,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0363,状态变更,属性写入,HTTPConnectionPool._new_conn() 修改 1 个属性: num_connections,urllib3/connectionpool.py:242,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0364,状态变更,查询方法,HTTPConnectionPool 有 1 个纯查询方法: urlopen,urllib3/connectionpool.py,verified,方法体中只读取不修改状态属性,state_tracker
+F0365,状态变更,状态属性,"HTTPSConnectionPool 拥有 11 个状态属性: assert_fingerprint, assert_hostname, ca_cert_dir, ca_certs, cert_file, cert_reqs",urllib3/connectionpool.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0366,状态变更,属性写入,"HTTPSConnectionPool.__init__() 修改 11 个属性: assert_fingerprint, assert_hostname, ca_cert_dir, ca_certs, cert_file",urllib3/connectionpool.py:1012,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0367,状态变更,状态属性,"PoolError 拥有 2 个状态属性: _message, pool",urllib3/exceptions.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0368,状态变更,属性写入,"PoolError.__init__() 修改 2 个属性: _message, pool",urllib3/exceptions.py:32,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0369,状态变更,状态属性,RequestError 拥有 1 个状态属性: url,urllib3/exceptions.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0370,状态变更,属性写入,RequestError.__init__() 修改 1 个属性: url,urllib3/exceptions.py:45,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0371,状态变更,状态属性,ProxyError 拥有 1 个状态属性: original_error,urllib3/exceptions.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0372,状态变更,属性写入,ProxyError.__init__() 修改 1 个属性: original_error,urllib3/exceptions.py:64,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0373,状态变更,状态属性,MaxRetryError 拥有 1 个状态属性: reason,urllib3/exceptions.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0374,状态变更,属性写入,MaxRetryError.__init__() 修改 1 个属性: reason,urllib3/exceptions.py:95,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0375,状态变更,状态属性,HostChangedError 拥有 1 个状态属性: retries,urllib3/exceptions.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0376,状态变更,属性写入,HostChangedError.__init__() 修改 1 个属性: retries,urllib3/exceptions.py:112,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0377,状态变更,状态属性,"NewConnectionError 拥有 2 个状态属性: _message, conn",urllib3/exceptions.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0378,状态变更,属性写入,"NewConnectionError.__init__() 修改 2 个属性: _message, conn",urllib3/exceptions.py:145,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0379,状态变更,查询方法,NewConnectionError 有 1 个纯查询方法: pool,urllib3/exceptions.py,verified,方法体中只读取不修改状态属性,state_tracker
+F0380,状态变更,状态属性,"NameResolutionError 拥有 2 个状态属性: _host, _reason",urllib3/exceptions.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0381,状态变更,属性写入,"NameResolutionError.__init__() 修改 2 个属性: _host, _reason",urllib3/exceptions.py:169,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0382,状态变更,状态属性,LocationParseError 拥有 1 个状态属性: location,urllib3/exceptions.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0383,状态变更,属性写入,LocationParseError.__init__() 修改 1 个属性: location,urllib3/exceptions.py:199,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0384,状态变更,状态属性,URLSchemeUnknown 拥有 1 个状态属性: scheme,urllib3/exceptions.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0385,状态变更,属性写入,URLSchemeUnknown.__init__() 修改 1 个属性: scheme,urllib3/exceptions.py:209,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0386,状态变更,类常量,"ResponseError 定义了 2 个常量: GENERIC_ERROR, SPECIFIC_ERROR",urllib3/exceptions.py,verified,UPPER_CASE 命名的类级变量,state_tracker
+F0387,状态变更,状态属性,"IncompleteRead 拥有 2 个状态属性: expected, partial",urllib3/exceptions.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0388,状态变更,属性写入,"IncompleteRead.__init__() 修改 2 个属性: expected, partial",urllib3/exceptions.py:272,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0389,状态变更,状态属性,"InvalidChunkLength 拥有 2 个状态属性: length, response",urllib3/exceptions.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0390,状态变更,属性写入,"InvalidChunkLength.__init__() 修改 2 个属性: length, response",urllib3/exceptions.py:286,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0391,状态变更,状态属性,"RequestField 拥有 3 个状态属性: _filename, _name, data",urllib3/fields.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0392,状态变更,属性写入,"RequestField.__init__() 修改 3 个属性: _filename, _name, data",urllib3/fields.py:171,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0393,状态变更,属性写入,"RequestField.make_multipart() 修改 3 个属性: headers.Content-Disposition, headers.Content-Location, headers.Content-Type",urllib3/fields.py:310,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0394,状态变更,状态属性,"PoolManager 拥有 4 个状态属性: connection_pool_kw, key_fn_by_scheme, pool_classes_by_scheme, pools",urllib3/poolmanager.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0395,状态变更,属性写入,"PoolManager.__init__() 修改 4 个属性: connection_pool_kw, key_fn_by_scheme, pool_classes_by_scheme, pools",urllib3/poolmanager.py:201,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0396,状态变更,属性写入,PoolManager.clear() 修改 1 个属性: pools,urllib3/poolmanager.py:283,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0397,状态变更,属性写入,PoolManager.connection_from_pool_key() 修改 1 个属性: pools,urllib3/poolmanager.py:346,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0398,状态变更,查询方法,PoolManager 有 1 个纯查询方法: connection_from_context,urllib3/poolmanager.py,verified,方法体中只读取不修改状态属性,state_tracker
+F0399,状态变更,状态属性,"ProxyManager 拥有 4 个状态属性: proxy, proxy_config, proxy_headers, proxy_ssl_context",urllib3/poolmanager.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0400,状态变更,属性写入,"ProxyManager.__init__() 修改 4 个属性: proxy, proxy_config, proxy_headers, proxy_ssl_context",urllib3/poolmanager.py:570,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0401,状态变更,查询方法,"ProxyManager 有 2 个纯查询方法: connection_from_host, urlopen",urllib3/poolmanager.py,verified,方法体中只读取不修改状态属性,state_tracker
+F0402,状态变更,状态属性,"DeflateDecoder 拥有 4 个状态属性: _first_try, _first_try_data, _obj, _unfed_data",urllib3/response.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0403,状态变更,属性写入,"DeflateDecoder.__init__() 修改 4 个属性: _first_try, _first_try_data, _obj, _unfed_data",urllib3/response.py:77,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0404,状态变更,属性写入,"DeflateDecoder.decompress() 修改 4 个属性: _first_try, _first_try_data, _obj, _unfed_data",urllib3/response.py:83,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0405,状态变更,查询方法,"DeflateDecoder 有 2 个纯查询方法: has_unconsumed_tail, flush",urllib3/response.py,verified,方法体中只读取不修改状态属性,state_tracker
+F0406,状态变更,类常量,"GzipDecoderState 定义了 3 个常量: FIRST_MEMBER, OTHER_MEMBERS, SWALLOW_DATA",urllib3/response.py,verified,UPPER_CASE 命名的类级变量,state_tracker
+F0407,状态变更,状态属性,"GzipDecoder 拥有 3 个状态属性: _obj, _state, _unconsumed_tail",urllib3/response.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0408,状态变更,属性写入,"GzipDecoder.__init__() 修改 3 个属性: _obj, _state, _unconsumed_tail",urllib3/response.py:148,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0409,状态变更,属性写入,"GzipDecoder.decompress() 修改 3 个属性: _obj, _state, _unconsumed_tail",urllib3/response.py:153,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0410,状态变更,查询方法,"GzipDecoder 有 2 个纯查询方法: has_unconsumed_tail, flush",urllib3/response.py,verified,方法体中只读取不修改状态属性,state_tracker
+F0411,状态变更,状态属性,MultiDecoder 拥有 1 个状态属性: _decoders,urllib3/response.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0412,状态变更,属性写入,MultiDecoder.__init__() 修改 1 个属性: _decoders,urllib3/response.py:329,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0413,状态变更,查询方法,"MultiDecoder 有 3 个纯查询方法: flush, decompress, has_unconsumed_tail",urllib3/response.py,verified,方法体中只读取不修改状态属性,state_tracker
+F0414,状态变更,状态属性,"BaseHTTPResponse 拥有 9 个状态属性: _decoder_initialized, _has_decoded_content, chunked, decode_content, reason, retries",urllib3/response.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0415,状态变更,类常量,"BaseHTTPResponse 定义了 2 个常量: CONTENT_DECODERS, REDIRECT_STATUSES",urllib3/response.py,verified,UPPER_CASE 命名的类级变量,state_tracker
+F0416,状态变更,属性写入,"BaseHTTPResponse.__init__() 修改 9 个属性: _decoder_initialized, _has_decoded_content, chunked, decode_content, reason",urllib3/response.py:482,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0417,状态变更,属性写入,BaseHTTPResponse._decode() 修改 1 个属性: _has_decoded_content,urllib3/response.py:642,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0418,状态变更,属性写入,BaseHTTPResponse._init_decoder() 修改 1 个属性: _decoder_initialized,urllib3/response.py:618,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0419,状态变更,查询方法,BaseHTTPResponse 有 1 个纯查询方法: get_redirect_location,urllib3/response.py,verified,方法体中只读取不修改状态属性,state_tracker
+F0420,状态变更,状态属性,"HTTPResponse 拥有 12 个状态属性: _body, _connection, _decoded_buffer, _fp_bytes_read, _original_response, _pool",urllib3/response.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0421,状态变更,属性写入,"HTTPResponse.__init__() 修改 12 个属性: _body, _connection, _decoded_buffer, _fp_bytes_read, _original_response",urllib3/response.py:745,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0422,状态变更,属性写入,"HTTPResponse._raw_read() 修改 2 个属性: _fp_bytes_read, length_remaining",urllib3/response.py:1031,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0423,状态变更,属性写入,HTTPResponse.close() 修改 1 个属性: _sock_shutdown,urllib3/response.py:1309,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0424,状态变更,属性写入,HTTPResponse.drain_conn() 修改 1 个属性: _decoded_buffer,urllib3/response.py:817,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0425,状态变更,属性写入,"HTTPResponse.read() 修改 2 个属性: _body, _uncached_read_occurred",urllib3/response.py:1083,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0426,状态变更,属性写入,HTTPResponse.read1() 修改 1 个属性: _uncached_read_occurred,urllib3/response.py:1191,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0427,状态变更,属性写入,HTTPResponse.read_chunked() 修改 1 个属性: _uncached_read_occurred,urllib3/response.py:1407,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0428,状态变更,属性写入,HTTPResponse.release_conn() 修改 1 个属性: _connection,urllib3/response.py:810,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0429,状态变更,查询方法,"HTTPResponse 有 6 个纯查询方法: data, connection, tell, stream, shutdown",urllib3/response.py,verified,方法体中只读取不修改状态属性,state_tracker
+F0430,状态变更,状态属性,"RecentlyUsedContainer 拥有 4 个状态属性: _container, _maxsize, dispose_func, lock",urllib3/_collections.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0431,状态变更,属性写入,RecentlyUsedContainer.__delitem__() 修改 1 个属性: _container,urllib3/_collections.py:125,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0432,状态变更,属性写入,RecentlyUsedContainer.__getitem__() 修改 1 个属性: _container,urllib3/_collections.py:93,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0433,状态变更,属性写入,"RecentlyUsedContainer.__init__() 修改 4 个属性: _container, _maxsize, dispose_func, lock",urllib3/_collections.py:82,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0434,状态变更,属性写入,RecentlyUsedContainer.__setitem__() 修改 1 个属性: _container,urllib3/_collections.py:100,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0435,状态变更,属性写入,RecentlyUsedContainer.clear() 修改 1 个属性: _container,urllib3/_collections.py:141,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0436,状态变更,查询方法,RecentlyUsedContainer 有 1 个纯查询方法: keys,urllib3/_collections.py,verified,方法体中只读取不修改状态属性,state_tracker
+F0437,状态变更,状态属性,HTTPHeaderDictItemView 拥有 1 个状态属性: _headers,urllib3/_collections.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0438,状态变更,属性写入,HTTPHeaderDictItemView.__init__() 修改 1 个属性: _headers,urllib3/_collections.py:187,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0439,状态变更,状态属性,HTTPHeaderDict 拥有 1 个状态属性: _container,urllib3/_collections.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0440,状态变更,集合属性,HTTPHeaderDict 有 1 个集合型属性: _container,urllib3/_collections.py,verified,初始化为 dict/list/set 的属性,state_tracker
+F0441,状态变更,属性写入,HTTPHeaderDict.__init__() 修改 1 个属性: _container,urllib3/_collections.py:240,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0442,状态变更,属性写入,HTTPHeaderDict.__setitem__() 修改 1 个属性: _container,urllib3/_collections.py:251,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0443,状态变更,属性写入,HTTPHeaderDict._copy_from() 修改 1 个属性: _container,urllib3/_collections.py:432,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0444,状态变更,属性写入,HTTPHeaderDict.add() 修改 1 个属性: _container,urllib3/_collections.py:306,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0445,状态变更,查询方法,"HTTPHeaderDict 有 3 个纯查询方法: getlist, iteritems, itermerged",urllib3/_collections.py,verified,方法体中只读取不修改状态属性,state_tracker
+F0446,状态变更,状态属性,RequestMethods 拥有 1 个状态属性: headers,urllib3/_request_methods.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0447,状态变更,属性写入,RequestMethods.__init__() 修改 1 个属性: headers,urllib3/_request_methods.py:51,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0448,状态变更,查询方法,"RequestMethods 有 3 个纯查询方法: request, request_encode_url, request_encode_body",urllib3/_request_methods.py,verified,方法体中只读取不修改状态属性,state_tracker
+F0449,状态变更,状态属性,"WrappedSocket 拥有 5 个状态属性: _closed, _io_refs, connection, socket, suppress_ragged_eofs",contrib/pyopenssl.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0450,状态变更,属性写入,"WrappedSocket.__init__() 修改 5 个属性: _closed, _io_refs, connection, socket, suppress_ragged_eofs",contrib/pyopenssl.py:288,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0451,状态变更,属性写入,WrappedSocket._decref_socketios() 修改 1 个属性: _io_refs,contrib/pyopenssl.py:304,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0452,状态变更,属性写入,WrappedSocket.close() 修改 1 个属性: _closed,contrib/pyopenssl.py:386,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0453,状态变更,查询方法,"WrappedSocket 有 8 个纯查询方法: fileno, recv, recv_into, settimeout, shutdown",contrib/pyopenssl.py,verified,方法体中只读取不修改状态属性,state_tracker
+F0454,状态变更,状态属性,"PyOpenSSLContext 拥有 4 个状态属性: _ctx, _options, check_hostname, protocol",contrib/pyopenssl.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0455,状态变更,属性写入,"PyOpenSSLContext.__init__() 修改 4 个属性: _ctx, _options, check_hostname, protocol",contrib/pyopenssl.py:439,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0456,状态变更,属性写入,PyOpenSSLContext.options() 修改 1 个属性: _options,contrib/pyopenssl.py:453,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0457,状态变更,查询方法,"PyOpenSSLContext 有 8 个纯查询方法: verify_flags, verify_mode, set_default_verify_paths, set_ciphers, load_verify_locations",contrib/pyopenssl.py,verified,方法体中只读取不修改状态属性,state_tracker
+F0458,状态变更,状态属性,SOCKSConnection 拥有 1 个状态属性: _socks_options,contrib/socks.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0459,状态变更,属性写入,SOCKSConnection.__init__() 修改 1 个属性: _socks_options,contrib/socks.py:89,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0460,状态变更,状态属性,"SOCKSProxyManager 拥有 2 个状态属性: pool_classes_by_scheme, proxy_url",contrib/socks.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0461,状态变更,属性写入,"SOCKSProxyManager.__init__() 修改 2 个属性: pool_classes_by_scheme, proxy_url",contrib/socks.py:184,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0462,状态变更,状态属性,"EmscriptenHTTPConnection 拥有 12 个状态属性: _closed, _response, blocksize, host, is_verified, port",emscripten/connection.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0463,状态变更,属性写入,"EmscriptenHTTPConnection.__init__() 修改 12 个属性: _closed, _response, blocksize, host, is_verified",emscripten/connection.py:46,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0464,状态变更,属性写入,"EmscriptenHTTPConnection.close() 修改 2 个属性: _closed, _response",emscripten/connection.py:139,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0465,状态变更,属性写入,"EmscriptenHTTPConnection.request() 修改 2 个属性: _closed, _response",emscripten/connection.py:85,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0466,状态变更,查询方法,"EmscriptenHTTPConnection 有 2 个纯查询方法: getresponse, is_closed",emscripten/connection.py,verified,方法体中只读取不修改状态属性,state_tracker
+F0467,状态变更,状态属性,"EmscriptenHTTPSConnection 拥有 16 个状态属性: assert_fingerprint, assert_hostname, ca_cert_data, ca_cert_dir, ca_certs, cert_file",emscripten/connection.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0468,状态变更,属性写入,"EmscriptenHTTPSConnection.__init__() 修改 16 个属性: assert_fingerprint, assert_hostname, ca_cert_data, ca_cert_dir, ca_certs",emscripten/connection.py:182,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0469,状态变更,状态属性,"_RequestError 拥有 3 个状态属性: message, request, response",emscripten/fetch.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0470,状态变更,属性写入,"_RequestError.__init__() 修改 3 个属性: message, request, response",emscripten/fetch.py:72,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0471,状态变更,状态属性,"_ReadStream 拥有 9 个状态属性: _is_closed, byte_buffer, connection_id, int_buffer, is_live, read_len",emscripten/fetch.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0472,状态变更,属性写入,"_ReadStream.__init__() 修改 9 个属性: _is_closed, byte_buffer, connection_id, int_buffer, is_live",emscripten/fetch.py:98,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0473,状态变更,属性写入,"_ReadStream.close() 修改 6 个属性: _is_closed, byte_buffer, int_buffer, is_live, read_len",emscripten/fetch.py:130,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0474,状态变更,属性写入,"_ReadStream.readinto() 修改 3 个属性: is_live, read_len, read_pos",emscripten/fetch.py:153,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0475,状态变更,查询方法,_ReadStream 有 1 个纯查询方法: is_closed,emscripten/fetch.py,verified,方法体中只读取不修改状态属性,state_tracker
+F0476,状态变更,状态属性,"_StreamingFetcher 拥有 3 个状态属性: js_worker, js_worker_ready_promise, streaming_ready",emscripten/fetch.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0477,状态变更,属性写入,"_StreamingFetcher.__init__() 修改 5 个属性: js_worker, js_worker.onerror, js_worker.onmessage, js_worker_ready_promise, streaming_ready",emscripten/fetch.py:201,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0478,状态变更,查询方法,_StreamingFetcher 有 1 个纯查询方法: send,emscripten/fetch.py,verified,方法体中只读取不修改状态属性,state_tracker
+F0479,状态变更,状态属性,"_JSPIReadStream 拥有 7 个状态属性: _is_closed, _is_done, current_buffer, current_buffer_pos, js_abort_controller, js_read_stream",emscripten/fetch.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0480,状态变更,属性写入,"_JSPIReadStream.__init__() 修改 7 个属性: _is_closed, _is_done, current_buffer, current_buffer_pos, js_abort_controller",emscripten/fetch.py:324,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0481,状态变更,属性写入,"_JSPIReadStream._get_next_buffer() 修改 3 个属性: _is_done, current_buffer, current_buffer_pos",emscripten/fetch.py:376,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0482,状态变更,属性写入,"_JSPIReadStream.close() 修改 3 个属性: _is_closed, _is_done, js_read_stream",emscripten/fetch.py:354,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0483,状态变更,属性写入,"_JSPIReadStream.readinto() 修改 2 个属性: current_buffer, current_buffer_pos",emscripten/fetch.py:392,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0484,状态变更,查询方法,_JSPIReadStream 有 1 个纯查询方法: is_closed,emscripten/fetch.py,verified,方法体中只读取不修改状态属性,state_tracker
+F0485,状态变更,属性写入,EmscriptenRequest.set_header() 修改 1 个属性: headers,emscripten/request.py:18,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0486,状态变更,状态属性,"EmscriptenHttpResponseWrapper 拥有 9 个状态属性: _body, _closed, _connection, _pool, _response, _uncached_read_occurred",emscripten/response.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0487,状态变更,属性写入,"EmscriptenHttpResponseWrapper.__init__() 修改 9 个属性: _body, _closed, _connection, _pool, _response",emscripten/response.py:31,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0488,状态变更,属性写入,"EmscriptenHttpResponseWrapper.close() 修改 2 个属性: _closed, _connection",emscripten/response.py:230,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0489,状态变更,属性写入,"EmscriptenHttpResponseWrapper.read() 修改 6 个属性: _body, _response, _response.body, _uncached_read_occurred, length_is_certain",emscripten/response.py:140,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0490,状态变更,属性写入,EmscriptenHttpResponseWrapper.release_conn() 修改 1 个属性: _connection,emscripten/response.py:192,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0491,状态变更,属性写入,EmscriptenHttpResponseWrapper.url() 修改 1 个属性: _url,emscripten/response.py:61,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0492,状态变更,查询方法,"EmscriptenHttpResponseWrapper 有 2 个纯查询方法: connection, data",emscripten/response.py,verified,方法体中只读取不修改状态属性,state_tracker
+F0493,状态变更,状态属性,"_LockedObject 拥有 2 个状态属性: _obj, lock",http2/connection.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0494,状态变更,属性写入,"_LockedObject.__init__() 修改 2 个属性: _obj, lock",http2/connection.py:68,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0495,状态变更,状态属性,HTTP2Connection 拥有 1 个状态属性: _h2_conn,http2/connection.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0496,状态变更,属性写入,HTTP2Connection.__init__() 修改 1 个属性: _h2_conn,http2/connection.py:86,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0497,状态变更,属性写入,HTTP2Connection.close() 修改 1 个属性: _h2_conn,http2/connection.py:308,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0498,状态变更,查询方法,"HTTP2Connection 有 5 个纯查询方法: connect, putrequest, endheaders, send, getresponse",http2/connection.py,verified,方法体中只读取不修改状态属性,state_tracker
+F0499,状态变更,状态属性,"HTTP2Response 拥有 2 个状态属性: _data, length_remaining",http2/connection.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0500,状态变更,属性写入,"HTTP2Response.__init__() 修改 2 个属性: _data, length_remaining",http2/connection.py:327,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0501,状态变更,查询方法,HTTP2Response 有 1 个纯查询方法: data,http2/connection.py,verified,方法体中只读取不修改状态属性,state_tracker
+F0502,状态变更,状态属性,_HTTP2ProbeCache 拥有 1 个状态属性: _lock,http2/probe.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0503,状态变更,属性写入,_HTTP2ProbeCache.__init__() 修改 1 个属性: _lock,http2/probe.py:13,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0504,状态变更,属性写入,"_HTTP2ProbeCache.acquire_and_get() 修改 2 个属性: _cache_locks, _cache_values",http2/probe.py:18,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0505,状态变更,属性写入,_HTTP2ProbeCache.set_and_release() 修改 1 个属性: _cache_values,http2/probe.py:51,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0506,状态变更,状态属性,"Retry 拥有 17 个状态属性: allowed_methods, backoff_factor, backoff_jitter, backoff_max, connect, history",util/retry.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0507,状态变更,类常量,"Retry 定义了 4 个常量: DEFAULT_ALLOWED_METHODS, RETRY_AFTER_STATUS_CODES, DEFAULT_REMOVE_HEADERS_ON_REDIRECT, DEFAULT_BACKOFF_MAX",util/retry.py,verified,UPPER_CASE 命名的类级变量,state_tracker
+F0508,状态变更,属性写入,"Retry.__init__() 修改 17 个属性: allowed_methods, backoff_factor, backoff_jitter, backoff_max, connect",util/retry.py:222,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0509,状态变更,查询方法,"Retry 有 7 个纯查询方法: new, get_backoff_time, parse_retry_after, sleep, is_retry",util/retry.py,verified,方法体中只读取不修改状态属性,state_tracker
+F0510,状态变更,状态属性,"SSLTransport 拥有 5 个状态属性: incoming, outgoing, socket, sslobj, suppress_ragged_eofs",util/ssltransport.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0511,状态变更,属性写入,"SSLTransport.__init__() 修改 5 个属性: incoming, outgoing, socket, sslobj, suppress_ragged_eofs",util/ssltransport.py:49,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0512,状态变更,属性写入,SSLTransport.makefile() 修改 1 个属性: socket,util/ssltransport.py:116,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0513,状态变更,查询方法,"SSLTransport 有 12 个纯查询方法: fileno, send, unwrap, close, getpeercert",util/ssltransport.py,verified,方法体中只读取不修改状态属性,state_tracker
+F0514,状态变更,状态属性,"Timeout 拥有 3 个状态属性: _connect, _read, total",util/timeout.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0515,状态变更,属性写入,"Timeout.__init__() 修改 3 个属性: _connect, _read, total",util/timeout.py:109,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0516,状态变更,查询方法,"Timeout 有 3 个纯查询方法: clone, connect_timeout, read_timeout",util/timeout.py,verified,方法体中只读取不修改状态属性,state_tracker
+F0517,业务流程,流程总览,流程 'HTTPSConnection connect Flow': 涉及 3 个模块，10 个步骤，6 次跨模块调用,"connection, util.ssl_, util.ssl_match_hostname",verified,入口: connection:HTTPSConnection.connect，业务重要度: 20.0,flow_extractor
+F0518,业务流程,流程步骤,HTTPSConnection connect Flow · 步骤 0 层: HTTPSConnection.connect(),urllib3/connection.py:792,verified,调用类型: entry,flow_extractor
+F0519,业务流程,流程步骤,HTTPSConnection connect Flow · 步骤 1 层: HTTPSConnection._connect_tls_proxy(),urllib3/connection.py:875,verified,调用类型: self_method,flow_extractor
+F0520,业务流程,流程步骤,HTTPSConnection connect Flow · 步骤 1 层: _ssl_wrap_socket_and_match_hostname(),urllib3/connection.py:878,verified,调用类型: direct,flow_extractor
+F0521,业务流程,流程步骤,HTTPSConnection connect Flow · 步骤 2 层: resolve_cert_reqs()（跨模块）,util/ssl_.py:1042,verified,调用类型: imported,flow_extractor
+F0522,业务流程,流程步骤,HTTPSConnection connect Flow · 步骤 2 层: ssl_wrap_socket()（跨模块）,util/ssl_.py:1080,verified,调用类型: imported,flow_extractor
+F0523,业务流程,流程步骤,"HTTPSConnection connect Flow · 步骤 2 层: create_urllib3_context()（跨模块, 状态变更）",util/ssl_.py:1033,verified,调用类型: imported,flow_extractor
+F0524,业务流程,流程步骤,"HTTPSConnection connect Flow · 步骤 2 层: is_ipaddress()（跨模块, 状态变更）",util/ssl_.py:1077,verified,调用类型: imported,flow_extractor
+F0525,业务流程,流程步骤,HTTPSConnection connect Flow · 步骤 2 层: resolve_ssl_version()（跨模块）,util/ssl_.py:1034,verified,调用类型: imported,flow_extractor
+F0526,业务流程,流程步骤,HTTPSConnection connect Flow · 步骤 2 层: _match_hostname(),urllib3/connection.py:1115,verified,调用类型: direct,flow_extractor
+F0527,业务流程,流程步骤,HTTPSConnection connect Flow · 步骤 3 层: match_hostname()（跨模块）,util/ssl_match_hostname.py:1144,verified,调用类型: imported,flow_extractor
+F0528,业务流程,流程总览,流程 'ProxyManager urlopen Flow': 涉及 3 个模块，7 个步骤，2 次跨模块调用,"poolmanager, util.proxy, util.url",verified,入口: poolmanager:ProxyManager.urlopen，业务重要度: 13.0,flow_extractor
+F0529,业务流程,流程步骤,ProxyManager urlopen Flow · 步骤 0 层: ProxyManager.urlopen()（状态变更）,urllib3/poolmanager.py:661,verified,调用类型: entry,flow_extractor
+F0530,业务流程,流程步骤,ProxyManager urlopen Flow · 步骤 1 层: parse_url()（跨模块）,util/url.py:665,verified,调用类型: imported,flow_extractor
+F0531,业务流程,流程步骤,ProxyManager urlopen Flow · 步骤 1 层: connection_requires_http_tunnel()（跨模块）,util/proxy.py:666,verified,调用类型: imported,flow_extractor
+F0532,业务流程,流程步骤,ProxyManager urlopen Flow · 步骤 1 层: ProxyManager._set_proxy_headers()（状态变更）,urllib3/poolmanager.py:671,verified,调用类型: self_method,flow_extractor
+F0533,业务流程,流程步骤,ProxyManager urlopen Flow · 步骤 2 层: _normalize_host(),util/url.py:549,verified,调用类型: direct,flow_extractor
+F0534,业务流程,流程步骤,ProxyManager urlopen Flow · 步骤 2 层: _remove_path_dot_segments()（状态变更）,util/url.py:552,verified,调用类型: direct,flow_extractor
+F0535,业务流程,流程步骤,ProxyManager urlopen Flow · 步骤 2 层: _encode_invalid_chars(),util/url.py:553,verified,调用类型: direct,flow_extractor
+F0536,业务流程,流程总览,流程 'PoolManager connection_from_url Flow': 涉及 2 个模块，9 个步骤，1 次跨模块调用,"poolmanager, util.url",verified,入口: poolmanager:PoolManager.connection_from_url，业务重要度: 10.5,flow_extractor
+F0537,业务流程,流程步骤,PoolManager connection_from_url Flow · 步骤 0 层: PoolManager.connection_from_url(),urllib3/poolmanager.py:372,verified,调用类型: entry,flow_extractor
+F0538,业务流程,流程步骤,PoolManager connection_from_url Flow · 步骤 1 层: parse_url()（跨模块）,util/url.py:385,verified,调用类型: imported,flow_extractor
+F0539,业务流程,流程步骤,PoolManager connection_from_url Flow · 步骤 1 层: PoolManager.connection_from_host(),urllib3/poolmanager.py:386,verified,调用类型: self_method,flow_extractor
+F0540,业务流程,流程步骤,PoolManager connection_from_url Flow · 步骤 2 层: _normalize_host(),util/url.py:549,verified,调用类型: direct,flow_extractor
+F0541,业务流程,流程步骤,PoolManager connection_from_url Flow · 步骤 2 层: _remove_path_dot_segments()（状态变更）,util/url.py:552,verified,调用类型: direct,flow_extractor
+F0542,业务流程,流程步骤,PoolManager connection_from_url Flow · 步骤 2 层: _encode_invalid_chars(),util/url.py:553,verified,调用类型: direct,flow_extractor
+F0543,业务流程,流程步骤,PoolManager connection_from_url Flow · 步骤 2 层: PoolManager._merge_pool_kwargs(),urllib3/poolmanager.py:312,verified,调用类型: self_method,flow_extractor
+F0544,业务流程,流程步骤,PoolManager connection_from_url Flow · 步骤 2 层: PoolManager.connection_from_context(),urllib3/poolmanager.py:319,verified,调用类型: self_method,flow_extractor
+F0545,业务流程,流程步骤,PoolManager connection_from_url Flow · 步骤 3 层: PoolManager.connection_from_pool_key()（状态变更）,urllib3/poolmanager.py:344,verified,调用类型: self_method,flow_extractor
+F0546,业务流程,流程总览,流程 'HTTPConnection request_chunked Flow': 涉及 3 个模块，7 个步骤，2 次跨模块调用,"connection, util.request, util.util",verified,入口: connection:HTTPConnection.request_chunked，业务重要度: 10.0,flow_extractor
+F0547,业务流程,流程步骤,HTTPConnection request_chunked Flow · 步骤 0 层: HTTPConnection.request_chunked(),urllib3/connection.py:588,verified,调用类型: entry,flow_extractor
+F0548,业务流程,流程步骤,HTTPConnection request_chunked Flow · 步骤 1 层: HTTPConnection.request()（状态变更）,urllib3/connection.py:605,verified,调用类型: self_method,flow_extractor
+F0549,业务流程,流程步骤,HTTPConnection request_chunked Flow · 步骤 2 层: HTTPConnection.putrequest(),urllib3/connection.py:529,verified,调用类型: self_method,flow_extractor
+F0550,业务流程,流程步骤,HTTPConnection request_chunked Flow · 步骤 2 层: body_to_chunks()（跨模块）,util/request.py:535,verified,调用类型: imported,flow_extractor
+F0551,业务流程,流程步骤,HTTPConnection request_chunked Flow · 步骤 2 层: HTTPConnection.putheader(),urllib3/connection.py:564,verified,调用类型: self_method,flow_extractor
+F0552,业务流程,流程步骤,HTTPConnection request_chunked Flow · 步骤 2 层: to_str()（跨模块）,util/util.py:526,verified,调用类型: imported,flow_extractor
+F0553,业务流程,流程步骤,HTTPConnection request_chunked Flow · 步骤 2 层: _get_default_user_agent(),urllib3/connection.py:564,verified,调用类型: direct,flow_extractor
+F0554,业务流程,流程总览,流程 '_JSPIReadStream readinto Flow': 涉及 1 个模块，5 个步骤，0 次跨模块调用,contrib.emscripten.fetch,verified,入口: contrib.emscripten.fetch:_JSPIReadStream.readinto，业务重要度: 8.5,flow_extractor
+F0555,业务流程,流程步骤,_JSPIReadStream readinto Flow · 步骤 0 层: _JSPIReadStream.readinto()（状态变更）,emscripten/fetch.py:392,verified,调用类型: entry,flow_extractor
+F0556,业务流程,流程步骤,_JSPIReadStream readinto Flow · 步骤 1 层: _JSPIReadStream.close()（状态变更）,emscripten/fetch.py:395,verified,调用类型: self_method,flow_extractor
+F0557,业务流程,流程步骤,_JSPIReadStream readinto Flow · 步骤 1 层: _JSPIReadStream._get_next_buffer()（状态变更）,emscripten/fetch.py:394,verified,调用类型: self_method,flow_extractor
+F0558,业务流程,流程步骤,_JSPIReadStream readinto Flow · 步骤 2 层: _JSPIReadStream.is_closed()（状态变更）,emscripten/fetch.py:355,verified,调用类型: self_method,flow_extractor
+F0559,业务流程,流程步骤,_JSPIReadStream readinto Flow · 步骤 2 层: _run_sync_with_timeout(),emscripten/fetch.py:377,verified,调用类型: direct,flow_extractor
+F0560,业务流程,流程总览,流程 'HTTPResponse read1 Flow': 涉及 1 个模块，5 个步骤，0 次跨模块调用,response,verified,入口: response:HTTPResponse.read1，业务重要度: 8.0,flow_extractor
+F0561,业务流程,流程步骤,HTTPResponse read1 Flow · 步骤 0 层: HTTPResponse.read1()（状态变更）,urllib3/response.py:1191,verified,调用类型: entry,flow_extractor
+F0562,业务流程,流程步骤,HTTPResponse read1 Flow · 步骤 1 层: HTTPResponse._raw_read()（状态变更）,urllib3/response.py:1242,verified,调用类型: self_method,flow_extractor
+F0563,业务流程,流程步骤,HTTPResponse read1 Flow · 步骤 2 层: HTTPResponse._error_catcher(),urllib3/response.py:1045,verified,调用类型: self_method,flow_extractor
+F0564,业务流程,流程步骤,HTTPResponse read1 Flow · 步骤 2 层: HTTPResponse._fp_read(),urllib3/response.py:1046,verified,调用类型: self_method,flow_extractor
+F0565,业务流程,流程步骤,HTTPResponse read1 Flow · 步骤 3 层: HTTPResponse.release_conn()（状态变更）,urllib3/response.py:976,verified,调用类型: self_method,flow_extractor
+F0566,业务流程,流程总览,流程 'RequestMethods request Flow': 涉及 2 个模块，7 个步骤，1 次跨模块调用,"_request_methods, filepost",verified,入口: _request_methods:RequestMethods.request，业务重要度: 8.0,flow_extractor
+F0567,业务流程,流程步骤,RequestMethods request Flow · 步骤 0 层: RequestMethods.request(),urllib3/_request_methods.py:69,verified,调用类型: entry,flow_extractor
+F0568,业务流程,流程步骤,RequestMethods request Flow · 步骤 1 层: RequestMethods.request_encode_url(),urllib3/_request_methods.py:135,verified,调用类型: self_method,flow_extractor
+F0569,业务流程,流程步骤,RequestMethods request Flow · 步骤 1 层: RequestMethods.request_encode_body(),urllib3/_request_methods.py:143,verified,调用类型: self_method,flow_extractor
+F0570,业务流程,流程步骤,RequestMethods request Flow · 步骤 2 层: RequestMethods.urlopen()（状态变更）,urllib3/_request_methods.py:182,verified,调用类型: self_method,flow_extractor
+F0571,业务流程,流程步骤,RequestMethods request Flow · 步骤 2 层: encode_multipart_formdata()（跨模块）,urllib3/filepost.py:264,verified,调用类型: imported,flow_extractor
+F0572,业务流程,流程步骤,RequestMethods request Flow · 步骤 3 层: iter_field_objects(),urllib3/filepost.py:69,verified,调用类型: direct,flow_extractor
+F0573,业务流程,流程步骤,RequestMethods request Flow · 步骤 3 层: choose_boundary(),urllib3/filepost.py:67,verified,调用类型: direct,flow_extractor
+F0574,业务流程,流程总览,流程 'HTTPResponse drain_conn Flow': 涉及 1 个模块，5 个步骤，0 次跨模块调用,response,verified,入口: response:HTTPResponse.drain_conn，业务重要度: 8.0,flow_extractor
+F0575,业务流程,流程步骤,HTTPResponse drain_conn Flow · 步骤 0 层: HTTPResponse.drain_conn()（状态变更）,urllib3/response.py:817,verified,调用类型: entry,flow_extractor
+F0576,业务流程,流程步骤,HTTPResponse drain_conn Flow · 步骤 1 层: HTTPResponse._raw_read()（状态变更）,urllib3/response.py:824,verified,调用类型: self_method,flow_extractor
+F0577,业务流程,流程步骤,HTTPResponse drain_conn Flow · 步骤 2 层: HTTPResponse._error_catcher(),urllib3/response.py:1045,verified,调用类型: self_method,flow_extractor
+F0578,业务流程,流程步骤,HTTPResponse drain_conn Flow · 步骤 2 层: HTTPResponse._fp_read(),urllib3/response.py:1046,verified,调用类型: self_method,flow_extractor
+F0579,业务流程,流程步骤,HTTPResponse drain_conn Flow · 步骤 3 层: HTTPResponse.release_conn()（状态变更）,urllib3/response.py:976,verified,调用类型: self_method,flow_extractor
+F0580,业务流程,流程总览,流程 'HTTP2Connection request Flow': 涉及 2 个模块，8 个步骤，1 次跨模块调用,"connection, http2.connection",verified,入口: http2.connection:HTTP2Connection.request，业务重要度: 7.0,flow_extractor
+F0581,业务流程,流程步骤,HTTP2Connection request Flow · 步骤 0 层: HTTP2Connection.request(),http2/connection.py:269,verified,调用类型: entry,flow_extractor
+F0582,业务流程,流程步骤,HTTP2Connection request Flow · 步骤 1 层: HTTP2Connection.putrequest(),http2/connection.py:290,verified,调用类型: self_method,flow_extractor
+F0583,业务流程,流程步骤,HTTP2Connection request Flow · 步骤 1 层: HTTP2Connection.putheader(),http2/connection.py:300,verified,调用类型: self_method,flow_extractor
+F0584,业务流程,流程步骤,HTTP2Connection request Flow · 步骤 1 层: HTTP2Connection.endheaders(),http2/connection.py:303,verified,调用类型: self_method,flow_extractor
+F0585,业务流程,流程步骤,HTTP2Connection request Flow · 步骤 1 层: HTTP2Connection.send(),http2/connection.py:304,verified,调用类型: self_method,flow_extractor
+F0586,业务流程,流程步骤,HTTP2Connection request Flow · 步骤 1 层: _get_default_user_agent()（跨模块）,urllib3/connection.py:300,verified,调用类型: imported,flow_extractor
+F0587,业务流程,流程步骤,HTTP2Connection request Flow · 步骤 2 层: _is_legal_header_name(),http2/connection.py:148,verified,调用类型: direct,flow_extractor
+F0588,业务流程,流程步骤,HTTP2Connection request Flow · 步骤 2 层: _is_illegal_header_value(),http2/connection.py:153,verified,调用类型: direct,flow_extractor
+F0589,业务流程,流程总览,流程 'HTTPConnection getresponse Flow': 涉及 2 个模块，5 个步骤，1 次跨模块调用,"connection, util.response",verified,入口: connection:HTTPConnection.getresponse，业务重要度: 7.0,flow_extractor
+F0590,业务流程,流程步骤,HTTPConnection getresponse Flow · 步骤 0 层: HTTPConnection.getresponse()（状态变更）,urllib3/connection.py:607,verified,调用类型: entry,flow_extractor
+F0591,业务流程,流程步骤,HTTPConnection getresponse Flow · 步骤 1 层: _normalize_header_values(),urllib3/connection.py:650,verified,调用类型: direct,flow_extractor
+F0592,业务流程,流程步骤,HTTPConnection getresponse Flow · 步骤 1 层: assert_header_parsing()（跨模块）,util/response.py:641,verified,调用类型: imported,flow_extractor
+F0593,业务流程,流程步骤,HTTPConnection getresponse Flow · 步骤 1 层: _url_from_connection(),urllib3/connection.py:645,verified,调用类型: direct,flow_extractor
+F0594,业务流程,流程步骤,HTTPConnection getresponse Flow · 步骤 2 层: _normalize_header_value(),urllib3/connection.py:97,verified,调用类型: direct,flow_extractor
+F0595,关键实现,核心方法,HTTPConnectionPool.urlopen() 是核心实现点（重要度 13.5）,urllib3/connectionpool.py:598-992,verified,入选原因: high complexity implementation; multiple boundary validations; includes exception raises,key_implementation
+F0596,关键实现,守卫条件,HTTPConnectionPool.urlopen: guard-clause style (4 pre-checks),"urllib3/connectionpool.py: lines 731, 872, 906",verified,"lines 731, 872, 906",key_implementation
+F0597,关键实现,异常处理,HTTPConnectionPool.urlopen: raises 1 exception type(s): HostChangedError,urllib3/connectionpool.py: lines 732,verified,lines 732,key_implementation
+F0598,关键实现,算法模式,HTTPConnectionPool.urlopen: sequential traversal,urllib3/connectionpool.py:598-992,verified,1 loop(s) detected,key_implementation
+F0599,关键实现,递归,HTTPConnectionPool.urlopen: recursive implementation,urllib3/connectionpool.py:598-992,verified,3 recursive call(s) at line 598,key_implementation
+F0600,关键实现,编排调用,HTTPConnectionPool.urlopen: multi-step orchestration (54 internal calls),urllib3/connectionpool.py:598-992,verified,from call count,key_implementation
+F0601,关键实现,设计模式,HTTPConnectionPool.urlopen: uses Service / Facade Pattern,urllib3/connectionpool.py:598-992,inferred,from pattern detector,key_implementation
+F0602,关键实现,守卫子句,HTTPConnectionPool.urlopen: assert_same_host and ... -> raise,urllib3/connectionpool.py:731,verified,从 AST 检测到的前置检查 + 提前退出模式,key_implementation
+F0603,关键实现,守卫子句,HTTPConnectionPool.urlopen: not conn -> early return,urllib3/connectionpool.py:872,verified,从 AST 检测到的前置检查 + 提前退出模式,key_implementation
+F0604,关键实现,守卫子句,HTTPConnectionPool.urlopen: redirect_location -> early return,urllib3/connectionpool.py:906,verified,从 AST 检测到的前置检查 + 提前退出模式,key_implementation
+F0605,关键实现,守卫子句,HTTPConnectionPool.urlopen: retries.is_retry() -> early return,urllib3/connectionpool.py:962,verified,从 AST 检测到的前置检查 + 提前退出模式,key_implementation
+F0606,关键实现,异常抛出,HTTPConnectionPool.urlopen: 抛出 HostChangedError,urllib3/connectionpool.py:732,verified,从 AST 检测到的 raise 语句,key_implementation
+F0607,关键实现,算法特征,HTTPConnectionPool.urlopen: recursion,urllib3/connectionpool.py:598-992,verified,3 recursive call(s),key_implementation
+F0608,关键实现,复杂度,HTTPConnectionPool.urlopen: 圈复杂度 31（循环 1，分支 29）,urllib3/connectionpool.py:598-992,verified,从 AST 直接计数：if/try 为分支，for/while 为循环,key_implementation
+F0609,关键实现,核心方法,HTTPResponse.read_chunked() 是核心实现点（重要度 13.0）,urllib3/response.py:1407-1496,verified,入选原因: high complexity implementation; multiple boundary validations; comprehensive error handling,key_implementation
+F0610,关键实现,守卫条件,HTTPResponse.read_chunked: 2 pre-flight validations,"urllib3/response.py: lines 1425, 1430",verified,"lines 1425, 1430",key_implementation
+F0611,关键实现,异常处理,"HTTPResponse.read_chunked: raises 3 exception type(s): ProtocolError, ResponseNotChunked, BodyNotHttplibCompatible","urllib3/response.py: lines 1426, 1431, 1485",verified,"lines 1426, 1431, 1485",key_implementation
+F0612,关键实现,状态变更,HTTPResponse.read_chunked: modifies 1 state attribute: _uncached_read_occurred,urllib3/response.py:1407-1496,verified,from state tracker,key_implementation
+F0613,关键实现,算法模式,HTTPResponse.read_chunked: search traversal (early exit on match),urllib3/response.py:1407-1496,verified,2 loop(s) detected,key_implementation
+F0614,关键实现,编排调用,HTTPResponse.read_chunked: multi-step orchestration (15 internal calls),urllib3/response.py:1407-1496,verified,from call count,key_implementation
+F0615,关键实现,设计模式,HTTPResponse.read_chunked: uses Service / Facade Pattern,urllib3/response.py:1407-1496,inferred,from pattern detector,key_implementation
+F0616,关键实现,守卫子句,HTTPResponse.read_chunked: not self.chunked -> raise,urllib3/response.py:1425,verified,从 AST 检测到的前置检查 + 提前退出模式,key_implementation
+F0617,关键实现,守卫子句,HTTPResponse.read_chunked: not self.supports_chunked_reads() -> raise,urllib3/response.py:1430,verified,从 AST 检测到的前置检查 + 提前退出模式,key_implementation
+F0618,关键实现,异常抛出,HTTPResponse.read_chunked: 抛出 ResponseNotChunked: Response is not chunked. Header 'transfer-encoding: chunk...,urllib3/response.py:1426,verified,从 AST 检测到的 raise 语句,key_implementation
+F0619,关键实现,异常抛出,HTTPResponse.read_chunked: 抛出 BodyNotHttplibCompatible: Body should be http.client.HTTPResponse like. It should h...,urllib3/response.py:1431,verified,从 AST 检测到的 raise 语句,key_implementation
+F0620,关键实现,异常抛出,HTTPResponse.read_chunked: 抛出 ProtocolError: Response chunk trailer line exceeded maximum allowed length,urllib3/response.py:1485,verified,从 AST 检测到的 raise 语句,key_implementation
+F0621,关键实现,算法特征,HTTPResponse.read_chunked: general business logic,urllib3/response.py:1407-1496,verified,no distinctive algorithmic pattern,key_implementation
+F0622,关键实现,复杂度,HTTPResponse.read_chunked: 圈复杂度 18（循环 2，分支 15）,urllib3/response.py:1407-1496,verified,从 AST 直接计数：if/try 为分支，for/while 为循环,key_implementation
+F0623,关键实现,核心方法,HTTPResponse.read() 是核心实现点（重要度 12.0）,urllib3/response.py:1083-1189,verified,入选原因: high complexity implementation; multiple boundary validations; includes exception raises,key_implementation
+F0624,关键实现,守卫条件,HTTPResponse.read: 1 pre-flight validations,urllib3/response.py: lines 1140,verified,lines 1140,key_implementation
+F0625,关键实现,异常处理,HTTPResponse.read: raises 1 exception type(s): RuntimeError,urllib3/response.py: lines 1161,verified,lines 1161,key_implementation
+F0626,关键实现,状态变更,"HTTPResponse.read: modifies 2 state attributes: _body, _uncached_read_occurred",urllib3/response.py:1083-1189,verified,from state tracker,key_implementation
+F0627,关键实现,算法模式,HTTPResponse.read: conditional loop,urllib3/response.py:1083-1189,verified,1 loop(s) detected,key_implementation
+F0628,关键实现,编排调用,HTTPResponse.read: multi-step orchestration (23 internal calls),urllib3/response.py:1083-1189,verified,from call count,key_implementation
+F0629,关键实现,设计模式,HTTPResponse.read: uses Service / Facade Pattern,urllib3/response.py:1083-1189,inferred,from pattern detector,key_implementation
+F0630,关键实现,守卫子句,HTTPResponse.read: ... and ... and ... -> early return,urllib3/response.py:1140,verified,从 AST 检测到的前置检查 + 提前退出模式,key_implementation
+F0631,关键实现,异常抛出,HTTPResponse.read: 抛出 RuntimeError: Calling read(decode_content=False) is not supported after...,urllib3/response.py:1161,verified,从 AST 检测到的 raise 语句,key_implementation
+F0632,关键实现,算法特征,HTTPResponse.read: general business logic,urllib3/response.py:1083-1189,verified,no distinctive algorithmic pattern,key_implementation
+F0633,关键实现,复杂度,HTTPResponse.read: 圈复杂度 14（循环 1，分支 12）,urllib3/response.py:1083-1189,verified,从 AST 直接计数：if/try 为分支，for/while 为循环,key_implementation
+F0634,关键实现,核心方法,_ReadStream.readinto() 是核心实现点（重要度 11.0）,emscripten/fetch.py:153-197,verified,入选原因: high complexity implementation; multiple boundary validations; comprehensive error handling,key_implementation
+F0635,关键实现,守卫条件,_ReadStream.readinto: 1 pre-flight validations,emscripten/fetch.py: lines 154,verified,lines 154,key_implementation
+F0636,关键实现,异常处理,"_ReadStream.readinto: raises 2 exception type(s): _StreamingError, _TimeoutError","emscripten/fetch.py: lines 155, 168, 178",verified,"lines 155, 168, 178",key_implementation
+F0637,关键实现,状态变更,"_ReadStream.readinto: modifies 3 state attributes: is_live, read_len, read_pos",emscripten/fetch.py:153-197,verified,from state tracker,key_implementation
+F0638,关键实现,编排调用,_ReadStream.readinto: multi-step orchestration (16 internal calls),emscripten/fetch.py:153-197,verified,from call count,key_implementation
+F0639,关键实现,设计模式,_ReadStream.readinto: uses Service / Facade Pattern,emscripten/fetch.py:153-197,inferred,from pattern detector,key_implementation
+F0640,关键实现,守卫子句,_ReadStream.readinto: not self.int_buffer -> raise,emscripten/fetch.py:154,verified,从 AST 检测到的前置检查 + 提前退出模式,key_implementation
+F0641,关键实现,异常抛出,_ReadStream.readinto: 抛出 _StreamingError: No buffer for stream in _ReadStream.readinto,emscripten/fetch.py:155,verified,从 AST 检测到的 raise 语句,key_implementation
+F0642,关键实现,异常抛出,_ReadStream.readinto: 抛出 _TimeoutError,emscripten/fetch.py:168,verified,从 AST 检测到的 raise 语句,key_implementation
+F0643,关键实现,异常抛出,_ReadStream.readinto: 抛出 _StreamingError,emscripten/fetch.py:178,verified,从 AST 检测到的 raise 语句,key_implementation
+F0644,关键实现,算法特征,_ReadStream.readinto: conditional checks (no loops),emscripten/fetch.py:153-197,verified,"1 guard clauses, no loops",key_implementation
+F0645,关键实现,复杂度,_ReadStream.readinto: 圈复杂度 6（循环 0，分支 5）,emscripten/fetch.py:153-197,verified,从 AST 直接计数：if/try 为分支，for/while 为循环,key_implementation
+F0646,关键实现,核心方法,HTTPConnectionPool._make_request() 是核心实现点（重要度 10.5）,urllib3/connectionpool.py:383-562,verified,入选原因: high complexity implementation; includes boundary validation; includes exception raises,key_implementation
+F0647,关键实现,异常处理,"HTTPConnectionPool._make_request: raises 2 exception type(s): ReadTimeoutError, new_e","urllib3/connectionpool.py: lines 494, 533",verified,"lines 494, 533",key_implementation
+F0648,关键实现,状态变更,HTTPConnectionPool._make_request: modifies 1 state attribute: num_requests,urllib3/connectionpool.py:383-562,verified,from state tracker,key_implementation
+F0649,关键实现,编排调用,HTTPConnectionPool._make_request: multi-step orchestration (14 internal calls),urllib3/connectionpool.py:383-562,verified,from call count,key_implementation
+F0650,关键实现,设计模式,HTTPConnectionPool._make_request: uses Service / Facade Pattern,urllib3/connectionpool.py:383-562,inferred,from pattern detector,key_implementation
+F0651,关键实现,异常抛出,HTTPConnectionPool._make_request: 抛出 new_e,urllib3/connectionpool.py:494,verified,从 AST 检测到的 raise 语句,key_implementation
+F0652,关键实现,异常抛出,HTTPConnectionPool._make_request: 抛出 ReadTimeoutError,urllib3/connectionpool.py:533,verified,从 AST 检测到的 raise 语句,key_implementation
+F0653,关键实现,算法特征,HTTPConnectionPool._make_request: general business logic,urllib3/connectionpool.py:383-562,verified,no distinctive algorithmic pattern,key_implementation
+F0654,关键实现,复杂度,HTTPConnectionPool._make_request: 圈复杂度 14（循环 0，分支 13）,urllib3/connectionpool.py:383-562,verified,从 AST 直接计数：if/try 为分支，for/while 为循环,key_implementation
+F0655,关键实现,核心方法,HTTPResponse.read1() 是核心实现点（重要度 10.5）,urllib3/response.py:1191-1260,verified,入选原因: high complexity implementation; multiple boundary validations; includes exception raises,key_implementation
+F0656,关键实现,守卫条件,HTTPResponse.read1: guard-clause style (3 pre-checks),"urllib3/response.py: lines 1238, 1244, 1258",verified,"lines 1238, 1244, 1258",key_implementation
+F0657,关键实现,异常处理,HTTPResponse.read1: raises 1 exception type(s): RuntimeError,urllib3/response.py: lines 1216,verified,lines 1216,key_implementation
+F0658,关键实现,状态变更,HTTPResponse.read1: modifies 1 state attribute: _uncached_read_occurred,urllib3/response.py:1191-1260,verified,from state tracker,key_implementation
+F0659,关键实现,算法模式,HTTPResponse.read1: search traversal (early exit on match),urllib3/response.py:1191-1260,verified,1 loop(s) detected,key_implementation
+F0660,关键实现,编排调用,HTTPResponse.read1: multi-step orchestration (15 internal calls),urllib3/response.py:1191-1260,verified,from call count,key_implementation
+F0661,关键实现,设计模式,HTTPResponse.read1: uses Service / Facade Pattern,urllib3/response.py:1191-1260,inferred,from pattern detector,key_implementation
+F0662,关键实现,守卫子句,HTTPResponse.read1: amt == 0 -> early return,urllib3/response.py:1238,verified,从 AST 检测到的前置检查 + 提前退出模式,key_implementation
+F0663,关键实现,守卫子句,HTTPResponse.read1: ... or ... -> early return,urllib3/response.py:1244,verified,从 AST 检测到的前置检查 + 提前退出模式,key_implementation
+F0664,关键实现,守卫子句,HTTPResponse.read1: amt is None -> early return,urllib3/response.py:1258,verified,从 AST 检测到的前置检查 + 提前退出模式,key_implementation
+F0665,关键实现,异常抛出,HTTPResponse.read1: 抛出 RuntimeError: Calling read1(decode_content=False) is not supported afte...,urllib3/response.py:1216,verified,从 AST 检测到的 raise 语句,key_implementation
+F0666,关键实现,算法特征,HTTPResponse.read1: general business logic,urllib3/response.py:1191-1260,verified,no distinctive algorithmic pattern,key_implementation
+F0667,关键实现,复杂度,HTTPResponse.read1: 圈复杂度 13（循环 1，分支 11）,urllib3/response.py:1191-1260,verified,从 AST 直接计数：if/try 为分支，for/while 为循环,key_implementation
+F0668,关键实现,核心方法,HTTPHeaderDict.extend() 是核心实现点（重要度 10.5）,urllib3/_collections.py:341-371,verified,入选原因: high complexity implementation; includes boundary validation; includes exception raises,key_implementation
+F0669,关键实现,守卫条件,HTTPHeaderDict.extend: 1 pre-flight validations,urllib3/_collections.py: lines 346,verified,lines 346,key_implementation
+F0670,关键实现,异常处理,HTTPHeaderDict.extend: raises 1 exception type(s): TypeError,urllib3/_collections.py: lines 347,verified,lines 347,key_implementation
+F0671,关键实现,算法模式,HTTPHeaderDict.extend: collection / transformation,urllib3/_collections.py:341-371,verified,5 loop(s) detected,key_implementation
+F0672,关键实现,编排调用,HTTPHeaderDict.extend: multi-step orchestration (18 internal calls),urllib3/_collections.py:341-371,verified,from call count,key_implementation
+F0673,关键实现,守卫子句,HTTPHeaderDict.extend: len() > 1 -> raise,urllib3/_collections.py:346,verified,从 AST 检测到的前置检查 + 提前退出模式,key_implementation
+F0674,关键实现,异常抛出,HTTPHeaderDict.extend: 抛出 TypeError,urllib3/_collections.py:347,verified,从 AST 检测到的 raise 语句,key_implementation
+F0675,关键实现,算法特征,HTTPHeaderDict.extend: pure computation / statistics,urllib3/_collections.py:341-371,verified,"5 loop(s), no state mutation",key_implementation
+F0676,关键实现,复杂度,HTTPHeaderDict.extend: 圈复杂度 11（循环 5，分支 5）,urllib3/_collections.py:341-371,verified,从 AST 直接计数：if/try 为分支，for/while 为循环,key_implementation
+F0677,关键实现,核心方法,PoolManager.urlopen() 是核心实现点（重要度 10.0）,urllib3/poolmanager.py:425-510,verified,入选原因: high complexity implementation; includes boundary validation; orchestrates multiple sub-steps,key_implementation
+F0678,关键实现,守卫条件,PoolManager.urlopen: 1 pre-flight validations,urllib3/poolmanager.py: lines 462,verified,lines 462,key_implementation
+F0679,关键实现,算法模式,PoolManager.urlopen: sequential traversal,urllib3/poolmanager.py:425-510,verified,1 loop(s) detected,key_implementation
+F0680,关键实现,递归,PoolManager.urlopen: recursive implementation,urllib3/poolmanager.py:425-510,verified,1 recursive call(s) at line 425,key_implementation
+F0681,关键实现,编排调用,PoolManager.urlopen: multi-step orchestration (23 internal calls),urllib3/poolmanager.py:425-510,verified,from call count,key_implementation
+F0682,关键实现,设计模式,PoolManager.urlopen: uses Service / Facade Pattern,urllib3/poolmanager.py:425-510,inferred,from pattern detector,key_implementation
+F0683,关键实现,守卫子句,PoolManager.urlopen: not redirect_location -> early return,urllib3/poolmanager.py:462,verified,从 AST 检测到的前置检查 + 提前退出模式,key_implementation
+F0684,关键实现,算法特征,PoolManager.urlopen: recursion,urllib3/poolmanager.py:425-510,verified,1 recursive call(s),key_implementation
+F0685,关键实现,复杂度,PoolManager.urlopen: 圈复杂度 13（循环 1，分支 11）,urllib3/poolmanager.py:425-510,verified,从 AST 直接计数：if/try 为分支，for/while 为循环,key_implementation
+F0686,关键实现,核心方法,DeflateDecoder.decompress() 是核心实现点（重要度 10.0）,urllib3/response.py:83-127,verified,入选原因: high complexity implementation; multiple boundary validations; modifies multiple state attributes,key_implementation
+F0687,关键实现,守卫条件,DeflateDecoder.decompress: guard-clause style (3 pre-checks),"urllib3/response.py: lines 88, 90, 105",verified,"lines 88, 90, 105",key_implementation
+F0688,关键实现,状态变更,"DeflateDecoder.decompress: modifies 3 state attributes: _first_try, _first_try_data, _obj",urllib3/response.py:83-127,verified,from state tracker,key_implementation
+F0689,关键实现,递归,DeflateDecoder.decompress: recursive implementation,urllib3/response.py:83-127,verified,1 recursive call(s) at line 83,key_implementation
+F0690,关键实现,守卫子句,DeflateDecoder.decompress: self._obj.eof -> early return,urllib3/response.py:88,verified,从 AST 检测到的前置检查 + 提前退出模式,key_implementation
+F0691,关键实现,守卫子句,DeflateDecoder.decompress: ... and ... -> early return,urllib3/response.py:90,verified,从 AST 检测到的前置检查 + 提前退出模式,key_implementation
+F0692,关键实现,守卫子句,DeflateDecoder.decompress: not self._first_try -> early return,urllib3/response.py:105,verified,从 AST 检测到的前置检查 + 提前退出模式,key_implementation
+F0693,关键实现,算法特征,DeflateDecoder.decompress: recursion,urllib3/response.py:83-127,verified,1 recursive call(s),key_implementation
+F0694,关键实现,复杂度,DeflateDecoder.decompress: 圈复杂度 11（循环 0，分支 10）,urllib3/response.py:83-127,verified,从 AST 直接计数：if/try 为分支，for/while 为循环,key_implementation
+F0695,关键实现,核心方法,HTTPResponse._raw_read() 是核心实现点（重要度 10.0）,urllib3/response.py:1031-1081,verified,入选原因: high complexity implementation; includes boundary validation; includes exception raises,key_implementation
+F0696,关键实现,守卫条件,HTTPResponse._raw_read: 1 pre-flight validations,urllib3/response.py: lines 1040,verified,lines 1040,key_implementation
+F0697,关键实现,异常处理,HTTPResponse._raw_read: raises 1 exception type(s): IncompleteRead,urllib3/response.py: lines 1067,verified,lines 1067,key_implementation
+F0698,关键实现,状态变更,"HTTPResponse._raw_read: modifies 2 state attributes: _fp_bytes_read, length_remaining",urllib3/response.py:1031-1081,verified,from state tracker,key_implementation
+F0699,关键实现,编排调用,HTTPResponse._raw_read: multi-step orchestration (9 internal calls),urllib3/response.py:1031-1081,verified,from call count,key_implementation
+F0700,关键实现,设计模式,HTTPResponse._raw_read: uses Service / Facade Pattern,urllib3/response.py:1031-1081,inferred,from pattern detector,key_implementation
+F0701,关键实现,守卫子句,HTTPResponse._raw_read: self._fp is None -> early return,urllib3/response.py:1040,verified,从 AST 检测到的前置检查 + 提前退出模式,key_implementation
+F0702,关键实现,异常抛出,HTTPResponse._raw_read: 抛出 IncompleteRead,urllib3/response.py:1067,verified,从 AST 检测到的 raise 语句,key_implementation
+F0703,关键实现,算法特征,HTTPResponse._raw_read: conditional checks (no loops),urllib3/response.py:1031-1081,verified,"1 guard clauses, no loops",key_implementation
+F0704,关键实现,复杂度,HTTPResponse._raw_read: 圈复杂度 7（循环 0，分支 6）,urllib3/response.py:1031-1081,verified,从 AST 直接计数：if/try 为分支，for/while 为循环,key_implementation
+F0705,设计模式,structural,PyOpenSSLContext 疑似使用 Repository Pattern,PyOpenSSLContext,inferred,PyOpenSSLContext encapsulates data access with CRUD operations and validation,pattern_detector
+F0706,设计模式,behavioral,BaseHTTPResponse 疑似使用 State Pattern (FSM),BaseHTTPResponse,inferred,BaseHTTPResponse manages state transitions and state-dependent behavior,pattern_detector
+F0707,设计模式,structural,HTTPConnectionPool 疑似使用 Service / Facade Pattern,HTTPConnectionPool,inferred,HTTPConnectionPool orchestrates business logic by coordinating lower-level components,pattern_detector
+F0708,设计模式,structural,PoolManager 疑似使用 Service / Facade Pattern,PoolManager,inferred,PoolManager orchestrates business logic by coordinating lower-level components,pattern_detector
+F0709,设计模式,structural,BytesQueueBuffer 疑似使用 Service / Facade Pattern,BytesQueueBuffer,inferred,BytesQueueBuffer orchestrates business logic by coordinating lower-level components,pattern_detector
+F0710,设计模式,structural,HTTPResponse 疑似使用 Service / Facade Pattern,HTTPResponse,inferred,HTTPResponse orchestrates business logic by coordinating lower-level components,pattern_detector
+F0711,设计模式,structural,WrappedSocket 疑似使用 Service / Facade Pattern,WrappedSocket,inferred,WrappedSocket orchestrates business logic by coordinating lower-level components,pattern_detector
+F0712,设计模式,structural,PyOpenSSLContext 疑似使用 Service / Facade Pattern,PyOpenSSLContext,inferred,PyOpenSSLContext orchestrates business logic by coordinating lower-level components,pattern_detector
+F0713,设计模式,structural,_ReadStream 疑似使用 Service / Facade Pattern,_ReadStream,inferred,_ReadStream orchestrates business logic by coordinating lower-level components,pattern_detector
+F0714,设计模式,structural,EmscriptenHttpResponseWrapper 疑似使用 Service / Facade Pattern,EmscriptenHttpResponseWrapper,inferred,EmscriptenHttpResponseWrapper orchestrates business logic by coordinating lower-level components,pattern_detector
+F0715,设计模式,structural,HTTP2Connection 疑似使用 Service / Facade Pattern,HTTP2Connection,inferred,HTTP2Connection orchestrates business logic by coordinating lower-level components,pattern_detector
+F0716,设计模式,structural,SSLTransport 疑似使用 Service / Facade Pattern,SSLTransport,inferred,SSLTransport orchestrates business logic by coordinating lower-level components,pattern_detector
+F0717,设计模式,behavioral,HTTPSConnection 疑似使用 Template Method Pattern,HTTPSConnection,inferred,HTTPSConnection defines algorithm steps within a template structure,pattern_detector
+F0718,设计模式,behavioral,HTTPConnectionPool 疑似使用 Template Method Pattern,HTTPConnectionPool,inferred,HTTPConnectionPool defines algorithm steps within a template structure,pattern_detector
+F0719,设计模式,behavioral,HTTPResponse 疑似使用 Template Method Pattern,HTTPResponse,inferred,HTTPResponse defines algorithm steps within a template structure,pattern_detector

@@ -1,6 +1,6 @@
 # 并行工单与执行编排（多任务同时开工时的唯一发单口径）
 
-> 更新触发：**工单增删 / 波次调整 / 文件归属变化 / 有工单做完时** | 上次更新：W0 集成轮（2026-09-26）
+> 更新触发：**工单增删 / 波次调整 / 文件归属变化 / 有工单做完时** | 上次更新：克隆完整性一轮（2026-09-26）
 > 来源：`docs/07-status-and-acceptance.md` 的 `§16.2` / `§16.3` / `§18`（未做项与优先级）+ `docs/08-tech-debt.md` 的 `§19.1` / `§19.6`（技术债与交接事实）。
 > **读它的时机**：要把"剩下没做的活"拆给一个或多个人 / AI 助手**同时开工**时。
 > ⚠️ **它不是第二份「下一步」**：优先级与取舍的唯一权威仍是 `§18`（`docs/00-index.md` §3.2 第 6 条）。
@@ -54,7 +54,7 @@
 |---|---|---|
 | 把原生程序输出接进 PowerShell 管道（`python x.py \| Select-Object`）→ `Access is denied` | **不要用 `\|`**；要留档就写文件或丢给后台任务 | `§19.5` |
 | `python x.py > log 2>&1` 可能**静默不执行**、退出码为空 | 以屏幕输出为准；或在 Python 进程内重定向 stdout | `§19.5` |
-| git 报 `dubious ownership` / 子模块管道失败 | `git -c safe.directory=<仓库绝对路径> ...`，`status` 还要 `--ignore-submodules=all`（`validation/flask` 里有嵌套真实 `.git`） | `§19.5` |
+| git 报 `dubious ownership` / 子模块管道失败 | `git -c safe.directory=<仓库绝对路径> ...`；**`status` 从克隆完整性一轮起不再需要 `--ignore-submodules=all`** —— `validation/flask` 的嵌套 `.git` 已改为 `.git.bak` 并把源码纳入跟踪（见 `docs/06` §19.5） | `§19.5` |
 | 改了 `engine/lexicon/*.json`（含教师种子）却"没生效" | `load_lexicon()` 是**进程内缓存** → 必须重启 uvicorn | `§19.5` |
 | 改了后端路由却"新接口 404" | 启动命令**没有 `--reload`** → 重启 8000 上的 uvicorn | `§19.5` |
 | `vite build` 报 `spawn EPERM` | 受限模式下 esbuild 必然起不来；**走查脚本本身不需要放开权限**；构建走查 bundle 要一次性放开进程权限 | `§19.5` |

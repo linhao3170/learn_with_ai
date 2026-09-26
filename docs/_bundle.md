@@ -2,7 +2,7 @@
 
 # LearnWithAI · 文档全集（单文件打包）
 
-> 由 `python scripts/pack_docs.py` 按 `docs/00-index.md` 的顺序拼成；含 14 份文档、422980 字节。
+> 由 `python scripts/pack_docs.py` 按 `docs/00-index.md` 的顺序拼成；含 14 份文档、432914 字节。
 > **接手这个项目的 AI 助手请先读 `docs/00-index.md`（本文件第二部分）**：里面有硬约束、门禁命令、完成定义与禁止事项。
 > 单个章节的实际归属看每段前的 `<!-- 以下来自 ... -->` 注释；章节号（`§16.1` 这类）在各文档间是连续的。
 
@@ -118,6 +118,32 @@
 | 人工核对业务图谱（唯一能产出「准确率」的途径） | ⏸️ 模板已生成（**37 行域 + 147 行功能点 = 184 行**），**判定列空着**；**已决定主动延后到「引擎冻结之后」**（判定绑定 `source_hash`，现在填会被后续改动作废）——理由与触发条件见 §18 优先级 2 末尾。判断材料与统计工具已就绪（§20.3 ⑤） |
 
 ### 0.3 五分钟上手
+
+**① 别人的机器 / 新机器：克隆 + 一条命令装齐环境**（克隆完整性一轮新增）
+
+```bash
+git clone https://github.com/linhao3170/learn_with_ai.git
+cd learn_with_ai
+powershell -ExecutionPolicy Bypass -File scripts/bootstrap.ps1
+# bootstrap.ps1 做四件事，全部幂等、可重复跑，不硬编码任何本机路径：
+#   1) 前置检查 python / node / npm
+#   2) 建 .venv 并装 requirements.txt + backend/requirements.txt
+#   3) 前端 npm ci（装 frontend/node_modules）
+#   4) 一次性准备：跑 build_demo_snapshots.py（学生快照 + 后端答案表 + 证据源码副本）
+#   开关：-Build 顺带构建 frontend/dist 与走查 bundle frontend/.smoke-dist
+#         -Verify 顺带跑三道门禁（build_acceptance_report / verify_docs / verify_sprint0）
+#         -SkipFrontend 只装后端与 Python 侧
+# ⚠️ 跑完先执行 .\.venv\Scripts\Activate.ps1 —— 下面所有 python 命令才是这个 .venv 里的
+# ⚠️ 依赖装进 .venv 而不是系统 python：作者机器上两者恰好都装齐了，别人机器上不一定（见 docs/06-runbook.md §19.5）
+```
+
+**克隆下来就有的东西（不需要再找）**：`validation/flask` 与 `validation/urllib3` 这两个真实第三方
+验证项目的**完整源码**、`validation/results/` 的事实表与深分析产物（手册里当**输入**用的那些）、
+两个 `source_kind=demo` 的业务逻辑分析平台项目快照。**克隆下来没有的东西**（都是可再生的，
+也是**故意**不进来的）：`.venv`、`frontend/node_modules/`、`frontend/dist/`、`frontend/.smoke-dist/`，
+以及 `backend/data/logic_platform/` 下的 6 个 lp_ 前缀项目（那是**用户上传源码的副本**，涉及他人代码，按 `.gitignore` 明确排除）。
+
+**② 作者本机（仓库已在 D:\learn_with_ai，依赖已装齐）：直接跑下面这些**
 
 ```bash
 # 一次性准备（生成学生快照 + 后端答案表 + 证据源码副本）
@@ -254,7 +280,7 @@ node scripts/check_evidence_fold.mjs           # 讲稿逐条证据 / 反幻觉�
 
 # 文档索引与 AI 交接协议
 
-> 更新触发：**很少改**（文档增删 / 交接流程变化 / 门禁命令变化才动） | 上次更新：工单编排一轮（2026-09-26）
+> 更新触发：**很少改**（文档增删 / 交接流程变化 / 门禁命令变化才动） | 上次更新：克隆完整性一轮（2026-09-26）
 > **这一份是给"接手的人或 AI 助手"的第一份文档**：读完它就知道该读什么、改哪里、怎么算改完、什么绝对不许做。
 > 项目是什么见 `README.md`；现在做到哪一步见 `docs/07-status-and-acceptance.md`。
 
@@ -303,6 +329,9 @@ node scripts/check_evidence_fold.mjs           # 讲稿逐条证据 / 反幻觉�
 ## 三、AI 助手交接协议（接手前必读）
 
 ### 3.1 第一件事：先跑门禁，别先改代码
+
+**换了机器 / 刚克隆下来**：先跑 `powershell -ExecutionPolicy Bypass -File scripts/bootstrap.ps1`
+把环境装齐（建 `.venv` + 装两份 requirements + 前端 npm ci + 生成演示快照），再跑下面这三条。
 
 ```bash
 python scripts/build_acceptance_report.py    # 跑 13 个只读验收脚本 → validation/acceptance_latest.md（数字的唯一来源）
@@ -2322,7 +2351,7 @@ cd frontend && npm run build
 
 # 运行、验收与排障手册（原 README 第二十章 + §19.5）
 
-> 更新触发：**新增脚本或环境结论变了** | 上次更新：W0 集成轮（2026-09-26）
+> 更新触发：**新增脚本或环境结论变了** | 上次更新：克隆完整性一轮（2026-09-26）
 > 来源：原 `README.md` 第二十章（工具与命令手册）+ 从技术债文档搬来的 `§19.5`（沙箱与环境约束 —— 它是手册内容，不是债）。
 > **读它的时机**：第一次跑起来 / 要跑验收 / 环境报错时。
 > ⚠️ 这里只放"怎么跑、跑出什么、为什么跑不起来"；**实跑数字不在这里手抄** ——
@@ -2336,6 +2365,7 @@ cd frontend && npm run build
 
 | 脚本 | 作用 |
 |---|---|
+| `scripts/bootstrap.ps1` | **一键环境引导（克隆完整性一轮新增）—— 克隆之后的第一步**：前置检查 python / node / npm → 建 `.venv` → 装 `requirements.txt` 与 `backend/requirements.txt` → 前端 npm ci → 跑 `scripts/build_demo_snapshots.py`。幂等、可重复跑、**不硬编码本机路径**（路径从脚本自身位置推）。开关：`-Build` 顺带构建 `frontend/dist` 与走查 bundle、`-Verify` 顺带跑三道门禁、`-SkipFrontend` 只装 Python 侧。**依赖装进 `.venv` 而不是系统 python** —— 作者机器上两者恰好都装齐了，别人机器上不一定（理由与实测见 §19.5） |
 | `scripts/verify_sprint0.py` | **总验收**：一进程内跑完 A1–A11（契约 / 确定性 / 硬编码 / 契约层 / AST 缓存 / 产物 / 答案可见性 / 判题 / 阶段一覆盖度报告 / 阶段二事实覆盖报告 / **阶段四设计层六维评审**） |
 | `scripts/test_business_graph.py` | 图谱引擎测试：结构不变量 / 确定性 / 质量下限 / 教学正确性（编排类不当核心域、dunder 不成功能点、生命周期排最后）/ 教师种子合并 |
 | `scripts/test_teaching_coverage.py` | 阶段一覆盖度比对器测试：不打分（逐键扫描分数字段）/ 不丢域 / unconfirmed 不参与比对 / 英文整词匹配 / 确定性 / 无网络导入 |
@@ -2492,8 +2522,21 @@ python scripts/validation_report.py --input validation/results/python_dotenv_che
   根治办法（改脚本让两者写不同路径）这一轮没做：改动面比收益大，先如实记录。
 - `.ps1` 文件**必须带 UTF-8 BOM**：Windows PowerShell 5.1 会把无 BOM 的 UTF-8 按 ANSI 解码，
   中文被误解后可能变成引号 / 花括号，导致「Missing closing '}'」这类假语法错误。
-- 本仓库的 git 需要 `-c safe.directory=...`，`git status` 还要加 `--ignore-submodules=all`
-  （`validation/flask` 里有嵌套的真实 `.git`）。
+- 本仓库的 git 可能报 `dubious ownership` 并拒绝一切命令（仓库属主是 `BUILTIN\Administrators`、
+  而当前用户不匹配时就会这样，连 `git status` 都不给跑）：
+  绕法是每条命令都带 `-c safe.directory=<仓库绝对路径>`，或一次性执行
+  `git config --global --add safe.directory <仓库绝对路径>`。
+- **克隆完整性一轮已解除「`git status` 必须加 `--ignore-submodules=all`」这条**（原记录在此处，现更新为历史）：
+  当时 `validation/flask` 是一个**嵌套真实 `.git` 的 gitlink**（索引里 mode `160000`、仓库里没有 `.gitmodules`），
+  于是 `git status` 会去子模块里跑 `status --porcelain=2`，在受限沙箱下报
+  `error: cannot create standard output pipe for status: Permission denied`；
+  同时**克隆下来的 `validation/flask` 是一个空目录** —— 三个真实第三方验证项目缺一个，
+  手册里那几条依赖它的命令在别人的机器上跑不通。
+  这一轮把 `validation/flask/.git` 改名为 `validation/flask/.git.bak`（**与 `validation/urllib3` 同一惯例**，
+  且 `.git.bak` 命中根 `.gitignore` 的 `*.bak` 规则），并把 236 个源码文件纳入跟踪。
+  实测结果：`git status` 不再需要 `--ignore-submodules=all`，`git ls-files -s` 里**不再有任何 gitlink**。
+  ⚠️ 这条改动的**代价**要写清：`validation/flask` 从此是"仓库里的一份源码快照"，
+  不再跟随上游 `pallets/flask` 更新（快照点：`d73fa1c`，与 `validation/urllib3` 的处置一致）。
 - **`node.exe` 能不能跑，取决于沙箱当时的模式；但 `esbuild` 一定跑不了**（Sprint 3 / Sprint 4 两次实测）：
   - Sprint 4 的 `workspace-write` 会话里 **`node` 本身可以跑**：`node -e`、
     `node scripts/browser_clickthrough.mjs`（jsdom 走查）都正常完成，**不需要放开权限**；
@@ -2552,7 +2595,7 @@ python scripts/validation_report.py --input validation/results/python_dotenv_che
 
 # 现状与验收（原 README 第十六 ~ 十八章 + 附录 B）
 
-> 更新触发：**每轮**（改了功能行为 / 跑了验收 / 调了优先级就要动这份） | 上次更新：W0 集成轮（2026-09-26）
+> 更新触发：**每轮**（改了功能行为 / 跑了验收 / 调了优先级就要动这份） | 上次更新：克隆完整性一轮（2026-09-26）
 > 来源：原 `README.md` 的 §16 / §17 / §18 / 附录 B **整章搬移，逐字未改**；章节号保持不变，
 > 所以 `§16.1` / `§17.2` / `§18` 这类引用（README 正文、代码注释、脚本里都有）仍然解析得到这里。
 > **数字规矩**：验收数字**不许手抄** —— 以 `validation/acceptance_latest.md` 为唯一来源
@@ -2913,6 +2956,36 @@ python scripts/validation_report.py --input validation/results/python_dotenv_che
 
 **仓库卫生与基线（WO-01 一轮 + W0 集成轮，2026-09-26）**：这一轮**不改任何产品行为**，交付的是"所有并行线从同一个已提交的基线开工"：把此前几轮（阶段 0 / 文档拆分阶段 1·2 / UI 重设计 / 证据折叠 / 入口完善）**只在工作区里的改动**按轮次分次提交，并在 W0 集成轮打成标签 **`wave-0`**；清掉根目录零引用残留（已清理：`aud.m4s` / `vid.m4s` / `generated_assets_motion_tiles_20260926/` / 空目录 `assets/`）与 `sample_projects/flask_crud_demo` 的空壳（源码确认丢失、决定不恢复）。`.gitignore` 补上 `*.m4s` / `generated_assets_*` / `.ai_orchestrator/` 三条规则。清理登记见 `docs/90-archive.md` 附录 C.2，交接事实见 `docs/08` §19.6，顺带抓到的门禁缺陷见 `docs/08` §19.1 第 28 条。三条验收命令的原始输出见该轮交付说明；**明确没做的**：没有 push（`origin/master` 仍停在 `1d640fb`）。
 
+**克隆完整性一轮（2026-09-26）：让「别人克隆下来」等于「作者本机」**
+
+> 起因是一条验收标准：**别人 `git clone` 之后跑一条命令，应当拿到和作者本机一样的进度与数据。**
+> 实测下来克隆会缺四样东西，缺哪一样都会让手册里的命令在别人机器上直接跑不通。
+> 这一轮**不改任何产品行为、不改任何判定口径**，改的全是"仓库里到底有没有那份东西"。
+
+| 缺什么 | 为什么会缺 | 这一轮怎么修 |
+|---|---|---|
+| `validation/flask` 的**全部源码** | 它在索引里是 gitlink（mode `160000`），而仓库**没有 `.gitmodules`** → 克隆下来是个**空目录**；于是三个真实第三方验证项目（`python_dotenv` / `flask` / `urllib3`）少一个 | `validation/flask` 里的 `.git` 改名为 `.git.bak`（**与 `validation/urllib3` 同一惯例**），把 236 个源码文件纳入跟踪。顺带解除了"`git status` 必须加 `--ignore-submodules=all`"这条老约束（见 `docs/06` §19.5） |
+| `validation/results/` 的**事实表与深分析产物** | 根 `.gitignore` 里的 `results/` 是"任何层级叫 results 都排掉"的无差别规则，把**证据层**一起排掉了；而手册 §20.3 ⑥ 是把其中的 `python_dotenv_facts.csv` 当**输入**用的 | 加一条放行规则（见下方代码块），10 个文件纳入跟踪 |
+| 业务逻辑分析平台的 **demo 项目快照** | 整个 `backend/data/logic_platform/` 被忽略（**原意是对的**：挡住用户上传件） | 改成"忽略子项 + 逐项放行"：只放行 `lab_safety_assistant` 与 `python_dotenv` —— 这两个的 `meta.json` 里 `source_kind` 是 `demo`、**没有 source/ 副本**、`source_root_rel` 指向仓库内**已跟踪的相对路径**、不含任何绝对路径 |
+| **一条装环境的命令** | 原先 §0.3 直接从 `cd D:\learn_with_ai` 开始，隐含"作者机器上一切已装好"，README 里也没有 clone 步骤 | 新增 `scripts/bootstrap.ps1`（前置检查 → 建 `.venv` → 装两份 requirements → 前端 npm ci → 跑 `build_demo_snapshots.py`），并在 `README.md` §0.3 补上「从零克隆」一段 |
+
+其中那条放行规则的写法有个**实测踩到的坑**（已并入 `docs/08` §19.1 第 29 条）：
+忽略整个父目录后再用 `!` 放行子目录**是不生效的**（git 的规则：父目录被排除时，子目录上的放行不生效），
+必须写成"忽略子项 + 逐项放行"：
+
+```gitignore
+backend/data/logic_platform/*
+!backend/data/logic_platform/lab_safety_assistant/
+!backend/data/logic_platform/python_dotenv/
+```
+
+**故意不进来、且必须继续不进来的**：`backend/data/logic_platform/` 下那 6 个 lp_ 前缀项目
+（`source_kind` 是 `upload`，`source/` 里是**用户上传源码的副本** —— 提交它等于把别人上传的代码公开出去）、
+`.venv`、`frontend/node_modules/`、`frontend/dist/`、`frontend/.smoke-dist/`（都可再生，加 `-Build` 一条命令就能重建）。
+**这一轮明确没做的**：① 没有把任何运行产物塞进仓库去换"看起来完整"；
+② `validation/urllib3` 按它自己 `.gitignore` 的 `.*` 规则仍不含点文件（沿用原有处置，这一轮没动它）；
+③ 前端构建产物仍靠 `-Build` 现场生成，**没有**提交 `dist`。
+
 ### 16.2 ⚠️ 部分完成
 
 **入口完善一轮（2026-09-26）**：系统首页新增本地演示登录窗口（可游客继续）、`/` 快捷搜索和业务模块快捷跳转。搜索直接复用现有契约与图谱卡片，不新增业务判定；登录明确标注为本地演示身份。编译验证：`node node_modules/vite/bin/vite.js build` 通过。完整边界见 `docs/features/login-and-quick-navigation.md`。
@@ -2988,6 +3061,10 @@ python scripts/verify_sprint0.py
 ### 17.2 全部验收命令
 
 ```bash
+# —— 环境引导（克隆之后的第一步；作者本机依赖已装齐，可跳过）——
+powershell -ExecutionPolicy Bypass -File scripts/bootstrap.ps1   # 建 .venv + 装依赖 + npm ci + 生成演示快照
+#   开关：-Build 顺带构建 frontend/dist 与走查 bundle；-Verify 顺带跑下面那三道门禁；-SkipFrontend 只装 Python 侧
+
 # —— 文档门禁（阶段 0 新增；先跑它，再跑别的，能立刻知道文档有没有说过头）——
 python scripts/build_acceptance_report.py       # 跑 13 个只读验收脚本 → validation/acceptance_latest.json / .md
 python scripts/verify_docs.py                   # 核对文档：路径 / 章节引用 / 版本号 / 数字 / 行号 / 文档清单（7 项）
@@ -3497,7 +3574,7 @@ python scripts/export_domain_review_worksheet.py --pilot validation/python_doten
 
 # 技术债与复盘（原 README 第十九章）
 
-> 更新触发：**每轮**（清了债 / 发现新坑 / 被真实数据纠正了设计就要动这份） | 上次更新：W0 集成轮（2026-09-26）
+> 更新触发：**每轮**（清了债 / 发现新坑 / 被真实数据纠正了设计就要动这份） | 上次更新：克隆完整性一轮（2026-09-26）
 > 来源：原 `README.md` 的 §19 **整章搬移**；`§19.1` ~ `§19.4` 与 `§19.6` 在本文件，**`§19.5`（沙箱 / 环境约束）已搬到 `docs/06-runbook.md`** —— 它是手册内容不是债，本文件留了占位与指针。
 > 分工：**架构与契约规范**在 `docs/02-architecture.md` 与 `docs/03-contracts.md`，**现状与验收**在 `docs/07-status-and-acceptance.md`，
 > 这份只放"哪里会踩坑、为什么这么写"。
@@ -3537,6 +3614,7 @@ python scripts/export_domain_review_worksheet.py --pilot validation/python_doten
 | 26 | **前端口径文案与引擎机制之间没有同步机制** | ⚠️ **未修（没有机器化办法，如实登记）**：证据折叠一轮给讲稿与反幻觉面板各写了一段"机械复核能证明什么 / 不能证明什么"的说明，**这些机制全在 `engine/logic_platform/` 里**（`verify.py` 的检查项、`narration.py` 的四条把关规则、`apply_verification` 的 `can_publish=False`）。引擎改了检查项而前端文案没跟上，页面就会**说错话**，而门禁抓不到。当前唯一的防线是 `docs/features/evidence-fold.md` §2 第 6 条那张"说明句子 ↔ 实现位置"对照表（**人工复核**），以及两个组件里说明常量上方的逐条依据注释。**触发条件**：将来若真的改了 `verify.py` 的检查项集合，必须同轮改这两处文案并重跑 `node scripts/check_evidence_fold.mjs` |
 | 27 | **登录与搜索容易被误解为完整账号系统 / 全局路由** | ✅ 入口完善一轮已补齐本地演示登录、`/` 快捷搜索和模块卡片快捷跳转；明确标注登录不接远程鉴权，搜索只做前端入口编排。真正的账号、权限、跨设备会话与 `vue-router` 深链仍是后续工作，见 `docs/features/login-and-quick-navigation.md` |
 | 28 | **文档门禁 D1 查不出带前导点的路径**（`WO-01` 一轮实测撞到）：`scripts/verify_docs.py` 的 `resolve_token()` 用 `lstrip("./")`，而 `str.lstrip` 剥的是**字符集合**而不是**前缀** —— 于是 `.ai_orchestrator/` 被剥成 `ai_orchestrator/`，明明在磁盘上却被判成「路径不存在」。实测三行：`'.ai_orchestrator/'.lstrip('./')` 得到 `'ai_orchestrator/'`；`(仓库根 / '.ai_orchestrator').exists()` 是 `True`，剥过之后是 `False`。**影响面**：任何点开头的目录 / 文件（`.ai_orchestrator`、`.venv` 这类带路径的写法）在文档里都无法通过 D1，而且报出来的话术是「路径不存在」——**看起来像文档写错了**，排查会朝错的方向走 | ⚠️ **未修（已并入 `WO-04` 门禁补强，见 `docs/10-work-orders.md` §23.4 第 4 件）**：改成剥**前缀**（`re.sub(r"^(\./)+", "", token)` 这一类），并**补一条负向对照**（点目录必须能解析成功，改回 `lstrip` 必须 FAIL）。在那之前，`docs/90-archive.md` 附录 C.2 按**不带尾随斜杠**的写法引用它，并把原因写在注记里 |
+| 29 | **`.gitignore` 里"排除父目录之后再放行子目录"是不生效的**（克隆完整性一轮实测撞到）：想让 `backend/data/logic_platform/` **只放行两个 demo 项目**时，第一版写成"先排除整个目录、再用 `!` 放行那两个子目录"，结果两个子目录**仍然被忽略**、一个文件都 `git add` 不进去，`git status` 里连提示都没有。根因是 git 的明文规则：*父目录被排除时，其子目录上的放行不生效*（放行只对**未被排除的父目录**下的条目有效）—— 也就是说这不是"顺序写错了"，是**写法本身不可能成立** | ✅ 克隆完整性一轮已修：改成"忽略子项目录 + 逐项放行"（先 `backend/data/logic_platform/*`，再写两条放行规则），并用 `git check-ignore -v` 逐条验证四种路径 —— 用户上传件仍是 IGNORED、两个 demo 项目变成可跟踪。**同类第二处**：`validation/results/` 是被 `results/` 这条"任何层级同名目录都排掉"的规则误伤的（它其实是**证据层**，手册还拿里面的 CSV 当输入），放行必须写在排除**之后**。两处都已在 `.gitignore` 里写了注释说明理由，避免下次被"看起来更简洁的一行写法"改回去 |
 
 ### 19.2 开发过程中被真实数据纠正的设计错误（累计 21 条）
 **这些全都是「跑起来才发现」的，看代码看不出来。**
@@ -3684,8 +3762,12 @@ python scripts/export_domain_review_worksheet.py --pilot validation/python_doten
    **`WO-01` 一轮已把上述改动按轮次分次提交**（`git log --oneline wave-0` 可见每一轮的 message；W0 集成轮已给基线打了标签 **`wave-0`**），
    并已清理根目录零引用残留（`aud.m4s` / `vid.m4s` / `generated_assets_motion_tiles_20260926/` / 空目录 `assets/`，
    均已清理并登记在 `docs/90-archive.md` 附录 C.2）。
-   repo 层面谈论「工程完成度」时，只能说成「已提交为本地基线」：远端 `origin`（GitHub）仍停在 `1d640fb`，
-   `WO-01` 的这几个提交**只在本地、还没有 push**。
+   repo 层面谈论「工程完成度」时，只能说成「已提交为本地基线」；**这一条在克隆完整性一轮（2026-09-26）已推进**：
+   远端 `origin`（GitHub）当时停在 `1d640fb`、`WO-01` 的这几个提交只在本地、还没有 push，
+   现在**已经全部推上去了** —— `master` 由 `1d640fb` **快进**到 `d6404b1`（快进，不是强推，没有丢任何提交），
+   另外把本地的 4 条并行工作线分支 `wo-02` / `wo-03` / `wo-04` / `wo-05` 一并推成远端分支；
+   实测 `git ls-remote --heads origin` 的 5 条 SHA 与本地分支逐一相同，本地 `git status` 显示与 `origin/master` 同步。
+   **仍然只在本地的是各个 worktree**（作者机器上的开发布局，如 `D:\lwai-wo02` 这类目录），那不属于仓库内容。
    **并行开工前先提交**：任何一条线都不许带着未提交的改动开分支 / 开 worktree
    （`docs/10-work-orders.md` §22.5 的 worktree 规则的前提就是这一条）。
 2. **`sample_projects/flask_crud_demo` 的源码已丢失，并已决定「不再恢复」（WO-01 一轮）**——
@@ -4060,7 +4142,7 @@ python scripts/export_domain_review_worksheet.py --pilot validation/python_doten
 
 # 并行工单与执行编排（多任务同时开工时的唯一发单口径）
 
-> 更新触发：**工单增删 / 波次调整 / 文件归属变化 / 有工单做完时** | 上次更新：W0 集成轮（2026-09-26）
+> 更新触发：**工单增删 / 波次调整 / 文件归属变化 / 有工单做完时** | 上次更新：克隆完整性一轮（2026-09-26）
 > 来源：`docs/07-status-and-acceptance.md` 的 `§16.2` / `§16.3` / `§18`（未做项与优先级）+ `docs/08-tech-debt.md` 的 `§19.1` / `§19.6`（技术债与交接事实）。
 > **读它的时机**：要把"剩下没做的活"拆给一个或多个人 / AI 助手**同时开工**时。
 > ⚠️ **它不是第二份「下一步」**：优先级与取舍的唯一权威仍是 `§18`（`docs/00-index.md` §3.2 第 6 条）。
@@ -4114,7 +4196,7 @@ python scripts/export_domain_review_worksheet.py --pilot validation/python_doten
 |---|---|---|
 | 把原生程序输出接进 PowerShell 管道（`python x.py \| Select-Object`）→ `Access is denied` | **不要用 `\|`**；要留档就写文件或丢给后台任务 | `§19.5` |
 | `python x.py > log 2>&1` 可能**静默不执行**、退出码为空 | 以屏幕输出为准；或在 Python 进程内重定向 stdout | `§19.5` |
-| git 报 `dubious ownership` / 子模块管道失败 | `git -c safe.directory=<仓库绝对路径> ...`，`status` 还要 `--ignore-submodules=all`（`validation/flask` 里有嵌套真实 `.git`） | `§19.5` |
+| git 报 `dubious ownership` / 子模块管道失败 | `git -c safe.directory=<仓库绝对路径> ...`；**`status` 从克隆完整性一轮起不再需要 `--ignore-submodules=all`** —— `validation/flask` 的嵌套 `.git` 已改为 `.git.bak` 并把源码纳入跟踪（见 `docs/06` §19.5） | `§19.5` |
 | 改了 `engine/lexicon/*.json`（含教师种子）却"没生效" | `load_lexicon()` 是**进程内缓存** → 必须重启 uvicorn | `§19.5` |
 | 改了后端路由却"新接口 404" | 启动命令**没有 `--reload`** → 重启 8000 上的 uvicorn | `§19.5` |
 | `vite build` 报 `spawn EPERM` | 受限模式下 esbuild 必然起不来；**走查脚本本身不需要放开权限**；构建走查 bundle 要一次性放开进程权限 | `§19.5` |

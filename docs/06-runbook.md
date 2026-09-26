@@ -1,6 +1,6 @@
 # 运行、验收与排障手册（原 README 第二十章 + §19.5）
 
-> 更新触发：**新增脚本或环境结论变了** | 上次更新：W0 集成轮（2026-09-26）
+> 更新触发：**新增脚本或环境结论变了** | 上次更新：克隆完整性一轮（2026-09-26）
 > 来源：原 `README.md` 第二十章（工具与命令手册）+ 从技术债文档搬来的 `§19.5`（沙箱与环境约束 —— 它是手册内容，不是债）。
 > **读它的时机**：第一次跑起来 / 要跑验收 / 环境报错时。
 > ⚠️ 这里只放"怎么跑、跑出什么、为什么跑不起来"；**实跑数字不在这里手抄** ——
@@ -14,6 +14,7 @@
 
 | 脚本 | 作用 |
 |---|---|
+| `scripts/bootstrap.ps1` | **一键环境引导（克隆完整性一轮新增）—— 克隆之后的第一步**：前置检查 python / node / npm → 建 `.venv` → 装 `requirements.txt` 与 `backend/requirements.txt` → 前端 npm ci → 跑 `scripts/build_demo_snapshots.py`。幂等、可重复跑、**不硬编码本机路径**（路径从脚本自身位置推）。开关：`-Build` 顺带构建 `frontend/dist` 与走查 bundle、`-Verify` 顺带跑三道门禁、`-SkipFrontend` 只装 Python 侧。**依赖装进 `.venv` 而不是系统 python** —— 作者机器上两者恰好都装齐了，别人机器上不一定（理由与实测见 §19.5） |
 | `scripts/verify_sprint0.py` | **总验收**：一进程内跑完 A1–A11（契约 / 确定性 / 硬编码 / 契约层 / AST 缓存 / 产物 / 答案可见性 / 判题 / 阶段一覆盖度报告 / 阶段二事实覆盖报告 / **阶段四设计层六维评审**） |
 | `scripts/test_business_graph.py` | 图谱引擎测试：结构不变量 / 确定性 / 质量下限 / 教学正确性（编排类不当核心域、dunder 不成功能点、生命周期排最后）/ 教师种子合并 |
 | `scripts/test_teaching_coverage.py` | 阶段一覆盖度比对器测试：不打分（逐键扫描分数字段）/ 不丢域 / unconfirmed 不参与比对 / 英文整词匹配 / 确定性 / 无网络导入 |
@@ -170,8 +171,21 @@ python scripts/validation_report.py --input validation/results/python_dotenv_che
   根治办法（改脚本让两者写不同路径）这一轮没做：改动面比收益大，先如实记录。
 - `.ps1` 文件**必须带 UTF-8 BOM**：Windows PowerShell 5.1 会把无 BOM 的 UTF-8 按 ANSI 解码，
   中文被误解后可能变成引号 / 花括号，导致「Missing closing '}'」这类假语法错误。
-- 本仓库的 git 需要 `-c safe.directory=...`，`git status` 还要加 `--ignore-submodules=all`
-  （`validation/flask` 里有嵌套的真实 `.git`）。
+- 本仓库的 git 可能报 `dubious ownership` 并拒绝一切命令（仓库属主是 `BUILTIN\Administrators`、
+  而当前用户不匹配时就会这样，连 `git status` 都不给跑）：
+  绕法是每条命令都带 `-c safe.directory=<仓库绝对路径>`，或一次性执行
+  `git config --global --add safe.directory <仓库绝对路径>`。
+- **克隆完整性一轮已解除「`git status` 必须加 `--ignore-submodules=all`」这条**（原记录在此处，现更新为历史）：
+  当时 `validation/flask` 是一个**嵌套真实 `.git` 的 gitlink**（索引里 mode `160000`、仓库里没有 `.gitmodules`），
+  于是 `git status` 会去子模块里跑 `status --porcelain=2`，在受限沙箱下报
+  `error: cannot create standard output pipe for status: Permission denied`；
+  同时**克隆下来的 `validation/flask` 是一个空目录** —— 三个真实第三方验证项目缺一个，
+  手册里那几条依赖它的命令在别人的机器上跑不通。
+  这一轮把 `validation/flask/.git` 改名为 `validation/flask/.git.bak`（**与 `validation/urllib3` 同一惯例**，
+  且 `.git.bak` 命中根 `.gitignore` 的 `*.bak` 规则），并把 236 个源码文件纳入跟踪。
+  实测结果：`git status` 不再需要 `--ignore-submodules=all`，`git ls-files -s` 里**不再有任何 gitlink**。
+  ⚠️ 这条改动的**代价**要写清：`validation/flask` 从此是"仓库里的一份源码快照"，
+  不再跟随上游 `pallets/flask` 更新（快照点：`d73fa1c`，与 `validation/urllib3` 的处置一致）。
 - **`node.exe` 能不能跑，取决于沙箱当时的模式；但 `esbuild` 一定跑不了**（Sprint 3 / Sprint 4 两次实测）：
   - Sprint 4 的 `workspace-write` 会话里 **`node` 本身可以跑**：`node -e`、
     `node scripts/browser_clickthrough.mjs`（jsdom 走查）都正常完成，**不需要放开权限**；

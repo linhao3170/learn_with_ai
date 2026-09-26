@@ -1,0 +1,489 @@
+﻿fact_id,category,type,description,location,confidence,evidence,source
+F0001,模块架构,分层架构,系统采用 1 层架构: 支撑层,全局,verified,基于模块依赖方向和角色自动分层,architecture
+F0002,模块架构,模块分层,模块 flask.app: 位于支撑层，角色为外围模块，38 个方法,flask.app,verified,"推断职责: System Entry, Orchestration",architecture
+F0003,模块架构,模块分层,模块 flask.blueprints: 位于支撑层，角色为外围模块，4 个方法,flask.blueprints,verified,推断职责: Business Logic,architecture
+F0004,模块架构,模块分层,模块 flask.cli: 位于支撑层，角色为外围模块，33 个方法,flask.cli,verified,推断职责: Business Logic,architecture
+F0005,模块架构,模块分层,模块 flask.config: 位于支撑层，角色为外围模块，14 个方法,flask.config,verified,推断职责: Business Logic,architecture
+F0006,模块架构,模块分层,模块 flask.ctx: 位于支撑层，角色为外围模块，27 个方法,flask.ctx,verified,推断职责: Business Logic,architecture
+F0007,模块架构,模块分层,模块 flask.debughelpers: 位于支撑层，角色为外围模块，6 个方法,flask.debughelpers,verified,推断职责: Helpers,architecture
+F0008,模块架构,模块分层,模块 flask.globals: 位于支撑层，角色为外围模块，2 个方法,flask.globals,verified,推断职责: Business Logic,architecture
+F0009,模块架构,模块分层,模块 flask.helpers: 位于支撑层，角色为外围模块，21 个方法,flask.helpers,verified,推断职责: Helpers,architecture
+F0010,模块架构,模块分层,模块 flask.logging: 位于支撑层，角色为外围模块，3 个方法,flask.logging,verified,推断职责: Business Logic,architecture
+F0011,模块架构,模块分层,模块 flask.sessions: 位于支撑层，角色为外围模块，21 个方法,flask.sessions,verified,推断职责: Business Logic,architecture
+F0012,模块架构,模块分层,模块 flask.signals: 位于支撑层，角色为外围模块，0 个方法,flask.signals,verified,推断职责: Business Logic,architecture
+F0013,模块架构,模块分层,模块 flask.templating: 位于支撑层，角色为外围模块，14 个方法,flask.templating,verified,推断职责: Business Logic,architecture
+F0014,模块架构,模块分层,模块 flask.testing: 位于支撑层，角色为外围模块，12 个方法,flask.testing,verified,推断职责: Business Logic,architecture
+F0015,模块架构,模块分层,模块 flask.typing: 位于支撑层，角色为外围模块，0 个方法,flask.typing,verified,推断职责: Business Logic,architecture
+F0016,模块架构,模块分层,模块 flask.views: 位于支撑层，角色为外围模块，4 个方法,flask.views,verified,推断职责: Business Logic,architecture
+F0017,模块架构,模块分层,模块 flask.wrappers: 位于支撑层，角色为外围模块，12 个方法,flask.wrappers,verified,"推断职责: System Entry, Orchestration",architecture
+F0018,模块架构,模块分层,模块 flask.json.provider: 位于支撑层，角色为外围模块，11 个方法,flask.json.provider,verified,推断职责: Business Logic,architecture
+F0019,模块架构,模块分层,模块 flask.json.tag: 位于支撑层，角色为外围模块，34 个方法,flask.json.tag,verified,推断职责: Business Logic,architecture
+F0020,模块架构,模块分层,模块 flask.sansio.app: 位于支撑层，角色为外围模块，36 个方法,flask.sansio.app,verified,"推断职责: System Entry, Orchestration",architecture
+F0021,模块架构,模块分层,模块 flask.sansio.blueprints: 位于支撑层，角色为外围模块，30 个方法,flask.sansio.blueprints,verified,推断职责: Business Logic,architecture
+F0022,模块架构,模块分层,模块 flask.sansio.scaffold: 位于支撑层，角色为外围模块，32 个方法,flask.sansio.scaffold,verified,推断职责: Business Logic,architecture
+F0023,调用链,调用链-模块内,Flask.__call__ 调用 Flask.wsgi_app,flask/app.py:1628,verified,调用类型: self_method,call_graph
+F0024,调用链,调用链-模块内,Flask.__init_subclass__ 调用 remove_ctx,flask/app.py:308,verified,调用类型: direct,call_graph
+F0025,调用链,调用链-模块内,Flask.__init_subclass__ 调用 add_ctx,flask/app.py:309,verified,调用类型: direct,call_graph
+F0026,调用链,调用链-模块内,Flask.dispatch_request 调用 Flask.raise_routing_exception,flask/app.py:982,verified,调用类型: self_method,call_graph
+F0027,调用链,调用链-模块内,Flask.dispatch_request 调用 Flask.make_default_options_response,flask/app.py:990,verified,调用类型: self_method,call_graph
+F0028,调用链,调用链-模块内,Flask.dispatch_request 调用 Flask.ensure_sync,flask/app.py:993,verified,调用类型: self_method,call_graph
+F0029,调用链,调用链-模块内,Flask.do_teardown_appcontext 调用 Flask.ensure_sync,flask/app.py:1477,verified,调用类型: self_method,call_graph
+F0030,调用链,调用链-模块内,Flask.do_teardown_request 调用 Flask.ensure_sync,flask/app.py:1449,verified,调用类型: self_method,call_graph
+F0031,调用链,调用链-模块内,Flask.ensure_sync 调用 Flask.async_to_sync,flask/app.py:1078,verified,调用类型: self_method,call_graph
+F0032,调用链,调用链-模块内,Flask.finalize_request 调用 Flask.make_response,flask/app.py:1042,verified,调用类型: self_method,call_graph
+F0033,调用链,调用链-模块内,Flask.finalize_request 调用 Flask.process_response,flask/app.py:1044,verified,调用类型: self_method,call_graph
+F0034,调用链,调用链-模块内,Flask.full_dispatch_request 调用 Flask.preprocess_request,flask/app.py:1017,verified,调用类型: self_method,call_graph
+F0035,调用链,调用链-模块内,Flask.full_dispatch_request 调用 Flask.dispatch_request,flask/app.py:1019,verified,调用类型: self_method,call_graph
+F0036,调用链,调用链-模块内,Flask.full_dispatch_request 调用 Flask.handle_user_exception,flask/app.py:1021,verified,调用类型: self_method,call_graph
+F0037,调用链,调用链-模块内,Flask.full_dispatch_request 调用 Flask.finalize_request,flask/app.py:1022,verified,调用类型: self_method,call_graph
+F0038,调用链,调用链-模块内,Flask.handle_exception 调用 Flask.log_exception,flask/app.py:943,verified,调用类型: self_method,call_graph
+F0039,调用链,调用链-模块内,Flask.handle_exception 调用 Flask.ensure_sync,flask/app.py:949,verified,调用类型: self_method,call_graph
+F0040,调用链,调用链-模块内,Flask.handle_exception 调用 Flask.finalize_request,flask/app.py:951,verified,调用类型: self_method,call_graph
+F0041,调用链,调用链-模块内,Flask.handle_http_exception 调用 Flask.ensure_sync,flask/app.py:866,verified,调用类型: self_method,call_graph
+F0042,调用链,调用链-模块内,Flask.handle_user_exception 调用 Flask.handle_http_exception,flask/app.py:891,verified,调用类型: self_method,call_graph
+F0043,调用链,调用链-模块内,Flask.handle_user_exception 调用 Flask.ensure_sync,flask/app.py:898,verified,调用类型: self_method,call_graph
+F0044,调用链,调用链-模块内,Flask.preprocess_request 调用 Flask.ensure_sync,flask/app.py:1390,verified,调用类型: self_method,call_graph
+F0045,调用链,调用链-模块内,Flask.process_response 调用 Flask.ensure_sync,flask/app.py:1411,verified,调用类型: self_method,call_graph
+F0046,调用链,调用链-模块内,Flask.send_static_file 调用 Flask.get_send_file_max_age,flask/app.py:410,verified,调用类型: self_method,call_graph
+F0047,调用链,调用链-模块内,Flask.test_request_context 调用 Flask.request_context,flask/app.py:1567,verified,调用类型: self_method,call_graph
+F0048,调用链,调用链-模块内,Flask.update_template_context 调用 Flask.ensure_sync,flask/app.py:617,verified,调用类型: self_method,call_graph
+F0049,调用链,调用链-模块内,Flask.url_for 调用 Flask.create_url_adapter,flask/app.py:1185,verified,调用类型: self_method,call_graph
+F0050,调用链,调用链-模块内,Flask.wsgi_app 调用 Flask.request_context,flask/app.py:1595,verified,调用类型: self_method,call_graph
+F0051,调用链,调用链-模块内,Flask.wsgi_app 调用 Flask.full_dispatch_request,flask/app.py:1600,verified,调用类型: self_method,call_graph
+F0052,调用链,调用链-模块内,Flask.wsgi_app 调用 Flask.handle_exception,flask/app.py:1603,verified,调用类型: self_method,call_graph
+F0053,调用链,调用链-模块内,Blueprint.send_static_file 调用 Blueprint.get_send_file_max_age,flask/blueprints.py:99,verified,调用类型: self_method,call_graph
+F0054,调用链,调用链-模块内,AppGroup.command 调用 with_appcontext,flask/cli.py:424,verified,调用类型: direct,call_graph
+F0055,调用链,调用链-模块内,FlaskGroup.get_command 调用 FlaskGroup._load_plugin_commands,flask/cli.py:610,verified,调用类型: self_method,call_graph
+F0056,调用链,调用链-模块内,FlaskGroup.list_commands 调用 FlaskGroup._load_plugin_commands,flask/cli.py:637,verified,调用类型: self_method,call_graph
+F0057,调用链,调用链-模块内,ScriptInfo.load_app 调用 prepare_import,flask/cli.py:348,verified,调用类型: direct,call_graph
+F0058,调用链,调用链-模块内,ScriptInfo.load_app 调用 locate_app,flask/cli.py:349,verified,调用类型: direct,call_graph
+F0059,调用链,调用链-模块内,_env_file_callback 调用 load_dotenv,flask/cli.py:510,verified,调用类型: direct,call_graph
+F0060,调用链,调用链-模块内,find_app_by_string 调用 _called_with_wrong_args,flask/cli.py:180,verified,调用类型: direct,call_graph
+F0061,调用链,调用链-模块内,find_best_app 调用 _called_with_wrong_args,flask/cli.py:77,verified,调用类型: direct,call_graph
+F0062,调用链,调用链-模块内,run_command 调用 show_server_banner,flask/cli.py:981,verified,调用类型: direct,call_graph
+F0063,调用链,调用链-模块内,Config.from_envvar 调用 Config.from_pyfile,flask/config.py:124,verified,调用类型: self_method,call_graph
+F0064,调用链,调用链-模块内,Config.from_file 调用 Config.from_mapping,flask/config.py:302,verified,调用类型: self_method,call_graph
+F0065,调用链,调用链-模块内,Config.from_pyfile 调用 Config.from_object,flask/config.py:215,verified,调用类型: self_method,call_graph
+F0066,调用链,调用链-模块内,AppContext.__enter__ 调用 AppContext.push,flask/ctx.py:507,verified,调用类型: self_method,call_graph
+F0067,调用链,调用链-模块内,AppContext.__exit__ 调用 AppContext.pop,flask/ctx.py:516,verified,调用类型: self_method,call_graph
+F0068,调用链,调用链-模块内,AppContext.push 调用 AppContext._get_session,flask/ctx.py:439,verified,调用类型: self_method,call_graph
+F0069,调用链,调用链-模块内,AppContext.push 调用 AppContext.match_request,flask/ctx.py:444,verified,调用类型: self_method,call_graph
+F0070,调用链,调用链-模块内,AppContext.session 调用 AppContext._get_session,flask/ctx.py:401,verified,调用类型: self_method,call_graph
+F0071,调用链,调用链-模块内,explain_template_loading_attempts 调用 _dump_loader_info,flask/debughelpers.py:153,verified,调用类型: direct,call_graph
+F0072,调用链,调用链-模块内,_split_blueprint_path 调用 _split_blueprint_path,flask/helpers.py:649,verified,调用类型: direct,call_graph
+F0073,调用链,调用链-模块内,send_file 调用 _prepare_send_file_kwargs,flask/helpers.py:529,verified,调用类型: direct,call_graph
+F0074,调用链,调用链-模块内,send_from_directory 调用 _prepare_send_file_kwargs,flask/helpers.py:583,verified,调用类型: direct,call_graph
+F0075,调用链,调用链-模块内,DefaultJSONProvider.response 调用 DefaultJSONProvider.dumps,json/provider.py:214,verified,调用类型: self_method,call_graph
+F0076,调用链,调用链-模块内,JSONProvider.dump 调用 JSONProvider.dumps,json/provider.py:57,verified,调用类型: self_method,call_graph
+F0077,调用链,调用链-模块内,JSONProvider.load 调用 JSONProvider.loads,json/provider.py:73,verified,调用类型: self_method,call_graph
+F0078,调用链,调用链-模块内,JSONProvider.response 调用 JSONProvider._prepare_response_obj,json/provider.py:104,verified,调用类型: self_method,call_graph
+F0079,调用链,调用链-模块内,JSONProvider.response 调用 JSONProvider.dumps,json/provider.py:105,verified,调用类型: self_method,call_graph
+F0080,调用链,调用链-模块内,JSONTag.tag 调用 JSONTag.to_json,json/tag.py:90,verified,调用类型: self_method,call_graph
+F0081,调用链,调用链-模块内,TaggedJSONSerializer.__init__ 调用 TaggedJSONSerializer.register,json/tag.py:254,verified,调用类型: self_method,call_graph
+F0082,调用链,调用链-模块内,TaggedJSONSerializer._untag_scan 调用 TaggedJSONSerializer._untag_scan,json/tag.py:312,verified,调用类型: self_method,call_graph
+F0083,调用链,调用链-模块内,TaggedJSONSerializer._untag_scan 调用 TaggedJSONSerializer.untag,json/tag.py:314,verified,调用类型: self_method,call_graph
+F0084,调用链,调用链-模块内,TaggedJSONSerializer.dumps 调用 TaggedJSONSerializer.tag,json/tag.py:323,verified,调用类型: self_method,call_graph
+F0085,调用链,调用链-模块内,TaggedJSONSerializer.loads 调用 TaggedJSONSerializer._untag_scan,json/tag.py:327,verified,调用类型: self_method,call_graph
+F0086,调用链,调用链-模块内,create_logger 调用 has_level_handler,flask/logging.py:76,verified,调用类型: direct,call_graph
+F0087,调用链,调用链-模块内,App.__init__ 调用 App.auto_find_instance_path,sansio/app.py:301,verified,调用类型: self_method,call_graph
+F0088,调用链,调用链-模块内,App.__init__ 调用 App.make_config,sansio/app.py:316,verified,调用类型: self_method,call_graph
+F0089,调用链,调用链-模块内,App.__init__ 调用 App.make_aborter,sansio/app.py:324,verified,调用类型: self_method,call_graph
+F0090,调用链,调用链-模块内,App.jinja_env 调用 App.create_jinja_environment,sansio/app.py:474,verified,调用类型: self_method,call_graph
+F0091,调用链,调用链-模块内,Blueprint.add_app_template_filter 调用 Blueprint.record_once,sansio/blueprints.py:495,verified,调用类型: self_method,call_graph
+F0092,调用链,调用链-模块内,Blueprint.add_app_template_global 调用 Blueprint.record_once,sansio/blueprints.py:611,verified,调用类型: self_method,call_graph
+F0093,调用链,调用链-模块内,Blueprint.add_app_template_test 调用 Blueprint.record_once,sansio/blueprints.py:553,verified,调用类型: self_method,call_graph
+F0094,调用链,调用链-模块内,Blueprint.add_url_rule 调用 Blueprint.record,sansio/blueprints.py:433,verified,调用类型: self_method,call_graph
+F0095,调用链,调用链-模块内,Blueprint.after_app_request 调用 Blueprint.record_once,sansio/blueprints.py:628,verified,调用类型: self_method,call_graph
+F0096,调用链,调用链-模块内,Blueprint.app_context_processor 调用 Blueprint.record_once,sansio/blueprints.py:650,verified,调用类型: self_method,call_graph
+F0097,调用链,调用链-模块内,Blueprint.app_errorhandler 调用 Blueprint.record_once,sansio/blueprints.py:667,verified,调用类型: self_method,call_graph
+F0098,调用链,调用链-模块内,Blueprint.app_url_defaults 调用 Blueprint.record_once,sansio/blueprints.py:689,verified,调用类型: self_method,call_graph
+F0099,调用链,调用链-模块内,Blueprint.app_url_value_preprocessor 调用 Blueprint.record_once,sansio/blueprints.py:679,verified,调用类型: self_method,call_graph
+F0100,调用链,调用链-模块内,Blueprint.before_app_request 调用 Blueprint.record_once,sansio/blueprints.py:618,verified,调用类型: self_method,call_graph
+F0101,调用链,调用链-模块内,Blueprint.record_once 调用 Blueprint.record,sansio/blueprints.py:244,verified,调用类型: self_method,call_graph
+F0102,调用链,调用链-模块内,Blueprint.register 调用 Blueprint.make_setup_state,sansio/blueprints.py:321,verified,调用类型: self_method,call_graph
+F0103,调用链,调用链-模块内,Blueprint.register 调用 Blueprint._merge_blueprint_funcs,sansio/blueprints.py:332,verified,调用类型: self_method,call_graph
+F0104,调用链,调用链-模块内,Blueprint.teardown_app_request 调用 Blueprint.record_once,sansio/blueprints.py:638,verified,调用类型: self_method,call_graph
+F0105,调用链,调用链-模块内,Scaffold._method_route 调用 Scaffold.route,sansio/scaffold.py:293,verified,调用类型: self_method,call_graph
+F0106,调用链,调用链-模块内,Scaffold.delete 调用 Scaffold._method_route,sansio/scaffold.py:333,verified,调用类型: self_method,call_graph
+F0107,调用链,调用链-模块内,Scaffold.errorhandler 调用 Scaffold.register_error_handler,sansio/scaffold.py:644,verified,调用类型: self_method,call_graph
+F0108,调用链,调用链-模块内,Scaffold.get 调用 Scaffold._method_route,sansio/scaffold.py:301,verified,调用类型: self_method,call_graph
+F0109,调用链,调用链-模块内,Scaffold.patch 调用 Scaffold._method_route,sansio/scaffold.py:341,verified,调用类型: self_method,call_graph
+F0110,调用链,调用链-模块内,Scaffold.post 调用 Scaffold._method_route,sansio/scaffold.py:317,verified,调用类型: self_method,call_graph
+F0111,调用链,调用链-模块内,Scaffold.put 调用 Scaffold._method_route,sansio/scaffold.py:325,verified,调用类型: self_method,call_graph
+F0112,调用链,调用链-模块内,Scaffold.query 调用 Scaffold._method_route,sansio/scaffold.py:309,verified,调用类型: self_method,call_graph
+F0113,调用链,调用链-模块内,Scaffold.register_error_handler 调用 Scaffold._get_exc_class_and_code,sansio/scaffold.py:661,verified,调用类型: self_method,call_graph
+F0114,调用链,调用链-模块内,Scaffold.route 调用 Scaffold.add_url_rule,sansio/scaffold.py:370,verified,调用类型: self_method,call_graph
+F0115,调用链,调用链-模块内,find_package 调用 _find_package_path,sansio/scaffold.py:775,verified,调用类型: direct,call_graph
+F0116,调用链,调用链-模块内,SecureCookieSessionInterface.open_session 调用 SecureCookieSessionInterface.get_signing_serializer,flask/sessions.py:324,verified,调用类型: self_method,call_graph
+F0117,调用链,调用链-模块内,SecureCookieSessionInterface.save_session 调用 SecureCookieSessionInterface.get_signing_serializer,flask/sessions.py:373,verified,调用类型: self_method,call_graph
+F0118,调用链,调用链-模块内,DispatchingJinjaLoader._get_source_explained 调用 DispatchingJinjaLoader._iter_loaders,flask/templating.py:71,verified,调用类型: self_method,call_graph
+F0119,调用链,调用链-模块内,DispatchingJinjaLoader._get_source_fast 调用 DispatchingJinjaLoader._iter_loaders,flask/templating.py:91,verified,调用类型: self_method,call_graph
+F0120,调用链,调用链-模块内,DispatchingJinjaLoader.get_source 调用 DispatchingJinjaLoader._get_source_explained,flask/templating.py:61,verified,调用类型: self_method,call_graph
+F0121,调用链,调用链-模块内,DispatchingJinjaLoader.get_source 调用 DispatchingJinjaLoader._get_source_fast,flask/templating.py:62,verified,调用类型: self_method,call_graph
+F0122,调用链,调用链-模块内,render_template 调用 _render,flask/templating.py:148,verified,调用类型: direct,call_graph
+F0123,调用链,调用链-模块内,render_template_string 调用 _render,flask/templating.py:160,verified,调用类型: direct,call_graph
+F0124,调用链,调用链-模块内,stream_template 调用 _stream,flask/templating.py:197,verified,调用类型: direct,call_graph
+F0125,调用链,调用链-模块内,stream_template_string 调用 _stream,flask/templating.py:212,verified,调用类型: direct,call_graph
+F0126,调用链,调用链-模块内,FlaskClient.__init__ 调用 _get_werkzeug_version,flask/testing.py:132,verified,调用类型: direct,call_graph
+F0127,调用链,调用链-模块内,FlaskClient._request_from_builder_args 调用 FlaskClient._copy_environ,flask/testing.py:196,verified,调用类型: self_method,call_graph
+F0128,调用链,调用链-模块内,FlaskClient.open 调用 FlaskClient._copy_environ,flask/testing.py:216,verified,调用类型: self_method,call_graph
+F0129,调用链,调用链-模块内,FlaskClient.open 调用 FlaskClient._request_from_builder_args,flask/testing.py:228,verified,调用类型: self_method,call_graph
+F0130,调用链,入口点,Flask.send_static_file 是系统入口点,flask/app.py:393,verified,出度 1，标签: 无,call_graph
+F0131,调用链,入口点,Flask.open_resource 是系统入口点,flask/app.py:415,verified,出度 0，标签: state_change,call_graph
+F0132,调用链,入口点,Flask.open_instance_resource 是系统入口点,flask/app.py:448,verified,出度 0，标签: state_change,call_graph
+F0133,调用链,入口点,Flask.create_jinja_environment 是系统入口点,flask/app.py:470,verified,出度 0，标签: creation,call_graph
+F0134,调用链,入口点,Flask.update_template_context 是系统入口点,flask/app.py:591,verified,出度 1，标签: update,call_graph
+F0135,调用链,入口点,Flask.make_shell_context 是系统入口点,flask/app.py:621,verified,出度 0，标签: 无,call_graph
+F0136,调用链,入口点,Flask.run 是系统入口点,flask/app.py:633,verified,出度 0，标签: 无,call_graph
+F0137,调用链,入口点,Flask.test_client 是系统入口点,flask/app.py:758,verified,出度 0，标签: 无,call_graph
+F0138,调用链,入口点,Flask.test_cli_runner 是系统入口点,flask/app.py:816,verified,出度 0，标签: 无,call_graph
+F0139,调用链,入口点,Flask.url_for 是系统入口点,flask/app.py:1105,verified,出度 1，标签: 无,call_graph
+F0140,调用链,入口点,Flask.do_teardown_request 是系统入口点,flask/app.py:1423,verified,出度 1，标签: 无,call_graph
+F0141,调用链,入口点,Flask.do_teardown_appcontext 是系统入口点,flask/app.py:1456,verified,出度 1，标签: 无,call_graph
+F0142,调用链,入口点,Flask.app_context 是系统入口点,flask/app.py:1484,verified,出度 0，标签: 无,call_graph
+F0143,调用链,入口点,Flask.test_request_context 是系统入口点,flask/app.py:1520,verified,出度 1，标签: 无,call_graph
+F0144,调用链,入口点,Blueprint.send_static_file 是系统入口点,flask/blueprints.py:82,verified,出度 1，标签: 无,call_graph
+F0145,调用链,入口点,Blueprint.open_resource 是系统入口点,flask/blueprints.py:104,verified,出度 0，标签: state_change,call_graph
+F0146,调用链,入口点,find_best_app 是系统入口点,flask/cli.py:41,verified,出度 1，标签: query,call_graph
+F0147,调用链,入口点,find_app_by_string 是系统入口点,flask/cli.py:120,verified,出度 1，标签: query,call_graph
+F0148,调用链,入口点,run_command 是系统入口点,flask/cli.py:935,verified,出度 1，标签: 无,call_graph
+F0149,调用链,入口点,shell_command 是系统入口点,flask/cli.py:1001,verified,出度 0，标签: 无,call_graph
+F0150,调用链,入口点,routes_command 是系统入口点,flask/cli.py:1061,verified,出度 0，标签: 无,call_graph
+F0151,调用链,入口点,ScriptInfo.load_app 是系统入口点,flask/cli.py:333,verified,出度 4，标签: orchestrator,call_graph
+F0152,调用链,入口点,AppGroup.command 是系统入口点,flask/cli.py:413,verified,出度 1，标签: 无,call_graph
+F0153,调用链,入口点,AppGroup.group 是系统入口点,flask/cli.py:429,verified,出度 0，标签: 无,call_graph
+F0154,调用链,入口点,FlaskGroup.get_command 是系统入口点,flask/cli.py:609,verified,出度 1，标签: query,call_graph
+F0155,调用链,入口点,FlaskGroup.list_commands 是系统入口点,flask/cli.py:636,verified,出度 1，标签: query,call_graph
+F0156,调用链,入口点,Config.from_envvar 是系统入口点,flask/config.py:102,verified,出度 1，标签: 无,call_graph
+F0157,调用链,入口点,Config.from_prefixed_env 是系统入口点,flask/config.py:126,verified,出度 0，标签: state_change,call_graph
+F0158,调用链,入口点,Config.from_file 是系统入口点,flask/config.py:256,verified,出度 1，标签: 无,call_graph
+F0159,调用链,入口点,after_this_request 是系统入口点,flask/ctx.py:118,verified,出度 0，标签: 无,call_graph
+F0160,调用链,入口点,copy_current_request_context 是系统入口点,flask/ctx.py:154,verified,出度 0，标签: 无,call_graph
+F0161,调用链,入口点,has_request_context 是系统入口点,flask/ctx.py:209,verified,出度 0，标签: query,call_graph
+F0162,调用链,入口点,has_app_context 是系统入口点,flask/ctx.py:235,verified,出度 0，标签: query,call_graph
+F0163,调用链,入口点,_AppCtxGlobals.get 是系统入口点,flask/ctx.py:68,verified,出度 0，标签: query,call_graph
+F0164,调用链,入口点,_AppCtxGlobals.pop 是系统入口点,flask/ctx.py:79,verified,出度 0，标签: 无,call_graph
+F0165,调用链,入口点,_AppCtxGlobals.setdefault 是系统入口点,flask/ctx.py:93,verified,出度 0，标签: update,call_graph
+F0166,调用链,入口点,AppContext.from_environ 是系统入口点,flask/ctx.py:340,verified,出度 0，标签: 无,call_graph
+F0167,调用链,入口点,AppContext.has_request 是系统入口点,flask/ctx.py:351,verified,出度 0，标签: query,call_graph
+F0168,调用链,入口点,AppContext.copy 是系统入口点,flask/ctx.py:355,verified,出度 0，标签: 无,call_graph
+F0169,调用链,入口点,AppContext.request 是系统入口点,flask/ctx.py:371,verified,出度 0，标签: 无,call_graph
+F0170,调用链,入口点,AppContext.session 是系统入口点,flask/ctx.py:396,verified,出度 1，标签: 无,call_graph
+F0171,调用链,入口点,attach_enctype_error_multidict 是系统入口点,flask/debughelpers.py:81,verified,出度 0，标签: 无,call_graph
+F0172,调用链,入口点,explain_template_loading_attempts 是系统入口点,flask/debughelpers.py:124,verified,出度 1，标签: 无,call_graph
+F0173,调用链,入口点,stream_with_context 是系统入口点,flask/helpers.py:63,verified,出度 0，标签: 无,call_graph
+F0174,调用链,入口点,make_response 是系统入口点,flask/helpers.py:151,verified,出度 0，标签: 无,call_graph
+F0175,调用链,入口点,url_for 是系统入口点,flask/helpers.py:200,verified,出度 0，标签: 无,call_graph
+F0176,调用链,入口点,redirect 是系统入口点,flask/helpers.py:254,verified,出度 0，标签: 无,call_graph
+F0177,调用链,入口点,abort 是系统入口点,flask/helpers.py:281,verified,出度 0，标签: 无,call_graph
+F0178,调用链,入口点,flash 是系统入口点,flask/helpers.py:326,verified,出度 0，标签: 无,call_graph
+F0179,调用链,入口点,send_file 是系统入口点,flask/helpers.py:417,verified,出度 1，标签: 无,call_graph
+F0180,调用链,入口点,send_from_directory 是系统入口点,flask/helpers.py:543,verified,出度 1，标签: 无,call_graph
+F0181,调用链,入口点,_CollectErrors.raise_any 是系统入口点,flask/helpers.py:676,verified,出度 0，标签: 无,call_graph
+F0182,调用链,入口点,wsgi_errors_stream 是系统入口点,flask/logging.py:16,verified,出度 0，标签: 无,call_graph
+F0183,调用链,入口点,create_logger 是系统入口点,flask/logging.py:58,verified,出度 1，标签: creation,call_graph
+F0184,调用链,入口点,SessionInterface.make_null_session 是系统入口点,flask/sessions.py:150,verified,出度 0，标签: 无,call_graph
+F0185,调用链,入口点,SessionInterface.is_null_session 是系统入口点,flask/sessions.py:162,verified,出度 0，标签: 无,call_graph
+F0186,调用链,入口点,SessionInterface.should_set_cookie 是系统入口点,flask/sessions.py:233,verified,出度 0，标签: update,call_graph
+F0187,调用链,入口点,SessionInterface.open_session 是系统入口点,flask/sessions.py:249,verified,出度 0，标签: state_change,call_graph
+F0188,调用链,入口点,SessionInterface.save_session 是系统入口点,flask/sessions.py:263,verified,出度 0，标签: 无,call_graph
+F0189,调用链,入口点,SecureCookieSessionInterface.open_session 是系统入口点,flask/sessions.py:323,verified,出度 1，标签: state_change,call_graph
+F0190,调用链,入口点,SecureCookieSessionInterface.save_session 是系统入口点,flask/sessions.py:337,verified,出度 1，标签: 无,call_graph
+F0191,调用链,入口点,render_template 是系统入口点,flask/templating.py:136,verified,出度 1，标签: 无,call_graph
+F0192,调用链,入口点,render_template_string 是系统入口点,flask/templating.py:151,verified,出度 1，标签: 无,call_graph
+F0193,调用链,入口点,stream_template 是系统入口点,flask/templating.py:181,verified,出度 1，标签: 无,call_graph
+F0194,调用链,入口点,stream_template_string 是系统入口点,flask/templating.py:200,verified,出度 1，标签: 无,call_graph
+F0195,调用链,入口点,DispatchingJinjaLoader.get_source 是系统入口点,flask/templating.py:57,verified,出度 2，标签: query,call_graph
+F0196,调用链,入口点,EnvironBuilder.json_dumps 是系统入口点,flask/testing.py:88,verified,出度 0，标签: 无,call_graph
+F0197,调用链,入口点,FlaskClient.session_transaction 是系统入口点,flask/testing.py:136,verified,出度 0，标签: 无,call_graph
+F0198,调用链,入口点,FlaskClient.open 是系统入口点,flask/testing.py:204,verified,"出度 4，标签: orchestrator, state_change",call_graph
+F0199,调用链,入口点,FlaskCliRunner.invoke 是系统入口点,flask/testing.py:275,verified,出度 0，标签: 无,call_graph
+F0200,调用链,入口点,View.dispatch_request 是系统入口点,flask/views.py:78,verified,出度 0，标签: 无,call_graph
+F0201,调用链,入口点,View.as_view 是系统入口点,flask/views.py:86,verified,出度 0，标签: 无,call_graph
+F0202,调用链,入口点,Request.endpoint 是系统入口点,flask/wrappers.py:147,verified,出度 0，标签: 无,call_graph
+F0203,调用链,入口点,Request.blueprint 是系统入口点,flask/wrappers.py:162,verified,出度 0，标签: 无,call_graph
+F0204,调用链,入口点,Request.blueprints 是系统入口点,flask/wrappers.py:181,verified,出度 0，标签: 无,call_graph
+F0205,调用链,入口点,Response.max_cookie_size 是系统入口点,flask/wrappers.py:247,verified,出度 0，标签: 无,call_graph
+F0206,调用链,入口点,JSONProvider.dump 是系统入口点,json/provider.py:49,verified,出度 1，标签: 无,call_graph
+F0207,调用链,入口点,JSONProvider.load 是系统入口点,json/provider.py:67,verified,出度 1，标签: 无,call_graph
+F0208,调用链,入口点,JSONProvider.response 是系统入口点,json/provider.py:89,verified,出度 2，标签: 无,call_graph
+F0209,调用链,入口点,DefaultJSONProvider.loads 是系统入口点,json/provider.py:181,verified,出度 0，标签: 无,call_graph
+F0210,调用链,入口点,DefaultJSONProvider.response 是系统入口点,json/provider.py:189,verified,出度 1，标签: 无,call_graph
+F0211,调用链,入口点,JSONTag.check 是系统入口点,json/tag.py:73,verified,"出度 0，标签: query, validation",call_graph
+F0212,调用链,入口点,JSONTag.to_python 是系统入口点,json/tag.py:82,verified,出度 0，标签: 无,call_graph
+F0213,调用链,入口点,JSONTag.tag 是系统入口点,json/tag.py:87,verified,出度 1，标签: 无,call_graph
+F0214,调用链,入口点,TaggedJSONSerializer.dumps 是系统入口点,json/tag.py:321,verified,出度 1，标签: 无,call_graph
+F0215,调用链,入口点,TaggedJSONSerializer.loads 是系统入口点,json/tag.py:325,verified,出度 1，标签: 无,call_graph
+F0216,调用链,入口点,dumps 是系统入口点,json/__init__.py:13,verified,出度 0，标签: 无,call_graph
+F0217,调用链,入口点,dump 是系统入口点,json/__init__.py:47,verified,出度 0，标签: 无,call_graph
+F0218,调用链,入口点,loads 是系统入口点,json/__init__.py:77,verified,出度 0，标签: 无,call_graph
+F0219,调用链,入口点,load 是系统入口点,json/__init__.py:108,verified,出度 0，标签: 无,call_graph
+F0220,调用链,入口点,jsonify 是系统入口点,json/__init__.py:138,verified,出度 0，标签: 无,call_graph
+F0221,调用链,入口点,App.name 是系统入口点,sansio/app.py:423,verified,出度 0，标签: 无,call_graph
+F0222,调用链,入口点,App.logger 是系统入口点,sansio/app.py:440,verified,出度 0，标签: 无,call_graph
+F0223,调用链,入口点,App.jinja_env 是系统入口点,sansio/app.py:467,verified,出度 1，标签: 无,call_graph
+F0224,调用链,入口点,App.create_global_jinja_loader 是系统入口点,sansio/app.py:520,verified,出度 0，标签: creation,call_graph
+F0225,调用链,入口点,App.select_jinja_autoescape 是系统入口点,sansio/app.py:533,verified,出度 0，标签: 无,call_graph
+F0226,调用链,入口点,App.register_blueprint 是系统入口点,sansio/app.py:570,verified,出度 0，标签: creation,call_graph
+F0227,调用链,入口点,App.iter_blueprints 是系统入口点,sansio/app.py:597,verified,出度 0，标签: 无,call_graph
+F0228,调用链,入口点,App.template_filter 是系统入口点,sansio/app.py:670,verified,出度 0，标签: 无,call_graph
+F0229,调用链,入口点,App.add_template_filter 是系统入口点,sansio/app.py:699,verified,出度 0，标签: creation,call_graph
+F0230,调用链,入口点,App.template_test 是系统入口点,sansio/app.py:720,verified,出度 0，标签: 无,call_graph
+F0231,调用链,入口点,App.add_template_test 是系统入口点,sansio/app.py:756,verified,出度 0，标签: creation,call_graph
+F0232,调用链,入口点,App.template_global 是系统入口点,sansio/app.py:779,verified,出度 0，标签: 无,call_graph
+F0233,调用链,入口点,App.add_template_global 是系统入口点,sansio/app.py:810,verified,出度 0，标签: creation,call_graph
+F0234,调用链,入口点,App.teardown_appcontext 是系统入口点,sansio/app.py:827,verified,出度 0，标签: 无,call_graph
+F0235,调用链,入口点,App.shell_context_processor 是系统入口点,sansio/app.py:858,verified,出度 0，标签: 无,call_graph
+F0236,调用链,入口点,App.trap_http_exception 是系统入口点,sansio/app.py:893,verified,出度 0，标签: 无,call_graph
+F0237,调用链,入口点,App.redirect 是系统入口点,sansio/app.py:939,verified,出度 0，标签: 无,call_graph
+F0238,调用链,入口点,App.inject_url_defaults 是系统入口点,sansio/app.py:960,verified,出度 0，标签: 无,call_graph
+F0239,调用链,入口点,App.handle_url_build_error 是系统入口点,sansio/app.py:981,verified,出度 0，标签: 无,call_graph
+F0240,调用链,入口点,BlueprintSetupState.add_url_rule 是系统入口点,sansio/blueprints.py:87,verified,出度 0，标签: creation,call_graph
+F0241,调用链,入口点,Blueprint.register_blueprint 是系统入口点,sansio/blueprints.py:256,verified,出度 0，标签: creation,call_graph
+F0242,调用链,入口点,Blueprint.register 是系统入口点,sansio/blueprints.py:273,verified,出度 2，标签: creation,call_graph
+F0243,调用链,入口点,Blueprint.add_url_rule 是系统入口点,sansio/blueprints.py:413,verified,出度 1，标签: creation,call_graph
+F0244,调用链,入口点,Blueprint.app_template_filter 是系统入口点,sansio/blueprints.py:450,verified,出度 0，标签: 无,call_graph
+F0245,调用链,入口点,Blueprint.add_app_template_filter 是系统入口点,sansio/blueprints.py:476,verified,出度 1，标签: creation,call_graph
+F0246,调用链,入口点,Blueprint.app_template_test 是系统入口点,sansio/blueprints.py:504,verified,出度 0，标签: 无,call_graph
+F0247,调用链,入口点,Blueprint.add_app_template_test 是系统入口点,sansio/blueprints.py:532,verified,出度 1，标签: creation,call_graph
+F0248,调用链,入口点,Blueprint.app_template_global 是系统入口点,sansio/blueprints.py:562,verified,出度 0，标签: 无,call_graph
+F0249,调用链,入口点,Blueprint.add_app_template_global 是系统入口点,sansio/blueprints.py:590,verified,出度 1，标签: creation,call_graph
+F0250,调用链,入口点,Blueprint.before_app_request 是系统入口点,sansio/blueprints.py:614,verified,出度 1，标签: 无,call_graph
+F0251,调用链,入口点,Blueprint.after_app_request 是系统入口点,sansio/blueprints.py:624,verified,出度 1，标签: 无,call_graph
+F0252,调用链,入口点,Blueprint.teardown_app_request 是系统入口点,sansio/blueprints.py:634,verified,出度 1，标签: 无,call_graph
+F0253,调用链,入口点,Blueprint.app_context_processor 是系统入口点,sansio/blueprints.py:644,verified,出度 1，标签: 无,call_graph
+F0254,调用链,入口点,Blueprint.app_errorhandler 是系统入口点,sansio/blueprints.py:656,verified,出度 1，标签: 无,call_graph
+F0255,调用链,入口点,Blueprint.app_url_value_preprocessor 是系统入口点,sansio/blueprints.py:673,verified,出度 1，标签: 无,call_graph
+F0256,调用链,入口点,Blueprint.app_url_defaults 是系统入口点,sansio/blueprints.py:685,verified,出度 1，标签: 无,call_graph
+F0257,调用链,入口点,find_package 是系统入口点,sansio/scaffold.py:762,verified,出度 1，标签: query,call_graph
+F0258,调用链,入口点,Scaffold.has_static_folder 是系统入口点,sansio/scaffold.py:241,verified,出度 0，标签: query,call_graph
+F0259,调用链,入口点,Scaffold.jinja_loader 是系统入口点,sansio/scaffold.py:272,verified,出度 0，标签: 无,call_graph
+F0260,调用链,入口点,Scaffold.get 是系统入口点,sansio/scaffold.py:296,verified,出度 1，标签: query,call_graph
+F0261,调用链,入口点,Scaffold.query 是系统入口点,sansio/scaffold.py:304,verified,出度 1，标签: query,call_graph
+F0262,调用链,入口点,Scaffold.post 是系统入口点,sansio/scaffold.py:312,verified,出度 1，标签: 无,call_graph
+F0263,调用链,入口点,Scaffold.put 是系统入口点,sansio/scaffold.py:320,verified,出度 1，标签: 无,call_graph
+F0264,调用链,入口点,Scaffold.delete 是系统入口点,sansio/scaffold.py:328,verified,出度 1，标签: deletion,call_graph
+F0265,调用链,入口点,Scaffold.patch 是系统入口点,sansio/scaffold.py:336,verified,出度 1，标签: 无,call_graph
+F0266,调用链,入口点,Scaffold.endpoint 是系统入口点,sansio/scaffold.py:444,verified,出度 0，标签: 无,call_graph
+F0267,调用链,入口点,Scaffold.before_request 是系统入口点,sansio/scaffold.py:468,verified,出度 0，标签: 无,call_graph
+F0268,调用链,入口点,Scaffold.after_request 是系统入口点,sansio/scaffold.py:495,verified,出度 0，标签: 无,call_graph
+F0269,调用链,入口点,Scaffold.teardown_request 是系统入口点,sansio/scaffold.py:516,verified,出度 0，标签: 无,call_graph
+F0270,调用链,入口点,Scaffold.context_processor 是系统入口点,sansio/scaffold.py:550,verified,出度 0，标签: 无,call_graph
+F0271,调用链,入口点,Scaffold.url_value_preprocessor 是系统入口点,sansio/scaffold.py:567,verified,出度 0，标签: 无,call_graph
+F0272,调用链,入口点,Scaffold.url_defaults 是系统入口点,sansio/scaffold.py:592,verified,出度 0，标签: 无,call_graph
+F0273,调用链,入口点,Scaffold.errorhandler 是系统入口点,sansio/scaffold.py:606,verified,出度 1，标签: 无,call_graph
+F0274,状态变更,状态属性,Flask 拥有 1 个状态属性: cli,flask/app.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0275,状态变更,属性写入,"Flask.__init__() 修改 2 个属性: cli, cli.name",flask/app.py:311,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0276,状态变更,状态属性,Blueprint 拥有 1 个状态属性: cli,flask/blueprints.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0277,状态变更,属性写入,"Blueprint.__init__() 修改 2 个属性: cli, cli.name",flask/blueprints.py:19,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0278,状态变更,状态属性,"ScriptInfo 拥有 4 个状态属性: app_import_path, create_app, load_dotenv_defaults, set_debug_flag",flask/cli.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0279,状态变更,属性写入,"ScriptInfo.__init__() 修改 4 个属性: app_import_path, create_app, load_dotenv_defaults, set_debug_flag",flask/cli.py:305,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0280,状态变更,查询方法,ScriptInfo 有 1 个纯查询方法: load_app,flask/cli.py,verified,方法体中只读取不修改状态属性,state_tracker
+F0281,状态变更,状态属性,"FlaskGroup 拥有 4 个状态属性: _loaded_plugin_commands, create_app, load_dotenv, set_debug_flag",flask/cli.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0282,状态变更,属性写入,"FlaskGroup.__init__() 修改 4 个属性: _loaded_plugin_commands, create_app, load_dotenv, set_debug_flag",flask/cli.py:563,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0283,状态变更,属性写入,FlaskGroup._load_plugin_commands() 修改 1 个属性: _loaded_plugin_commands,flask/cli.py:600,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0284,状态变更,查询方法,FlaskGroup 有 1 个纯查询方法: make_context,flask/cli.py,verified,方法体中只读取不修改状态属性,state_tracker
+F0285,状态变更,状态属性,CertParamType 拥有 1 个状态属性: path_type,flask/cli.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0286,状态变更,属性写入,CertParamType.__init__() 修改 1 个属性: path_type,flask/cli.py:788,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0287,状态变更,查询方法,CertParamType 有 1 个纯查询方法: convert,flask/cli.py,verified,方法体中只读取不修改状态属性,state_tracker
+F0288,状态变更,状态属性,"ConfigAttribute 拥有 2 个状态属性: __name__, get_converter",flask/config.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0289,状态变更,属性写入,"ConfigAttribute.__init__() 修改 2 个属性: __name__, get_converter",flask/config.py:23,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0290,状态变更,状态属性,Config 拥有 1 个状态属性: root_path,flask/config.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0291,状态变更,属性写入,Config.__init__() 修改 1 个属性: root_path,flask/config.py:94,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0292,状态变更,查询方法,"Config 有 2 个纯查询方法: from_pyfile, from_file",flask/config.py,verified,方法体中只读取不修改状态属性,state_tracker
+F0293,状态变更,属性写入,_AppCtxGlobals.__setattr__() 修改 1 个属性: __dict__,flask/ctx.py:59,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0294,状态变更,状态属性,AppContext 拥有 1 个状态属性: app,flask/ctx.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0295,状态变更,属性写入,"AppContext.__init__() 修改 2 个属性: _request.routing_exception, app",flask/ctx.py:300,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0296,状态变更,属性写入,AppContext.match_request() 修改 1 个属性: _request.routing_exception,flask/ctx.py:405,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0297,状态变更,查询方法,"AppContext 有 3 个纯查询方法: copy, push, pop",flask/ctx.py,verified,方法体中只读取不修改状态属性,state_tracker
+F0298,状态变更,状态属性,DebugFilesKeyError 拥有 1 个状态属性: msg,flask/debughelpers.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0299,状态变更,属性写入,DebugFilesKeyError.__init__() 修改 1 个属性: msg,flask/debughelpers.py:28,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0300,状态变更,状态属性,Environment 拥有 1 个状态属性: app,flask/templating.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0301,状态变更,属性写入,Environment.__init__() 修改 1 个属性: app,flask/templating.py:42,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0302,状态变更,状态属性,DispatchingJinjaLoader 拥有 1 个状态属性: app,flask/templating.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0303,状态变更,属性写入,DispatchingJinjaLoader.__init__() 修改 1 个属性: app,flask/templating.py:54,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0304,状态变更,查询方法,"DispatchingJinjaLoader 有 2 个纯查询方法: get_source, list_templates",flask/templating.py,verified,方法体中只读取不修改状态属性,state_tracker
+F0305,状态变更,状态属性,EnvironBuilder 拥有 1 个状态属性: app,flask/testing.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0306,状态变更,属性写入,EnvironBuilder.__init__() 修改 1 个属性: app,flask/testing.py:49,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0307,状态变更,查询方法,EnvironBuilder 有 1 个纯查询方法: json_dumps,flask/testing.py,verified,方法体中只读取不修改状态属性,state_tracker
+F0308,状态变更,状态属性,"FlaskClient 拥有 3 个状态属性: _context_stack, environ_base, preserve_context",flask/testing.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0309,状态变更,集合属性,FlaskClient 有 1 个集合型属性: environ_base,flask/testing.py,verified,初始化为 dict/list/set 的属性,state_tracker
+F0310,状态变更,属性写入,FlaskClient.__enter__() 修改 1 个属性: preserve_context,flask/testing.py:249,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0311,状态变更,属性写入,FlaskClient.__exit__() 修改 1 个属性: preserve_context,flask/testing.py:255,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0312,状态变更,属性写入,"FlaskClient.__init__() 修改 3 个属性: _context_stack, environ_base, preserve_context",flask/testing.py:125,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0313,状态变更,查询方法,FlaskClient 有 1 个纯查询方法: open,flask/testing.py,verified,方法体中只读取不修改状态属性,state_tracker
+F0314,状态变更,状态属性,FlaskCliRunner 拥有 1 个状态属性: app,flask/testing.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0315,状态变更,属性写入,FlaskCliRunner.__init__() 修改 1 个属性: app,flask/testing.py:271,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0316,状态变更,查询方法,FlaskCliRunner 有 1 个纯查询方法: invoke,flask/testing.py,verified,方法体中只读取不修改状态属性,state_tracker
+F0317,状态变更,状态属性,JSONTag 拥有 1 个状态属性: serializer,json/tag.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0318,状态变更,属性写入,JSONTag.__init__() 修改 1 个属性: serializer,json/tag.py:69,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0319,状态变更,属性写入,TaggedJSONSerializer.register() 修改 1 个属性: tags,json/tag.py:256,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0320,状态变更,状态属性,"App 拥有 6 个状态属性: _got_first_request, aborter, config, instance_path, subdomain_matching, url_map",sansio/app.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0321,状态变更,属性写入,"App.__init__() 修改 6 个属性: _got_first_request, aborter, config, instance_path, subdomain_matching",sansio/app.py:279,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0322,状态变更,属性写入,App.add_template_filter() 修改 1 个属性: jinja_env.filters,sansio/app.py:699,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0323,状态变更,属性写入,App.add_template_global() 修改 1 个属性: jinja_env.globals,sansio/app.py:810,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0324,状态变更,属性写入,App.add_template_test() 修改 1 个属性: jinja_env.tests,sansio/app.py:756,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0325,状态变更,属性写入,"App.add_url_rule() 修改 2 个属性: url_map, view_functions",sansio/app.py:605,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0326,状态变更,属性写入,"App.debug() 修改 3 个属性: config, config.DEBUG, jinja_env.auto_reload",sansio/app.py:563,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0327,状态变更,查询方法,"App 有 2 个纯查询方法: make_config, trap_http_exception",sansio/app.py,verified,方法体中只读取不修改状态属性,state_tracker
+F0328,状态变更,状态属性,"BlueprintSetupState 拥有 9 个状态属性: app, blueprint, first_registration, name, name_prefix, options",sansio/blueprints.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0329,状态变更,属性写入,"BlueprintSetupState.__init__() 修改 9 个属性: app, blueprint, first_registration, name, name_prefix",sansio/blueprints.py:41,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0330,状态变更,查询方法,BlueprintSetupState 有 1 个纯查询方法: add_url_rule,sansio/blueprints.py,verified,方法体中只读取不修改状态属性,state_tracker
+F0331,状态变更,状态属性,"Blueprint 拥有 5 个状态属性: cli_group, name, subdomain, url_prefix, url_values_defaults",sansio/blueprints.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0332,状态变更,属性写入,"Blueprint.__init__() 修改 5 个属性: cli_group, name, subdomain, url_prefix, url_values_defaults",sansio/blueprints.py:174,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0333,状态变更,属性写入,Blueprint.register() 修改 1 个属性: cli.name,sansio/blueprints.py:273,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0334,状态变更,状态属性,"Scaffold 拥有 5 个状态属性: import_name, root_path, static_folder, static_url_path, template_folder",sansio/scaffold.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0335,状态变更,属性写入,"Scaffold.__init__() 修改 5 个属性: import_name, root_path, static_folder, static_url_path, template_folder",sansio/scaffold.py:75,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0336,状态变更,属性写入,Scaffold.endpoint() 修改 1 个属性: view_functions,sansio/scaffold.py:444,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0337,状态变更,属性写入,Scaffold.register_error_handler() 修改 1 个属性: error_handler_spec,sansio/scaffold.py:650,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0338,状态变更,查询方法,"Scaffold 有 2 个纯查询方法: has_static_folder, jinja_loader",sansio/scaffold.py,verified,方法体中只读取不修改状态属性,state_tracker
+F0339,业务流程,流程总览,流程 'Scaffold delete Flow': 涉及 1 个模块，4 个步骤，0 次跨模块调用,flask.sansio.scaffold,verified,入口: flask.sansio.scaffold:Scaffold.delete，业务重要度: 6.0,flow_extractor
+F0340,业务流程,流程步骤,Scaffold delete Flow · 步骤 0 层: Scaffold.delete()（状态变更）,sansio/scaffold.py:328,verified,调用类型: entry,flow_extractor
+F0341,业务流程,流程步骤,Scaffold delete Flow · 步骤 1 层: Scaffold._method_route(),sansio/scaffold.py:333,verified,调用类型: self_method,flow_extractor
+F0342,业务流程,流程步骤,Scaffold delete Flow · 步骤 2 层: Scaffold.route(),sansio/scaffold.py:293,verified,调用类型: self_method,flow_extractor
+F0343,业务流程,流程步骤,Scaffold delete Flow · 步骤 3 层: Scaffold.add_url_rule()（状态变更）,sansio/scaffold.py:370,verified,调用类型: self_method,flow_extractor
+F0344,业务流程,流程总览,流程 'Blueprint Registration Flow': 涉及 1 个模块，3 个步骤，0 次跨模块调用,flask.sansio.blueprints,verified,入口: flask.sansio.blueprints:Blueprint.register，业务重要度: 5.5,flow_extractor
+F0345,业务流程,流程步骤,Blueprint Registration Flow · 步骤 0 层: Blueprint.register()（状态变更）,sansio/blueprints.py:273,verified,调用类型: entry,flow_extractor
+F0346,业务流程,流程步骤,Blueprint Registration Flow · 步骤 1 层: Blueprint.make_setup_state()（状态变更）,sansio/blueprints.py:321,verified,调用类型: self_method,flow_extractor
+F0347,业务流程,流程步骤,Blueprint Registration Flow · 步骤 1 层: Blueprint._merge_blueprint_funcs(),sansio/blueprints.py:332,verified,调用类型: self_method,flow_extractor
+F0348,业务流程,流程总览,流程 'Flask update_template_context Flow': 涉及 1 个模块，3 个步骤，0 次跨模块调用,flask.app,verified,入口: flask.app:Flask.update_template_context，业务重要度: 5.0,flow_extractor
+F0349,业务流程,流程步骤,Flask update_template_context Flow · 步骤 0 层: Flask.update_template_context()（状态变更）,flask/app.py:591,verified,调用类型: entry,flow_extractor
+F0350,业务流程,流程步骤,Flask update_template_context Flow · 步骤 1 层: Flask.ensure_sync()（校验点）,flask/app.py:617,verified,调用类型: self_method,flow_extractor
+F0351,业务流程,流程步骤,Flask update_template_context Flow · 步骤 2 层: Flask.async_to_sync(),flask/app.py:1078,verified,调用类型: self_method,flow_extractor
+F0352,业务流程,流程总览,流程 'Scaffold get Flow': 涉及 1 个模块，4 个步骤，0 次跨模块调用,flask.sansio.scaffold,verified,入口: flask.sansio.scaffold:Scaffold.get，业务重要度: 4.5,flow_extractor
+F0353,业务流程,流程步骤,Scaffold get Flow · 步骤 0 层: Scaffold.get(),sansio/scaffold.py:296,verified,调用类型: entry,flow_extractor
+F0354,业务流程,流程步骤,Scaffold get Flow · 步骤 1 层: Scaffold._method_route(),sansio/scaffold.py:301,verified,调用类型: self_method,flow_extractor
+F0355,业务流程,流程步骤,Scaffold get Flow · 步骤 2 层: Scaffold.route(),sansio/scaffold.py:293,verified,调用类型: self_method,flow_extractor
+F0356,业务流程,流程步骤,Scaffold get Flow · 步骤 3 层: Scaffold.add_url_rule()（状态变更）,sansio/scaffold.py:370,verified,调用类型: self_method,flow_extractor
+F0357,业务流程,流程总览,流程 'Scaffold query Flow': 涉及 1 个模块，4 个步骤，0 次跨模块调用,flask.sansio.scaffold,verified,入口: flask.sansio.scaffold:Scaffold.query，业务重要度: 4.5,flow_extractor
+F0358,业务流程,流程步骤,Scaffold query Flow · 步骤 0 层: Scaffold.query(),sansio/scaffold.py:304,verified,调用类型: entry,flow_extractor
+F0359,业务流程,流程步骤,Scaffold query Flow · 步骤 1 层: Scaffold._method_route(),sansio/scaffold.py:309,verified,调用类型: self_method,flow_extractor
+F0360,业务流程,流程步骤,Scaffold query Flow · 步骤 2 层: Scaffold.route(),sansio/scaffold.py:293,verified,调用类型: self_method,flow_extractor
+F0361,业务流程,流程步骤,Scaffold query Flow · 步骤 3 层: Scaffold.add_url_rule()（状态变更）,sansio/scaffold.py:370,verified,调用类型: self_method,flow_extractor
+F0362,业务流程,流程总览,流程 'Scaffold post Flow': 涉及 1 个模块，4 个步骤，0 次跨模块调用,flask.sansio.scaffold,verified,入口: flask.sansio.scaffold:Scaffold.post，业务重要度: 4.5,flow_extractor
+F0363,业务流程,流程步骤,Scaffold post Flow · 步骤 0 层: Scaffold.post(),sansio/scaffold.py:312,verified,调用类型: entry,flow_extractor
+F0364,业务流程,流程步骤,Scaffold post Flow · 步骤 1 层: Scaffold._method_route(),sansio/scaffold.py:317,verified,调用类型: self_method,flow_extractor
+F0365,业务流程,流程步骤,Scaffold post Flow · 步骤 2 层: Scaffold.route(),sansio/scaffold.py:293,verified,调用类型: self_method,flow_extractor
+F0366,业务流程,流程步骤,Scaffold post Flow · 步骤 3 层: Scaffold.add_url_rule()（状态变更）,sansio/scaffold.py:370,verified,调用类型: self_method,flow_extractor
+F0367,业务流程,流程总览,流程 'Scaffold put Flow': 涉及 1 个模块，4 个步骤，0 次跨模块调用,flask.sansio.scaffold,verified,入口: flask.sansio.scaffold:Scaffold.put，业务重要度: 4.5,flow_extractor
+F0368,业务流程,流程步骤,Scaffold put Flow · 步骤 0 层: Scaffold.put(),sansio/scaffold.py:320,verified,调用类型: entry,flow_extractor
+F0369,业务流程,流程步骤,Scaffold put Flow · 步骤 1 层: Scaffold._method_route(),sansio/scaffold.py:325,verified,调用类型: self_method,flow_extractor
+F0370,业务流程,流程步骤,Scaffold put Flow · 步骤 2 层: Scaffold.route(),sansio/scaffold.py:293,verified,调用类型: self_method,flow_extractor
+F0371,业务流程,流程步骤,Scaffold put Flow · 步骤 3 层: Scaffold.add_url_rule()（状态变更）,sansio/scaffold.py:370,verified,调用类型: self_method,flow_extractor
+F0372,业务流程,流程总览,流程 'Scaffold patch Flow': 涉及 1 个模块，4 个步骤，0 次跨模块调用,flask.sansio.scaffold,verified,入口: flask.sansio.scaffold:Scaffold.patch，业务重要度: 4.5,flow_extractor
+F0373,业务流程,流程步骤,Scaffold patch Flow · 步骤 0 层: Scaffold.patch(),sansio/scaffold.py:336,verified,调用类型: entry,flow_extractor
+F0374,业务流程,流程步骤,Scaffold patch Flow · 步骤 1 层: Scaffold._method_route(),sansio/scaffold.py:341,verified,调用类型: self_method,flow_extractor
+F0375,业务流程,流程步骤,Scaffold patch Flow · 步骤 2 层: Scaffold.route(),sansio/scaffold.py:293,verified,调用类型: self_method,flow_extractor
+F0376,业务流程,流程步骤,Scaffold patch Flow · 步骤 3 层: Scaffold.add_url_rule()（状态变更）,sansio/scaffold.py:370,verified,调用类型: self_method,flow_extractor
+F0377,业务流程,流程总览,流程 'Blueprint Addition Flow': 涉及 1 个模块，3 个步骤，0 次跨模块调用,flask.sansio.blueprints,verified,入口: flask.sansio.blueprints:Blueprint.add_app_template_filter，业务重要度: 4.0,flow_extractor
+F0378,业务流程,流程步骤,Blueprint Addition Flow · 步骤 0 层: Blueprint.add_app_template_filter()（状态变更）,sansio/blueprints.py:476,verified,调用类型: entry,flow_extractor
+F0379,业务流程,流程步骤,Blueprint Addition Flow · 步骤 1 层: Blueprint.record_once(),sansio/blueprints.py:495,verified,调用类型: self_method,flow_extractor
+F0380,业务流程,流程步骤,Blueprint Addition Flow · 步骤 2 层: Blueprint.record(),sansio/blueprints.py:244,verified,调用类型: self_method,flow_extractor
+F0381,业务流程,流程总览,流程 'Blueprint Addition Flow': 涉及 1 个模块，3 个步骤，0 次跨模块调用,flask.sansio.blueprints,verified,入口: flask.sansio.blueprints:Blueprint.add_app_template_test，业务重要度: 4.0,flow_extractor
+F0382,业务流程,流程步骤,Blueprint Addition Flow · 步骤 0 层: Blueprint.add_app_template_test()（状态变更）,sansio/blueprints.py:532,verified,调用类型: entry,flow_extractor
+F0383,业务流程,流程步骤,Blueprint Addition Flow · 步骤 1 层: Blueprint.record_once(),sansio/blueprints.py:553,verified,调用类型: self_method,flow_extractor
+F0384,业务流程,流程步骤,Blueprint Addition Flow · 步骤 2 层: Blueprint.record(),sansio/blueprints.py:244,verified,调用类型: self_method,flow_extractor
+F0385,关键实现,核心方法,Blueprint.register() 是核心实现点（重要度 9.5）,sansio/blueprints.py:273-377,verified,入选原因: high complexity implementation; includes boundary validation; includes exception raises,key_implementation
+F0386,关键实现,守卫条件,Blueprint.register: 1 pre-flight validations,sansio/blueprints.py: lines 306,verified,lines 306,key_implementation
+F0387,关键实现,异常处理,Blueprint.register: raises 1 exception type(s): ValueError,sansio/blueprints.py: lines 310,verified,lines 310,key_implementation
+F0388,关键实现,状态变更,Blueprint.register: modifies 1 state attribute: cli.name,sansio/blueprints.py:273-377,verified,from state tracker,key_implementation
+F0389,关键实现,算法模式,Blueprint.register: sequential traversal,sansio/blueprints.py:273-377,verified,3 loop(s) detected,key_implementation
+F0390,关键实现,编排调用,Blueprint.register: multi-step orchestration (20 internal calls),sansio/blueprints.py:273-377,verified,from call count,key_implementation
+F0391,关键实现,设计模式,Blueprint.register: uses Repository Pattern,sansio/blueprints.py:273-377,inferred,from pattern detector,key_implementation
+F0392,关键实现,守卫子句,Blueprint.register: name in app.blueprints -> raise,sansio/blueprints.py:306,verified,从 AST 检测到的前置检查 + 提前退出模式,key_implementation
+F0393,关键实现,异常抛出,Blueprint.register: 抛出 ValueError,sansio/blueprints.py:310,verified,从 AST 检测到的 raise 语句,key_implementation
+F0394,关键实现,算法特征,Blueprint.register: general business logic,sansio/blueprints.py:273-377,verified,no distinctive algorithmic pattern,key_implementation
+F0395,关键实现,复杂度,Blueprint.register: 圈复杂度 18（循环 3，分支 14）,sansio/blueprints.py:273-377,verified,从 AST 直接计数：if/try 为分支，for/while 为循环,key_implementation
+F0396,关键实现,核心方法,AppContext.pop() 是核心实现点（重要度 9.0）,flask/ctx.py:446-504,verified,入选原因: high complexity implementation; multiple boundary validations; includes exception raises,key_implementation
+F0397,关键实现,守卫条件,AppContext.pop: guard-clause style (4 pre-checks),"flask/ctx.py: lines 465, 470, 475",verified,"lines 465, 470, 475",key_implementation
+F0398,关键实现,异常处理,AppContext.pop: raises 1 exception type(s): RuntimeError,"flask/ctx.py: lines 466, 471, 476",verified,"lines 466, 471, 476",key_implementation
+F0399,关键实现,编排调用,AppContext.pop: multi-step orchestration (11 internal calls),flask/ctx.py:446-504,verified,from call count,key_implementation
+F0400,关键实现,设计模式,AppContext.pop: uses Service / Facade Pattern,flask/ctx.py:446-504,inferred,from pattern detector,key_implementation
+F0401,关键实现,守卫子句,AppContext.pop: self._cv_token is None -> raise,flask/ctx.py:465,verified,从 AST 检测到的前置检查 + 提前退出模式,key_implementation
+F0402,关键实现,守卫子句,AppContext.pop: ... or ... -> raise,flask/ctx.py:470,verified,从 AST 检测到的前置检查 + 提前退出模式,key_implementation
+F0403,关键实现,守卫子句,AppContext.pop: ctx is not self -> raise,flask/ctx.py:475,verified,从 AST 检测到的前置检查 + 提前退出模式,key_implementation
+F0404,关键实现,守卫子句,AppContext.pop: self._push_count > 0 -> early return,flask/ctx.py:483,verified,从 AST 检测到的前置检查 + 提前退出模式,key_implementation
+F0405,关键实现,异常抛出,AppContext.pop: 抛出 RuntimeError,flask/ctx.py:466,verified,从 AST 检测到的 raise 语句,key_implementation
+F0406,关键实现,算法特征,AppContext.pop: conditional checks (no loops),flask/ctx.py:446-504,verified,"4 guard clauses, no loops",key_implementation
+F0407,关键实现,复杂度,AppContext.pop: 圈复杂度 6（循环 0，分支 5）,flask/ctx.py:446-504,verified,从 AST 直接计数：if/try 为分支，for/while 为循环,key_implementation
+F0408,关键实现,核心方法,Scaffold._get_exc_class_and_code() 是核心实现点（重要度 9.0）,sansio/scaffold.py:665-706,verified,入选原因: high complexity implementation; multiple boundary validations; includes exception raises,key_implementation
+F0409,关键实现,守卫条件,Scaffold._get_exc_class_and_code: guard-clause style (3 pre-checks),"sansio/scaffold.py: lines 689, 696, 703",verified,"lines 689, 696, 703",key_implementation
+F0410,关键实现,异常处理,"Scaffold._get_exc_class_and_code: raises 2 exception type(s): TypeError, ValueError","sansio/scaffold.py: lines 690, 697, 681",verified,"lines 690, 697, 681",key_implementation
+F0411,关键实现,编排调用,Scaffold._get_exc_class_and_code: multi-step orchestration (7 internal calls),sansio/scaffold.py:665-706,verified,from call count,key_implementation
+F0412,关键实现,设计模式,Scaffold._get_exc_class_and_code: uses Repository Pattern,sansio/scaffold.py:665-706,inferred,from pattern detector,key_implementation
+F0413,关键实现,守卫子句,Scaffold._get_exc_class_and_code: isinstance() -> raise,sansio/scaffold.py:689,verified,从 AST 检测到的前置检查 + 提前退出模式,key_implementation
+F0414,关键实现,守卫子句,Scaffold._get_exc_class_and_code: not issubclass() -> raise,sansio/scaffold.py:696,verified,从 AST 检测到的前置检查 + 提前退出模式,key_implementation
+F0415,关键实现,守卫子句,Scaffold._get_exc_class_and_code: issubclass() -> early return,sansio/scaffold.py:703,verified,从 AST 检测到的前置检查 + 提前退出模式,key_implementation
+F0416,关键实现,异常抛出,Scaffold._get_exc_class_and_code: 抛出 TypeError,sansio/scaffold.py:690,verified,从 AST 检测到的 raise 语句,key_implementation
+F0417,关键实现,异常抛出,Scaffold._get_exc_class_and_code: 抛出 ValueError,sansio/scaffold.py:697,verified,从 AST 检测到的 raise 语句,key_implementation
+F0418,关键实现,算法特征,Scaffold._get_exc_class_and_code: conditional checks (no loops),sansio/scaffold.py:665-706,verified,"3 guard clauses, no loops",key_implementation
+F0419,关键实现,复杂度,Scaffold._get_exc_class_and_code: 圈复杂度 7（循环 0，分支 6）,sansio/scaffold.py:665-706,verified,从 AST 直接计数：if/try 为分支，for/while 为循环,key_implementation
+F0420,关键实现,核心方法,Flask.make_response() 是核心实现点（重要度 8.5）,flask/app.py:1227-1367,verified,入选原因: high complexity implementation; includes boundary validation; comprehensive error handling,key_implementation
+F0421,关键实现,守卫条件,Flask.make_response: 1 pre-flight validations,flask/app.py: lines 1309,verified,lines 1309,key_implementation
+F0422,关键实现,异常处理,"Flask.make_response: raises 2 exception type(s): with_traceback, TypeError","flask/app.py: lines 1310, 1302, 1347",verified,"lines 1310, 1302, 1347",key_implementation
+F0423,关键实现,编排调用,Flask.make_response: multi-step orchestration (23 internal calls),flask/app.py:1227-1367,verified,from call count,key_implementation
+F0424,关键实现,设计模式,Flask.make_response: uses Service / Facade Pattern,flask/app.py:1227-1367,inferred,from pattern detector,key_implementation
+F0425,关键实现,守卫子句,Flask.make_response: rv is None -> raise,flask/app.py:1309,verified,从 AST 检测到的前置检查 + 提前退出模式,key_implementation
+F0426,关键实现,异常抛出,Flask.make_response: 抛出 TypeError,flask/app.py:1310,verified,从 AST 检测到的 raise 语句,key_implementation
+F0427,关键实现,异常抛出,Flask.make_response: 抛出 TypeError: The view function did not return a valid response tuple. ...,flask/app.py:1302,verified,从 AST 检测到的 raise 语句,key_implementation
+F0428,关键实现,异常抛出,Flask.make_response: 抛出 with_traceback,flask/app.py:1347,verified,从 AST 检测到的 raise 语句,key_implementation
+F0429,关键实现,算法特征,Flask.make_response: conditional checks (no loops),flask/app.py:1227-1367,verified,"1 guard clauses, no loops",key_implementation
+F0430,关键实现,复杂度,Flask.make_response: 圈复杂度 15（循环 0，分支 14）,flask/app.py:1227-1367,verified,从 AST 直接计数：if/try 为分支，for/while 为循环,key_implementation
+F0431,关键实现,核心方法,Flask.handle_exception() 是核心实现点（重要度 8.0）,flask/app.py:900-951,verified,入选原因: high complexity implementation; includes boundary validation; includes exception raises,key_implementation
+F0432,关键实现,守卫条件,Flask.handle_exception: 1 pre-flight validations,flask/app.py: lines 935,verified,lines 935,key_implementation
+F0433,关键实现,异常处理,Flask.handle_exception: raises 1 exception type(s): e,flask/app.py: lines 941,verified,lines 941,key_implementation
+F0434,关键实现,编排调用,Flask.handle_exception: multi-step orchestration (8 internal calls),flask/app.py:900-951,verified,from call count,key_implementation
+F0435,关键实现,设计模式,Flask.handle_exception: uses Service / Facade Pattern,flask/app.py:900-951,inferred,from pattern detector,key_implementation
+F0436,关键实现,守卫子句,Flask.handle_exception: propagate -> raise,flask/app.py:935,verified,从 AST 检测到的前置检查 + 提前退出模式,key_implementation
+F0437,关键实现,异常抛出,Flask.handle_exception: 抛出 e,flask/app.py:941,verified,从 AST 检测到的 raise 语句,key_implementation
+F0438,关键实现,算法特征,Flask.handle_exception: conditional checks (no loops),flask/app.py:900-951,verified,"1 guard clauses, no loops",key_implementation
+F0439,关键实现,复杂度,Flask.handle_exception: 圈复杂度 5（循环 0，分支 4）,flask/app.py:900-951,verified,从 AST 直接计数：if/try 为分支，for/while 为循环,key_implementation
+F0440,关键实现,核心方法,ScriptInfo.load_app() 是核心实现点（重要度 8.0）,flask/cli.py:333-372,verified,入选原因: high complexity implementation; includes boundary validation; includes exception raises,key_implementation
+F0441,关键实现,守卫条件,ScriptInfo.load_app: 2 pre-flight validations,"flask/cli.py: lines 338, 358",verified,"lines 338, 358",key_implementation
+F0442,关键实现,异常处理,ScriptInfo.load_app: raises 1 exception type(s): NoAppException,flask/cli.py: lines 359,verified,lines 359,key_implementation
+F0443,关键实现,算法模式,ScriptInfo.load_app: search traversal (early exit on match),flask/cli.py:333-372,verified,1 loop(s) detected,key_implementation
+F0444,关键实现,编排调用,ScriptInfo.load_app: multi-step orchestration (8 internal calls),flask/cli.py:333-372,verified,from call count,key_implementation
+F0445,关键实现,守卫子句,ScriptInfo.load_app: self._loaded_app is not None -> early return,flask/cli.py:338,verified,从 AST 检测到的前置检查 + 提前退出模式,key_implementation
+F0446,关键实现,守卫子句,ScriptInfo.load_app: app is None -> raise,flask/cli.py:358,verified,从 AST 检测到的前置检查 + 提前退出模式,key_implementation
+F0447,关键实现,异常抛出,ScriptInfo.load_app: 抛出 NoAppException: Could not locate a Flask application. Use the 'flask --ap...,flask/cli.py:359,verified,从 AST 检测到的 raise 语句,key_implementation
+F0448,关键实现,算法特征,ScriptInfo.load_app: pure computation / statistics,flask/cli.py:333-372,verified,"1 loop(s), no state mutation",key_implementation
+F0449,关键实现,复杂度,ScriptInfo.load_app: 圈复杂度 8（循环 1，分支 6）,flask/cli.py:333-372,verified,从 AST 直接计数：if/try 为分支，for/while 为循环,key_implementation
+F0450,关键实现,核心方法,TaggedJSONSerializer._untag_scan() 是核心实现点（重要度 8.0）,json/tag.py:309-319,verified,入选原因: high complexity implementation; core method called by many; core private implementation (high complexity),key_implementation
+F0451,关键实现,递归,TaggedJSONSerializer._untag_scan: recursive implementation,json/tag.py:309-319,verified,2 recursive call(s) at line 309,key_implementation
+F0452,关键实现,编排调用,TaggedJSONSerializer._untag_scan: multi-step orchestration (6 internal calls),json/tag.py:309-319,verified,from call count,key_implementation
+F0453,关键实现,算法特征,TaggedJSONSerializer._untag_scan: recursion,json/tag.py:309-319,verified,2 recursive call(s),key_implementation
+F0454,关键实现,复杂度,TaggedJSONSerializer._untag_scan: 圈复杂度 5（循环 2，分支 2）,json/tag.py:309-319,verified,从 AST 直接计数：if/try 为分支，for/while 为循环,key_implementation
+F0455,关键实现,核心方法,App.add_url_rule() 是核心实现点（重要度 8.0）,sansio/app.py:605-661,verified,入选原因: high complexity implementation; includes boundary validation; includes exception raises,key_implementation
+F0456,关键实现,守卫条件,App.add_url_rule: 1 pre-flight validations,sansio/app.py: lines 623,verified,lines 623,key_implementation
+F0457,关键实现,异常处理,"App.add_url_rule: raises 2 exception type(s): AssertionError, TypeError","sansio/app.py: lines 624, 657",verified,"lines 624, 657",key_implementation
+F0458,关键实现,状态变更,"App.add_url_rule: modifies 2 state attributes: url_map, view_functions",sansio/app.py:605-661,verified,from state tracker,key_implementation
+F0459,关键实现,编排调用,App.add_url_rule: multi-step orchestration (14 internal calls),sansio/app.py:605-661,verified,from call count,key_implementation
+F0460,关键实现,设计模式,App.add_url_rule: uses Repository Pattern,sansio/app.py:605-661,inferred,from pattern detector,key_implementation
+F0461,关键实现,守卫子句,App.add_url_rule: isinstance() -> raise,sansio/app.py:623,verified,从 AST 检测到的前置检查 + 提前退出模式,key_implementation
+F0462,关键实现,异常抛出,"App.add_url_rule: 抛出 TypeError: Allowed methods must be a list of strings, for example: @...",sansio/app.py:624,verified,从 AST 检测到的 raise 语句,key_implementation
+F0463,关键实现,异常抛出,App.add_url_rule: 抛出 AssertionError,sansio/app.py:657,verified,从 AST 检测到的 raise 语句,key_implementation
+F0464,关键实现,算法特征,App.add_url_rule: general business logic,sansio/app.py:605-661,verified,no distinctive algorithmic pattern,key_implementation
+F0465,关键实现,复杂度,App.add_url_rule: 圈复杂度 10（循环 1，分支 8）,sansio/app.py:605-661,verified,从 AST 直接计数：if/try 为分支，for/while 为循环,key_implementation
+F0466,关键实现,核心方法,Flask.handle_http_exception() 是核心实现点（重要度 7.5）,flask/app.py:833-866,verified,入选原因: medium complexity; multiple boundary validations; demonstrates Service / Facade Pattern,key_implementation
+F0467,关键实现,守卫条件,Flask.handle_http_exception: guard-clause style (3 pre-checks),"flask/app.py: lines 854, 860, 864",verified,"lines 854, 860, 864",key_implementation
+F0468,关键实现,设计模式,Flask.handle_http_exception: uses Service / Facade Pattern,flask/app.py:833-866,inferred,from pattern detector,key_implementation
+F0469,关键实现,守卫子句,Flask.handle_http_exception: e.code is None -> early return,flask/app.py:854,verified,从 AST 检测到的前置检查 + 提前退出模式,key_implementation
+F0470,关键实现,守卫子句,Flask.handle_http_exception: isinstance() -> early return,flask/app.py:860,verified,从 AST 检测到的前置检查 + 提前退出模式,key_implementation
+F0471,关键实现,守卫子句,Flask.handle_http_exception: handler is None -> early return,flask/app.py:864,verified,从 AST 检测到的前置检查 + 提前退出模式,key_implementation
+F0472,关键实现,算法特征,Flask.handle_http_exception: conditional checks (no loops),flask/app.py:833-866,verified,"3 guard clauses, no loops",key_implementation
+F0473,关键实现,复杂度,Flask.handle_http_exception: 圈复杂度 4（循环 0，分支 3）,flask/app.py:833-866,verified,从 AST 直接计数：if/try 为分支，for/while 为循环,key_implementation
+F0474,关键实现,核心方法,Flask.full_dispatch_request() 是核心实现点（重要度 7.5）,flask/app.py:995-1022,verified,入选原因: high complexity implementation; orchestrates multiple sub-steps; demonstrates Service / Facade Pattern,key_implementation
+F0475,关键实现,编排调用,Flask.full_dispatch_request: multi-step orchestration (6 internal calls),flask/app.py:995-1022,verified,from call count,key_implementation
+F0476,关键实现,设计模式,Flask.full_dispatch_request: uses Service / Facade Pattern,flask/app.py:995-1022,inferred,from pattern detector,key_implementation
+F0477,关键实现,算法特征,Flask.full_dispatch_request: general business logic,flask/app.py:995-1022,verified,no distinctive algorithmic pattern,key_implementation
+F0478,关键实现,复杂度,Flask.full_dispatch_request: 圈复杂度 5（循环 0，分支 4）,flask/app.py:995-1022,verified,从 AST 直接计数：if/try 为分支，for/while 为循环,key_implementation
+F0479,设计模式,structural,AppContext 疑似使用 Service / Facade Pattern,AppContext,inferred,AppContext orchestrates business logic by coordinating lower-level components,pattern_detector
+F0480,设计模式,structural,App 疑似使用 Service / Facade Pattern,App,inferred,App orchestrates business logic by coordinating lower-level components,pattern_detector
+F0481,设计模式,structural,App 疑似使用 Repository Pattern,App,inferred,App encapsulates data access with CRUD operations and validation,pattern_detector
+F0482,设计模式,structural,Blueprint 疑似使用 Repository Pattern,Blueprint,inferred,Blueprint encapsulates data access with CRUD operations and validation,pattern_detector
+F0483,设计模式,structural,Scaffold 疑似使用 Repository Pattern,Scaffold,inferred,Scaffold encapsulates data access with CRUD operations and validation,pattern_detector
+F0484,设计模式,structural,Flask 疑似使用 Service / Facade Pattern,Flask,inferred,Flask orchestrates business logic by coordinating lower-level components,pattern_detector
+F0485,设计模式,structural,Blueprint 疑似使用 Service / Facade Pattern,Blueprint,inferred,Blueprint orchestrates business logic by coordinating lower-level components,pattern_detector
+F0486,设计模式,creational,Flask 疑似使用 Factory Pattern (Abstract Factory),Flask,inferred,Flask encapsulates object creation logic,pattern_detector
+F0487,设计模式,behavioral,DispatchingJinjaLoader 疑似使用 Template Method Pattern,DispatchingJinjaLoader,inferred,DispatchingJinjaLoader defines algorithm steps within a template structure,pattern_detector
+F0488,设计模式,behavioral,FlaskClient 疑似使用 Template Method Pattern,FlaskClient,inferred,FlaskClient defines algorithm steps within a template structure,pattern_detector

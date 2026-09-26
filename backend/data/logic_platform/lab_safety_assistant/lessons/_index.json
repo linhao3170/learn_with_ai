@@ -1,0 +1,12 @@
+{
+  "lessons": {
+    "c_d_5_create_lab": {
+      "capability_id": "c_d_5_create_lab",
+      "section_id": "d_5",
+      "generated": true,
+      "can_publish": false,
+      "review_status": "needs_review",
+      "segments": 6
+    }
+  }
+}

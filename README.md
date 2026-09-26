@@ -108,6 +108,32 @@
 
 ### 0.3 五分钟上手
 
+**① 别人的机器 / 新机器：克隆 + 一条命令装齐环境**（克隆完整性一轮新增）
+
+```bash
+git clone https://github.com/linhao3170/learn_with_ai.git
+cd learn_with_ai
+powershell -ExecutionPolicy Bypass -File scripts/bootstrap.ps1
+# bootstrap.ps1 做四件事，全部幂等、可重复跑，不硬编码任何本机路径：
+#   1) 前置检查 python / node / npm
+#   2) 建 .venv 并装 requirements.txt + backend/requirements.txt
+#   3) 前端 npm ci（装 frontend/node_modules）
+#   4) 一次性准备：跑 build_demo_snapshots.py（学生快照 + 后端答案表 + 证据源码副本）
+#   开关：-Build 顺带构建 frontend/dist 与走查 bundle frontend/.smoke-dist
+#         -Verify 顺带跑三道门禁（build_acceptance_report / verify_docs / verify_sprint0）
+#         -SkipFrontend 只装后端与 Python 侧
+# ⚠️ 跑完先执行 .\.venv\Scripts\Activate.ps1 —— 下面所有 python 命令才是这个 .venv 里的
+# ⚠️ 依赖装进 .venv 而不是系统 python：作者机器上两者恰好都装齐了，别人机器上不一定（见 docs/06-runbook.md §19.5）
+```
+
+**克隆下来就有的东西（不需要再找）**：`validation/flask` 与 `validation/urllib3` 这两个真实第三方
+验证项目的**完整源码**、`validation/results/` 的事实表与深分析产物（手册里当**输入**用的那些）、
+两个 `source_kind=demo` 的业务逻辑分析平台项目快照。**克隆下来没有的东西**（都是可再生的，
+也是**故意**不进来的）：`.venv`、`frontend/node_modules/`、`frontend/dist/`、`frontend/.smoke-dist/`，
+以及 `backend/data/logic_platform/` 下的 6 个 lp_ 前缀项目（那是**用户上传源码的副本**，涉及他人代码，按 `.gitignore` 明确排除）。
+
+**② 作者本机（仓库已在 D:\learn_with_ai，依赖已装齐）：直接跑下面这些**
+
 ```bash
 # 一次性准备（生成学生快照 + 后端答案表 + 证据源码副本）
 cd D:\learn_with_ai

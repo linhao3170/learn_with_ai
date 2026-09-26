@@ -1,0 +1,4719 @@
+{
+  "call_graph": {
+    "nodes": {
+      "cli:enumerate_env": {
+        "name": "enumerate_env",
+        "kind": "function",
+        "module": "cli",
+        "class": null,
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\cli.py",
+        "start_line": 24,
+        "end_line": 35,
+        "docstring": "Return a path for the ${pwd}/.env file.\n\nIf pwd does not exist, return None.",
+        "calls": [],
+        "called_by": [
+          {
+            "from": "cli:cli",
+            "count": 1,
+            "type": "direct"
+          }
+        ],
+        "is_entry_point": false,
+        "tags": []
+      },
+      "cli:cli": {
+        "name": "cli",
+        "kind": "function",
+        "module": "cli",
+        "class": null,
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\cli.py",
+        "start_line": 62,
+        "end_line": 64,
+        "docstring": "This script is used to set, get or unset values from a .env file.",
+        "calls": [
+          {
+            "to": "cli:enumerate_env",
+            "count": 1,
+            "type": "direct",
+            "line": 42
+          }
+        ],
+        "called_by": [],
+        "is_entry_point": true,
+        "tags": []
+      },
+      "cli:stream_file": {
+        "name": "stream_file",
+        "kind": "function",
+        "module": "cli",
+        "class": null,
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\cli.py",
+        "start_line": 68,
+        "end_line": 80,
+        "docstring": "Open a file and yield the corresponding (decoded) stream.\n\nExits with error code 2 if the file cannot be opened.",
+        "calls": [],
+        "called_by": [
+          {
+            "from": "cli:list_values",
+            "count": 1,
+            "type": "direct"
+          },
+          {
+            "from": "cli:get",
+            "count": 1,
+            "type": "direct"
+          }
+        ],
+        "is_entry_point": false,
+        "tags": []
+      },
+      "cli:list_values": {
+        "name": "list_values",
+        "kind": "function",
+        "module": "cli",
+        "class": null,
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\cli.py",
+        "start_line": 93,
+        "end_line": 109,
+        "docstring": "Display all the stored key/value.",
+        "calls": [
+          {
+            "to": "cli:stream_file",
+            "count": 1,
+            "type": "direct",
+            "line": 97
+          },
+          {
+            "to": "main:dotenv_values",
+            "count": 1,
+            "type": "imported",
+            "line": 98
+          }
+        ],
+        "called_by": [],
+        "is_entry_point": true,
+        "tags": [
+          "query"
+        ]
+      },
+      "cli:set_value": {
+        "name": "set_value",
+        "kind": "function",
+        "module": "cli",
+        "class": null,
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\cli.py",
+        "start_line": 116,
+        "end_line": 131,
+        "docstring": "Store the given key/value.\n\nThis doesn't follow symlinks, to avoid accidentally modifying a file at a\npotentially untrusted path.",
+        "calls": [
+          {
+            "to": "main:set_key",
+            "count": 1,
+            "type": "imported",
+            "line": 127
+          }
+        ],
+        "called_by": [],
+        "is_entry_point": true,
+        "tags": [
+          "update"
+        ]
+      },
+      "cli:get": {
+        "name": "get",
+        "kind": "function",
+        "module": "cli",
+        "class": null,
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\cli.py",
+        "start_line": 137,
+        "end_line": 148,
+        "docstring": "Retrieve the value for the given key.",
+        "calls": [
+          {
+            "to": "cli:stream_file",
+            "count": 1,
+            "type": "direct",
+            "line": 141
+          },
+          {
+            "to": "main:dotenv_values",
+            "count": 1,
+            "type": "imported",
+            "line": 142
+          }
+        ],
+        "called_by": [],
+        "is_entry_point": true,
+        "tags": [
+          "query"
+        ]
+      },
+      "cli:unset": {
+        "name": "unset",
+        "kind": "function",
+        "module": "cli",
+        "class": null,
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\cli.py",
+        "start_line": 154,
+        "end_line": 167,
+        "docstring": "Removes the given key.\n\nThis doesn't follow symlinks, to avoid accidentally modifying a file at a\npotentially untrusted path.",
+        "calls": [
+          {
+            "to": "main:unset_key",
+            "count": 1,
+            "type": "imported",
+            "line": 163
+          }
+        ],
+        "called_by": [],
+        "is_entry_point": true,
+        "tags": [
+          "update"
+        ]
+      },
+      "cli:run": {
+        "name": "run",
+        "kind": "function",
+        "module": "cli",
+        "class": null,
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\cli.py",
+        "start_line": 184,
+        "end_line": 201,
+        "docstring": "Run command with environment variables present.",
+        "calls": [
+          {
+            "to": "cli:run_command",
+            "count": 1,
+            "type": "direct",
+            "line": 201
+          },
+          {
+            "to": "main:dotenv_values",
+            "count": 1,
+            "type": "imported",
+            "line": 193
+          }
+        ],
+        "called_by": [],
+        "is_entry_point": true,
+        "tags": []
+      },
+      "cli:run_command": {
+        "name": "run_command",
+        "kind": "function",
+        "module": "cli",
+        "class": null,
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\cli.py",
+        "start_line": 204,
+        "end_line": 247,
+        "docstring": "Replace the current process with the specified command.\n\nReplaces the current process with the specified command and the variables from `env`\nadded in the current environment variables.\n\nParameters\n----------\ncommand: List[str]\n    The command and it's parameters\nenv: Dict\n    The additional environment variables\n\nReturns\n-------\nNone\n    This function does not return any value. It replaces the current process with the new one.",
+        "calls": [],
+        "called_by": [
+          {
+            "from": "cli:run",
+            "count": 1,
+            "type": "direct"
+          }
+        ],
+        "is_entry_point": false,
+        "tags": []
+      },
+      "ipython:load_ipython_extension": {
+        "name": "load_ipython_extension",
+        "kind": "function",
+        "module": "ipython",
+        "class": null,
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\ipython.py",
+        "start_line": 48,
+        "end_line": 50,
+        "docstring": "Register the %dotenv magic.",
+        "calls": [],
+        "called_by": [],
+        "is_entry_point": true,
+        "tags": []
+      },
+      "ipython:IPythonDotEnv.dotenv": {
+        "name": "dotenv",
+        "kind": "method",
+        "module": "ipython",
+        "class": "IPythonDotEnv",
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\ipython.py",
+        "start_line": 34,
+        "end_line": 45,
+        "docstring": null,
+        "calls": [
+          {
+            "to": "main:load_dotenv",
+            "count": 1,
+            "type": "imported",
+            "line": 45
+          },
+          {
+            "to": "main:find_dotenv",
+            "count": 1,
+            "type": "imported",
+            "line": 39
+          }
+        ],
+        "called_by": [],
+        "is_entry_point": true,
+        "tags": []
+      },
+      "main:_load_dotenv_disabled": {
+        "name": "_load_dotenv_disabled",
+        "kind": "function",
+        "module": "main",
+        "class": null,
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\main.py",
+        "start_line": 22,
+        "end_line": 29,
+        "docstring": "Determine if dotenv loading has been disabled.",
+        "calls": [],
+        "called_by": [
+          {
+            "from": "main:load_dotenv",
+            "count": 1,
+            "type": "direct"
+          }
+        ],
+        "is_entry_point": false,
+        "tags": [
+          "helper"
+        ]
+      },
+      "main:with_warn_for_invalid_lines": {
+        "name": "with_warn_for_invalid_lines",
+        "kind": "function",
+        "module": "main",
+        "class": null,
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\main.py",
+        "start_line": 32,
+        "end_line": 39,
+        "docstring": null,
+        "calls": [],
+        "called_by": [
+          {
+            "from": "main:DotEnv.parse",
+            "count": 1,
+            "type": "direct"
+          },
+          {
+            "from": "main:set_key",
+            "count": 1,
+            "type": "direct"
+          },
+          {
+            "from": "main:unset_key",
+            "count": 1,
+            "type": "direct"
+          }
+        ],
+        "is_entry_point": false,
+        "tags": []
+      },
+      "main:get_key": {
+        "name": "get_key",
+        "kind": "function",
+        "module": "main",
+        "class": null,
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\main.py",
+        "start_line": 125,
+        "end_line": 135,
+        "docstring": "Get the value of a given key from the given .env.\n\nReturns `None` if the key isn't found or doesn't have a value.",
+        "calls": [],
+        "called_by": [],
+        "is_entry_point": false,
+        "tags": [
+          "query"
+        ]
+      },
+      "main:rewrite": {
+        "name": "rewrite",
+        "kind": "function",
+        "module": "main",
+        "class": null,
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\main.py",
+        "start_line": 139,
+        "end_line": 190,
+        "docstring": null,
+        "calls": [],
+        "called_by": [
+          {
+            "from": "main:set_key",
+            "count": 1,
+            "type": "direct"
+          },
+          {
+            "from": "main:unset_key",
+            "count": 1,
+            "type": "direct"
+          }
+        ],
+        "is_entry_point": false,
+        "tags": []
+      },
+      "main:set_key": {
+        "name": "set_key",
+        "kind": "function",
+        "module": "main",
+        "class": null,
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\main.py",
+        "start_line": 193,
+        "end_line": 250,
+        "docstring": "Adds or Updates a key/value to the given .env\n\nThe target .env file is created if it doesn't exist.\n\nThis function doesn't follow symlinks by default, to avoid accidentally\nmodifying a file at a potentially untrusted path. If you don't need this\nprotection and need symlinks to be followed, use `follow_symlinks`.",
+        "calls": [
+          {
+            "to": "main:rewrite",
+            "count": 1,
+            "type": "direct",
+            "line": 232
+          },
+          {
+            "to": "main:with_warn_for_invalid_lines",
+            "count": 1,
+            "type": "direct",
+            "line": 238
+          },
+          {
+            "to": "parser:parse_stream",
+            "count": 1,
+            "type": "imported",
+            "line": 238
+          }
+        ],
+        "called_by": [
+          {
+            "from": "cli:set_value",
+            "count": 1,
+            "type": "imported"
+          }
+        ],
+        "is_entry_point": false,
+        "tags": [
+          "orchestrator",
+          "update"
+        ]
+      },
+      "main:unset_key": {
+        "name": "unset_key",
+        "kind": "function",
+        "module": "main",
+        "class": null,
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\main.py",
+        "start_line": 253,
+        "end_line": 291,
+        "docstring": "Removes a given key from the given `.env` file.\n\nIf the .env path given doesn't exist, fails.\nIf the given key doesn't exist in the .env, fails.\n\nThis function doesn't follow symlinks by default, to avoid accidentally\nmodifying a file at a potentially untrusted path. If you don't need this\nprotection and need symlinks to be followed, use `follow_symlinks`.",
+        "calls": [
+          {
+            "to": "main:rewrite",
+            "count": 1,
+            "type": "direct",
+            "line": 275
+          },
+          {
+            "to": "main:with_warn_for_invalid_lines",
+            "count": 1,
+            "type": "direct",
+            "line": 279
+          },
+          {
+            "to": "parser:parse_stream",
+            "count": 1,
+            "type": "imported",
+            "line": 279
+          }
+        ],
+        "called_by": [
+          {
+            "from": "cli:unset",
+            "count": 1,
+            "type": "imported"
+          }
+        ],
+        "is_entry_point": false,
+        "tags": [
+          "orchestrator",
+          "update"
+        ]
+      },
+      "main:resolve_variables": {
+        "name": "resolve_variables",
+        "kind": "function",
+        "module": "main",
+        "class": null,
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\main.py",
+        "start_line": 294,
+        "end_line": 316,
+        "docstring": null,
+        "calls": [
+          {
+            "to": "variables:parse_variables",
+            "count": 1,
+            "type": "imported",
+            "line": 304
+          }
+        ],
+        "called_by": [
+          {
+            "from": "main:DotEnv.dict",
+            "count": 1,
+            "type": "direct"
+          }
+        ],
+        "is_entry_point": false,
+        "tags": []
+      },
+      "main:_walk_to_root": {
+        "name": "_walk_to_root",
+        "kind": "function",
+        "module": "main",
+        "class": null,
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\main.py",
+        "start_line": 319,
+        "end_line": 334,
+        "docstring": "Yield directories starting from the given directory up to the root",
+        "calls": [],
+        "called_by": [
+          {
+            "from": "main:find_dotenv",
+            "count": 1,
+            "type": "direct"
+          }
+        ],
+        "is_entry_point": false,
+        "tags": [
+          "helper"
+        ]
+      },
+      "main:find_dotenv": {
+        "name": "find_dotenv",
+        "kind": "function",
+        "module": "main",
+        "class": null,
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\main.py",
+        "start_line": 337,
+        "end_line": 385,
+        "docstring": "Search in increasingly higher folders for the given file\n\nReturns path to the file if found, or an empty string otherwise",
+        "calls": [
+          {
+            "to": "main:_walk_to_root",
+            "count": 1,
+            "type": "direct",
+            "line": 377
+          },
+          {
+            "to": "main:_is_file_or_fifo",
+            "count": 1,
+            "type": "direct",
+            "line": 379
+          }
+        ],
+        "called_by": [
+          {
+            "from": "ipython:IPythonDotEnv.dotenv",
+            "count": 1,
+            "type": "imported"
+          },
+          {
+            "from": "main:load_dotenv",
+            "count": 1,
+            "type": "direct"
+          },
+          {
+            "from": "main:dotenv_values",
+            "count": 1,
+            "type": "direct"
+          }
+        ],
+        "is_entry_point": false,
+        "tags": [
+          "query"
+        ]
+      },
+      "main:load_dotenv": {
+        "name": "load_dotenv",
+        "kind": "function",
+        "module": "main",
+        "class": null,
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\main.py",
+        "start_line": 388,
+        "end_line": 435,
+        "docstring": "Parse a .env file and then load all the variables found as environment variables.\n\nParameters:\n    dotenv_path: Absolute or relative path to .env file.\n    stream: Text stream (such as `io.StringIO`) with .env content, used if\n        `dotenv_path` is `None`.\n    verbose: Whether to output a warning the .env file is missing.\n    override: Whether to override the system environment variables with the variables\n        from the `.env` file.\n    interpolate: Whether to interpolate variables using POSIX variable expansion.\n    encoding: Encoding to be used to read the file.\nReturns:\n    Bool: True if at least one environment variable is set else False\n\nIf both `dotenv_path` and `stream` are `None`, `find_dotenv()` is used to find the\n.env file with its default parameters. If you need to change the default parameters\nof `find_dotenv()`, you can explicitly call `find_dotenv()` and pass the result\nto this function as `dotenv_path`.\n\nIf the environment variable `PYTHON_DOTENV_DISABLED` is set to a truthy value,\n.env loading is disabled.",
+        "calls": [
+          {
+            "to": "main:_load_dotenv_disabled",
+            "count": 1,
+            "type": "direct",
+            "line": 418
+          },
+          {
+            "to": "main:find_dotenv",
+            "count": 1,
+            "type": "direct",
+            "line": 425
+          }
+        ],
+        "called_by": [
+          {
+            "from": "ipython:IPythonDotEnv.dotenv",
+            "count": 1,
+            "type": "imported"
+          }
+        ],
+        "is_entry_point": false,
+        "tags": []
+      },
+      "main:dotenv_values": {
+        "name": "dotenv_values",
+        "kind": "function",
+        "module": "main",
+        "class": null,
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\main.py",
+        "start_line": 438,
+        "end_line": 472,
+        "docstring": "Parse a .env file and return its content as a dict.\n\nThe returned dict will have `None` values for keys without values in the .env file.\nFor example, `foo=bar` results in `{\"foo\": \"bar\"}` whereas `foo` alone results in\n`{\"foo\": None}`\n\nParameters:\n    dotenv_path: Absolute or relative path to the .env file.\n    stream: `StringIO` object with .env content, used if `dotenv_path` is `None`.\n    verbose: Whether to output a warning if the .env file is missing.\n    interpolate: Whether to interpolate variables using POSIX variable expansion.\n    encoding: Encoding to be used to read the file.\n\nIf both `dotenv_path` and `stream` are `None`, `find_dotenv()` is used to find the\n.env file.",
+        "calls": [
+          {
+            "to": "main:find_dotenv",
+            "count": 1,
+            "type": "direct",
+            "line": 463
+          }
+        ],
+        "called_by": [
+          {
+            "from": "cli:list_values",
+            "count": 1,
+            "type": "imported"
+          },
+          {
+            "from": "cli:get",
+            "count": 1,
+            "type": "imported"
+          },
+          {
+            "from": "cli:run",
+            "count": 1,
+            "type": "imported"
+          }
+        ],
+        "is_entry_point": false,
+        "tags": []
+      },
+      "main:_is_file_or_fifo": {
+        "name": "_is_file_or_fifo",
+        "kind": "function",
+        "module": "main",
+        "class": null,
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\main.py",
+        "start_line": 475,
+        "end_line": 487,
+        "docstring": "Return True if `path` exists and is either a regular file or a FIFO.",
+        "calls": [],
+        "called_by": [
+          {
+            "from": "main:DotEnv._get_stream",
+            "count": 1,
+            "type": "direct"
+          },
+          {
+            "from": "main:find_dotenv",
+            "count": 1,
+            "type": "direct"
+          }
+        ],
+        "is_entry_point": false,
+        "tags": [
+          "helper"
+        ]
+      },
+      "main:DotEnv.__init__": {
+        "name": "__init__",
+        "kind": "method",
+        "module": "main",
+        "class": "DotEnv",
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\main.py",
+        "start_line": 43,
+        "end_line": 58,
+        "docstring": null,
+        "calls": [],
+        "called_by": [],
+        "is_entry_point": false,
+        "tags": [
+          "creation",
+          "helper"
+        ]
+      },
+      "main:DotEnv._get_stream": {
+        "name": "_get_stream",
+        "kind": "method",
+        "module": "main",
+        "class": "DotEnv",
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\main.py",
+        "start_line": 61,
+        "end_line": 73,
+        "docstring": null,
+        "calls": [
+          {
+            "to": "main:_is_file_or_fifo",
+            "count": 1,
+            "type": "direct",
+            "line": 62
+          }
+        ],
+        "called_by": [
+          {
+            "from": "main:DotEnv.parse",
+            "count": 1,
+            "type": "self_method"
+          }
+        ],
+        "is_entry_point": false,
+        "tags": [
+          "helper",
+          "query"
+        ]
+      },
+      "main:DotEnv.dict": {
+        "name": "dict",
+        "kind": "method",
+        "module": "main",
+        "class": "DotEnv",
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\main.py",
+        "start_line": 75,
+        "end_line": 89,
+        "docstring": "Return dotenv as dict",
+        "calls": [
+          {
+            "to": "main:DotEnv.parse",
+            "count": 1,
+            "type": "self_method",
+            "line": 80
+          },
+          {
+            "to": "main:resolve_variables",
+            "count": 1,
+            "type": "direct",
+            "line": 84
+          }
+        ],
+        "called_by": [
+          {
+            "from": "main:DotEnv.set_as_environment_variables",
+            "count": 1,
+            "type": "self_method"
+          },
+          {
+            "from": "main:DotEnv.set_as_environment_variables",
+            "count": 1,
+            "type": "self_method"
+          },
+          {
+            "from": "main:DotEnv.get",
+            "count": 1,
+            "type": "self_method"
+          }
+        ],
+        "is_entry_point": false,
+        "tags": []
+      },
+      "main:DotEnv.parse": {
+        "name": "parse",
+        "kind": "method",
+        "module": "main",
+        "class": "DotEnv",
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\main.py",
+        "start_line": 91,
+        "end_line": 95,
+        "docstring": null,
+        "calls": [
+          {
+            "to": "main:DotEnv._get_stream",
+            "count": 1,
+            "type": "self_method",
+            "line": 92
+          },
+          {
+            "to": "main:with_warn_for_invalid_lines",
+            "count": 1,
+            "type": "direct",
+            "line": 93
+          },
+          {
+            "to": "parser:parse_stream",
+            "count": 1,
+            "type": "imported",
+            "line": 93
+          }
+        ],
+        "called_by": [
+          {
+            "from": "main:DotEnv.dict",
+            "count": 1,
+            "type": "self_method"
+          }
+        ],
+        "is_entry_point": false,
+        "tags": [
+          "orchestrator"
+        ]
+      },
+      "main:DotEnv.set_as_environment_variables": {
+        "name": "set_as_environment_variables",
+        "kind": "method",
+        "module": "main",
+        "class": "DotEnv",
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\main.py",
+        "start_line": 97,
+        "end_line": 110,
+        "docstring": "Load the current dotenv as system environment variable.",
+        "calls": [
+          {
+            "to": "main:DotEnv.dict",
+            "count": 1,
+            "type": "self_method",
+            "line": 101
+          },
+          {
+            "to": "main:DotEnv.dict",
+            "count": 1,
+            "type": "self_method",
+            "line": 104
+          }
+        ],
+        "called_by": [],
+        "is_entry_point": true,
+        "tags": [
+          "update"
+        ]
+      },
+      "main:DotEnv.get": {
+        "name": "get",
+        "kind": "method",
+        "module": "main",
+        "class": "DotEnv",
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\main.py",
+        "start_line": 112,
+        "end_line": 122,
+        "docstring": "",
+        "calls": [
+          {
+            "to": "main:DotEnv.dict",
+            "count": 1,
+            "type": "self_method",
+            "line": 114
+          }
+        ],
+        "called_by": [],
+        "is_entry_point": true,
+        "tags": [
+          "query"
+        ]
+      },
+      "parser:make_regex": {
+        "name": "make_regex",
+        "kind": "function",
+        "module": "parser",
+        "class": null,
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\parser.py",
+        "start_line": 14,
+        "end_line": 15,
+        "docstring": null,
+        "calls": [],
+        "called_by": [],
+        "is_entry_point": false,
+        "tags": []
+      },
+      "parser:decode_escapes": {
+        "name": "decode_escapes",
+        "kind": "function",
+        "module": "parser",
+        "class": null,
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\parser.py",
+        "start_line": 107,
+        "end_line": 111,
+        "docstring": null,
+        "calls": [],
+        "called_by": [
+          {
+            "from": "parser:parse_value",
+            "count": 1,
+            "type": "direct"
+          },
+          {
+            "from": "parser:parse_value",
+            "count": 1,
+            "type": "direct"
+          }
+        ],
+        "is_entry_point": false,
+        "tags": []
+      },
+      "parser:parse_key": {
+        "name": "parse_key",
+        "kind": "function",
+        "module": "parser",
+        "class": null,
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\parser.py",
+        "start_line": 114,
+        "end_line": 122,
+        "docstring": null,
+        "calls": [],
+        "called_by": [
+          {
+            "from": "parser:parse_binding",
+            "count": 1,
+            "type": "direct"
+          }
+        ],
+        "is_entry_point": false,
+        "tags": []
+      },
+      "parser:parse_unquoted_value": {
+        "name": "parse_unquoted_value",
+        "kind": "function",
+        "module": "parser",
+        "class": null,
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\parser.py",
+        "start_line": 125,
+        "end_line": 127,
+        "docstring": null,
+        "calls": [],
+        "called_by": [
+          {
+            "from": "parser:parse_value",
+            "count": 1,
+            "type": "direct"
+          }
+        ],
+        "is_entry_point": false,
+        "tags": []
+      },
+      "parser:parse_value": {
+        "name": "parse_value",
+        "kind": "function",
+        "module": "parser",
+        "class": null,
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\parser.py",
+        "start_line": 130,
+        "end_line": 141,
+        "docstring": null,
+        "calls": [
+          {
+            "to": "parser:decode_escapes",
+            "count": 1,
+            "type": "direct",
+            "line": 134
+          },
+          {
+            "to": "parser:decode_escapes",
+            "count": 1,
+            "type": "direct",
+            "line": 137
+          },
+          {
+            "to": "parser:parse_unquoted_value",
+            "count": 1,
+            "type": "direct",
+            "line": 141
+          }
+        ],
+        "called_by": [
+          {
+            "from": "parser:parse_binding",
+            "count": 1,
+            "type": "direct"
+          }
+        ],
+        "is_entry_point": false,
+        "tags": [
+          "orchestrator"
+        ]
+      },
+      "parser:parse_binding": {
+        "name": "parse_binding",
+        "kind": "function",
+        "module": "parser",
+        "class": null,
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\parser.py",
+        "start_line": 144,
+        "end_line": 178,
+        "docstring": null,
+        "calls": [
+          {
+            "to": "parser:parse_key",
+            "count": 1,
+            "type": "direct",
+            "line": 156
+          },
+          {
+            "to": "parser:parse_value",
+            "count": 1,
+            "type": "direct",
+            "line": 160
+          }
+        ],
+        "called_by": [
+          {
+            "from": "parser:parse_stream",
+            "count": 1,
+            "type": "direct"
+          }
+        ],
+        "is_entry_point": false,
+        "tags": []
+      },
+      "parser:parse_stream": {
+        "name": "parse_stream",
+        "kind": "function",
+        "module": "parser",
+        "class": null,
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\parser.py",
+        "start_line": 181,
+        "end_line": 184,
+        "docstring": null,
+        "calls": [
+          {
+            "to": "parser:parse_binding",
+            "count": 1,
+            "type": "direct",
+            "line": 184
+          }
+        ],
+        "called_by": [
+          {
+            "from": "main:DotEnv.parse",
+            "count": 1,
+            "type": "imported"
+          },
+          {
+            "from": "main:set_key",
+            "count": 1,
+            "type": "imported"
+          },
+          {
+            "from": "main:unset_key",
+            "count": 1,
+            "type": "imported"
+          }
+        ],
+        "is_entry_point": false,
+        "tags": []
+      },
+      "parser:Position.__init__": {
+        "name": "__init__",
+        "kind": "method",
+        "module": "parser",
+        "class": "Position",
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\parser.py",
+        "start_line": 50,
+        "end_line": 52,
+        "docstring": null,
+        "calls": [],
+        "called_by": [],
+        "is_entry_point": false,
+        "tags": [
+          "creation",
+          "helper"
+        ]
+      },
+      "parser:Position.start": {
+        "name": "start",
+        "kind": "method",
+        "module": "parser",
+        "class": "Position",
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\parser.py",
+        "start_line": 55,
+        "end_line": 56,
+        "docstring": null,
+        "calls": [],
+        "called_by": [],
+        "is_entry_point": false,
+        "tags": []
+      },
+      "parser:Position.set": {
+        "name": "set",
+        "kind": "method",
+        "module": "parser",
+        "class": "Position",
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\parser.py",
+        "start_line": 58,
+        "end_line": 60,
+        "docstring": null,
+        "calls": [],
+        "called_by": [],
+        "is_entry_point": false,
+        "tags": [
+          "update"
+        ]
+      },
+      "parser:Position.advance": {
+        "name": "advance",
+        "kind": "method",
+        "module": "parser",
+        "class": "Position",
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\parser.py",
+        "start_line": 62,
+        "end_line": 64,
+        "docstring": null,
+        "calls": [],
+        "called_by": [],
+        "is_entry_point": false,
+        "tags": []
+      },
+      "parser:Reader.__init__": {
+        "name": "__init__",
+        "kind": "method",
+        "module": "parser",
+        "class": "Reader",
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\parser.py",
+        "start_line": 72,
+        "end_line": 75,
+        "docstring": null,
+        "calls": [],
+        "called_by": [],
+        "is_entry_point": false,
+        "tags": [
+          "creation",
+          "helper"
+        ]
+      },
+      "parser:Reader.has_next": {
+        "name": "has_next",
+        "kind": "method",
+        "module": "parser",
+        "class": "Reader",
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\parser.py",
+        "start_line": 77,
+        "end_line": 78,
+        "docstring": null,
+        "calls": [],
+        "called_by": [],
+        "is_entry_point": false,
+        "tags": [
+          "query"
+        ]
+      },
+      "parser:Reader.set_mark": {
+        "name": "set_mark",
+        "kind": "method",
+        "module": "parser",
+        "class": "Reader",
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\parser.py",
+        "start_line": 80,
+        "end_line": 81,
+        "docstring": null,
+        "calls": [],
+        "called_by": [],
+        "is_entry_point": false,
+        "tags": [
+          "update"
+        ]
+      },
+      "parser:Reader.get_marked": {
+        "name": "get_marked",
+        "kind": "method",
+        "module": "parser",
+        "class": "Reader",
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\parser.py",
+        "start_line": 83,
+        "end_line": 87,
+        "docstring": null,
+        "calls": [],
+        "called_by": [],
+        "is_entry_point": false,
+        "tags": [
+          "query"
+        ]
+      },
+      "parser:Reader.peek": {
+        "name": "peek",
+        "kind": "method",
+        "module": "parser",
+        "class": "Reader",
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\parser.py",
+        "start_line": 89,
+        "end_line": 90,
+        "docstring": null,
+        "calls": [],
+        "called_by": [],
+        "is_entry_point": false,
+        "tags": []
+      },
+      "parser:Reader.read": {
+        "name": "read",
+        "kind": "method",
+        "module": "parser",
+        "class": "Reader",
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\parser.py",
+        "start_line": 92,
+        "end_line": 97,
+        "docstring": null,
+        "calls": [],
+        "called_by": [],
+        "is_entry_point": false,
+        "tags": []
+      },
+      "parser:Reader.read_regex": {
+        "name": "read_regex",
+        "kind": "method",
+        "module": "parser",
+        "class": "Reader",
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\parser.py",
+        "start_line": 99,
+        "end_line": 104,
+        "docstring": null,
+        "calls": [],
+        "called_by": [],
+        "is_entry_point": false,
+        "tags": []
+      },
+      "variables:parse_variables": {
+        "name": "parse_variables",
+        "kind": "function",
+        "module": "variables",
+        "class": null,
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\variables.py",
+        "start_line": 70,
+        "end_line": 86,
+        "docstring": null,
+        "calls": [],
+        "called_by": [
+          {
+            "from": "main:resolve_variables",
+            "count": 1,
+            "type": "imported"
+          }
+        ],
+        "is_entry_point": false,
+        "tags": []
+      },
+      "variables:Atom.__ne__": {
+        "name": "__ne__",
+        "kind": "method",
+        "module": "variables",
+        "class": "Atom",
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\variables.py",
+        "start_line": 19,
+        "end_line": 23,
+        "docstring": null,
+        "calls": [],
+        "called_by": [],
+        "is_entry_point": false,
+        "tags": [
+          "helper"
+        ]
+      },
+      "variables:Atom.resolve": {
+        "name": "resolve",
+        "kind": "method",
+        "module": "variables",
+        "class": "Atom",
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\variables.py",
+        "start_line": 26,
+        "end_line": 26,
+        "docstring": null,
+        "calls": [],
+        "called_by": [],
+        "is_entry_point": false,
+        "tags": []
+      },
+      "variables:Literal.__init__": {
+        "name": "__init__",
+        "kind": "method",
+        "module": "variables",
+        "class": "Literal",
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\variables.py",
+        "start_line": 30,
+        "end_line": 31,
+        "docstring": null,
+        "calls": [],
+        "called_by": [],
+        "is_entry_point": false,
+        "tags": [
+          "creation",
+          "helper"
+        ]
+      },
+      "variables:Literal.__repr__": {
+        "name": "__repr__",
+        "kind": "method",
+        "module": "variables",
+        "class": "Literal",
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\variables.py",
+        "start_line": 33,
+        "end_line": 34,
+        "docstring": null,
+        "calls": [],
+        "called_by": [],
+        "is_entry_point": false,
+        "tags": [
+          "helper"
+        ]
+      },
+      "variables:Literal.__eq__": {
+        "name": "__eq__",
+        "kind": "method",
+        "module": "variables",
+        "class": "Literal",
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\variables.py",
+        "start_line": 36,
+        "end_line": 39,
+        "docstring": null,
+        "calls": [],
+        "called_by": [],
+        "is_entry_point": false,
+        "tags": [
+          "helper"
+        ]
+      },
+      "variables:Literal.__hash__": {
+        "name": "__hash__",
+        "kind": "method",
+        "module": "variables",
+        "class": "Literal",
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\variables.py",
+        "start_line": 41,
+        "end_line": 42,
+        "docstring": null,
+        "calls": [],
+        "called_by": [],
+        "is_entry_point": false,
+        "tags": [
+          "helper",
+          "query"
+        ]
+      },
+      "variables:Literal.resolve": {
+        "name": "resolve",
+        "kind": "method",
+        "module": "variables",
+        "class": "Literal",
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\variables.py",
+        "start_line": 44,
+        "end_line": 45,
+        "docstring": null,
+        "calls": [],
+        "called_by": [],
+        "is_entry_point": false,
+        "tags": []
+      },
+      "variables:Variable.__init__": {
+        "name": "__init__",
+        "kind": "method",
+        "module": "variables",
+        "class": "Variable",
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\variables.py",
+        "start_line": 49,
+        "end_line": 51,
+        "docstring": null,
+        "calls": [],
+        "called_by": [],
+        "is_entry_point": false,
+        "tags": [
+          "creation",
+          "helper"
+        ]
+      },
+      "variables:Variable.__repr__": {
+        "name": "__repr__",
+        "kind": "method",
+        "module": "variables",
+        "class": "Variable",
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\variables.py",
+        "start_line": 53,
+        "end_line": 54,
+        "docstring": null,
+        "calls": [],
+        "called_by": [],
+        "is_entry_point": false,
+        "tags": [
+          "helper"
+        ]
+      },
+      "variables:Variable.__eq__": {
+        "name": "__eq__",
+        "kind": "method",
+        "module": "variables",
+        "class": "Variable",
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\variables.py",
+        "start_line": 56,
+        "end_line": 59,
+        "docstring": null,
+        "calls": [],
+        "called_by": [],
+        "is_entry_point": false,
+        "tags": [
+          "helper"
+        ]
+      },
+      "variables:Variable.__hash__": {
+        "name": "__hash__",
+        "kind": "method",
+        "module": "variables",
+        "class": "Variable",
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\variables.py",
+        "start_line": 61,
+        "end_line": 62,
+        "docstring": null,
+        "calls": [],
+        "called_by": [],
+        "is_entry_point": false,
+        "tags": [
+          "helper",
+          "query"
+        ]
+      },
+      "variables:Variable.resolve": {
+        "name": "resolve",
+        "kind": "method",
+        "module": "variables",
+        "class": "Variable",
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\variables.py",
+        "start_line": 64,
+        "end_line": 67,
+        "docstring": null,
+        "calls": [],
+        "called_by": [],
+        "is_entry_point": false,
+        "tags": []
+      },
+      "__init__:load_ipython_extension": {
+        "name": "load_ipython_extension",
+        "kind": "function",
+        "module": "__init__",
+        "class": null,
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\__init__.py",
+        "start_line": 6,
+        "end_line": 9,
+        "docstring": null,
+        "calls": [
+          {
+            "to": "__init__:load_ipython_extension",
+            "count": 1,
+            "type": "direct",
+            "line": 9
+          }
+        ],
+        "called_by": [
+          {
+            "from": "__init__:load_ipython_extension",
+            "count": 1,
+            "type": "direct"
+          }
+        ],
+        "is_entry_point": false,
+        "tags": []
+      },
+      "__init__:get_cli_string": {
+        "name": "get_cli_string",
+        "kind": "function",
+        "module": "__init__",
+        "class": null,
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\__init__.py",
+        "start_line": 12,
+        "end_line": 39,
+        "docstring": "Returns a string suitable for running as a shell script.\n\nUseful for converting a arguments passed to a fabric task\nto be passed to a `local` or `run` command.",
+        "calls": [],
+        "called_by": [],
+        "is_entry_point": false,
+        "tags": [
+          "query"
+        ]
+      }
+    },
+    "entry_points": [
+      "cli:cli",
+      "cli:list_values",
+      "cli:set_value",
+      "cli:get",
+      "cli:unset",
+      "cli:run",
+      "ipython:load_ipython_extension",
+      "ipython:IPythonDotEnv.dotenv",
+      "main:DotEnv.set_as_environment_variables",
+      "main:DotEnv.get"
+    ],
+    "leaves": [
+      "cli:enumerate_env",
+      "cli:stream_file",
+      "cli:run_command",
+      "ipython:load_ipython_extension",
+      "main:_load_dotenv_disabled",
+      "main:with_warn_for_invalid_lines",
+      "main:get_key",
+      "main:rewrite",
+      "main:_walk_to_root",
+      "main:_is_file_or_fifo",
+      "main:DotEnv.__init__",
+      "parser:make_regex",
+      "parser:decode_escapes",
+      "parser:parse_key",
+      "parser:parse_unquoted_value",
+      "parser:Position.__init__",
+      "parser:Position.start",
+      "parser:Position.set",
+      "parser:Position.advance",
+      "parser:Reader.__init__",
+      "parser:Reader.has_next",
+      "parser:Reader.set_mark",
+      "parser:Reader.get_marked",
+      "parser:Reader.peek",
+      "parser:Reader.read",
+      "parser:Reader.read_regex",
+      "variables:parse_variables",
+      "variables:Atom.__ne__",
+      "variables:Atom.resolve",
+      "variables:Literal.__init__",
+      "variables:Literal.__repr__",
+      "variables:Literal.__eq__",
+      "variables:Literal.__hash__",
+      "variables:Literal.resolve",
+      "variables:Variable.__init__",
+      "variables:Variable.__repr__",
+      "variables:Variable.__eq__",
+      "variables:Variable.__hash__",
+      "variables:Variable.resolve",
+      "__init__:get_cli_string"
+    ],
+    "modules": {
+      "cli": [
+        "cli:enumerate_env",
+        "cli:cli",
+        "cli:stream_file",
+        "cli:list_values",
+        "cli:set_value",
+        "cli:get",
+        "cli:unset",
+        "cli:run",
+        "cli:run_command"
+      ],
+      "ipython": [
+        "ipython:load_ipython_extension",
+        "ipython:IPythonDotEnv.dotenv"
+      ],
+      "main": [
+        "main:_load_dotenv_disabled",
+        "main:with_warn_for_invalid_lines",
+        "main:get_key",
+        "main:rewrite",
+        "main:set_key",
+        "main:unset_key",
+        "main:resolve_variables",
+        "main:_walk_to_root",
+        "main:find_dotenv",
+        "main:load_dotenv",
+        "main:dotenv_values",
+        "main:_is_file_or_fifo",
+        "main:DotEnv.__init__",
+        "main:DotEnv._get_stream",
+        "main:DotEnv.dict",
+        "main:DotEnv.parse",
+        "main:DotEnv.set_as_environment_variables",
+        "main:DotEnv.get"
+      ],
+      "parser": [
+        "parser:make_regex",
+        "parser:decode_escapes",
+        "parser:parse_key",
+        "parser:parse_unquoted_value",
+        "parser:parse_value",
+        "parser:parse_binding",
+        "parser:parse_stream",
+        "parser:Position.__init__",
+        "parser:Position.start",
+        "parser:Position.set",
+        "parser:Position.advance",
+        "parser:Reader.__init__",
+        "parser:Reader.has_next",
+        "parser:Reader.set_mark",
+        "parser:Reader.get_marked",
+        "parser:Reader.peek",
+        "parser:Reader.read",
+        "parser:Reader.read_regex"
+      ],
+      "variables": [
+        "variables:parse_variables",
+        "variables:Atom.__ne__",
+        "variables:Atom.resolve",
+        "variables:Literal.__init__",
+        "variables:Literal.__repr__",
+        "variables:Literal.__eq__",
+        "variables:Literal.__hash__",
+        "variables:Literal.resolve",
+        "variables:Variable.__init__",
+        "variables:Variable.__repr__",
+        "variables:Variable.__eq__",
+        "variables:Variable.__hash__",
+        "variables:Variable.resolve"
+      ],
+      "version": [],
+      "__init__": [
+        "__init__:load_ipython_extension",
+        "__init__:get_cli_string"
+      ],
+      "__main__": []
+    },
+    "total_nodes": 62,
+    "total_edges": 39
+  },
+  "state_analysis": {
+    "ipython:IPythonDotEnv": {
+      "class": "IPythonDotEnv",
+      "module": "ipython",
+      "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\ipython.py",
+      "state_attributes": [],
+      "dict_like_attrs": [],
+      "class_constants": [],
+      "method_writes": {
+        "dotenv": []
+      },
+      "method_reads": {
+        "dotenv": []
+      },
+      "method_dict_writes": {
+        "dotenv": []
+      }
+    },
+    "main:DotEnv": {
+      "class": "DotEnv",
+      "module": "main",
+      "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\main.py",
+      "state_attributes": [],
+      "dict_like_attrs": [],
+      "class_constants": [],
+      "method_writes": {
+        "__init__": [],
+        "_get_stream": [],
+        "dict": [],
+        "parse": [],
+        "set_as_environment_variables": [],
+        "get": []
+      },
+      "method_reads": {
+        "__init__": [],
+        "_get_stream": [],
+        "dict": [],
+        "parse": [],
+        "set_as_environment_variables": [],
+        "get": []
+      },
+      "method_dict_writes": {
+        "__init__": [],
+        "_get_stream": [],
+        "dict": [],
+        "parse": [],
+        "set_as_environment_variables": [],
+        "get": []
+      }
+    },
+    "parser:Original": {
+      "class": "Original",
+      "module": "parser",
+      "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\parser.py",
+      "state_attributes": [],
+      "dict_like_attrs": [],
+      "class_constants": [],
+      "method_writes": {},
+      "method_reads": {},
+      "method_dict_writes": {}
+    },
+    "parser:Binding": {
+      "class": "Binding",
+      "module": "parser",
+      "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\parser.py",
+      "state_attributes": [],
+      "dict_like_attrs": [],
+      "class_constants": [],
+      "method_writes": {},
+      "method_reads": {},
+      "method_dict_writes": {}
+    },
+    "parser:Position": {
+      "class": "Position",
+      "module": "parser",
+      "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\parser.py",
+      "state_attributes": [
+        "chars",
+        "line"
+      ],
+      "dict_like_attrs": [],
+      "class_constants": [],
+      "method_writes": {
+        "__init__": [
+          "chars",
+          "line"
+        ],
+        "start": [],
+        "set": [
+          "chars",
+          "line"
+        ],
+        "advance": [
+          "chars",
+          "line"
+        ]
+      },
+      "method_reads": {
+        "__init__": [
+          "chars",
+          "line"
+        ],
+        "start": [],
+        "set": [
+          "chars",
+          "line"
+        ],
+        "advance": [
+          "chars",
+          "line"
+        ]
+      },
+      "method_dict_writes": {
+        "__init__": [],
+        "start": [],
+        "set": [],
+        "advance": []
+      }
+    },
+    "parser:Error": {
+      "class": "Error",
+      "module": "parser",
+      "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\parser.py",
+      "state_attributes": [],
+      "dict_like_attrs": [],
+      "class_constants": [],
+      "method_writes": {},
+      "method_reads": {},
+      "method_dict_writes": {}
+    },
+    "parser:Reader": {
+      "class": "Reader",
+      "module": "parser",
+      "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\parser.py",
+      "state_attributes": [
+        "mark",
+        "position",
+        "string"
+      ],
+      "dict_like_attrs": [],
+      "class_constants": [],
+      "method_writes": {
+        "__init__": [
+          "mark",
+          "position",
+          "string"
+        ],
+        "has_next": [],
+        "set_mark": [],
+        "get_marked": [],
+        "peek": [],
+        "read": [],
+        "read_regex": []
+      },
+      "method_reads": {
+        "__init__": [
+          "mark",
+          "position",
+          "string"
+        ],
+        "has_next": [
+          "position",
+          "string"
+        ],
+        "set_mark": [
+          "mark",
+          "position"
+        ],
+        "get_marked": [
+          "mark",
+          "position",
+          "string"
+        ],
+        "peek": [
+          "position",
+          "string"
+        ],
+        "read": [
+          "position",
+          "string"
+        ],
+        "read_regex": [
+          "position",
+          "string"
+        ]
+      },
+      "method_dict_writes": {
+        "__init__": [],
+        "has_next": [],
+        "set_mark": [],
+        "get_marked": [],
+        "peek": [],
+        "read": [],
+        "read_regex": []
+      }
+    },
+    "variables:Atom": {
+      "class": "Atom",
+      "module": "variables",
+      "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\variables.py",
+      "state_attributes": [],
+      "dict_like_attrs": [],
+      "class_constants": [],
+      "method_writes": {
+        "__ne__": [],
+        "resolve": []
+      },
+      "method_reads": {
+        "__ne__": [],
+        "resolve": []
+      },
+      "method_dict_writes": {
+        "__ne__": [],
+        "resolve": []
+      }
+    },
+    "variables:Literal": {
+      "class": "Literal",
+      "module": "variables",
+      "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\variables.py",
+      "state_attributes": [
+        "value"
+      ],
+      "dict_like_attrs": [],
+      "class_constants": [],
+      "method_writes": {
+        "__init__": [
+          "value"
+        ],
+        "__repr__": [],
+        "__eq__": [],
+        "__hash__": [],
+        "resolve": []
+      },
+      "method_reads": {
+        "__init__": [
+          "value"
+        ],
+        "__repr__": [
+          "value"
+        ],
+        "__eq__": [
+          "value"
+        ],
+        "__hash__": [
+          "value"
+        ],
+        "resolve": [
+          "value"
+        ]
+      },
+      "method_dict_writes": {
+        "__init__": [],
+        "__repr__": [],
+        "__eq__": [],
+        "__hash__": [],
+        "resolve": []
+      }
+    },
+    "variables:Variable": {
+      "class": "Variable",
+      "module": "variables",
+      "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\variables.py",
+      "state_attributes": [
+        "default",
+        "name"
+      ],
+      "dict_like_attrs": [],
+      "class_constants": [],
+      "method_writes": {
+        "__init__": [
+          "default",
+          "name"
+        ],
+        "__repr__": [],
+        "__eq__": [],
+        "__hash__": [],
+        "resolve": []
+      },
+      "method_reads": {
+        "__init__": [
+          "default",
+          "name"
+        ],
+        "__repr__": [
+          "default",
+          "name"
+        ],
+        "__eq__": [
+          "default",
+          "name"
+        ],
+        "__hash__": [
+          "default",
+          "name"
+        ],
+        "resolve": [
+          "default",
+          "name"
+        ]
+      },
+      "method_dict_writes": {
+        "__init__": [],
+        "__repr__": [],
+        "__eq__": [],
+        "__hash__": [],
+        "resolve": []
+      }
+    }
+  },
+  "dependency_strength": {
+    "modules": {
+      "cli": {
+        "module": "cli",
+        "fan_out": 1,
+        "fan_in": 0,
+        "centrality": 0.15,
+        "role": "peripheral",
+        "internal_nodes": 9,
+        "depends_on": [
+          "main"
+        ],
+        "depended_by": [],
+        "entry_points": [
+          "cli:cli",
+          "cli:list_values",
+          "cli:set_value",
+          "cli:get",
+          "cli:unset",
+          "cli:run"
+        ]
+      },
+      "ipython": {
+        "module": "ipython",
+        "fan_out": 1,
+        "fan_in": 0,
+        "centrality": 0.15,
+        "role": "peripheral",
+        "internal_nodes": 2,
+        "depends_on": [
+          "main"
+        ],
+        "depended_by": [],
+        "entry_points": [
+          "ipython:load_ipython_extension",
+          "ipython:IPythonDotEnv.dotenv"
+        ]
+      },
+      "main": {
+        "module": "main",
+        "fan_out": 2,
+        "fan_in": 2,
+        "centrality": 1.0,
+        "role": "orchestrator",
+        "internal_nodes": 18,
+        "depends_on": [
+          "parser",
+          "variables"
+        ],
+        "depended_by": [
+          "cli",
+          "ipython"
+        ],
+        "entry_points": [
+          "main:DotEnv.set_as_environment_variables",
+          "main:DotEnv.get"
+        ]
+      },
+      "parser": {
+        "module": "parser",
+        "fan_out": 0,
+        "fan_in": 1,
+        "centrality": 0.35,
+        "role": "intermediate",
+        "internal_nodes": 18,
+        "depends_on": [],
+        "depended_by": [
+          "main"
+        ],
+        "entry_points": []
+      },
+      "variables": {
+        "module": "variables",
+        "fan_out": 0,
+        "fan_in": 1,
+        "centrality": 0.35,
+        "role": "intermediate",
+        "internal_nodes": 13,
+        "depends_on": [],
+        "depended_by": [
+          "main"
+        ],
+        "entry_points": []
+      },
+      "version": {
+        "module": "version",
+        "fan_out": 0,
+        "fan_in": 0,
+        "centrality": 0.0,
+        "role": "peripheral",
+        "internal_nodes": 0,
+        "depends_on": [],
+        "depended_by": [],
+        "entry_points": []
+      }
+    },
+    "edges": [
+      {
+        "from": "cli",
+        "to": "main",
+        "call_count": 5,
+        "unique_methods": 3,
+        "strength": 0.84,
+        "details": [
+          {
+            "from_method": "cli:list_values",
+            "to_method": "main:dotenv_values",
+            "call_type": "imported",
+            "line": 98,
+            "count": 1
+          },
+          {
+            "from_method": "cli:set_value",
+            "to_method": "main:set_key",
+            "call_type": "imported",
+            "line": 127,
+            "count": 1
+          },
+          {
+            "from_method": "cli:get",
+            "to_method": "main:dotenv_values",
+            "call_type": "imported",
+            "line": 142,
+            "count": 1
+          },
+          {
+            "from_method": "cli:unset",
+            "to_method": "main:unset_key",
+            "call_type": "imported",
+            "line": 163,
+            "count": 1
+          },
+          {
+            "from_method": "cli:run",
+            "to_method": "main:dotenv_values",
+            "call_type": "imported",
+            "line": 193,
+            "count": 1
+          }
+        ]
+      },
+      {
+        "from": "main",
+        "to": "parser",
+        "call_count": 3,
+        "unique_methods": 1,
+        "strength": 0.44,
+        "details": [
+          {
+            "from_method": "main:DotEnv.parse",
+            "to_method": "parser:parse_stream",
+            "call_type": "imported",
+            "line": 93,
+            "count": 1
+          },
+          {
+            "from_method": "main:set_key",
+            "to_method": "parser:parse_stream",
+            "call_type": "imported",
+            "line": 238,
+            "count": 1
+          },
+          {
+            "from_method": "main:unset_key",
+            "to_method": "parser:parse_stream",
+            "call_type": "imported",
+            "line": 279,
+            "count": 1
+          }
+        ]
+      },
+      {
+        "from": "ipython",
+        "to": "main",
+        "call_count": 2,
+        "unique_methods": 2,
+        "strength": 0.4,
+        "details": [
+          {
+            "from_method": "ipython:IPythonDotEnv.dotenv",
+            "to_method": "main:load_dotenv",
+            "call_type": "imported",
+            "line": 45,
+            "count": 1
+          },
+          {
+            "from_method": "ipython:IPythonDotEnv.dotenv",
+            "to_method": "main:find_dotenv",
+            "call_type": "imported",
+            "line": 39,
+            "count": 1
+          }
+        ]
+      },
+      {
+        "from": "main",
+        "to": "variables",
+        "call_count": 1,
+        "unique_methods": 1,
+        "strength": 0.2,
+        "details": [
+          {
+            "from_method": "main:resolve_variables",
+            "to_method": "variables:parse_variables",
+            "call_type": "imported",
+            "line": 304,
+            "count": 1
+          }
+        ]
+      }
+    ],
+    "core_modules": [
+      "main"
+    ],
+    "peripheral_modules": [
+      "cli",
+      "ipython",
+      "version"
+    ],
+    "summary": {
+      "total_modules": 6,
+      "total_edges": 4
+    }
+  },
+  "business_flows": [
+    {
+      "flow_id": "flow_6",
+      "name": "set_value Flow",
+      "description": "Store the given key/value. Crosses 3 module(s) with 10 steps, 2 state change(s), 0 validation(s).",
+      "entry_node": "cli:set_value",
+      "steps": [
+        {
+          "step_id": "s1",
+          "node_id": "cli:set_value",
+          "module": "cli",
+          "class": null,
+          "method": "set_value",
+          "order": 1,
+          "depth": 0,
+          "call_type": "entry",
+          "line": 116,
+          "tags": [
+            "update"
+          ],
+          "is_module_boundary": false,
+          "is_state_change": true,
+          "is_validation": false,
+          "description": "Store the given key/value."
+        },
+        {
+          "step_id": "s2",
+          "node_id": "main:set_key",
+          "module": "main",
+          "class": null,
+          "method": "set_key",
+          "order": 2,
+          "depth": 1,
+          "call_type": "imported",
+          "line": 127,
+          "tags": [
+            "orchestrator",
+            "update"
+          ],
+          "is_module_boundary": true,
+          "is_state_change": true,
+          "is_validation": false,
+          "description": "Adds or Updates a key/value to the given .env"
+        },
+        {
+          "step_id": "s3",
+          "node_id": "main:rewrite",
+          "module": "main",
+          "class": null,
+          "method": "rewrite",
+          "order": 3,
+          "depth": 2,
+          "call_type": "direct",
+          "line": 232,
+          "tags": [],
+          "is_module_boundary": false,
+          "is_state_change": false,
+          "is_validation": false,
+          "description": "rewrite"
+        },
+        {
+          "step_id": "s4",
+          "node_id": "main:with_warn_for_invalid_lines",
+          "module": "main",
+          "class": null,
+          "method": "with_warn_for_invalid_lines",
+          "order": 4,
+          "depth": 2,
+          "call_type": "direct",
+          "line": 238,
+          "tags": [],
+          "is_module_boundary": false,
+          "is_state_change": false,
+          "is_validation": false,
+          "description": "with_warn_for_invalid_lines"
+        },
+        {
+          "step_id": "s5",
+          "node_id": "parser:parse_stream",
+          "module": "parser",
+          "class": null,
+          "method": "parse_stream",
+          "order": 5,
+          "depth": 2,
+          "call_type": "imported",
+          "line": 238,
+          "tags": [],
+          "is_module_boundary": true,
+          "is_state_change": false,
+          "is_validation": false,
+          "description": "parse_stream"
+        },
+        {
+          "step_id": "s6",
+          "node_id": "parser:parse_binding",
+          "module": "parser",
+          "class": null,
+          "method": "parse_binding",
+          "order": 6,
+          "depth": 3,
+          "call_type": "direct",
+          "line": 184,
+          "tags": [],
+          "is_module_boundary": false,
+          "is_state_change": false,
+          "is_validation": false,
+          "description": "parse_binding"
+        },
+        {
+          "step_id": "s7",
+          "node_id": "parser:parse_key",
+          "module": "parser",
+          "class": null,
+          "method": "parse_key",
+          "order": 7,
+          "depth": 4,
+          "call_type": "direct",
+          "line": 156,
+          "tags": [],
+          "is_module_boundary": false,
+          "is_state_change": false,
+          "is_validation": false,
+          "description": "parse_key"
+        },
+        {
+          "step_id": "s8",
+          "node_id": "parser:parse_value",
+          "module": "parser",
+          "class": null,
+          "method": "parse_value",
+          "order": 8,
+          "depth": 4,
+          "call_type": "direct",
+          "line": 160,
+          "tags": [
+            "orchestrator"
+          ],
+          "is_module_boundary": false,
+          "is_state_change": false,
+          "is_validation": false,
+          "description": "parse_value"
+        },
+        {
+          "step_id": "s9",
+          "node_id": "parser:decode_escapes",
+          "module": "parser",
+          "class": null,
+          "method": "decode_escapes",
+          "order": 9,
+          "depth": 5,
+          "call_type": "direct",
+          "line": 134,
+          "tags": [],
+          "is_module_boundary": false,
+          "is_state_change": false,
+          "is_validation": false,
+          "description": "decode_escapes"
+        },
+        {
+          "step_id": "s10",
+          "node_id": "parser:parse_unquoted_value",
+          "module": "parser",
+          "class": null,
+          "method": "parse_unquoted_value",
+          "order": 10,
+          "depth": 5,
+          "call_type": "direct",
+          "line": 141,
+          "tags": [],
+          "is_module_boundary": false,
+          "is_state_change": false,
+          "is_validation": false,
+          "description": "parse_unquoted_value"
+        }
+      ],
+      "modules_involved": [
+        "cli",
+        "main",
+        "parser"
+      ],
+      "cross_module_count": 2,
+      "has_validation": false,
+      "has_state_change": true,
+      "complexity_score": 5.0,
+      "business_importance": 13.0
+    },
+    {
+      "flow_id": "flow_7",
+      "name": "unset Flow",
+      "description": "Removes the given key. Crosses 3 module(s) with 10 steps, 2 state change(s), 0 validation(s).",
+      "entry_node": "cli:unset",
+      "steps": [
+        {
+          "step_id": "s1",
+          "node_id": "cli:unset",
+          "module": "cli",
+          "class": null,
+          "method": "unset",
+          "order": 1,
+          "depth": 0,
+          "call_type": "entry",
+          "line": 154,
+          "tags": [
+            "update"
+          ],
+          "is_module_boundary": false,
+          "is_state_change": true,
+          "is_validation": false,
+          "description": "Removes the given key."
+        },
+        {
+          "step_id": "s2",
+          "node_id": "main:unset_key",
+          "module": "main",
+          "class": null,
+          "method": "unset_key",
+          "order": 2,
+          "depth": 1,
+          "call_type": "imported",
+          "line": 163,
+          "tags": [
+            "orchestrator",
+            "update"
+          ],
+          "is_module_boundary": true,
+          "is_state_change": true,
+          "is_validation": false,
+          "description": "Removes a given key from the given `.env` file."
+        },
+        {
+          "step_id": "s3",
+          "node_id": "main:rewrite",
+          "module": "main",
+          "class": null,
+          "method": "rewrite",
+          "order": 3,
+          "depth": 2,
+          "call_type": "direct",
+          "line": 275,
+          "tags": [],
+          "is_module_boundary": false,
+          "is_state_change": false,
+          "is_validation": false,
+          "description": "rewrite"
+        },
+        {
+          "step_id": "s4",
+          "node_id": "main:with_warn_for_invalid_lines",
+          "module": "main",
+          "class": null,
+          "method": "with_warn_for_invalid_lines",
+          "order": 4,
+          "depth": 2,
+          "call_type": "direct",
+          "line": 279,
+          "tags": [],
+          "is_module_boundary": false,
+          "is_state_change": false,
+          "is_validation": false,
+          "description": "with_warn_for_invalid_lines"
+        },
+        {
+          "step_id": "s5",
+          "node_id": "parser:parse_stream",
+          "module": "parser",
+          "class": null,
+          "method": "parse_stream",
+          "order": 5,
+          "depth": 2,
+          "call_type": "imported",
+          "line": 279,
+          "tags": [],
+          "is_module_boundary": true,
+          "is_state_change": false,
+          "is_validation": false,
+          "description": "parse_stream"
+        },
+        {
+          "step_id": "s6",
+          "node_id": "parser:parse_binding",
+          "module": "parser",
+          "class": null,
+          "method": "parse_binding",
+          "order": 6,
+          "depth": 3,
+          "call_type": "direct",
+          "line": 184,
+          "tags": [],
+          "is_module_boundary": false,
+          "is_state_change": false,
+          "is_validation": false,
+          "description": "parse_binding"
+        },
+        {
+          "step_id": "s7",
+          "node_id": "parser:parse_key",
+          "module": "parser",
+          "class": null,
+          "method": "parse_key",
+          "order": 7,
+          "depth": 4,
+          "call_type": "direct",
+          "line": 156,
+          "tags": [],
+          "is_module_boundary": false,
+          "is_state_change": false,
+          "is_validation": false,
+          "description": "parse_key"
+        },
+        {
+          "step_id": "s8",
+          "node_id": "parser:parse_value",
+          "module": "parser",
+          "class": null,
+          "method": "parse_value",
+          "order": 8,
+          "depth": 4,
+          "call_type": "direct",
+          "line": 160,
+          "tags": [
+            "orchestrator"
+          ],
+          "is_module_boundary": false,
+          "is_state_change": false,
+          "is_validation": false,
+          "description": "parse_value"
+        },
+        {
+          "step_id": "s9",
+          "node_id": "parser:decode_escapes",
+          "module": "parser",
+          "class": null,
+          "method": "decode_escapes",
+          "order": 9,
+          "depth": 5,
+          "call_type": "direct",
+          "line": 134,
+          "tags": [],
+          "is_module_boundary": false,
+          "is_state_change": false,
+          "is_validation": false,
+          "description": "decode_escapes"
+        },
+        {
+          "step_id": "s10",
+          "node_id": "parser:parse_unquoted_value",
+          "module": "parser",
+          "class": null,
+          "method": "parse_unquoted_value",
+          "order": 10,
+          "depth": 5,
+          "call_type": "direct",
+          "line": 141,
+          "tags": [],
+          "is_module_boundary": false,
+          "is_state_change": false,
+          "is_validation": false,
+          "description": "parse_unquoted_value"
+        }
+      ],
+      "modules_involved": [
+        "cli",
+        "main",
+        "parser"
+      ],
+      "cross_module_count": 2,
+      "has_validation": false,
+      "has_state_change": true,
+      "complexity_score": 5.0,
+      "business_importance": 13.0
+    },
+    {
+      "flow_id": "flow_4",
+      "name": "DotEnv set_as_environment_variables Flow",
+      "description": "Load the current dotenv as system environment variable. Crosses 3 module(s) with 13 steps, 1 state change(s), 0 validation(s).",
+      "entry_node": "main:DotEnv.set_as_environment_variables",
+      "steps": [
+        {
+          "step_id": "s1",
+          "node_id": "main:DotEnv.set_as_environment_variables",
+          "module": "main",
+          "class": "DotEnv",
+          "method": "set_as_environment_variables",
+          "order": 1,
+          "depth": 0,
+          "call_type": "entry",
+          "line": 97,
+          "tags": [
+            "update"
+          ],
+          "is_module_boundary": false,
+          "is_state_change": true,
+          "is_validation": false,
+          "description": "Load the current dotenv as system environment variable."
+        },
+        {
+          "step_id": "s2",
+          "node_id": "main:DotEnv.dict",
+          "module": "main",
+          "class": "DotEnv",
+          "method": "dict",
+          "order": 2,
+          "depth": 1,
+          "call_type": "self_method",
+          "line": 101,
+          "tags": [],
+          "is_module_boundary": false,
+          "is_state_change": false,
+          "is_validation": false,
+          "description": "Return dotenv as dict"
+        },
+        {
+          "step_id": "s3",
+          "node_id": "main:DotEnv.parse",
+          "module": "main",
+          "class": "DotEnv",
+          "method": "parse",
+          "order": 3,
+          "depth": 2,
+          "call_type": "self_method",
+          "line": 80,
+          "tags": [
+            "orchestrator"
+          ],
+          "is_module_boundary": false,
+          "is_state_change": false,
+          "is_validation": false,
+          "description": "parse"
+        },
+        {
+          "step_id": "s4",
+          "node_id": "main:resolve_variables",
+          "module": "main",
+          "class": null,
+          "method": "resolve_variables",
+          "order": 4,
+          "depth": 2,
+          "call_type": "direct",
+          "line": 84,
+          "tags": [],
+          "is_module_boundary": false,
+          "is_state_change": false,
+          "is_validation": false,
+          "description": "resolve_variables"
+        },
+        {
+          "step_id": "s5",
+          "node_id": "main:DotEnv._get_stream",
+          "module": "main",
+          "class": "DotEnv",
+          "method": "_get_stream",
+          "order": 5,
+          "depth": 3,
+          "call_type": "self_method",
+          "line": 92,
+          "tags": [
+            "helper",
+            "query"
+          ],
+          "is_module_boundary": false,
+          "is_state_change": false,
+          "is_validation": false,
+          "description": "_get_stream"
+        },
+        {
+          "step_id": "s6",
+          "node_id": "main:with_warn_for_invalid_lines",
+          "module": "main",
+          "class": null,
+          "method": "with_warn_for_invalid_lines",
+          "order": 6,
+          "depth": 3,
+          "call_type": "direct",
+          "line": 93,
+          "tags": [],
+          "is_module_boundary": false,
+          "is_state_change": false,
+          "is_validation": false,
+          "description": "with_warn_for_invalid_lines"
+        },
+        {
+          "step_id": "s7",
+          "node_id": "parser:parse_stream",
+          "module": "parser",
+          "class": null,
+          "method": "parse_stream",
+          "order": 7,
+          "depth": 3,
+          "call_type": "imported",
+          "line": 93,
+          "tags": [],
+          "is_module_boundary": true,
+          "is_state_change": false,
+          "is_validation": false,
+          "description": "parse_stream"
+        },
+        {
+          "step_id": "s8",
+          "node_id": "variables:parse_variables",
+          "module": "variables",
+          "class": null,
+          "method": "parse_variables",
+          "order": 8,
+          "depth": 3,
+          "call_type": "imported",
+          "line": 304,
+          "tags": [],
+          "is_module_boundary": true,
+          "is_state_change": false,
+          "is_validation": false,
+          "description": "parse_variables"
+        },
+        {
+          "step_id": "s9",
+          "node_id": "parser:parse_binding",
+          "module": "parser",
+          "class": null,
+          "method": "parse_binding",
+          "order": 9,
+          "depth": 4,
+          "call_type": "direct",
+          "line": 184,
+          "tags": [],
+          "is_module_boundary": false,
+          "is_state_change": false,
+          "is_validation": false,
+          "description": "parse_binding"
+        },
+        {
+          "step_id": "s10",
+          "node_id": "parser:parse_key",
+          "module": "parser",
+          "class": null,
+          "method": "parse_key",
+          "order": 10,
+          "depth": 5,
+          "call_type": "direct",
+          "line": 156,
+          "tags": [],
+          "is_module_boundary": false,
+          "is_state_change": false,
+          "is_validation": false,
+          "description": "parse_key"
+        },
+        {
+          "step_id": "s11",
+          "node_id": "parser:parse_value",
+          "module": "parser",
+          "class": null,
+          "method": "parse_value",
+          "order": 11,
+          "depth": 5,
+          "call_type": "direct",
+          "line": 160,
+          "tags": [
+            "orchestrator"
+          ],
+          "is_module_boundary": false,
+          "is_state_change": false,
+          "is_validation": false,
+          "description": "parse_value"
+        },
+        {
+          "step_id": "s12",
+          "node_id": "parser:decode_escapes",
+          "module": "parser",
+          "class": null,
+          "method": "decode_escapes",
+          "order": 12,
+          "depth": 6,
+          "call_type": "direct",
+          "line": 134,
+          "tags": [],
+          "is_module_boundary": false,
+          "is_state_change": false,
+          "is_validation": false,
+          "description": "decode_escapes"
+        },
+        {
+          "step_id": "s13",
+          "node_id": "parser:parse_unquoted_value",
+          "module": "parser",
+          "class": null,
+          "method": "parse_unquoted_value",
+          "order": 13,
+          "depth": 6,
+          "call_type": "direct",
+          "line": 141,
+          "tags": [],
+          "is_module_boundary": false,
+          "is_state_change": false,
+          "is_validation": false,
+          "description": "parse_unquoted_value"
+        }
+      ],
+      "modules_involved": [
+        "main",
+        "parser",
+        "variables"
+      ],
+      "cross_module_count": 2,
+      "has_validation": false,
+      "has_state_change": true,
+      "complexity_score": 6.5,
+      "business_importance": 11.5
+    },
+    {
+      "flow_id": "flow_8",
+      "name": "IPythonDotEnv dotenv Flow",
+      "description": "Crosses 2 module(s) with 6 steps, 0 state change(s), 0 validation(s).",
+      "entry_node": "ipython:IPythonDotEnv.dotenv",
+      "steps": [
+        {
+          "step_id": "s1",
+          "node_id": "ipython:IPythonDotEnv.dotenv",
+          "module": "ipython",
+          "class": "IPythonDotEnv",
+          "method": "dotenv",
+          "order": 1,
+          "depth": 0,
+          "call_type": "entry",
+          "line": 34,
+          "tags": [],
+          "is_module_boundary": false,
+          "is_state_change": false,
+          "is_validation": false,
+          "description": "dotenv"
+        },
+        {
+          "step_id": "s2",
+          "node_id": "main:load_dotenv",
+          "module": "main",
+          "class": null,
+          "method": "load_dotenv",
+          "order": 2,
+          "depth": 1,
+          "call_type": "imported",
+          "line": 45,
+          "tags": [],
+          "is_module_boundary": true,
+          "is_state_change": false,
+          "is_validation": false,
+          "description": "Parse a .env file and then load all the variables found as environment variab..."
+        },
+        {
+          "step_id": "s3",
+          "node_id": "main:find_dotenv",
+          "module": "main",
+          "class": null,
+          "method": "find_dotenv",
+          "order": 3,
+          "depth": 1,
+          "call_type": "imported",
+          "line": 39,
+          "tags": [
+            "query"
+          ],
+          "is_module_boundary": true,
+          "is_state_change": false,
+          "is_validation": false,
+          "description": "Search in increasingly higher folders for the given file"
+        },
+        {
+          "step_id": "s4",
+          "node_id": "main:_load_dotenv_disabled",
+          "module": "main",
+          "class": null,
+          "method": "_load_dotenv_disabled",
+          "order": 4,
+          "depth": 2,
+          "call_type": "direct",
+          "line": 418,
+          "tags": [
+            "helper"
+          ],
+          "is_module_boundary": false,
+          "is_state_change": false,
+          "is_validation": false,
+          "description": "Determine if dotenv loading has been disabled."
+        },
+        {
+          "step_id": "s5",
+          "node_id": "main:_walk_to_root",
+          "module": "main",
+          "class": null,
+          "method": "_walk_to_root",
+          "order": 5,
+          "depth": 2,
+          "call_type": "direct",
+          "line": 377,
+          "tags": [
+            "helper"
+          ],
+          "is_module_boundary": false,
+          "is_state_change": false,
+          "is_validation": false,
+          "description": "Yield directories starting from the given directory up to the root"
+        },
+        {
+          "step_id": "s6",
+          "node_id": "main:_is_file_or_fifo",
+          "module": "main",
+          "class": null,
+          "method": "_is_file_or_fifo",
+          "order": 6,
+          "depth": 2,
+          "call_type": "direct",
+          "line": 379,
+          "tags": [
+            "helper"
+          ],
+          "is_module_boundary": false,
+          "is_state_change": false,
+          "is_validation": false,
+          "description": "Return True if `path` exists and is either a regular file or a FIFO."
+        }
+      ],
+      "modules_involved": [
+        "ipython",
+        "main"
+      ],
+      "cross_module_count": 2,
+      "has_validation": false,
+      "has_state_change": false,
+      "complexity_score": 3.0,
+      "business_importance": 7.0
+    },
+    {
+      "flow_id": "flow_1",
+      "name": "list_values Flow",
+      "description": "Display all the stored key/value. Crosses 2 module(s) with 6 steps, 0 state change(s), 0 validation(s).",
+      "entry_node": "cli:list_values",
+      "steps": [
+        {
+          "step_id": "s1",
+          "node_id": "cli:list_values",
+          "module": "cli",
+          "class": null,
+          "method": "list_values",
+          "order": 1,
+          "depth": 0,
+          "call_type": "entry",
+          "line": 93,
+          "tags": [
+            "query"
+          ],
+          "is_module_boundary": false,
+          "is_state_change": false,
+          "is_validation": false,
+          "description": "Display all the stored key/value."
+        },
+        {
+          "step_id": "s2",
+          "node_id": "cli:stream_file",
+          "module": "cli",
+          "class": null,
+          "method": "stream_file",
+          "order": 2,
+          "depth": 1,
+          "call_type": "direct",
+          "line": 97,
+          "tags": [],
+          "is_module_boundary": false,
+          "is_state_change": false,
+          "is_validation": false,
+          "description": "Open a file and yield the corresponding (decoded) stream."
+        },
+        {
+          "step_id": "s3",
+          "node_id": "main:dotenv_values",
+          "module": "main",
+          "class": null,
+          "method": "dotenv_values",
+          "order": 3,
+          "depth": 1,
+          "call_type": "imported",
+          "line": 98,
+          "tags": [],
+          "is_module_boundary": true,
+          "is_state_change": false,
+          "is_validation": false,
+          "description": "Parse a .env file and return its content as a dict."
+        },
+        {
+          "step_id": "s4",
+          "node_id": "main:find_dotenv",
+          "module": "main",
+          "class": null,
+          "method": "find_dotenv",
+          "order": 4,
+          "depth": 2,
+          "call_type": "direct",
+          "line": 463,
+          "tags": [
+            "query"
+          ],
+          "is_module_boundary": false,
+          "is_state_change": false,
+          "is_validation": false,
+          "description": "Search in increasingly higher folders for the given file"
+        },
+        {
+          "step_id": "s5",
+          "node_id": "main:_walk_to_root",
+          "module": "main",
+          "class": null,
+          "method": "_walk_to_root",
+          "order": 5,
+          "depth": 3,
+          "call_type": "direct",
+          "line": 377,
+          "tags": [
+            "helper"
+          ],
+          "is_module_boundary": false,
+          "is_state_change": false,
+          "is_validation": false,
+          "description": "Yield directories starting from the given directory up to the root"
+        },
+        {
+          "step_id": "s6",
+          "node_id": "main:_is_file_or_fifo",
+          "module": "main",
+          "class": null,
+          "method": "_is_file_or_fifo",
+          "order": 6,
+          "depth": 3,
+          "call_type": "direct",
+          "line": 379,
+          "tags": [
+            "helper"
+          ],
+          "is_module_boundary": false,
+          "is_state_change": false,
+          "is_validation": false,
+          "description": "Return True if `path` exists and is either a regular file or a FIFO."
+        }
+      ],
+      "modules_involved": [
+        "cli",
+        "main"
+      ],
+      "cross_module_count": 1,
+      "has_validation": false,
+      "has_state_change": false,
+      "complexity_score": 3.0,
+      "business_importance": 6.0
+    },
+    {
+      "flow_id": "flow_2",
+      "name": "get Flow",
+      "description": "Retrieve the value for the given key. Crosses 2 module(s) with 6 steps, 0 state change(s), 0 validation(s).",
+      "entry_node": "cli:get",
+      "steps": [
+        {
+          "step_id": "s1",
+          "node_id": "cli:get",
+          "module": "cli",
+          "class": null,
+          "method": "get",
+          "order": 1,
+          "depth": 0,
+          "call_type": "entry",
+          "line": 137,
+          "tags": [
+            "query"
+          ],
+          "is_module_boundary": false,
+          "is_state_change": false,
+          "is_validation": false,
+          "description": "Retrieve the value for the given key."
+        },
+        {
+          "step_id": "s2",
+          "node_id": "cli:stream_file",
+          "module": "cli",
+          "class": null,
+          "method": "stream_file",
+          "order": 2,
+          "depth": 1,
+          "call_type": "direct",
+          "line": 141,
+          "tags": [],
+          "is_module_boundary": false,
+          "is_state_change": false,
+          "is_validation": false,
+          "description": "Open a file and yield the corresponding (decoded) stream."
+        },
+        {
+          "step_id": "s3",
+          "node_id": "main:dotenv_values",
+          "module": "main",
+          "class": null,
+          "method": "dotenv_values",
+          "order": 3,
+          "depth": 1,
+          "call_type": "imported",
+          "line": 142,
+          "tags": [],
+          "is_module_boundary": true,
+          "is_state_change": false,
+          "is_validation": false,
+          "description": "Parse a .env file and return its content as a dict."
+        },
+        {
+          "step_id": "s4",
+          "node_id": "main:find_dotenv",
+          "module": "main",
+          "class": null,
+          "method": "find_dotenv",
+          "order": 4,
+          "depth": 2,
+          "call_type": "direct",
+          "line": 463,
+          "tags": [
+            "query"
+          ],
+          "is_module_boundary": false,
+          "is_state_change": false,
+          "is_validation": false,
+          "description": "Search in increasingly higher folders for the given file"
+        },
+        {
+          "step_id": "s5",
+          "node_id": "main:_walk_to_root",
+          "module": "main",
+          "class": null,
+          "method": "_walk_to_root",
+          "order": 5,
+          "depth": 3,
+          "call_type": "direct",
+          "line": 377,
+          "tags": [
+            "helper"
+          ],
+          "is_module_boundary": false,
+          "is_state_change": false,
+          "is_validation": false,
+          "description": "Yield directories starting from the given directory up to the root"
+        },
+        {
+          "step_id": "s6",
+          "node_id": "main:_is_file_or_fifo",
+          "module": "main",
+          "class": null,
+          "method": "_is_file_or_fifo",
+          "order": 6,
+          "depth": 3,
+          "call_type": "direct",
+          "line": 379,
+          "tags": [
+            "helper"
+          ],
+          "is_module_boundary": false,
+          "is_state_change": false,
+          "is_validation": false,
+          "description": "Return True if `path` exists and is either a regular file or a FIFO."
+        }
+      ],
+      "modules_involved": [
+        "cli",
+        "main"
+      ],
+      "cross_module_count": 1,
+      "has_validation": false,
+      "has_state_change": false,
+      "complexity_score": 3.0,
+      "business_importance": 6.0
+    },
+    {
+      "flow_id": "flow_3",
+      "name": "run Flow",
+      "description": "Run command with environment variables present. Crosses 2 module(s) with 6 steps, 0 state change(s), 0 validation(s).",
+      "entry_node": "cli:run",
+      "steps": [
+        {
+          "step_id": "s1",
+          "node_id": "cli:run",
+          "module": "cli",
+          "class": null,
+          "method": "run",
+          "order": 1,
+          "depth": 0,
+          "call_type": "entry",
+          "line": 184,
+          "tags": [],
+          "is_module_boundary": false,
+          "is_state_change": false,
+          "is_validation": false,
+          "description": "Run command with environment variables present."
+        },
+        {
+          "step_id": "s2",
+          "node_id": "cli:run_command",
+          "module": "cli",
+          "class": null,
+          "method": "run_command",
+          "order": 2,
+          "depth": 1,
+          "call_type": "direct",
+          "line": 201,
+          "tags": [],
+          "is_module_boundary": false,
+          "is_state_change": false,
+          "is_validation": false,
+          "description": "Replace the current process with the specified command."
+        },
+        {
+          "step_id": "s3",
+          "node_id": "main:dotenv_values",
+          "module": "main",
+          "class": null,
+          "method": "dotenv_values",
+          "order": 3,
+          "depth": 1,
+          "call_type": "imported",
+          "line": 193,
+          "tags": [],
+          "is_module_boundary": true,
+          "is_state_change": false,
+          "is_validation": false,
+          "description": "Parse a .env file and return its content as a dict."
+        },
+        {
+          "step_id": "s4",
+          "node_id": "main:find_dotenv",
+          "module": "main",
+          "class": null,
+          "method": "find_dotenv",
+          "order": 4,
+          "depth": 2,
+          "call_type": "direct",
+          "line": 463,
+          "tags": [
+            "query"
+          ],
+          "is_module_boundary": false,
+          "is_state_change": false,
+          "is_validation": false,
+          "description": "Search in increasingly higher folders for the given file"
+        },
+        {
+          "step_id": "s5",
+          "node_id": "main:_walk_to_root",
+          "module": "main",
+          "class": null,
+          "method": "_walk_to_root",
+          "order": 5,
+          "depth": 3,
+          "call_type": "direct",
+          "line": 377,
+          "tags": [
+            "helper"
+          ],
+          "is_module_boundary": false,
+          "is_state_change": false,
+          "is_validation": false,
+          "description": "Yield directories starting from the given directory up to the root"
+        },
+        {
+          "step_id": "s6",
+          "node_id": "main:_is_file_or_fifo",
+          "module": "main",
+          "class": null,
+          "method": "_is_file_or_fifo",
+          "order": 6,
+          "depth": 3,
+          "call_type": "direct",
+          "line": 379,
+          "tags": [
+            "helper"
+          ],
+          "is_module_boundary": false,
+          "is_state_change": false,
+          "is_validation": false,
+          "description": "Return True if `path` exists and is either a regular file or a FIFO."
+        }
+      ],
+      "modules_involved": [
+        "cli",
+        "main"
+      ],
+      "cross_module_count": 1,
+      "has_validation": false,
+      "has_state_change": false,
+      "complexity_score": 3.0,
+      "business_importance": 6.0
+    },
+    {
+      "flow_id": "flow_5",
+      "name": "cli Flow",
+      "description": "This script is used to set, get or unset values from a .env file. Crosses 1 module(s) with 2 steps, 0 state change(s), 0 validation(s).",
+      "entry_node": "cli:cli",
+      "steps": [
+        {
+          "step_id": "s1",
+          "node_id": "cli:cli",
+          "module": "cli",
+          "class": null,
+          "method": "cli",
+          "order": 1,
+          "depth": 0,
+          "call_type": "entry",
+          "line": 62,
+          "tags": [],
+          "is_module_boundary": false,
+          "is_state_change": false,
+          "is_validation": false,
+          "description": "This script is used to set, get or unset values from a .env file."
+        },
+        {
+          "step_id": "s2",
+          "node_id": "cli:enumerate_env",
+          "module": "cli",
+          "class": null,
+          "method": "enumerate_env",
+          "order": 2,
+          "depth": 1,
+          "call_type": "direct",
+          "line": 42,
+          "tags": [],
+          "is_module_boundary": false,
+          "is_state_change": false,
+          "is_validation": false,
+          "description": "Return a path for the ${pwd}/.env file."
+        }
+      ],
+      "modules_involved": [
+        "cli"
+      ],
+      "cross_module_count": 0,
+      "has_validation": false,
+      "has_state_change": false,
+      "complexity_score": 1.0,
+      "business_importance": 2.0
+    }
+  ],
+  "architecture": {
+    "nodes": {
+      "cli": {
+        "module_id": "cli",
+        "display_name": "Cli",
+        "layer": "support",
+        "role": "peripheral",
+        "x": 40.0,
+        "y": 280.0,
+        "width": 180.0,
+        "height": 80.0,
+        "method_count": 9,
+        "entry_points": [
+          "cli:cli",
+          "cli:list_values",
+          "cli:set_value",
+          "cli:get",
+          "cli:unset",
+          "cli:run"
+        ],
+        "responsibilities": [
+          "Business Logic"
+        ]
+      },
+      "ipython": {
+        "module_id": "ipython",
+        "display_name": "Ipython",
+        "layer": "support",
+        "role": "peripheral",
+        "x": 260.0,
+        "y": 280.0,
+        "width": 180.0,
+        "height": 80.0,
+        "method_count": 2,
+        "entry_points": [
+          "ipython:load_ipython_extension",
+          "ipython:IPythonDotEnv.dotenv"
+        ],
+        "responsibilities": [
+          "Business Logic"
+        ]
+      },
+      "main": {
+        "module_id": "main",
+        "display_name": "Main",
+        "layer": "orchestration",
+        "role": "orchestrator",
+        "x": 130.0,
+        "y": 40.0,
+        "width": 180.0,
+        "height": 80.0,
+        "method_count": 18,
+        "entry_points": [
+          "main:DotEnv.set_as_environment_variables",
+          "main:DotEnv.get"
+        ],
+        "responsibilities": [
+          "Main Entry",
+          "Coordination"
+        ]
+      },
+      "parser": {
+        "module_id": "parser",
+        "display_name": "Parser",
+        "layer": "business",
+        "role": "intermediate",
+        "x": 40.0,
+        "y": 160.0,
+        "width": 180.0,
+        "height": 80.0,
+        "method_count": 18,
+        "entry_points": [],
+        "responsibilities": [
+          "Business Logic"
+        ]
+      },
+      "variables": {
+        "module_id": "variables",
+        "display_name": "Variables",
+        "layer": "business",
+        "role": "intermediate",
+        "x": 260.0,
+        "y": 160.0,
+        "width": 180.0,
+        "height": 80.0,
+        "method_count": 13,
+        "entry_points": [],
+        "responsibilities": [
+          "Business Logic"
+        ]
+      },
+      "version": {
+        "module_id": "version",
+        "display_name": "Version",
+        "layer": "support",
+        "role": "peripheral",
+        "x": 480.0,
+        "y": 280.0,
+        "width": 180.0,
+        "height": 80.0,
+        "method_count": 0,
+        "entry_points": [],
+        "responsibilities": [
+          "Business Logic"
+        ]
+      }
+    },
+    "edges": [
+      {
+        "from": "cli",
+        "to": "main",
+        "type": "data_flow",
+        "strength": 0.84,
+        "call_count": 5,
+        "label": "strong dependency"
+      },
+      {
+        "from": "main",
+        "to": "parser",
+        "type": "orchestration",
+        "strength": 0.44,
+        "call_count": 3,
+        "label": "coordinates"
+      },
+      {
+        "from": "ipython",
+        "to": "main",
+        "type": "utility",
+        "strength": 0.4,
+        "call_count": 2,
+        "label": "uses"
+      },
+      {
+        "from": "main",
+        "to": "variables",
+        "type": "orchestration",
+        "strength": 0.2,
+        "call_count": 1,
+        "label": "coordinates"
+      }
+    ],
+    "layers": [
+      "orchestration",
+      "business",
+      "support"
+    ],
+    "layout": {
+      "layer_count": 3,
+      "max_modules_per_layer": 3,
+      "row_height": 120.0,
+      "column_width": 220.0,
+      "total_height": 440.0,
+      "total_width": 740.0
+    }
+  },
+  "key_implementations": {
+    "implementations": [
+      {
+        "node_id": "main:DotEnv.dict",
+        "module": "main",
+        "class": "DotEnv",
+        "method": "dict",
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\main.py",
+        "start_line": 75,
+        "end_line": 89,
+        "importance_score": 6.5,
+        "importance_reasons": [
+          "medium complexity",
+          "includes boundary validation",
+          "core method called by many"
+        ],
+        "design_approach": "1 pre-flight validations",
+        "design_characteristics": [
+          {
+            "category": "guard_clause",
+            "label": "1 pre-flight validations",
+            "evidence": "lines 77",
+            "confidence": "verified"
+          }
+        ],
+        "edge_cases": [
+          "self._dict is not None -> early return"
+        ],
+        "error_handling": [],
+        "state_writes": [],
+        "state_reads": [],
+        "validation_checks": [
+          "self._dict is not None"
+        ],
+        "guard_clauses": [
+          "self._dict is not None -> early return"
+        ],
+        "null_checks": [
+          "self._dict is not None"
+        ],
+        "loop_patterns": [],
+        "recursion_depth": 0,
+        "design_pattern": "",
+        "algorithm_type": "conditional checks (no loops)",
+        "algorithm_hints": {
+          "detected": "conditional checks (no loops)",
+          "confidence": "verified",
+          "reason": "1 guard clauses, no loops"
+        },
+        "complexity": 3,
+        "loop_count": 0,
+        "branch_count": 2,
+        "categories": [
+          "validation",
+          "guard_clause"
+        ],
+        "evidence_refs": [
+          {
+            "type": "guard_clause",
+            "description": "self._dict is not None -> early return",
+            "line": 77
+          }
+        ]
+      },
+      {
+        "node_id": "main:DotEnv.set_as_environment_variables",
+        "module": "main",
+        "class": "DotEnv",
+        "method": "set_as_environment_variables",
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\main.py",
+        "start_line": 97,
+        "end_line": 110,
+        "importance_score": 6.5,
+        "importance_reasons": [
+          "high complexity implementation",
+          "includes boundary validation"
+        ],
+        "design_approach": "1 pre-flight validations; sequential traversal",
+        "design_characteristics": [
+          {
+            "category": "guard_clause",
+            "label": "1 pre-flight validations",
+            "evidence": "lines 101",
+            "confidence": "verified"
+          },
+          {
+            "category": "algorithmic",
+            "label": "sequential traversal",
+            "evidence": "1 loop(s) detected",
+            "confidence": "verified"
+          }
+        ],
+        "edge_cases": [
+          "not self.dict() -> early return"
+        ],
+        "error_handling": [],
+        "state_writes": [],
+        "state_reads": [],
+        "validation_checks": [
+          "not self.dict()"
+        ],
+        "guard_clauses": [
+          "not self.dict() -> early return"
+        ],
+        "null_checks": [
+          "v is not None"
+        ],
+        "loop_patterns": [
+          "sequential traversal"
+        ],
+        "recursion_depth": 0,
+        "design_pattern": "",
+        "algorithm_type": "pure computation / statistics",
+        "algorithm_hints": {
+          "detected": "pure computation / statistics",
+          "confidence": "verified",
+          "reason": "1 loop(s), no state mutation"
+        },
+        "complexity": 5,
+        "loop_count": 1,
+        "branch_count": 3,
+        "categories": [
+          "validation",
+          "algorithmic",
+          "guard_clause"
+        ],
+        "evidence_refs": [
+          {
+            "type": "guard_clause",
+            "description": "not self.dict() -> early return",
+            "line": 101
+          }
+        ]
+      },
+      {
+        "node_id": "main:DotEnv.parse",
+        "module": "main",
+        "class": "DotEnv",
+        "method": "parse",
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\main.py",
+        "start_line": 91,
+        "end_line": 95,
+        "importance_score": 4.0,
+        "importance_reasons": [
+          "medium complexity"
+        ],
+        "design_approach": "sequential traversal",
+        "design_characteristics": [
+          {
+            "category": "algorithmic",
+            "label": "sequential traversal",
+            "evidence": "1 loop(s) detected",
+            "confidence": "verified"
+          }
+        ],
+        "edge_cases": [],
+        "error_handling": [],
+        "state_writes": [],
+        "state_reads": [],
+        "validation_checks": [],
+        "guard_clauses": [],
+        "null_checks": [
+          "mapping.key is not None"
+        ],
+        "loop_patterns": [
+          "sequential traversal"
+        ],
+        "recursion_depth": 0,
+        "design_pattern": "",
+        "algorithm_type": "pure computation / statistics",
+        "algorithm_hints": {
+          "detected": "pure computation / statistics",
+          "confidence": "verified",
+          "reason": "1 loop(s), no state mutation"
+        },
+        "complexity": 3,
+        "loop_count": 1,
+        "branch_count": 1,
+        "categories": [
+          "algorithmic"
+        ],
+        "evidence_refs": []
+      },
+      {
+        "node_id": "main:DotEnv.get",
+        "module": "main",
+        "class": "DotEnv",
+        "method": "get",
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\main.py",
+        "start_line": 112,
+        "end_line": 122,
+        "importance_score": 4.0,
+        "importance_reasons": [
+          "medium complexity",
+          "includes boundary validation"
+        ],
+        "design_approach": "1 pre-flight validations",
+        "design_characteristics": [
+          {
+            "category": "guard_clause",
+            "label": "1 pre-flight validations",
+            "evidence": "lines 116",
+            "confidence": "verified"
+          }
+        ],
+        "edge_cases": [
+          "key in data -> early return"
+        ],
+        "error_handling": [],
+        "state_writes": [],
+        "state_reads": [],
+        "validation_checks": [
+          "key in data"
+        ],
+        "guard_clauses": [
+          "key in data -> early return"
+        ],
+        "null_checks": [],
+        "loop_patterns": [],
+        "recursion_depth": 0,
+        "design_pattern": "",
+        "algorithm_type": "conditional checks (no loops)",
+        "algorithm_hints": {
+          "detected": "conditional checks (no loops)",
+          "confidence": "verified",
+          "reason": "1 guard clauses, no loops"
+        },
+        "complexity": 3,
+        "loop_count": 0,
+        "branch_count": 2,
+        "categories": [
+          "validation",
+          "guard_clause"
+        ],
+        "evidence_refs": [
+          {
+            "type": "guard_clause",
+            "description": "key in data -> early return",
+            "line": 116
+          }
+        ]
+      },
+      {
+        "node_id": "ipython:IPythonDotEnv.dotenv",
+        "module": "ipython",
+        "class": "IPythonDotEnv",
+        "method": "dotenv",
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\ipython.py",
+        "start_line": 34,
+        "end_line": 45,
+        "importance_score": 3.5,
+        "importance_reasons": [
+          "medium complexity"
+        ],
+        "design_approach": "multi-step orchestration (8 internal calls)",
+        "design_characteristics": [
+          {
+            "category": "orchestration",
+            "label": "multi-step orchestration (8 internal calls)",
+            "evidence": "from call count",
+            "confidence": "verified"
+          }
+        ],
+        "edge_cases": [
+          "Catches IOError exception(s)"
+        ],
+        "error_handling": [],
+        "state_writes": [],
+        "state_reads": [],
+        "validation_checks": [],
+        "guard_clauses": [],
+        "null_checks": [],
+        "loop_patterns": [],
+        "recursion_depth": 0,
+        "design_pattern": "",
+        "algorithm_type": "general business logic",
+        "algorithm_hints": {
+          "detected": "general business logic",
+          "confidence": "verified",
+          "reason": "no distinctive algorithmic pattern"
+        },
+        "complexity": 3,
+        "loop_count": 0,
+        "branch_count": 2,
+        "categories": [
+          "general"
+        ],
+        "evidence_refs": [
+          {
+            "type": "exception_catch",
+            "description": "Catches IOError exception(s)",
+            "line": 38
+          }
+        ]
+      },
+      {
+        "node_id": "parser:Reader.read",
+        "module": "parser",
+        "class": "Reader",
+        "method": "read",
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\parser.py",
+        "start_line": 92,
+        "end_line": 97,
+        "importance_score": 2.5,
+        "importance_reasons": [
+          "includes boundary validation",
+          "includes exception raises"
+        ],
+        "design_approach": "1 pre-flight validations; raises 1 exception type(s): Error",
+        "design_characteristics": [
+          {
+            "category": "guard_clause",
+            "label": "1 pre-flight validations",
+            "evidence": "lines 94",
+            "confidence": "verified"
+          },
+          {
+            "category": "error_handling",
+            "label": "raises 1 exception type(s): Error",
+            "evidence": "lines 95",
+            "confidence": "verified"
+          }
+        ],
+        "edge_cases": [
+          "len() < count -> raise"
+        ],
+        "error_handling": [
+          "Error: read: End of string"
+        ],
+        "state_writes": [],
+        "state_reads": [
+          "position",
+          "string"
+        ],
+        "validation_checks": [
+          "len() < count"
+        ],
+        "guard_clauses": [
+          "len() < count -> raise"
+        ],
+        "null_checks": [],
+        "loop_patterns": [],
+        "recursion_depth": 0,
+        "design_pattern": "",
+        "algorithm_type": "conditional checks (no loops)",
+        "algorithm_hints": {
+          "detected": "conditional checks (no loops)",
+          "confidence": "verified",
+          "reason": "1 guard clauses, no loops"
+        },
+        "complexity": 2,
+        "loop_count": 0,
+        "branch_count": 1,
+        "categories": [
+          "validation",
+          "error_handling",
+          "guard_clause"
+        ],
+        "evidence_refs": [
+          {
+            "type": "error_handling",
+            "description": "Error: read: End of string",
+            "line": 95
+          },
+          {
+            "type": "guard_clause",
+            "description": "len() < count -> raise",
+            "line": 94
+          }
+        ]
+      },
+      {
+        "node_id": "parser:Reader.read_regex",
+        "module": "parser",
+        "class": "Reader",
+        "method": "read_regex",
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\parser.py",
+        "start_line": 99,
+        "end_line": 104,
+        "importance_score": 2.5,
+        "importance_reasons": [
+          "includes boundary validation",
+          "includes exception raises"
+        ],
+        "design_approach": "1 pre-flight validations; raises 1 exception type(s): Error; multi-step orchestration (6 internal calls)",
+        "design_characteristics": [
+          {
+            "category": "guard_clause",
+            "label": "1 pre-flight validations",
+            "evidence": "lines 101",
+            "confidence": "verified"
+          },
+          {
+            "category": "error_handling",
+            "label": "raises 1 exception type(s): Error",
+            "evidence": "lines 102",
+            "confidence": "verified"
+          },
+          {
+            "category": "orchestration",
+            "label": "multi-step orchestration (6 internal calls)",
+            "evidence": "from call count",
+            "confidence": "verified"
+          }
+        ],
+        "edge_cases": [
+          "match is None -> raise"
+        ],
+        "error_handling": [
+          "Error: read_regex: Pattern not found"
+        ],
+        "state_writes": [],
+        "state_reads": [
+          "position",
+          "string"
+        ],
+        "validation_checks": [
+          "match is None"
+        ],
+        "guard_clauses": [
+          "match is None -> raise"
+        ],
+        "null_checks": [
+          "match is None"
+        ],
+        "loop_patterns": [],
+        "recursion_depth": 0,
+        "design_pattern": "",
+        "algorithm_type": "conditional checks (no loops)",
+        "algorithm_hints": {
+          "detected": "conditional checks (no loops)",
+          "confidence": "verified",
+          "reason": "1 guard clauses, no loops"
+        },
+        "complexity": 2,
+        "loop_count": 0,
+        "branch_count": 1,
+        "categories": [
+          "validation",
+          "error_handling",
+          "guard_clause"
+        ],
+        "evidence_refs": [
+          {
+            "type": "error_handling",
+            "description": "Error: read_regex: Pattern not found",
+            "line": 102
+          },
+          {
+            "type": "guard_clause",
+            "description": "match is None -> raise",
+            "line": 101
+          }
+        ]
+      },
+      {
+        "node_id": "main:DotEnv._get_stream",
+        "module": "main",
+        "class": "DotEnv",
+        "method": "_get_stream",
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\main.py",
+        "start_line": 61,
+        "end_line": 73,
+        "importance_score": 2.0,
+        "importance_reasons": [
+          "medium complexity"
+        ],
+        "design_approach": "general business logic",
+        "design_characteristics": [
+          {
+            "category": "general",
+            "label": "general business logic",
+            "evidence": "no distinctive structural features",
+            "confidence": "verified"
+          }
+        ],
+        "edge_cases": [],
+        "error_handling": [],
+        "state_writes": [],
+        "state_reads": [],
+        "validation_checks": [],
+        "guard_clauses": [],
+        "null_checks": [
+          "self.stream is not None"
+        ],
+        "loop_patterns": [],
+        "recursion_depth": 0,
+        "design_pattern": "",
+        "algorithm_type": "general business logic",
+        "algorithm_hints": {
+          "detected": "general business logic",
+          "confidence": "verified",
+          "reason": "no distinctive algorithmic pattern"
+        },
+        "complexity": 4,
+        "loop_count": 0,
+        "branch_count": 3,
+        "categories": [
+          "general"
+        ],
+        "evidence_refs": []
+      },
+      {
+        "node_id": "parser:Position.set",
+        "module": "parser",
+        "class": "Position",
+        "method": "set",
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\parser.py",
+        "start_line": 58,
+        "end_line": 60,
+        "importance_score": 1.5,
+        "importance_reasons": [
+          "has state mutation"
+        ],
+        "design_approach": "modifies 2 state attribute(s): chars, line",
+        "design_characteristics": [
+          {
+            "category": "state_mutation",
+            "label": "modifies 2 state attribute(s): chars, line",
+            "evidence": "from state tracker",
+            "confidence": "verified"
+          }
+        ],
+        "edge_cases": [],
+        "error_handling": [],
+        "state_writes": [
+          "chars",
+          "line"
+        ],
+        "state_reads": [
+          "chars",
+          "line"
+        ],
+        "validation_checks": [],
+        "guard_clauses": [],
+        "null_checks": [],
+        "loop_patterns": [],
+        "recursion_depth": 0,
+        "design_pattern": "",
+        "algorithm_type": "general business logic",
+        "algorithm_hints": {
+          "detected": "general business logic",
+          "confidence": "verified",
+          "reason": "no distinctive algorithmic pattern"
+        },
+        "complexity": 1,
+        "loop_count": 0,
+        "branch_count": 0,
+        "categories": [
+          "state_mutation"
+        ],
+        "evidence_refs": []
+      },
+      {
+        "node_id": "parser:Position.advance",
+        "module": "parser",
+        "class": "Position",
+        "method": "advance",
+        "filepath": "D:\\learn_with_ai\\validation\\python_dotenv\\parser.py",
+        "start_line": 62,
+        "end_line": 64,
+        "importance_score": 1.5,
+        "importance_reasons": [
+          "has state mutation"
+        ],
+        "design_approach": "modifies 2 state attribute(s): chars, line",
+        "design_characteristics": [
+          {
+            "category": "state_mutation",
+            "label": "modifies 2 state attribute(s): chars, line",
+            "evidence": "from state tracker",
+            "confidence": "verified"
+          }
+        ],
+        "edge_cases": [],
+        "error_handling": [],
+        "state_writes": [
+          "chars",
+          "line"
+        ],
+        "state_reads": [
+          "chars",
+          "line"
+        ],
+        "validation_checks": [],
+        "guard_clauses": [],
+        "null_checks": [],
+        "loop_patterns": [],
+        "recursion_depth": 0,
+        "design_pattern": "",
+        "algorithm_type": "general business logic",
+        "algorithm_hints": {
+          "detected": "general business logic",
+          "confidence": "verified",
+          "reason": "no distinctive algorithmic pattern"
+        },
+        "complexity": 1,
+        "loop_count": 0,
+        "branch_count": 0,
+        "categories": [
+          "state_mutation"
+        ],
+        "evidence_refs": []
+      }
+    ],
+    "total": 10,
+    "categories": {
+      "validation": 5,
+      "guard_clause": 5,
+      "algorithmic": 2,
+      "general": 2,
+      "error_handling": 2,
+      "state_mutation": 2
+    }
+  },
+  "design_patterns": {
+    "patterns": [],
+    "total": 0,
+    "by_category": {}
+  },
+  "business_priority": {
+    "algorithm": {
+      "name": "Evidence-aware Business Logic Priority Score",
+      "version": "BLPS-1.0",
+      "purpose": "为教师确定核心讲解路径和审核顺序，不替代事实判定",
+      "node_weights": {
+        "centrality": 0.35,
+        "flow_reachability": 0.25,
+        "state_mutation": 0.2,
+        "boundary_role": 0.1,
+        "evidence_completeness": 0.1
+      },
+      "flow_weights": {
+        "business_importance": 0.45,
+        "state_ratio": 0.2,
+        "validation_ratio": 0.15,
+        "boundary_ratio": 0.1,
+        "evidence_completeness": 0.1
+      },
+      "setup_flow_factor": 0.2,
+      "setup_detection": "entry_node/name contains initialize, bootstrap, seed, sample_data or setup",
+      "formula": "S_node=100*(0.35*C+0.25*R+0.20*M+0.10*B+0.10*E)",
+      "pagerank": "PR(v)=(1-d)/N+d*sum(PR(u)*w_uv/sum(w_ux)); cross-module edge weight=1.2",
+      "caveat": "score 是可复现的排序信号；verified 事实仍以 AST、状态追踪和行号证据为准"
+    },
+    "node_scores": [
+      {
+        "node_id": "cli:set_value",
+        "module": "cli",
+        "method": "set_value",
+        "location": "D:\\learn_with_ai\\validation\\python_dotenv\\cli.py:116",
+        "score": 50.29,
+        "metrics": {
+          "centrality": 0.15,
+          "flow_reachability": 0.2016,
+          "state_mutation": 1.0,
+          "boundary_role": 1.0,
+          "evidence_completeness": 1.0
+        },
+        "reasons": [
+          "会改变业务状态",
+          "位于跨模块边界"
+        ],
+        "flow_ids": [
+          "flow_6"
+        ],
+        "confidence": "inferred"
+      },
+      {
+        "node_id": "cli:unset",
+        "module": "cli",
+        "method": "unset",
+        "location": "D:\\learn_with_ai\\validation\\python_dotenv\\cli.py:154",
+        "score": 50.29,
+        "metrics": {
+          "centrality": 0.15,
+          "flow_reachability": 0.2016,
+          "state_mutation": 1.0,
+          "boundary_role": 1.0,
+          "evidence_completeness": 1.0
+        },
+        "reasons": [
+          "会改变业务状态",
+          "位于跨模块边界"
+        ],
+        "flow_ids": [
+          "flow_7"
+        ],
+        "confidence": "inferred"
+      },
+      {
+        "node_id": "main:set_key",
+        "module": "main",
+        "method": "set_key",
+        "location": "D:\\learn_with_ai\\validation\\python_dotenv\\main.py:193",
+        "score": 49.75,
+        "metrics": {
+          "centrality": 0.2775,
+          "flow_reachability": 0.2016,
+          "state_mutation": 1.0,
+          "boundary_role": 0.5,
+          "evidence_completeness": 1.0
+        },
+        "reasons": [
+          "会改变业务状态",
+          "位于跨模块边界"
+        ],
+        "flow_ids": [
+          "flow_6"
+        ],
+        "confidence": "inferred"
+      },
+      {
+        "node_id": "main:unset_key",
+        "module": "main",
+        "method": "unset_key",
+        "location": "D:\\learn_with_ai\\validation\\python_dotenv\\main.py:253",
+        "score": 49.75,
+        "metrics": {
+          "centrality": 0.2775,
+          "flow_reachability": 0.2016,
+          "state_mutation": 1.0,
+          "boundary_role": 0.5,
+          "evidence_completeness": 1.0
+        },
+        "reasons": [
+          "会改变业务状态",
+          "位于跨模块边界"
+        ],
+        "flow_ids": [
+          "flow_7"
+        ],
+        "confidence": "inferred"
+      },
+      {
+        "node_id": "parser:parse_stream",
+        "module": "parser",
+        "method": "parse_stream",
+        "location": "D:\\learn_with_ai\\validation\\python_dotenv\\parser.py:181",
+        "score": 47.07,
+        "metrics": {
+          "centrality": 0.4296,
+          "flow_reachability": 0.5814,
+          "state_mutation": 0.0,
+          "boundary_role": 0.75,
+          "evidence_completeness": 1.0
+        },
+        "reasons": [
+          "参与高重要度业务流程",
+          "位于跨模块边界"
+        ],
+        "flow_ids": [
+          "flow_4",
+          "flow_6",
+          "flow_7"
+        ],
+        "confidence": "inferred"
+      },
+      {
+        "node_id": "__init__:load_ipython_extension",
+        "module": "__init__",
+        "method": "load_ipython_extension",
+        "location": "D:\\learn_with_ai\\validation\\python_dotenv\\__init__.py:6",
+        "score": 45.0,
+        "metrics": {
+          "centrality": 1.0,
+          "flow_reachability": 0.0,
+          "state_mutation": 0.0,
+          "boundary_role": 0.0,
+          "evidence_completeness": 1.0
+        },
+        "reasons": [
+          "调用图结构中心"
+        ],
+        "flow_ids": [],
+        "confidence": "inferred"
+      },
+      {
+        "node_id": "main:find_dotenv",
+        "module": "main",
+        "method": "find_dotenv",
+        "location": "D:\\learn_with_ai\\validation\\python_dotenv\\main.py:337",
+        "score": 43.02,
+        "metrics": {
+          "centrality": 0.6094,
+          "flow_reachability": 0.3876,
+          "state_mutation": 0.0,
+          "boundary_role": 0.2,
+          "evidence_completeness": 1.0
+        },
+        "reasons": [
+          "调用图结构中心",
+          "参与高重要度业务流程"
+        ],
+        "flow_ids": [
+          "flow_1",
+          "flow_2",
+          "flow_3",
+          "flow_8"
+        ],
+        "confidence": "inferred"
+      },
+      {
+        "node_id": "parser:parse_binding",
+        "module": "parser",
+        "method": "parse_binding",
+        "location": "D:\\learn_with_ai\\validation\\python_dotenv\\parser.py:144",
+        "score": 42.56,
+        "metrics": {
+          "centrality": 0.5151,
+          "flow_reachability": 0.5814,
+          "state_mutation": 0.0,
+          "boundary_role": 0.0,
+          "evidence_completeness": 1.0
+        },
+        "reasons": [
+          "参与高重要度业务流程"
+        ],
+        "flow_ids": [
+          "flow_4",
+          "flow_6",
+          "flow_7"
+        ],
+        "confidence": "inferred"
+      },
+      {
+        "node_id": "main:_is_file_or_fifo",
+        "module": "main",
+        "method": "_is_file_or_fifo",
+        "location": "D:\\learn_with_ai\\validation\\python_dotenv\\main.py:475",
+        "score": 41.01,
+        "metrics": {
+          "centrality": 0.6092,
+          "flow_reachability": 0.3876,
+          "state_mutation": 0.0,
+          "boundary_role": 0.0,
+          "evidence_completeness": 1.0
+        },
+        "reasons": [
+          "调用图结构中心",
+          "参与高重要度业务流程"
+        ],
+        "flow_ids": [
+          "flow_1",
+          "flow_2",
+          "flow_3",
+          "flow_8"
+        ],
+        "confidence": "inferred"
+      },
+      {
+        "node_id": "main:DotEnv.set_as_environment_variables",
+        "module": "main",
+        "method": "set_as_environment_variables",
+        "location": "D:\\learn_with_ai\\validation\\python_dotenv\\main.py:97",
+        "score": 39.71,
+        "metrics": {
+          "centrality": 0.15,
+          "flow_reachability": 0.1783,
+          "state_mutation": 1.0,
+          "boundary_role": 0.0,
+          "evidence_completeness": 1.0
+        },
+        "reasons": [
+          "会改变业务状态"
+        ],
+        "flow_ids": [
+          "flow_4"
+        ],
+        "confidence": "inferred"
+      },
+      {
+        "node_id": "variables:parse_variables",
+        "module": "variables",
+        "method": "parse_variables",
+        "location": "D:\\learn_with_ai\\validation\\python_dotenv\\variables.py:70",
+        "score": 39.29,
+        "metrics": {
+          "centrality": 0.4238,
+          "flow_reachability": 0.1783,
+          "state_mutation": 0.0,
+          "boundary_role": 1.0,
+          "evidence_completeness": 1.0
+        },
+        "reasons": [
+          "位于跨模块边界"
+        ],
+        "flow_ids": [
+          "flow_4"
+        ],
+        "confidence": "inferred"
+      },
+      {
+        "node_id": "main:with_warn_for_invalid_lines",
+        "module": "main",
+        "method": "with_warn_for_invalid_lines",
+        "location": "D:\\learn_with_ai\\validation\\python_dotenv\\main.py:32",
+        "score": 37.94,
+        "metrics": {
+          "centrality": 0.383,
+          "flow_reachability": 0.5814,
+          "state_mutation": 0.0,
+          "boundary_role": 0.0,
+          "evidence_completeness": 1.0
+        },
+        "reasons": [
+          "参与高重要度业务流程"
+        ],
+        "flow_ids": [
+          "flow_4",
+          "flow_6",
+          "flow_7"
+        ],
+        "confidence": "inferred"
+      },
+      {
+        "node_id": "parser:parse_key",
+        "module": "parser",
+        "method": "parse_key",
+        "location": "D:\\learn_with_ai\\validation\\python_dotenv\\parser.py:114",
+        "score": 37.45,
+        "metrics": {
+          "centrality": 0.3689,
+          "flow_reachability": 0.5814,
+          "state_mutation": 0.0,
+          "boundary_role": 0.0,
+          "evidence_completeness": 1.0
+        },
+        "reasons": [
+          "参与高重要度业务流程"
+        ],
+        "flow_ids": [
+          "flow_4",
+          "flow_6",
+          "flow_7"
+        ],
+        "confidence": "inferred"
+      },
+      {
+        "node_id": "parser:parse_value",
+        "module": "parser",
+        "method": "parse_value",
+        "location": "D:\\learn_with_ai\\validation\\python_dotenv\\parser.py:130",
+        "score": 37.45,
+        "metrics": {
+          "centrality": 0.3689,
+          "flow_reachability": 0.5814,
+          "state_mutation": 0.0,
+          "boundary_role": 0.0,
+          "evidence_completeness": 1.0
+        },
+        "reasons": [
+          "参与高重要度业务流程"
+        ],
+        "flow_ids": [
+          "flow_4",
+          "flow_6",
+          "flow_7"
+        ],
+        "confidence": "inferred"
+      },
+      {
+        "node_id": "parser:decode_escapes",
+        "module": "parser",
+        "method": "decode_escapes",
+        "location": "D:\\learn_with_ai\\validation\\python_dotenv\\parser.py:107",
+        "score": 37.1,
+        "metrics": {
+          "centrality": 0.3591,
+          "flow_reachability": 0.5814,
+          "state_mutation": 0.0,
+          "boundary_role": 0.0,
+          "evidence_completeness": 1.0
+        },
+        "reasons": [
+          "参与高重要度业务流程"
+        ],
+        "flow_ids": [
+          "flow_4",
+          "flow_6",
+          "flow_7"
+        ],
+        "confidence": "inferred"
+      },
+      {
+        "node_id": "main:dotenv_values",
+        "module": "main",
+        "method": "dotenv_values",
+        "location": "D:\\learn_with_ai\\validation\\python_dotenv\\main.py:438",
+        "score": 37.03,
+        "metrics": {
+          "centrality": 0.3586,
+          "flow_reachability": 0.2791,
+          "state_mutation": 0.0,
+          "boundary_role": 0.75,
+          "evidence_completeness": 1.0
+        },
+        "reasons": [
+          "位于跨模块边界"
+        ],
+        "flow_ids": [
+          "flow_1",
+          "flow_2",
+          "flow_3"
+        ],
+        "confidence": "inferred"
+      },
+      {
+        "node_id": "main:DotEnv.__init__",
+        "module": "main",
+        "method": "__init__",
+        "location": "D:\\learn_with_ai\\validation\\python_dotenv\\main.py:43",
+        "score": 35.25,
+        "metrics": {
+          "centrality": 0.15,
+          "flow_reachability": 0.0,
+          "state_mutation": 1.0,
+          "boundary_role": 0.0,
+          "evidence_completeness": 1.0
+        },
+        "reasons": [
+          "会改变业务状态"
+        ],
+        "flow_ids": [],
+        "confidence": "inferred"
+      },
+      {
+        "node_id": "parser:Position.__init__",
+        "module": "parser",
+        "method": "__init__",
+        "location": "D:\\learn_with_ai\\validation\\python_dotenv\\parser.py:50",
+        "score": 35.25,
+        "metrics": {
+          "centrality": 0.15,
+          "flow_reachability": 0.0,
+          "state_mutation": 1.0,
+          "boundary_role": 0.0,
+          "evidence_completeness": 1.0
+        },
+        "reasons": [
+          "会改变业务状态"
+        ],
+        "flow_ids": [],
+        "confidence": "inferred"
+      },
+      {
+        "node_id": "parser:Position.advance",
+        "module": "parser",
+        "method": "advance",
+        "location": "D:\\learn_with_ai\\validation\\python_dotenv\\parser.py:62",
+        "score": 35.25,
+        "metrics": {
+          "centrality": 0.15,
+          "flow_reachability": 0.0,
+          "state_mutation": 1.0,
+          "boundary_role": 0.0,
+          "evidence_completeness": 1.0
+        },
+        "reasons": [
+          "会改变业务状态"
+        ],
+        "flow_ids": [],
+        "confidence": "inferred"
+      },
+      {
+        "node_id": "parser:Position.set",
+        "module": "parser",
+        "method": "set",
+        "location": "D:\\learn_with_ai\\validation\\python_dotenv\\parser.py:58",
+        "score": 35.25,
+        "metrics": {
+          "centrality": 0.15,
+          "flow_reachability": 0.0,
+          "state_mutation": 1.0,
+          "boundary_role": 0.0,
+          "evidence_completeness": 1.0
+        },
+        "reasons": [
+          "会改变业务状态"
+        ],
+        "flow_ids": [],
+        "confidence": "inferred"
+      }
+    ],
+    "flow_scores": [
+      {
+        "flow_id": "flow_6",
+        "name": "set_value Flow",
+        "priority_score": 61.22,
+        "review_risk": 65.0,
+        "metrics": {
+          "business_importance": 1.0,
+          "raw_business_importance": 13.0,
+          "operational_factor": 1.0,
+          "state_ratio": 0.2,
+          "validation_ratio": 0.0,
+          "boundary_ratio": 0.2222,
+          "evidence_completeness": 1.0
+        },
+        "top_nodes": [
+          "cli:set_value",
+          "main:set_key",
+          "parser:parse_stream",
+          "parser:parse_binding",
+          "main:with_warn_for_invalid_lines"
+        ],
+        "reasons": [
+          "业务重要度高",
+          "包含状态变更",
+          "状态变更但未发现显式校验"
+        ],
+        "confidence": "inferred"
+      },
+      {
+        "flow_id": "flow_7",
+        "name": "unset Flow",
+        "priority_score": 61.22,
+        "review_risk": 65.0,
+        "metrics": {
+          "business_importance": 1.0,
+          "raw_business_importance": 13.0,
+          "operational_factor": 1.0,
+          "state_ratio": 0.2,
+          "validation_ratio": 0.0,
+          "boundary_ratio": 0.2222,
+          "evidence_completeness": 1.0
+        },
+        "top_nodes": [
+          "cli:unset",
+          "main:unset_key",
+          "parser:parse_stream",
+          "parser:parse_binding",
+          "main:with_warn_for_invalid_lines"
+        ],
+        "reasons": [
+          "业务重要度高",
+          "包含状态变更",
+          "状态变更但未发现显式校验"
+        ],
+        "confidence": "inferred"
+      },
+      {
+        "flow_id": "flow_4",
+        "name": "DotEnv set_as_environment_variables Flow",
+        "priority_score": 53.01,
+        "review_risk": 65.0,
+        "metrics": {
+          "business_importance": 0.8846,
+          "raw_business_importance": 11.5,
+          "operational_factor": 1.0,
+          "state_ratio": 0.0769,
+          "validation_ratio": 0.0,
+          "boundary_ratio": 0.1667,
+          "evidence_completeness": 1.0
+        },
+        "top_nodes": [
+          "parser:parse_stream",
+          "parser:parse_binding",
+          "main:DotEnv.set_as_environment_variables",
+          "variables:parse_variables",
+          "main:with_warn_for_invalid_lines"
+        ],
+        "reasons": [
+          "业务重要度高",
+          "包含状态变更",
+          "状态变更但未发现显式校验"
+        ],
+        "confidence": "inferred"
+      },
+      {
+        "flow_id": "flow_8",
+        "name": "IPythonDotEnv dotenv Flow",
+        "priority_score": 38.23,
+        "review_risk": 0.0,
+        "metrics": {
+          "business_importance": 0.5385,
+          "raw_business_importance": 7.0,
+          "operational_factor": 1.0,
+          "state_ratio": 0.0,
+          "validation_ratio": 0.0,
+          "boundary_ratio": 0.4,
+          "evidence_completeness": 1.0
+        },
+        "top_nodes": [
+          "main:find_dotenv",
+          "main:_is_file_or_fifo",
+          "main:_walk_to_root",
+          "ipython:IPythonDotEnv.dotenv",
+          "main:load_dotenv"
+        ],
+        "reasons": [
+          "跨模块协作明显"
+        ],
+        "confidence": "inferred"
+      },
+      {
+        "flow_id": "flow_1",
+        "name": "list_values Flow",
+        "priority_score": 32.77,
+        "review_risk": 0.0,
+        "metrics": {
+          "business_importance": 0.4615,
+          "raw_business_importance": 6.0,
+          "operational_factor": 1.0,
+          "state_ratio": 0.0,
+          "validation_ratio": 0.0,
+          "boundary_ratio": 0.2,
+          "evidence_completeness": 1.0
+        },
+        "top_nodes": [
+          "main:find_dotenv",
+          "main:_is_file_or_fifo",
+          "main:dotenv_values",
+          "main:_walk_to_root",
+          "cli:stream_file"
+        ],
+        "reasons": [
+          "可作为一般流程讲解"
+        ],
+        "confidence": "inferred"
+      },
+      {
+        "flow_id": "flow_2",
+        "name": "get Flow",
+        "priority_score": 32.77,
+        "review_risk": 0.0,
+        "metrics": {
+          "business_importance": 0.4615,
+          "raw_business_importance": 6.0,
+          "operational_factor": 1.0,
+          "state_ratio": 0.0,
+          "validation_ratio": 0.0,
+          "boundary_ratio": 0.2,
+          "evidence_completeness": 1.0
+        },
+        "top_nodes": [
+          "main:find_dotenv",
+          "main:_is_file_or_fifo",
+          "main:dotenv_values",
+          "main:_walk_to_root",
+          "cli:stream_file"
+        ],
+        "reasons": [
+          "可作为一般流程讲解"
+        ],
+        "confidence": "inferred"
+      },
+      {
+        "flow_id": "flow_3",
+        "name": "run Flow",
+        "priority_score": 32.77,
+        "review_risk": 0.0,
+        "metrics": {
+          "business_importance": 0.4615,
+          "raw_business_importance": 6.0,
+          "operational_factor": 1.0,
+          "state_ratio": 0.0,
+          "validation_ratio": 0.0,
+          "boundary_ratio": 0.2,
+          "evidence_completeness": 1.0
+        },
+        "top_nodes": [
+          "main:find_dotenv",
+          "main:_is_file_or_fifo",
+          "main:dotenv_values",
+          "main:_walk_to_root",
+          "cli:run"
+        ],
+        "reasons": [
+          "可作为一般流程讲解"
+        ],
+        "confidence": "inferred"
+      },
+      {
+        "flow_id": "flow_5",
+        "name": "cli Flow",
+        "priority_score": 16.92,
+        "review_risk": 0.0,
+        "metrics": {
+          "business_importance": 0.1538,
+          "raw_business_importance": 2.0,
+          "operational_factor": 1.0,
+          "state_ratio": 0.0,
+          "validation_ratio": 0.0,
+          "boundary_ratio": 0.0,
+          "evidence_completeness": 1.0
+        },
+        "top_nodes": [
+          "cli:enumerate_env",
+          "cli:cli"
+        ],
+        "reasons": [
+          "可作为一般流程讲解"
+        ],
+        "confidence": "inferred"
+      }
+    ],
+    "evidence_gaps": [
+      {
+        "type": "state_change_without_validation",
+        "severity": "high",
+        "flow_id": "flow_6",
+        "title": "状态变更流程缺少显式校验步骤",
+        "description": "该流程包含状态写入，但当前提取结果没有发现校验步骤，建议教师先审核边界条件。",
+        "location": "D:\\learn_with_ai\\validation\\python_dotenv\\cli.py:116"
+      },
+      {
+        "type": "state_change_without_validation",
+        "severity": "high",
+        "flow_id": "flow_7",
+        "title": "状态变更流程缺少显式校验步骤",
+        "description": "该流程包含状态写入，但当前提取结果没有发现校验步骤，建议教师先审核边界条件。",
+        "location": "D:\\learn_with_ai\\validation\\python_dotenv\\cli.py:154"
+      },
+      {
+        "type": "state_change_without_validation",
+        "severity": "high",
+        "flow_id": "flow_4",
+        "title": "状态变更流程缺少显式校验步骤",
+        "description": "该流程包含状态写入，但当前提取结果没有发现校验步骤，建议教师先审核边界条件。",
+        "location": "D:\\learn_with_ai\\validation\\python_dotenv\\main.py:97"
+      }
+    ],
+    "summary": {
+      "total_nodes": 62,
+      "total_flows": 8,
+      "top_node": "cli:set_value",
+      "top_flow": "flow_6",
+      "high_priority_flow_count": 2,
+      "review_gap_count": 3,
+      "evidence_completeness": 1.0
+    }
+  }
+}

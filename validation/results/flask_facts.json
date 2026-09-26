@@ -1,0 +1,4912 @@
+{
+  "project": {
+    "name": "src",
+    "files": 24,
+    "lines": 9513
+  },
+  "summary": {
+    "total": 488,
+    "by_category": {
+      "调用链": 251,
+      "关键实现": 94,
+      "状态变更": 65,
+      "业务流程": 46,
+      "模块架构": 22,
+      "设计模式": 10
+    },
+    "by_confidence": {
+      "verified": 470,
+      "inferred": 18
+    },
+    "by_source": {
+      "architecture": 22,
+      "call_graph": 251,
+      "state_tracker": 65,
+      "flow_extractor": 46,
+      "key_implementation": 94,
+      "pattern_detector": 10
+    }
+  },
+  "facts": [
+    {
+      "fact_id": "F0001",
+      "category": "模块架构",
+      "type": "分层架构",
+      "description": "系统采用 1 层架构: 支撑层",
+      "location": "全局",
+      "confidence": "verified",
+      "evidence": "基于模块依赖方向和角色自动分层",
+      "source": "architecture"
+    },
+    {
+      "fact_id": "F0002",
+      "category": "模块架构",
+      "type": "模块分层",
+      "description": "模块 flask.app: 位于支撑层，角色为外围模块，38 个方法",
+      "location": "flask.app",
+      "confidence": "verified",
+      "evidence": "推断职责: System Entry, Orchestration",
+      "source": "architecture"
+    },
+    {
+      "fact_id": "F0003",
+      "category": "模块架构",
+      "type": "模块分层",
+      "description": "模块 flask.blueprints: 位于支撑层，角色为外围模块，4 个方法",
+      "location": "flask.blueprints",
+      "confidence": "verified",
+      "evidence": "推断职责: Business Logic",
+      "source": "architecture"
+    },
+    {
+      "fact_id": "F0004",
+      "category": "模块架构",
+      "type": "模块分层",
+      "description": "模块 flask.cli: 位于支撑层，角色为外围模块，33 个方法",
+      "location": "flask.cli",
+      "confidence": "verified",
+      "evidence": "推断职责: Business Logic",
+      "source": "architecture"
+    },
+    {
+      "fact_id": "F0005",
+      "category": "模块架构",
+      "type": "模块分层",
+      "description": "模块 flask.config: 位于支撑层，角色为外围模块，14 个方法",
+      "location": "flask.config",
+      "confidence": "verified",
+      "evidence": "推断职责: Business Logic",
+      "source": "architecture"
+    },
+    {
+      "fact_id": "F0006",
+      "category": "模块架构",
+      "type": "模块分层",
+      "description": "模块 flask.ctx: 位于支撑层，角色为外围模块，27 个方法",
+      "location": "flask.ctx",
+      "confidence": "verified",
+      "evidence": "推断职责: Business Logic",
+      "source": "architecture"
+    },
+    {
+      "fact_id": "F0007",
+      "category": "模块架构",
+      "type": "模块分层",
+      "description": "模块 flask.debughelpers: 位于支撑层，角色为外围模块，6 个方法",
+      "location": "flask.debughelpers",
+      "confidence": "verified",
+      "evidence": "推断职责: Helpers",
+      "source": "architecture"
+    },
+    {
+      "fact_id": "F0008",
+      "category": "模块架构",
+      "type": "模块分层",
+      "description": "模块 flask.globals: 位于支撑层，角色为外围模块，2 个方法",
+      "location": "flask.globals",
+      "confidence": "verified",
+      "evidence": "推断职责: Business Logic",
+      "source": "architecture"
+    },
+    {
+      "fact_id": "F0009",
+      "category": "模块架构",
+      "type": "模块分层",
+      "description": "模块 flask.helpers: 位于支撑层，角色为外围模块，21 个方法",
+      "location": "flask.helpers",
+      "confidence": "verified",
+      "evidence": "推断职责: Helpers",
+      "source": "architecture"
+    },
+    {
+      "fact_id": "F0010",
+      "category": "模块架构",
+      "type": "模块分层",
+      "description": "模块 flask.logging: 位于支撑层，角色为外围模块，3 个方法",
+      "location": "flask.logging",
+      "confidence": "verified",
+      "evidence": "推断职责: Business Logic",
+      "source": "architecture"
+    },
+    {
+      "fact_id": "F0011",
+      "category": "模块架构",
+      "type": "模块分层",
+      "description": "模块 flask.sessions: 位于支撑层，角色为外围模块，21 个方法",
+      "location": "flask.sessions",
+      "confidence": "verified",
+      "evidence": "推断职责: Business Logic",
+      "source": "architecture"
+    },
+    {
+      "fact_id": "F0012",
+      "category": "模块架构",
+      "type": "模块分层",
+      "description": "模块 flask.signals: 位于支撑层，角色为外围模块，0 个方法",
+      "location": "flask.signals",
+      "confidence": "verified",
+      "evidence": "推断职责: Business Logic",
+      "source": "architecture"
+    },
+    {
+      "fact_id": "F0013",
+      "category": "模块架构",
+      "type": "模块分层",
+      "description": "模块 flask.templating: 位于支撑层，角色为外围模块，14 个方法",
+      "location": "flask.templating",
+      "confidence": "verified",
+      "evidence": "推断职责: Business Logic",
+      "source": "architecture"
+    },
+    {
+      "fact_id": "F0014",
+      "category": "模块架构",
+      "type": "模块分层",
+      "description": "模块 flask.testing: 位于支撑层，角色为外围模块，12 个方法",
+      "location": "flask.testing",
+      "confidence": "verified",
+      "evidence": "推断职责: Business Logic",
+      "source": "architecture"
+    },
+    {
+      "fact_id": "F0015",
+      "category": "模块架构",
+      "type": "模块分层",
+      "description": "模块 flask.typing: 位于支撑层，角色为外围模块，0 个方法",
+      "location": "flask.typing",
+      "confidence": "verified",
+      "evidence": "推断职责: Business Logic",
+      "source": "architecture"
+    },
+    {
+      "fact_id": "F0016",
+      "category": "模块架构",
+      "type": "模块分层",
+      "description": "模块 flask.views: 位于支撑层，角色为外围模块，4 个方法",
+      "location": "flask.views",
+      "confidence": "verified",
+      "evidence": "推断职责: Business Logic",
+      "source": "architecture"
+    },
+    {
+      "fact_id": "F0017",
+      "category": "模块架构",
+      "type": "模块分层",
+      "description": "模块 flask.wrappers: 位于支撑层，角色为外围模块，12 个方法",
+      "location": "flask.wrappers",
+      "confidence": "verified",
+      "evidence": "推断职责: System Entry, Orchestration",
+      "source": "architecture"
+    },
+    {
+      "fact_id": "F0018",
+      "category": "模块架构",
+      "type": "模块分层",
+      "description": "模块 flask.json.provider: 位于支撑层，角色为外围模块，11 个方法",
+      "location": "flask.json.provider",
+      "confidence": "verified",
+      "evidence": "推断职责: Business Logic",
+      "source": "architecture"
+    },
+    {
+      "fact_id": "F0019",
+      "category": "模块架构",
+      "type": "模块分层",
+      "description": "模块 flask.json.tag: 位于支撑层，角色为外围模块，34 个方法",
+      "location": "flask.json.tag",
+      "confidence": "verified",
+      "evidence": "推断职责: Business Logic",
+      "source": "architecture"
+    },
+    {
+      "fact_id": "F0020",
+      "category": "模块架构",
+      "type": "模块分层",
+      "description": "模块 flask.sansio.app: 位于支撑层，角色为外围模块，36 个方法",
+      "location": "flask.sansio.app",
+      "confidence": "verified",
+      "evidence": "推断职责: System Entry, Orchestration",
+      "source": "architecture"
+    },
+    {
+      "fact_id": "F0021",
+      "category": "模块架构",
+      "type": "模块分层",
+      "description": "模块 flask.sansio.blueprints: 位于支撑层，角色为外围模块，30 个方法",
+      "location": "flask.sansio.blueprints",
+      "confidence": "verified",
+      "evidence": "推断职责: Business Logic",
+      "source": "architecture"
+    },
+    {
+      "fact_id": "F0022",
+      "category": "模块架构",
+      "type": "模块分层",
+      "description": "模块 flask.sansio.scaffold: 位于支撑层，角色为外围模块，32 个方法",
+      "location": "flask.sansio.scaffold",
+      "confidence": "verified",
+      "evidence": "推断职责: Business Logic",
+      "source": "architecture"
+    },
+    {
+      "fact_id": "F0023",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "Flask.__call__ 调用 Flask.wsgi_app",
+      "location": "flask/app.py:1628",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0024",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "Flask.__init_subclass__ 调用 remove_ctx",
+      "location": "flask/app.py:308",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0025",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "Flask.__init_subclass__ 调用 add_ctx",
+      "location": "flask/app.py:309",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0026",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "Flask.dispatch_request 调用 Flask.raise_routing_exception",
+      "location": "flask/app.py:982",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0027",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "Flask.dispatch_request 调用 Flask.make_default_options_response",
+      "location": "flask/app.py:990",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0028",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "Flask.dispatch_request 调用 Flask.ensure_sync",
+      "location": "flask/app.py:993",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0029",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "Flask.do_teardown_appcontext 调用 Flask.ensure_sync",
+      "location": "flask/app.py:1477",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0030",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "Flask.do_teardown_request 调用 Flask.ensure_sync",
+      "location": "flask/app.py:1449",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0031",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "Flask.ensure_sync 调用 Flask.async_to_sync",
+      "location": "flask/app.py:1078",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0032",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "Flask.finalize_request 调用 Flask.make_response",
+      "location": "flask/app.py:1042",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0033",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "Flask.finalize_request 调用 Flask.process_response",
+      "location": "flask/app.py:1044",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0034",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "Flask.full_dispatch_request 调用 Flask.preprocess_request",
+      "location": "flask/app.py:1017",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0035",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "Flask.full_dispatch_request 调用 Flask.dispatch_request",
+      "location": "flask/app.py:1019",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0036",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "Flask.full_dispatch_request 调用 Flask.handle_user_exception",
+      "location": "flask/app.py:1021",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0037",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "Flask.full_dispatch_request 调用 Flask.finalize_request",
+      "location": "flask/app.py:1022",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0038",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "Flask.handle_exception 调用 Flask.log_exception",
+      "location": "flask/app.py:943",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0039",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "Flask.handle_exception 调用 Flask.ensure_sync",
+      "location": "flask/app.py:949",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0040",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "Flask.handle_exception 调用 Flask.finalize_request",
+      "location": "flask/app.py:951",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0041",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "Flask.handle_http_exception 调用 Flask.ensure_sync",
+      "location": "flask/app.py:866",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0042",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "Flask.handle_user_exception 调用 Flask.handle_http_exception",
+      "location": "flask/app.py:891",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0043",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "Flask.handle_user_exception 调用 Flask.ensure_sync",
+      "location": "flask/app.py:898",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0044",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "Flask.preprocess_request 调用 Flask.ensure_sync",
+      "location": "flask/app.py:1390",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0045",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "Flask.process_response 调用 Flask.ensure_sync",
+      "location": "flask/app.py:1411",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0046",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "Flask.send_static_file 调用 Flask.get_send_file_max_age",
+      "location": "flask/app.py:410",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0047",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "Flask.test_request_context 调用 Flask.request_context",
+      "location": "flask/app.py:1567",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0048",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "Flask.update_template_context 调用 Flask.ensure_sync",
+      "location": "flask/app.py:617",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0049",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "Flask.url_for 调用 Flask.create_url_adapter",
+      "location": "flask/app.py:1185",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0050",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "Flask.wsgi_app 调用 Flask.request_context",
+      "location": "flask/app.py:1595",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0051",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "Flask.wsgi_app 调用 Flask.full_dispatch_request",
+      "location": "flask/app.py:1600",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0052",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "Flask.wsgi_app 调用 Flask.handle_exception",
+      "location": "flask/app.py:1603",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0053",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "Blueprint.send_static_file 调用 Blueprint.get_send_file_max_age",
+      "location": "flask/blueprints.py:99",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0054",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "AppGroup.command 调用 with_appcontext",
+      "location": "flask/cli.py:424",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0055",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "FlaskGroup.get_command 调用 FlaskGroup._load_plugin_commands",
+      "location": "flask/cli.py:610",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0056",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "FlaskGroup.list_commands 调用 FlaskGroup._load_plugin_commands",
+      "location": "flask/cli.py:637",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0057",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "ScriptInfo.load_app 调用 prepare_import",
+      "location": "flask/cli.py:348",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0058",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "ScriptInfo.load_app 调用 locate_app",
+      "location": "flask/cli.py:349",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0059",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "_env_file_callback 调用 load_dotenv",
+      "location": "flask/cli.py:510",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0060",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "find_app_by_string 调用 _called_with_wrong_args",
+      "location": "flask/cli.py:180",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0061",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "find_best_app 调用 _called_with_wrong_args",
+      "location": "flask/cli.py:77",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0062",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "run_command 调用 show_server_banner",
+      "location": "flask/cli.py:981",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0063",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "Config.from_envvar 调用 Config.from_pyfile",
+      "location": "flask/config.py:124",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0064",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "Config.from_file 调用 Config.from_mapping",
+      "location": "flask/config.py:302",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0065",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "Config.from_pyfile 调用 Config.from_object",
+      "location": "flask/config.py:215",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0066",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "AppContext.__enter__ 调用 AppContext.push",
+      "location": "flask/ctx.py:507",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0067",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "AppContext.__exit__ 调用 AppContext.pop",
+      "location": "flask/ctx.py:516",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0068",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "AppContext.push 调用 AppContext._get_session",
+      "location": "flask/ctx.py:439",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0069",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "AppContext.push 调用 AppContext.match_request",
+      "location": "flask/ctx.py:444",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0070",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "AppContext.session 调用 AppContext._get_session",
+      "location": "flask/ctx.py:401",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0071",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "explain_template_loading_attempts 调用 _dump_loader_info",
+      "location": "flask/debughelpers.py:153",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0072",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "_split_blueprint_path 调用 _split_blueprint_path",
+      "location": "flask/helpers.py:649",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0073",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "send_file 调用 _prepare_send_file_kwargs",
+      "location": "flask/helpers.py:529",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0074",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "send_from_directory 调用 _prepare_send_file_kwargs",
+      "location": "flask/helpers.py:583",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0075",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "DefaultJSONProvider.response 调用 DefaultJSONProvider.dumps",
+      "location": "json/provider.py:214",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0076",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "JSONProvider.dump 调用 JSONProvider.dumps",
+      "location": "json/provider.py:57",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0077",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "JSONProvider.load 调用 JSONProvider.loads",
+      "location": "json/provider.py:73",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0078",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "JSONProvider.response 调用 JSONProvider._prepare_response_obj",
+      "location": "json/provider.py:104",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0079",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "JSONProvider.response 调用 JSONProvider.dumps",
+      "location": "json/provider.py:105",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0080",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "JSONTag.tag 调用 JSONTag.to_json",
+      "location": "json/tag.py:90",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0081",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "TaggedJSONSerializer.__init__ 调用 TaggedJSONSerializer.register",
+      "location": "json/tag.py:254",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0082",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "TaggedJSONSerializer._untag_scan 调用 TaggedJSONSerializer._untag_scan",
+      "location": "json/tag.py:312",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0083",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "TaggedJSONSerializer._untag_scan 调用 TaggedJSONSerializer.untag",
+      "location": "json/tag.py:314",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0084",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "TaggedJSONSerializer.dumps 调用 TaggedJSONSerializer.tag",
+      "location": "json/tag.py:323",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0085",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "TaggedJSONSerializer.loads 调用 TaggedJSONSerializer._untag_scan",
+      "location": "json/tag.py:327",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0086",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "create_logger 调用 has_level_handler",
+      "location": "flask/logging.py:76",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0087",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "App.__init__ 调用 App.auto_find_instance_path",
+      "location": "sansio/app.py:301",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0088",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "App.__init__ 调用 App.make_config",
+      "location": "sansio/app.py:316",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0089",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "App.__init__ 调用 App.make_aborter",
+      "location": "sansio/app.py:324",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0090",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "App.jinja_env 调用 App.create_jinja_environment",
+      "location": "sansio/app.py:474",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0091",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "Blueprint.add_app_template_filter 调用 Blueprint.record_once",
+      "location": "sansio/blueprints.py:495",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0092",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "Blueprint.add_app_template_global 调用 Blueprint.record_once",
+      "location": "sansio/blueprints.py:611",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0093",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "Blueprint.add_app_template_test 调用 Blueprint.record_once",
+      "location": "sansio/blueprints.py:553",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0094",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "Blueprint.add_url_rule 调用 Blueprint.record",
+      "location": "sansio/blueprints.py:433",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0095",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "Blueprint.after_app_request 调用 Blueprint.record_once",
+      "location": "sansio/blueprints.py:628",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0096",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "Blueprint.app_context_processor 调用 Blueprint.record_once",
+      "location": "sansio/blueprints.py:650",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0097",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "Blueprint.app_errorhandler 调用 Blueprint.record_once",
+      "location": "sansio/blueprints.py:667",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0098",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "Blueprint.app_url_defaults 调用 Blueprint.record_once",
+      "location": "sansio/blueprints.py:689",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0099",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "Blueprint.app_url_value_preprocessor 调用 Blueprint.record_once",
+      "location": "sansio/blueprints.py:679",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0100",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "Blueprint.before_app_request 调用 Blueprint.record_once",
+      "location": "sansio/blueprints.py:618",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0101",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "Blueprint.record_once 调用 Blueprint.record",
+      "location": "sansio/blueprints.py:244",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0102",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "Blueprint.register 调用 Blueprint.make_setup_state",
+      "location": "sansio/blueprints.py:321",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0103",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "Blueprint.register 调用 Blueprint._merge_blueprint_funcs",
+      "location": "sansio/blueprints.py:332",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0104",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "Blueprint.teardown_app_request 调用 Blueprint.record_once",
+      "location": "sansio/blueprints.py:638",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0105",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "Scaffold._method_route 调用 Scaffold.route",
+      "location": "sansio/scaffold.py:293",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0106",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "Scaffold.delete 调用 Scaffold._method_route",
+      "location": "sansio/scaffold.py:333",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0107",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "Scaffold.errorhandler 调用 Scaffold.register_error_handler",
+      "location": "sansio/scaffold.py:644",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0108",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "Scaffold.get 调用 Scaffold._method_route",
+      "location": "sansio/scaffold.py:301",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0109",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "Scaffold.patch 调用 Scaffold._method_route",
+      "location": "sansio/scaffold.py:341",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0110",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "Scaffold.post 调用 Scaffold._method_route",
+      "location": "sansio/scaffold.py:317",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0111",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "Scaffold.put 调用 Scaffold._method_route",
+      "location": "sansio/scaffold.py:325",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0112",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "Scaffold.query 调用 Scaffold._method_route",
+      "location": "sansio/scaffold.py:309",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0113",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "Scaffold.register_error_handler 调用 Scaffold._get_exc_class_and_code",
+      "location": "sansio/scaffold.py:661",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0114",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "Scaffold.route 调用 Scaffold.add_url_rule",
+      "location": "sansio/scaffold.py:370",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0115",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "find_package 调用 _find_package_path",
+      "location": "sansio/scaffold.py:775",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0116",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "SecureCookieSessionInterface.open_session 调用 SecureCookieSessionInterface.get_signing_serializer",
+      "location": "flask/sessions.py:324",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0117",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "SecureCookieSessionInterface.save_session 调用 SecureCookieSessionInterface.get_signing_serializer",
+      "location": "flask/sessions.py:373",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0118",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "DispatchingJinjaLoader._get_source_explained 调用 DispatchingJinjaLoader._iter_loaders",
+      "location": "flask/templating.py:71",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0119",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "DispatchingJinjaLoader._get_source_fast 调用 DispatchingJinjaLoader._iter_loaders",
+      "location": "flask/templating.py:91",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0120",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "DispatchingJinjaLoader.get_source 调用 DispatchingJinjaLoader._get_source_explained",
+      "location": "flask/templating.py:61",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0121",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "DispatchingJinjaLoader.get_source 调用 DispatchingJinjaLoader._get_source_fast",
+      "location": "flask/templating.py:62",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0122",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "render_template 调用 _render",
+      "location": "flask/templating.py:148",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0123",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "render_template_string 调用 _render",
+      "location": "flask/templating.py:160",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0124",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "stream_template 调用 _stream",
+      "location": "flask/templating.py:197",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0125",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "stream_template_string 调用 _stream",
+      "location": "flask/templating.py:212",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0126",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "FlaskClient.__init__ 调用 _get_werkzeug_version",
+      "location": "flask/testing.py:132",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0127",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "FlaskClient._request_from_builder_args 调用 FlaskClient._copy_environ",
+      "location": "flask/testing.py:196",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0128",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "FlaskClient.open 调用 FlaskClient._copy_environ",
+      "location": "flask/testing.py:216",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0129",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "FlaskClient.open 调用 FlaskClient._request_from_builder_args",
+      "location": "flask/testing.py:228",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0130",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "Flask.send_static_file 是系统入口点",
+      "location": "flask/app.py:393",
+      "confidence": "verified",
+      "evidence": "出度 1，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0131",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "Flask.open_resource 是系统入口点",
+      "location": "flask/app.py:415",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: state_change",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0132",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "Flask.open_instance_resource 是系统入口点",
+      "location": "flask/app.py:448",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: state_change",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0133",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "Flask.create_jinja_environment 是系统入口点",
+      "location": "flask/app.py:470",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: creation",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0134",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "Flask.update_template_context 是系统入口点",
+      "location": "flask/app.py:591",
+      "confidence": "verified",
+      "evidence": "出度 1，标签: update",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0135",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "Flask.make_shell_context 是系统入口点",
+      "location": "flask/app.py:621",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0136",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "Flask.run 是系统入口点",
+      "location": "flask/app.py:633",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0137",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "Flask.test_client 是系统入口点",
+      "location": "flask/app.py:758",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0138",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "Flask.test_cli_runner 是系统入口点",
+      "location": "flask/app.py:816",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0139",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "Flask.url_for 是系统入口点",
+      "location": "flask/app.py:1105",
+      "confidence": "verified",
+      "evidence": "出度 1，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0140",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "Flask.do_teardown_request 是系统入口点",
+      "location": "flask/app.py:1423",
+      "confidence": "verified",
+      "evidence": "出度 1，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0141",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "Flask.do_teardown_appcontext 是系统入口点",
+      "location": "flask/app.py:1456",
+      "confidence": "verified",
+      "evidence": "出度 1，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0142",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "Flask.app_context 是系统入口点",
+      "location": "flask/app.py:1484",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0143",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "Flask.test_request_context 是系统入口点",
+      "location": "flask/app.py:1520",
+      "confidence": "verified",
+      "evidence": "出度 1，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0144",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "Blueprint.send_static_file 是系统入口点",
+      "location": "flask/blueprints.py:82",
+      "confidence": "verified",
+      "evidence": "出度 1，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0145",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "Blueprint.open_resource 是系统入口点",
+      "location": "flask/blueprints.py:104",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: state_change",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0146",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "find_best_app 是系统入口点",
+      "location": "flask/cli.py:41",
+      "confidence": "verified",
+      "evidence": "出度 1，标签: query",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0147",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "find_app_by_string 是系统入口点",
+      "location": "flask/cli.py:120",
+      "confidence": "verified",
+      "evidence": "出度 1，标签: query",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0148",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "run_command 是系统入口点",
+      "location": "flask/cli.py:935",
+      "confidence": "verified",
+      "evidence": "出度 1，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0149",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "shell_command 是系统入口点",
+      "location": "flask/cli.py:1001",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0150",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "routes_command 是系统入口点",
+      "location": "flask/cli.py:1061",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0151",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "ScriptInfo.load_app 是系统入口点",
+      "location": "flask/cli.py:333",
+      "confidence": "verified",
+      "evidence": "出度 4，标签: orchestrator",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0152",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "AppGroup.command 是系统入口点",
+      "location": "flask/cli.py:413",
+      "confidence": "verified",
+      "evidence": "出度 1，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0153",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "AppGroup.group 是系统入口点",
+      "location": "flask/cli.py:429",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0154",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "FlaskGroup.get_command 是系统入口点",
+      "location": "flask/cli.py:609",
+      "confidence": "verified",
+      "evidence": "出度 1，标签: query",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0155",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "FlaskGroup.list_commands 是系统入口点",
+      "location": "flask/cli.py:636",
+      "confidence": "verified",
+      "evidence": "出度 1，标签: query",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0156",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "Config.from_envvar 是系统入口点",
+      "location": "flask/config.py:102",
+      "confidence": "verified",
+      "evidence": "出度 1，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0157",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "Config.from_prefixed_env 是系统入口点",
+      "location": "flask/config.py:126",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: state_change",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0158",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "Config.from_file 是系统入口点",
+      "location": "flask/config.py:256",
+      "confidence": "verified",
+      "evidence": "出度 1，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0159",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "after_this_request 是系统入口点",
+      "location": "flask/ctx.py:118",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0160",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "copy_current_request_context 是系统入口点",
+      "location": "flask/ctx.py:154",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0161",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "has_request_context 是系统入口点",
+      "location": "flask/ctx.py:209",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: query",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0162",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "has_app_context 是系统入口点",
+      "location": "flask/ctx.py:235",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: query",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0163",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "_AppCtxGlobals.get 是系统入口点",
+      "location": "flask/ctx.py:68",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: query",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0164",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "_AppCtxGlobals.pop 是系统入口点",
+      "location": "flask/ctx.py:79",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0165",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "_AppCtxGlobals.setdefault 是系统入口点",
+      "location": "flask/ctx.py:93",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: update",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0166",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "AppContext.from_environ 是系统入口点",
+      "location": "flask/ctx.py:340",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0167",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "AppContext.has_request 是系统入口点",
+      "location": "flask/ctx.py:351",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: query",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0168",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "AppContext.copy 是系统入口点",
+      "location": "flask/ctx.py:355",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0169",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "AppContext.request 是系统入口点",
+      "location": "flask/ctx.py:371",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0170",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "AppContext.session 是系统入口点",
+      "location": "flask/ctx.py:396",
+      "confidence": "verified",
+      "evidence": "出度 1，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0171",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "attach_enctype_error_multidict 是系统入口点",
+      "location": "flask/debughelpers.py:81",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0172",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "explain_template_loading_attempts 是系统入口点",
+      "location": "flask/debughelpers.py:124",
+      "confidence": "verified",
+      "evidence": "出度 1，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0173",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "stream_with_context 是系统入口点",
+      "location": "flask/helpers.py:63",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0174",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "make_response 是系统入口点",
+      "location": "flask/helpers.py:151",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0175",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "url_for 是系统入口点",
+      "location": "flask/helpers.py:200",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0176",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "redirect 是系统入口点",
+      "location": "flask/helpers.py:254",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0177",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "abort 是系统入口点",
+      "location": "flask/helpers.py:281",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0178",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "flash 是系统入口点",
+      "location": "flask/helpers.py:326",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0179",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "send_file 是系统入口点",
+      "location": "flask/helpers.py:417",
+      "confidence": "verified",
+      "evidence": "出度 1，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0180",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "send_from_directory 是系统入口点",
+      "location": "flask/helpers.py:543",
+      "confidence": "verified",
+      "evidence": "出度 1，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0181",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "_CollectErrors.raise_any 是系统入口点",
+      "location": "flask/helpers.py:676",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0182",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "wsgi_errors_stream 是系统入口点",
+      "location": "flask/logging.py:16",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0183",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "create_logger 是系统入口点",
+      "location": "flask/logging.py:58",
+      "confidence": "verified",
+      "evidence": "出度 1，标签: creation",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0184",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "SessionInterface.make_null_session 是系统入口点",
+      "location": "flask/sessions.py:150",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0185",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "SessionInterface.is_null_session 是系统入口点",
+      "location": "flask/sessions.py:162",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0186",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "SessionInterface.should_set_cookie 是系统入口点",
+      "location": "flask/sessions.py:233",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: update",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0187",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "SessionInterface.open_session 是系统入口点",
+      "location": "flask/sessions.py:249",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: state_change",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0188",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "SessionInterface.save_session 是系统入口点",
+      "location": "flask/sessions.py:263",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0189",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "SecureCookieSessionInterface.open_session 是系统入口点",
+      "location": "flask/sessions.py:323",
+      "confidence": "verified",
+      "evidence": "出度 1，标签: state_change",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0190",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "SecureCookieSessionInterface.save_session 是系统入口点",
+      "location": "flask/sessions.py:337",
+      "confidence": "verified",
+      "evidence": "出度 1，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0191",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "render_template 是系统入口点",
+      "location": "flask/templating.py:136",
+      "confidence": "verified",
+      "evidence": "出度 1，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0192",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "render_template_string 是系统入口点",
+      "location": "flask/templating.py:151",
+      "confidence": "verified",
+      "evidence": "出度 1，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0193",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "stream_template 是系统入口点",
+      "location": "flask/templating.py:181",
+      "confidence": "verified",
+      "evidence": "出度 1，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0194",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "stream_template_string 是系统入口点",
+      "location": "flask/templating.py:200",
+      "confidence": "verified",
+      "evidence": "出度 1，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0195",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "DispatchingJinjaLoader.get_source 是系统入口点",
+      "location": "flask/templating.py:57",
+      "confidence": "verified",
+      "evidence": "出度 2，标签: query",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0196",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "EnvironBuilder.json_dumps 是系统入口点",
+      "location": "flask/testing.py:88",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0197",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "FlaskClient.session_transaction 是系统入口点",
+      "location": "flask/testing.py:136",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0198",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "FlaskClient.open 是系统入口点",
+      "location": "flask/testing.py:204",
+      "confidence": "verified",
+      "evidence": "出度 4，标签: orchestrator, state_change",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0199",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "FlaskCliRunner.invoke 是系统入口点",
+      "location": "flask/testing.py:275",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0200",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "View.dispatch_request 是系统入口点",
+      "location": "flask/views.py:78",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0201",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "View.as_view 是系统入口点",
+      "location": "flask/views.py:86",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0202",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "Request.endpoint 是系统入口点",
+      "location": "flask/wrappers.py:147",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0203",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "Request.blueprint 是系统入口点",
+      "location": "flask/wrappers.py:162",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0204",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "Request.blueprints 是系统入口点",
+      "location": "flask/wrappers.py:181",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0205",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "Response.max_cookie_size 是系统入口点",
+      "location": "flask/wrappers.py:247",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0206",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "JSONProvider.dump 是系统入口点",
+      "location": "json/provider.py:49",
+      "confidence": "verified",
+      "evidence": "出度 1，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0207",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "JSONProvider.load 是系统入口点",
+      "location": "json/provider.py:67",
+      "confidence": "verified",
+      "evidence": "出度 1，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0208",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "JSONProvider.response 是系统入口点",
+      "location": "json/provider.py:89",
+      "confidence": "verified",
+      "evidence": "出度 2，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0209",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "DefaultJSONProvider.loads 是系统入口点",
+      "location": "json/provider.py:181",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0210",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "DefaultJSONProvider.response 是系统入口点",
+      "location": "json/provider.py:189",
+      "confidence": "verified",
+      "evidence": "出度 1，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0211",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "JSONTag.check 是系统入口点",
+      "location": "json/tag.py:73",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: query, validation",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0212",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "JSONTag.to_python 是系统入口点",
+      "location": "json/tag.py:82",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0213",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "JSONTag.tag 是系统入口点",
+      "location": "json/tag.py:87",
+      "confidence": "verified",
+      "evidence": "出度 1，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0214",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "TaggedJSONSerializer.dumps 是系统入口点",
+      "location": "json/tag.py:321",
+      "confidence": "verified",
+      "evidence": "出度 1，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0215",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "TaggedJSONSerializer.loads 是系统入口点",
+      "location": "json/tag.py:325",
+      "confidence": "verified",
+      "evidence": "出度 1，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0216",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "dumps 是系统入口点",
+      "location": "json/__init__.py:13",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0217",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "dump 是系统入口点",
+      "location": "json/__init__.py:47",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0218",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "loads 是系统入口点",
+      "location": "json/__init__.py:77",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0219",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "load 是系统入口点",
+      "location": "json/__init__.py:108",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0220",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "jsonify 是系统入口点",
+      "location": "json/__init__.py:138",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0221",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "App.name 是系统入口点",
+      "location": "sansio/app.py:423",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0222",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "App.logger 是系统入口点",
+      "location": "sansio/app.py:440",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0223",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "App.jinja_env 是系统入口点",
+      "location": "sansio/app.py:467",
+      "confidence": "verified",
+      "evidence": "出度 1，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0224",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "App.create_global_jinja_loader 是系统入口点",
+      "location": "sansio/app.py:520",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: creation",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0225",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "App.select_jinja_autoescape 是系统入口点",
+      "location": "sansio/app.py:533",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0226",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "App.register_blueprint 是系统入口点",
+      "location": "sansio/app.py:570",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: creation",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0227",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "App.iter_blueprints 是系统入口点",
+      "location": "sansio/app.py:597",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0228",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "App.template_filter 是系统入口点",
+      "location": "sansio/app.py:670",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0229",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "App.add_template_filter 是系统入口点",
+      "location": "sansio/app.py:699",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: creation",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0230",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "App.template_test 是系统入口点",
+      "location": "sansio/app.py:720",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0231",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "App.add_template_test 是系统入口点",
+      "location": "sansio/app.py:756",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: creation",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0232",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "App.template_global 是系统入口点",
+      "location": "sansio/app.py:779",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0233",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "App.add_template_global 是系统入口点",
+      "location": "sansio/app.py:810",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: creation",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0234",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "App.teardown_appcontext 是系统入口点",
+      "location": "sansio/app.py:827",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0235",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "App.shell_context_processor 是系统入口点",
+      "location": "sansio/app.py:858",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0236",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "App.trap_http_exception 是系统入口点",
+      "location": "sansio/app.py:893",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0237",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "App.redirect 是系统入口点",
+      "location": "sansio/app.py:939",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0238",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "App.inject_url_defaults 是系统入口点",
+      "location": "sansio/app.py:960",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0239",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "App.handle_url_build_error 是系统入口点",
+      "location": "sansio/app.py:981",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0240",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "BlueprintSetupState.add_url_rule 是系统入口点",
+      "location": "sansio/blueprints.py:87",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: creation",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0241",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "Blueprint.register_blueprint 是系统入口点",
+      "location": "sansio/blueprints.py:256",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: creation",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0242",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "Blueprint.register 是系统入口点",
+      "location": "sansio/blueprints.py:273",
+      "confidence": "verified",
+      "evidence": "出度 2，标签: creation",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0243",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "Blueprint.add_url_rule 是系统入口点",
+      "location": "sansio/blueprints.py:413",
+      "confidence": "verified",
+      "evidence": "出度 1，标签: creation",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0244",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "Blueprint.app_template_filter 是系统入口点",
+      "location": "sansio/blueprints.py:450",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0245",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "Blueprint.add_app_template_filter 是系统入口点",
+      "location": "sansio/blueprints.py:476",
+      "confidence": "verified",
+      "evidence": "出度 1，标签: creation",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0246",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "Blueprint.app_template_test 是系统入口点",
+      "location": "sansio/blueprints.py:504",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0247",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "Blueprint.add_app_template_test 是系统入口点",
+      "location": "sansio/blueprints.py:532",
+      "confidence": "verified",
+      "evidence": "出度 1，标签: creation",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0248",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "Blueprint.app_template_global 是系统入口点",
+      "location": "sansio/blueprints.py:562",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0249",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "Blueprint.add_app_template_global 是系统入口点",
+      "location": "sansio/blueprints.py:590",
+      "confidence": "verified",
+      "evidence": "出度 1，标签: creation",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0250",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "Blueprint.before_app_request 是系统入口点",
+      "location": "sansio/blueprints.py:614",
+      "confidence": "verified",
+      "evidence": "出度 1，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0251",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "Blueprint.after_app_request 是系统入口点",
+      "location": "sansio/blueprints.py:624",
+      "confidence": "verified",
+      "evidence": "出度 1，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0252",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "Blueprint.teardown_app_request 是系统入口点",
+      "location": "sansio/blueprints.py:634",
+      "confidence": "verified",
+      "evidence": "出度 1，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0253",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "Blueprint.app_context_processor 是系统入口点",
+      "location": "sansio/blueprints.py:644",
+      "confidence": "verified",
+      "evidence": "出度 1，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0254",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "Blueprint.app_errorhandler 是系统入口点",
+      "location": "sansio/blueprints.py:656",
+      "confidence": "verified",
+      "evidence": "出度 1，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0255",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "Blueprint.app_url_value_preprocessor 是系统入口点",
+      "location": "sansio/blueprints.py:673",
+      "confidence": "verified",
+      "evidence": "出度 1，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0256",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "Blueprint.app_url_defaults 是系统入口点",
+      "location": "sansio/blueprints.py:685",
+      "confidence": "verified",
+      "evidence": "出度 1，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0257",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "find_package 是系统入口点",
+      "location": "sansio/scaffold.py:762",
+      "confidence": "verified",
+      "evidence": "出度 1，标签: query",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0258",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "Scaffold.has_static_folder 是系统入口点",
+      "location": "sansio/scaffold.py:241",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: query",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0259",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "Scaffold.jinja_loader 是系统入口点",
+      "location": "sansio/scaffold.py:272",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0260",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "Scaffold.get 是系统入口点",
+      "location": "sansio/scaffold.py:296",
+      "confidence": "verified",
+      "evidence": "出度 1，标签: query",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0261",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "Scaffold.query 是系统入口点",
+      "location": "sansio/scaffold.py:304",
+      "confidence": "verified",
+      "evidence": "出度 1，标签: query",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0262",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "Scaffold.post 是系统入口点",
+      "location": "sansio/scaffold.py:312",
+      "confidence": "verified",
+      "evidence": "出度 1，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0263",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "Scaffold.put 是系统入口点",
+      "location": "sansio/scaffold.py:320",
+      "confidence": "verified",
+      "evidence": "出度 1，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0264",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "Scaffold.delete 是系统入口点",
+      "location": "sansio/scaffold.py:328",
+      "confidence": "verified",
+      "evidence": "出度 1，标签: deletion",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0265",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "Scaffold.patch 是系统入口点",
+      "location": "sansio/scaffold.py:336",
+      "confidence": "verified",
+      "evidence": "出度 1，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0266",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "Scaffold.endpoint 是系统入口点",
+      "location": "sansio/scaffold.py:444",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0267",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "Scaffold.before_request 是系统入口点",
+      "location": "sansio/scaffold.py:468",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0268",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "Scaffold.after_request 是系统入口点",
+      "location": "sansio/scaffold.py:495",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0269",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "Scaffold.teardown_request 是系统入口点",
+      "location": "sansio/scaffold.py:516",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0270",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "Scaffold.context_processor 是系统入口点",
+      "location": "sansio/scaffold.py:550",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0271",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "Scaffold.url_value_preprocessor 是系统入口点",
+      "location": "sansio/scaffold.py:567",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0272",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "Scaffold.url_defaults 是系统入口点",
+      "location": "sansio/scaffold.py:592",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0273",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "Scaffold.errorhandler 是系统入口点",
+      "location": "sansio/scaffold.py:606",
+      "confidence": "verified",
+      "evidence": "出度 1，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0274",
+      "category": "状态变更",
+      "type": "状态属性",
+      "description": "Flask 拥有 1 个状态属性: cli",
+      "location": "flask/app.py",
+      "confidence": "verified",
+      "evidence": "从 __init__ 中提取的 self.xxx 赋值",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0275",
+      "category": "状态变更",
+      "type": "属性写入",
+      "description": "Flask.__init__() 修改 2 个属性: cli, cli.name",
+      "location": "flask/app.py:311",
+      "confidence": "verified",
+      "evidence": "AST 静态分析: self.attr = / self.attr.append() 等模式",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0276",
+      "category": "状态变更",
+      "type": "状态属性",
+      "description": "Blueprint 拥有 1 个状态属性: cli",
+      "location": "flask/blueprints.py",
+      "confidence": "verified",
+      "evidence": "从 __init__ 中提取的 self.xxx 赋值",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0277",
+      "category": "状态变更",
+      "type": "属性写入",
+      "description": "Blueprint.__init__() 修改 2 个属性: cli, cli.name",
+      "location": "flask/blueprints.py:19",
+      "confidence": "verified",
+      "evidence": "AST 静态分析: self.attr = / self.attr.append() 等模式",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0278",
+      "category": "状态变更",
+      "type": "状态属性",
+      "description": "ScriptInfo 拥有 4 个状态属性: app_import_path, create_app, load_dotenv_defaults, set_debug_flag",
+      "location": "flask/cli.py",
+      "confidence": "verified",
+      "evidence": "从 __init__ 中提取的 self.xxx 赋值",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0279",
+      "category": "状态变更",
+      "type": "属性写入",
+      "description": "ScriptInfo.__init__() 修改 4 个属性: app_import_path, create_app, load_dotenv_defaults, set_debug_flag",
+      "location": "flask/cli.py:305",
+      "confidence": "verified",
+      "evidence": "AST 静态分析: self.attr = / self.attr.append() 等模式",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0280",
+      "category": "状态变更",
+      "type": "查询方法",
+      "description": "ScriptInfo 有 1 个纯查询方法: load_app",
+      "location": "flask/cli.py",
+      "confidence": "verified",
+      "evidence": "方法体中只读取不修改状态属性",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0281",
+      "category": "状态变更",
+      "type": "状态属性",
+      "description": "FlaskGroup 拥有 4 个状态属性: _loaded_plugin_commands, create_app, load_dotenv, set_debug_flag",
+      "location": "flask/cli.py",
+      "confidence": "verified",
+      "evidence": "从 __init__ 中提取的 self.xxx 赋值",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0282",
+      "category": "状态变更",
+      "type": "属性写入",
+      "description": "FlaskGroup.__init__() 修改 4 个属性: _loaded_plugin_commands, create_app, load_dotenv, set_debug_flag",
+      "location": "flask/cli.py:563",
+      "confidence": "verified",
+      "evidence": "AST 静态分析: self.attr = / self.attr.append() 等模式",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0283",
+      "category": "状态变更",
+      "type": "属性写入",
+      "description": "FlaskGroup._load_plugin_commands() 修改 1 个属性: _loaded_plugin_commands",
+      "location": "flask/cli.py:600",
+      "confidence": "verified",
+      "evidence": "AST 静态分析: self.attr = / self.attr.append() 等模式",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0284",
+      "category": "状态变更",
+      "type": "查询方法",
+      "description": "FlaskGroup 有 1 个纯查询方法: make_context",
+      "location": "flask/cli.py",
+      "confidence": "verified",
+      "evidence": "方法体中只读取不修改状态属性",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0285",
+      "category": "状态变更",
+      "type": "状态属性",
+      "description": "CertParamType 拥有 1 个状态属性: path_type",
+      "location": "flask/cli.py",
+      "confidence": "verified",
+      "evidence": "从 __init__ 中提取的 self.xxx 赋值",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0286",
+      "category": "状态变更",
+      "type": "属性写入",
+      "description": "CertParamType.__init__() 修改 1 个属性: path_type",
+      "location": "flask/cli.py:788",
+      "confidence": "verified",
+      "evidence": "AST 静态分析: self.attr = / self.attr.append() 等模式",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0287",
+      "category": "状态变更",
+      "type": "查询方法",
+      "description": "CertParamType 有 1 个纯查询方法: convert",
+      "location": "flask/cli.py",
+      "confidence": "verified",
+      "evidence": "方法体中只读取不修改状态属性",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0288",
+      "category": "状态变更",
+      "type": "状态属性",
+      "description": "ConfigAttribute 拥有 2 个状态属性: __name__, get_converter",
+      "location": "flask/config.py",
+      "confidence": "verified",
+      "evidence": "从 __init__ 中提取的 self.xxx 赋值",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0289",
+      "category": "状态变更",
+      "type": "属性写入",
+      "description": "ConfigAttribute.__init__() 修改 2 个属性: __name__, get_converter",
+      "location": "flask/config.py:23",
+      "confidence": "verified",
+      "evidence": "AST 静态分析: self.attr = / self.attr.append() 等模式",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0290",
+      "category": "状态变更",
+      "type": "状态属性",
+      "description": "Config 拥有 1 个状态属性: root_path",
+      "location": "flask/config.py",
+      "confidence": "verified",
+      "evidence": "从 __init__ 中提取的 self.xxx 赋值",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0291",
+      "category": "状态变更",
+      "type": "属性写入",
+      "description": "Config.__init__() 修改 1 个属性: root_path",
+      "location": "flask/config.py:94",
+      "confidence": "verified",
+      "evidence": "AST 静态分析: self.attr = / self.attr.append() 等模式",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0292",
+      "category": "状态变更",
+      "type": "查询方法",
+      "description": "Config 有 2 个纯查询方法: from_pyfile, from_file",
+      "location": "flask/config.py",
+      "confidence": "verified",
+      "evidence": "方法体中只读取不修改状态属性",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0293",
+      "category": "状态变更",
+      "type": "属性写入",
+      "description": "_AppCtxGlobals.__setattr__() 修改 1 个属性: __dict__",
+      "location": "flask/ctx.py:59",
+      "confidence": "verified",
+      "evidence": "AST 静态分析: self.attr = / self.attr.append() 等模式",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0294",
+      "category": "状态变更",
+      "type": "状态属性",
+      "description": "AppContext 拥有 1 个状态属性: app",
+      "location": "flask/ctx.py",
+      "confidence": "verified",
+      "evidence": "从 __init__ 中提取的 self.xxx 赋值",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0295",
+      "category": "状态变更",
+      "type": "属性写入",
+      "description": "AppContext.__init__() 修改 2 个属性: _request.routing_exception, app",
+      "location": "flask/ctx.py:300",
+      "confidence": "verified",
+      "evidence": "AST 静态分析: self.attr = / self.attr.append() 等模式",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0296",
+      "category": "状态变更",
+      "type": "属性写入",
+      "description": "AppContext.match_request() 修改 1 个属性: _request.routing_exception",
+      "location": "flask/ctx.py:405",
+      "confidence": "verified",
+      "evidence": "AST 静态分析: self.attr = / self.attr.append() 等模式",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0297",
+      "category": "状态变更",
+      "type": "查询方法",
+      "description": "AppContext 有 3 个纯查询方法: copy, push, pop",
+      "location": "flask/ctx.py",
+      "confidence": "verified",
+      "evidence": "方法体中只读取不修改状态属性",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0298",
+      "category": "状态变更",
+      "type": "状态属性",
+      "description": "DebugFilesKeyError 拥有 1 个状态属性: msg",
+      "location": "flask/debughelpers.py",
+      "confidence": "verified",
+      "evidence": "从 __init__ 中提取的 self.xxx 赋值",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0299",
+      "category": "状态变更",
+      "type": "属性写入",
+      "description": "DebugFilesKeyError.__init__() 修改 1 个属性: msg",
+      "location": "flask/debughelpers.py:28",
+      "confidence": "verified",
+      "evidence": "AST 静态分析: self.attr = / self.attr.append() 等模式",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0300",
+      "category": "状态变更",
+      "type": "状态属性",
+      "description": "Environment 拥有 1 个状态属性: app",
+      "location": "flask/templating.py",
+      "confidence": "verified",
+      "evidence": "从 __init__ 中提取的 self.xxx 赋值",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0301",
+      "category": "状态变更",
+      "type": "属性写入",
+      "description": "Environment.__init__() 修改 1 个属性: app",
+      "location": "flask/templating.py:42",
+      "confidence": "verified",
+      "evidence": "AST 静态分析: self.attr = / self.attr.append() 等模式",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0302",
+      "category": "状态变更",
+      "type": "状态属性",
+      "description": "DispatchingJinjaLoader 拥有 1 个状态属性: app",
+      "location": "flask/templating.py",
+      "confidence": "verified",
+      "evidence": "从 __init__ 中提取的 self.xxx 赋值",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0303",
+      "category": "状态变更",
+      "type": "属性写入",
+      "description": "DispatchingJinjaLoader.__init__() 修改 1 个属性: app",
+      "location": "flask/templating.py:54",
+      "confidence": "verified",
+      "evidence": "AST 静态分析: self.attr = / self.attr.append() 等模式",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0304",
+      "category": "状态变更",
+      "type": "查询方法",
+      "description": "DispatchingJinjaLoader 有 2 个纯查询方法: get_source, list_templates",
+      "location": "flask/templating.py",
+      "confidence": "verified",
+      "evidence": "方法体中只读取不修改状态属性",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0305",
+      "category": "状态变更",
+      "type": "状态属性",
+      "description": "EnvironBuilder 拥有 1 个状态属性: app",
+      "location": "flask/testing.py",
+      "confidence": "verified",
+      "evidence": "从 __init__ 中提取的 self.xxx 赋值",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0306",
+      "category": "状态变更",
+      "type": "属性写入",
+      "description": "EnvironBuilder.__init__() 修改 1 个属性: app",
+      "location": "flask/testing.py:49",
+      "confidence": "verified",
+      "evidence": "AST 静态分析: self.attr = / self.attr.append() 等模式",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0307",
+      "category": "状态变更",
+      "type": "查询方法",
+      "description": "EnvironBuilder 有 1 个纯查询方法: json_dumps",
+      "location": "flask/testing.py",
+      "confidence": "verified",
+      "evidence": "方法体中只读取不修改状态属性",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0308",
+      "category": "状态变更",
+      "type": "状态属性",
+      "description": "FlaskClient 拥有 3 个状态属性: _context_stack, environ_base, preserve_context",
+      "location": "flask/testing.py",
+      "confidence": "verified",
+      "evidence": "从 __init__ 中提取的 self.xxx 赋值",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0309",
+      "category": "状态变更",
+      "type": "集合属性",
+      "description": "FlaskClient 有 1 个集合型属性: environ_base",
+      "location": "flask/testing.py",
+      "confidence": "verified",
+      "evidence": "初始化为 dict/list/set 的属性",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0310",
+      "category": "状态变更",
+      "type": "属性写入",
+      "description": "FlaskClient.__enter__() 修改 1 个属性: preserve_context",
+      "location": "flask/testing.py:249",
+      "confidence": "verified",
+      "evidence": "AST 静态分析: self.attr = / self.attr.append() 等模式",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0311",
+      "category": "状态变更",
+      "type": "属性写入",
+      "description": "FlaskClient.__exit__() 修改 1 个属性: preserve_context",
+      "location": "flask/testing.py:255",
+      "confidence": "verified",
+      "evidence": "AST 静态分析: self.attr = / self.attr.append() 等模式",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0312",
+      "category": "状态变更",
+      "type": "属性写入",
+      "description": "FlaskClient.__init__() 修改 3 个属性: _context_stack, environ_base, preserve_context",
+      "location": "flask/testing.py:125",
+      "confidence": "verified",
+      "evidence": "AST 静态分析: self.attr = / self.attr.append() 等模式",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0313",
+      "category": "状态变更",
+      "type": "查询方法",
+      "description": "FlaskClient 有 1 个纯查询方法: open",
+      "location": "flask/testing.py",
+      "confidence": "verified",
+      "evidence": "方法体中只读取不修改状态属性",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0314",
+      "category": "状态变更",
+      "type": "状态属性",
+      "description": "FlaskCliRunner 拥有 1 个状态属性: app",
+      "location": "flask/testing.py",
+      "confidence": "verified",
+      "evidence": "从 __init__ 中提取的 self.xxx 赋值",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0315",
+      "category": "状态变更",
+      "type": "属性写入",
+      "description": "FlaskCliRunner.__init__() 修改 1 个属性: app",
+      "location": "flask/testing.py:271",
+      "confidence": "verified",
+      "evidence": "AST 静态分析: self.attr = / self.attr.append() 等模式",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0316",
+      "category": "状态变更",
+      "type": "查询方法",
+      "description": "FlaskCliRunner 有 1 个纯查询方法: invoke",
+      "location": "flask/testing.py",
+      "confidence": "verified",
+      "evidence": "方法体中只读取不修改状态属性",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0317",
+      "category": "状态变更",
+      "type": "状态属性",
+      "description": "JSONTag 拥有 1 个状态属性: serializer",
+      "location": "json/tag.py",
+      "confidence": "verified",
+      "evidence": "从 __init__ 中提取的 self.xxx 赋值",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0318",
+      "category": "状态变更",
+      "type": "属性写入",
+      "description": "JSONTag.__init__() 修改 1 个属性: serializer",
+      "location": "json/tag.py:69",
+      "confidence": "verified",
+      "evidence": "AST 静态分析: self.attr = / self.attr.append() 等模式",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0319",
+      "category": "状态变更",
+      "type": "属性写入",
+      "description": "TaggedJSONSerializer.register() 修改 1 个属性: tags",
+      "location": "json/tag.py:256",
+      "confidence": "verified",
+      "evidence": "AST 静态分析: self.attr = / self.attr.append() 等模式",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0320",
+      "category": "状态变更",
+      "type": "状态属性",
+      "description": "App 拥有 6 个状态属性: _got_first_request, aborter, config, instance_path, subdomain_matching, url_map",
+      "location": "sansio/app.py",
+      "confidence": "verified",
+      "evidence": "从 __init__ 中提取的 self.xxx 赋值",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0321",
+      "category": "状态变更",
+      "type": "属性写入",
+      "description": "App.__init__() 修改 6 个属性: _got_first_request, aborter, config, instance_path, subdomain_matching",
+      "location": "sansio/app.py:279",
+      "confidence": "verified",
+      "evidence": "AST 静态分析: self.attr = / self.attr.append() 等模式",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0322",
+      "category": "状态变更",
+      "type": "属性写入",
+      "description": "App.add_template_filter() 修改 1 个属性: jinja_env.filters",
+      "location": "sansio/app.py:699",
+      "confidence": "verified",
+      "evidence": "AST 静态分析: self.attr = / self.attr.append() 等模式",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0323",
+      "category": "状态变更",
+      "type": "属性写入",
+      "description": "App.add_template_global() 修改 1 个属性: jinja_env.globals",
+      "location": "sansio/app.py:810",
+      "confidence": "verified",
+      "evidence": "AST 静态分析: self.attr = / self.attr.append() 等模式",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0324",
+      "category": "状态变更",
+      "type": "属性写入",
+      "description": "App.add_template_test() 修改 1 个属性: jinja_env.tests",
+      "location": "sansio/app.py:756",
+      "confidence": "verified",
+      "evidence": "AST 静态分析: self.attr = / self.attr.append() 等模式",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0325",
+      "category": "状态变更",
+      "type": "属性写入",
+      "description": "App.add_url_rule() 修改 2 个属性: url_map, view_functions",
+      "location": "sansio/app.py:605",
+      "confidence": "verified",
+      "evidence": "AST 静态分析: self.attr = / self.attr.append() 等模式",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0326",
+      "category": "状态变更",
+      "type": "属性写入",
+      "description": "App.debug() 修改 3 个属性: config, config.DEBUG, jinja_env.auto_reload",
+      "location": "sansio/app.py:563",
+      "confidence": "verified",
+      "evidence": "AST 静态分析: self.attr = / self.attr.append() 等模式",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0327",
+      "category": "状态变更",
+      "type": "查询方法",
+      "description": "App 有 2 个纯查询方法: make_config, trap_http_exception",
+      "location": "sansio/app.py",
+      "confidence": "verified",
+      "evidence": "方法体中只读取不修改状态属性",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0328",
+      "category": "状态变更",
+      "type": "状态属性",
+      "description": "BlueprintSetupState 拥有 9 个状态属性: app, blueprint, first_registration, name, name_prefix, options",
+      "location": "sansio/blueprints.py",
+      "confidence": "verified",
+      "evidence": "从 __init__ 中提取的 self.xxx 赋值",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0329",
+      "category": "状态变更",
+      "type": "属性写入",
+      "description": "BlueprintSetupState.__init__() 修改 9 个属性: app, blueprint, first_registration, name, name_prefix",
+      "location": "sansio/blueprints.py:41",
+      "confidence": "verified",
+      "evidence": "AST 静态分析: self.attr = / self.attr.append() 等模式",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0330",
+      "category": "状态变更",
+      "type": "查询方法",
+      "description": "BlueprintSetupState 有 1 个纯查询方法: add_url_rule",
+      "location": "sansio/blueprints.py",
+      "confidence": "verified",
+      "evidence": "方法体中只读取不修改状态属性",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0331",
+      "category": "状态变更",
+      "type": "状态属性",
+      "description": "Blueprint 拥有 5 个状态属性: cli_group, name, subdomain, url_prefix, url_values_defaults",
+      "location": "sansio/blueprints.py",
+      "confidence": "verified",
+      "evidence": "从 __init__ 中提取的 self.xxx 赋值",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0332",
+      "category": "状态变更",
+      "type": "属性写入",
+      "description": "Blueprint.__init__() 修改 5 个属性: cli_group, name, subdomain, url_prefix, url_values_defaults",
+      "location": "sansio/blueprints.py:174",
+      "confidence": "verified",
+      "evidence": "AST 静态分析: self.attr = / self.attr.append() 等模式",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0333",
+      "category": "状态变更",
+      "type": "属性写入",
+      "description": "Blueprint.register() 修改 1 个属性: cli.name",
+      "location": "sansio/blueprints.py:273",
+      "confidence": "verified",
+      "evidence": "AST 静态分析: self.attr = / self.attr.append() 等模式",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0334",
+      "category": "状态变更",
+      "type": "状态属性",
+      "description": "Scaffold 拥有 5 个状态属性: import_name, root_path, static_folder, static_url_path, template_folder",
+      "location": "sansio/scaffold.py",
+      "confidence": "verified",
+      "evidence": "从 __init__ 中提取的 self.xxx 赋值",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0335",
+      "category": "状态变更",
+      "type": "属性写入",
+      "description": "Scaffold.__init__() 修改 5 个属性: import_name, root_path, static_folder, static_url_path, template_folder",
+      "location": "sansio/scaffold.py:75",
+      "confidence": "verified",
+      "evidence": "AST 静态分析: self.attr = / self.attr.append() 等模式",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0336",
+      "category": "状态变更",
+      "type": "属性写入",
+      "description": "Scaffold.endpoint() 修改 1 个属性: view_functions",
+      "location": "sansio/scaffold.py:444",
+      "confidence": "verified",
+      "evidence": "AST 静态分析: self.attr = / self.attr.append() 等模式",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0337",
+      "category": "状态变更",
+      "type": "属性写入",
+      "description": "Scaffold.register_error_handler() 修改 1 个属性: error_handler_spec",
+      "location": "sansio/scaffold.py:650",
+      "confidence": "verified",
+      "evidence": "AST 静态分析: self.attr = / self.attr.append() 等模式",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0338",
+      "category": "状态变更",
+      "type": "查询方法",
+      "description": "Scaffold 有 2 个纯查询方法: has_static_folder, jinja_loader",
+      "location": "sansio/scaffold.py",
+      "confidence": "verified",
+      "evidence": "方法体中只读取不修改状态属性",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0339",
+      "category": "业务流程",
+      "type": "流程总览",
+      "description": "流程 'Scaffold delete Flow': 涉及 1 个模块，4 个步骤，0 次跨模块调用",
+      "location": "flask.sansio.scaffold",
+      "confidence": "verified",
+      "evidence": "入口: flask.sansio.scaffold:Scaffold.delete，业务重要度: 6.0",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0340",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "Scaffold delete Flow · 步骤 0 层: Scaffold.delete()（状态变更）",
+      "location": "sansio/scaffold.py:328",
+      "confidence": "verified",
+      "evidence": "调用类型: entry",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0341",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "Scaffold delete Flow · 步骤 1 层: Scaffold._method_route()",
+      "location": "sansio/scaffold.py:333",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0342",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "Scaffold delete Flow · 步骤 2 层: Scaffold.route()",
+      "location": "sansio/scaffold.py:293",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0343",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "Scaffold delete Flow · 步骤 3 层: Scaffold.add_url_rule()（状态变更）",
+      "location": "sansio/scaffold.py:370",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0344",
+      "category": "业务流程",
+      "type": "流程总览",
+      "description": "流程 'Blueprint Registration Flow': 涉及 1 个模块，3 个步骤，0 次跨模块调用",
+      "location": "flask.sansio.blueprints",
+      "confidence": "verified",
+      "evidence": "入口: flask.sansio.blueprints:Blueprint.register，业务重要度: 5.5",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0345",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "Blueprint Registration Flow · 步骤 0 层: Blueprint.register()（状态变更）",
+      "location": "sansio/blueprints.py:273",
+      "confidence": "verified",
+      "evidence": "调用类型: entry",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0346",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "Blueprint Registration Flow · 步骤 1 层: Blueprint.make_setup_state()（状态变更）",
+      "location": "sansio/blueprints.py:321",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0347",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "Blueprint Registration Flow · 步骤 1 层: Blueprint._merge_blueprint_funcs()",
+      "location": "sansio/blueprints.py:332",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0348",
+      "category": "业务流程",
+      "type": "流程总览",
+      "description": "流程 'Flask update_template_context Flow': 涉及 1 个模块，3 个步骤，0 次跨模块调用",
+      "location": "flask.app",
+      "confidence": "verified",
+      "evidence": "入口: flask.app:Flask.update_template_context，业务重要度: 5.0",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0349",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "Flask update_template_context Flow · 步骤 0 层: Flask.update_template_context()（状态变更）",
+      "location": "flask/app.py:591",
+      "confidence": "verified",
+      "evidence": "调用类型: entry",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0350",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "Flask update_template_context Flow · 步骤 1 层: Flask.ensure_sync()（校验点）",
+      "location": "flask/app.py:617",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0351",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "Flask update_template_context Flow · 步骤 2 层: Flask.async_to_sync()",
+      "location": "flask/app.py:1078",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0352",
+      "category": "业务流程",
+      "type": "流程总览",
+      "description": "流程 'Scaffold get Flow': 涉及 1 个模块，4 个步骤，0 次跨模块调用",
+      "location": "flask.sansio.scaffold",
+      "confidence": "verified",
+      "evidence": "入口: flask.sansio.scaffold:Scaffold.get，业务重要度: 4.5",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0353",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "Scaffold get Flow · 步骤 0 层: Scaffold.get()",
+      "location": "sansio/scaffold.py:296",
+      "confidence": "verified",
+      "evidence": "调用类型: entry",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0354",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "Scaffold get Flow · 步骤 1 层: Scaffold._method_route()",
+      "location": "sansio/scaffold.py:301",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0355",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "Scaffold get Flow · 步骤 2 层: Scaffold.route()",
+      "location": "sansio/scaffold.py:293",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0356",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "Scaffold get Flow · 步骤 3 层: Scaffold.add_url_rule()（状态变更）",
+      "location": "sansio/scaffold.py:370",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0357",
+      "category": "业务流程",
+      "type": "流程总览",
+      "description": "流程 'Scaffold query Flow': 涉及 1 个模块，4 个步骤，0 次跨模块调用",
+      "location": "flask.sansio.scaffold",
+      "confidence": "verified",
+      "evidence": "入口: flask.sansio.scaffold:Scaffold.query，业务重要度: 4.5",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0358",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "Scaffold query Flow · 步骤 0 层: Scaffold.query()",
+      "location": "sansio/scaffold.py:304",
+      "confidence": "verified",
+      "evidence": "调用类型: entry",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0359",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "Scaffold query Flow · 步骤 1 层: Scaffold._method_route()",
+      "location": "sansio/scaffold.py:309",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0360",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "Scaffold query Flow · 步骤 2 层: Scaffold.route()",
+      "location": "sansio/scaffold.py:293",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0361",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "Scaffold query Flow · 步骤 3 层: Scaffold.add_url_rule()（状态变更）",
+      "location": "sansio/scaffold.py:370",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0362",
+      "category": "业务流程",
+      "type": "流程总览",
+      "description": "流程 'Scaffold post Flow': 涉及 1 个模块，4 个步骤，0 次跨模块调用",
+      "location": "flask.sansio.scaffold",
+      "confidence": "verified",
+      "evidence": "入口: flask.sansio.scaffold:Scaffold.post，业务重要度: 4.5",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0363",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "Scaffold post Flow · 步骤 0 层: Scaffold.post()",
+      "location": "sansio/scaffold.py:312",
+      "confidence": "verified",
+      "evidence": "调用类型: entry",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0364",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "Scaffold post Flow · 步骤 1 层: Scaffold._method_route()",
+      "location": "sansio/scaffold.py:317",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0365",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "Scaffold post Flow · 步骤 2 层: Scaffold.route()",
+      "location": "sansio/scaffold.py:293",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0366",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "Scaffold post Flow · 步骤 3 层: Scaffold.add_url_rule()（状态变更）",
+      "location": "sansio/scaffold.py:370",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0367",
+      "category": "业务流程",
+      "type": "流程总览",
+      "description": "流程 'Scaffold put Flow': 涉及 1 个模块，4 个步骤，0 次跨模块调用",
+      "location": "flask.sansio.scaffold",
+      "confidence": "verified",
+      "evidence": "入口: flask.sansio.scaffold:Scaffold.put，业务重要度: 4.5",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0368",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "Scaffold put Flow · 步骤 0 层: Scaffold.put()",
+      "location": "sansio/scaffold.py:320",
+      "confidence": "verified",
+      "evidence": "调用类型: entry",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0369",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "Scaffold put Flow · 步骤 1 层: Scaffold._method_route()",
+      "location": "sansio/scaffold.py:325",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0370",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "Scaffold put Flow · 步骤 2 层: Scaffold.route()",
+      "location": "sansio/scaffold.py:293",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0371",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "Scaffold put Flow · 步骤 3 层: Scaffold.add_url_rule()（状态变更）",
+      "location": "sansio/scaffold.py:370",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0372",
+      "category": "业务流程",
+      "type": "流程总览",
+      "description": "流程 'Scaffold patch Flow': 涉及 1 个模块，4 个步骤，0 次跨模块调用",
+      "location": "flask.sansio.scaffold",
+      "confidence": "verified",
+      "evidence": "入口: flask.sansio.scaffold:Scaffold.patch，业务重要度: 4.5",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0373",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "Scaffold patch Flow · 步骤 0 层: Scaffold.patch()",
+      "location": "sansio/scaffold.py:336",
+      "confidence": "verified",
+      "evidence": "调用类型: entry",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0374",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "Scaffold patch Flow · 步骤 1 层: Scaffold._method_route()",
+      "location": "sansio/scaffold.py:341",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0375",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "Scaffold patch Flow · 步骤 2 层: Scaffold.route()",
+      "location": "sansio/scaffold.py:293",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0376",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "Scaffold patch Flow · 步骤 3 层: Scaffold.add_url_rule()（状态变更）",
+      "location": "sansio/scaffold.py:370",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0377",
+      "category": "业务流程",
+      "type": "流程总览",
+      "description": "流程 'Blueprint Addition Flow': 涉及 1 个模块，3 个步骤，0 次跨模块调用",
+      "location": "flask.sansio.blueprints",
+      "confidence": "verified",
+      "evidence": "入口: flask.sansio.blueprints:Blueprint.add_app_template_filter，业务重要度: 4.0",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0378",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "Blueprint Addition Flow · 步骤 0 层: Blueprint.add_app_template_filter()（状态变更）",
+      "location": "sansio/blueprints.py:476",
+      "confidence": "verified",
+      "evidence": "调用类型: entry",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0379",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "Blueprint Addition Flow · 步骤 1 层: Blueprint.record_once()",
+      "location": "sansio/blueprints.py:495",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0380",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "Blueprint Addition Flow · 步骤 2 层: Blueprint.record()",
+      "location": "sansio/blueprints.py:244",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0381",
+      "category": "业务流程",
+      "type": "流程总览",
+      "description": "流程 'Blueprint Addition Flow': 涉及 1 个模块，3 个步骤，0 次跨模块调用",
+      "location": "flask.sansio.blueprints",
+      "confidence": "verified",
+      "evidence": "入口: flask.sansio.blueprints:Blueprint.add_app_template_test，业务重要度: 4.0",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0382",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "Blueprint Addition Flow · 步骤 0 层: Blueprint.add_app_template_test()（状态变更）",
+      "location": "sansio/blueprints.py:532",
+      "confidence": "verified",
+      "evidence": "调用类型: entry",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0383",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "Blueprint Addition Flow · 步骤 1 层: Blueprint.record_once()",
+      "location": "sansio/blueprints.py:553",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0384",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "Blueprint Addition Flow · 步骤 2 层: Blueprint.record()",
+      "location": "sansio/blueprints.py:244",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0385",
+      "category": "关键实现",
+      "type": "核心方法",
+      "description": "Blueprint.register() 是核心实现点（重要度 9.5）",
+      "location": "sansio/blueprints.py:273-377",
+      "confidence": "verified",
+      "evidence": "入选原因: high complexity implementation; includes boundary validation; includes exception raises",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0386",
+      "category": "关键实现",
+      "type": "守卫条件",
+      "description": "Blueprint.register: 1 pre-flight validations",
+      "location": "sansio/blueprints.py: lines 306",
+      "confidence": "verified",
+      "evidence": "lines 306",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0387",
+      "category": "关键实现",
+      "type": "异常处理",
+      "description": "Blueprint.register: raises 1 exception type(s): ValueError",
+      "location": "sansio/blueprints.py: lines 310",
+      "confidence": "verified",
+      "evidence": "lines 310",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0388",
+      "category": "关键实现",
+      "type": "状态变更",
+      "description": "Blueprint.register: modifies 1 state attribute: cli.name",
+      "location": "sansio/blueprints.py:273-377",
+      "confidence": "verified",
+      "evidence": "from state tracker",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0389",
+      "category": "关键实现",
+      "type": "算法模式",
+      "description": "Blueprint.register: sequential traversal",
+      "location": "sansio/blueprints.py:273-377",
+      "confidence": "verified",
+      "evidence": "3 loop(s) detected",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0390",
+      "category": "关键实现",
+      "type": "编排调用",
+      "description": "Blueprint.register: multi-step orchestration (20 internal calls)",
+      "location": "sansio/blueprints.py:273-377",
+      "confidence": "verified",
+      "evidence": "from call count",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0391",
+      "category": "关键实现",
+      "type": "设计模式",
+      "description": "Blueprint.register: uses Repository Pattern",
+      "location": "sansio/blueprints.py:273-377",
+      "confidence": "inferred",
+      "evidence": "from pattern detector",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0392",
+      "category": "关键实现",
+      "type": "守卫子句",
+      "description": "Blueprint.register: name in app.blueprints -> raise",
+      "location": "sansio/blueprints.py:306",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的前置检查 + 提前退出模式",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0393",
+      "category": "关键实现",
+      "type": "异常抛出",
+      "description": "Blueprint.register: 抛出 ValueError",
+      "location": "sansio/blueprints.py:310",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的 raise 语句",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0394",
+      "category": "关键实现",
+      "type": "算法特征",
+      "description": "Blueprint.register: general business logic",
+      "location": "sansio/blueprints.py:273-377",
+      "confidence": "verified",
+      "evidence": "no distinctive algorithmic pattern",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0395",
+      "category": "关键实现",
+      "type": "复杂度",
+      "description": "Blueprint.register: 圈复杂度 18（循环 3，分支 14）",
+      "location": "sansio/blueprints.py:273-377",
+      "confidence": "verified",
+      "evidence": "从 AST 直接计数：if/try 为分支，for/while 为循环",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0396",
+      "category": "关键实现",
+      "type": "核心方法",
+      "description": "AppContext.pop() 是核心实现点（重要度 9.0）",
+      "location": "flask/ctx.py:446-504",
+      "confidence": "verified",
+      "evidence": "入选原因: high complexity implementation; multiple boundary validations; includes exception raises",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0397",
+      "category": "关键实现",
+      "type": "守卫条件",
+      "description": "AppContext.pop: guard-clause style (4 pre-checks)",
+      "location": "flask/ctx.py: lines 465, 470, 475",
+      "confidence": "verified",
+      "evidence": "lines 465, 470, 475",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0398",
+      "category": "关键实现",
+      "type": "异常处理",
+      "description": "AppContext.pop: raises 1 exception type(s): RuntimeError",
+      "location": "flask/ctx.py: lines 466, 471, 476",
+      "confidence": "verified",
+      "evidence": "lines 466, 471, 476",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0399",
+      "category": "关键实现",
+      "type": "编排调用",
+      "description": "AppContext.pop: multi-step orchestration (11 internal calls)",
+      "location": "flask/ctx.py:446-504",
+      "confidence": "verified",
+      "evidence": "from call count",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0400",
+      "category": "关键实现",
+      "type": "设计模式",
+      "description": "AppContext.pop: uses Service / Facade Pattern",
+      "location": "flask/ctx.py:446-504",
+      "confidence": "inferred",
+      "evidence": "from pattern detector",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0401",
+      "category": "关键实现",
+      "type": "守卫子句",
+      "description": "AppContext.pop: self._cv_token is None -> raise",
+      "location": "flask/ctx.py:465",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的前置检查 + 提前退出模式",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0402",
+      "category": "关键实现",
+      "type": "守卫子句",
+      "description": "AppContext.pop: ... or ... -> raise",
+      "location": "flask/ctx.py:470",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的前置检查 + 提前退出模式",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0403",
+      "category": "关键实现",
+      "type": "守卫子句",
+      "description": "AppContext.pop: ctx is not self -> raise",
+      "location": "flask/ctx.py:475",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的前置检查 + 提前退出模式",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0404",
+      "category": "关键实现",
+      "type": "守卫子句",
+      "description": "AppContext.pop: self._push_count > 0 -> early return",
+      "location": "flask/ctx.py:483",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的前置检查 + 提前退出模式",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0405",
+      "category": "关键实现",
+      "type": "异常抛出",
+      "description": "AppContext.pop: 抛出 RuntimeError",
+      "location": "flask/ctx.py:466",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的 raise 语句",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0406",
+      "category": "关键实现",
+      "type": "算法特征",
+      "description": "AppContext.pop: conditional checks (no loops)",
+      "location": "flask/ctx.py:446-504",
+      "confidence": "verified",
+      "evidence": "4 guard clauses, no loops",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0407",
+      "category": "关键实现",
+      "type": "复杂度",
+      "description": "AppContext.pop: 圈复杂度 6（循环 0，分支 5）",
+      "location": "flask/ctx.py:446-504",
+      "confidence": "verified",
+      "evidence": "从 AST 直接计数：if/try 为分支，for/while 为循环",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0408",
+      "category": "关键实现",
+      "type": "核心方法",
+      "description": "Scaffold._get_exc_class_and_code() 是核心实现点（重要度 9.0）",
+      "location": "sansio/scaffold.py:665-706",
+      "confidence": "verified",
+      "evidence": "入选原因: high complexity implementation; multiple boundary validations; includes exception raises",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0409",
+      "category": "关键实现",
+      "type": "守卫条件",
+      "description": "Scaffold._get_exc_class_and_code: guard-clause style (3 pre-checks)",
+      "location": "sansio/scaffold.py: lines 689, 696, 703",
+      "confidence": "verified",
+      "evidence": "lines 689, 696, 703",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0410",
+      "category": "关键实现",
+      "type": "异常处理",
+      "description": "Scaffold._get_exc_class_and_code: raises 2 exception type(s): TypeError, ValueError",
+      "location": "sansio/scaffold.py: lines 690, 697, 681",
+      "confidence": "verified",
+      "evidence": "lines 690, 697, 681",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0411",
+      "category": "关键实现",
+      "type": "编排调用",
+      "description": "Scaffold._get_exc_class_and_code: multi-step orchestration (7 internal calls)",
+      "location": "sansio/scaffold.py:665-706",
+      "confidence": "verified",
+      "evidence": "from call count",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0412",
+      "category": "关键实现",
+      "type": "设计模式",
+      "description": "Scaffold._get_exc_class_and_code: uses Repository Pattern",
+      "location": "sansio/scaffold.py:665-706",
+      "confidence": "inferred",
+      "evidence": "from pattern detector",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0413",
+      "category": "关键实现",
+      "type": "守卫子句",
+      "description": "Scaffold._get_exc_class_and_code: isinstance() -> raise",
+      "location": "sansio/scaffold.py:689",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的前置检查 + 提前退出模式",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0414",
+      "category": "关键实现",
+      "type": "守卫子句",
+      "description": "Scaffold._get_exc_class_and_code: not issubclass() -> raise",
+      "location": "sansio/scaffold.py:696",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的前置检查 + 提前退出模式",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0415",
+      "category": "关键实现",
+      "type": "守卫子句",
+      "description": "Scaffold._get_exc_class_and_code: issubclass() -> early return",
+      "location": "sansio/scaffold.py:703",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的前置检查 + 提前退出模式",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0416",
+      "category": "关键实现",
+      "type": "异常抛出",
+      "description": "Scaffold._get_exc_class_and_code: 抛出 TypeError",
+      "location": "sansio/scaffold.py:690",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的 raise 语句",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0417",
+      "category": "关键实现",
+      "type": "异常抛出",
+      "description": "Scaffold._get_exc_class_and_code: 抛出 ValueError",
+      "location": "sansio/scaffold.py:697",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的 raise 语句",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0418",
+      "category": "关键实现",
+      "type": "算法特征",
+      "description": "Scaffold._get_exc_class_and_code: conditional checks (no loops)",
+      "location": "sansio/scaffold.py:665-706",
+      "confidence": "verified",
+      "evidence": "3 guard clauses, no loops",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0419",
+      "category": "关键实现",
+      "type": "复杂度",
+      "description": "Scaffold._get_exc_class_and_code: 圈复杂度 7（循环 0，分支 6）",
+      "location": "sansio/scaffold.py:665-706",
+      "confidence": "verified",
+      "evidence": "从 AST 直接计数：if/try 为分支，for/while 为循环",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0420",
+      "category": "关键实现",
+      "type": "核心方法",
+      "description": "Flask.make_response() 是核心实现点（重要度 8.5）",
+      "location": "flask/app.py:1227-1367",
+      "confidence": "verified",
+      "evidence": "入选原因: high complexity implementation; includes boundary validation; comprehensive error handling",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0421",
+      "category": "关键实现",
+      "type": "守卫条件",
+      "description": "Flask.make_response: 1 pre-flight validations",
+      "location": "flask/app.py: lines 1309",
+      "confidence": "verified",
+      "evidence": "lines 1309",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0422",
+      "category": "关键实现",
+      "type": "异常处理",
+      "description": "Flask.make_response: raises 2 exception type(s): with_traceback, TypeError",
+      "location": "flask/app.py: lines 1310, 1302, 1347",
+      "confidence": "verified",
+      "evidence": "lines 1310, 1302, 1347",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0423",
+      "category": "关键实现",
+      "type": "编排调用",
+      "description": "Flask.make_response: multi-step orchestration (23 internal calls)",
+      "location": "flask/app.py:1227-1367",
+      "confidence": "verified",
+      "evidence": "from call count",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0424",
+      "category": "关键实现",
+      "type": "设计模式",
+      "description": "Flask.make_response: uses Service / Facade Pattern",
+      "location": "flask/app.py:1227-1367",
+      "confidence": "inferred",
+      "evidence": "from pattern detector",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0425",
+      "category": "关键实现",
+      "type": "守卫子句",
+      "description": "Flask.make_response: rv is None -> raise",
+      "location": "flask/app.py:1309",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的前置检查 + 提前退出模式",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0426",
+      "category": "关键实现",
+      "type": "异常抛出",
+      "description": "Flask.make_response: 抛出 TypeError",
+      "location": "flask/app.py:1310",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的 raise 语句",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0427",
+      "category": "关键实现",
+      "type": "异常抛出",
+      "description": "Flask.make_response: 抛出 TypeError: The view function did not return a valid response tuple. ...",
+      "location": "flask/app.py:1302",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的 raise 语句",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0428",
+      "category": "关键实现",
+      "type": "异常抛出",
+      "description": "Flask.make_response: 抛出 with_traceback",
+      "location": "flask/app.py:1347",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的 raise 语句",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0429",
+      "category": "关键实现",
+      "type": "算法特征",
+      "description": "Flask.make_response: conditional checks (no loops)",
+      "location": "flask/app.py:1227-1367",
+      "confidence": "verified",
+      "evidence": "1 guard clauses, no loops",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0430",
+      "category": "关键实现",
+      "type": "复杂度",
+      "description": "Flask.make_response: 圈复杂度 15（循环 0，分支 14）",
+      "location": "flask/app.py:1227-1367",
+      "confidence": "verified",
+      "evidence": "从 AST 直接计数：if/try 为分支，for/while 为循环",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0431",
+      "category": "关键实现",
+      "type": "核心方法",
+      "description": "Flask.handle_exception() 是核心实现点（重要度 8.0）",
+      "location": "flask/app.py:900-951",
+      "confidence": "verified",
+      "evidence": "入选原因: high complexity implementation; includes boundary validation; includes exception raises",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0432",
+      "category": "关键实现",
+      "type": "守卫条件",
+      "description": "Flask.handle_exception: 1 pre-flight validations",
+      "location": "flask/app.py: lines 935",
+      "confidence": "verified",
+      "evidence": "lines 935",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0433",
+      "category": "关键实现",
+      "type": "异常处理",
+      "description": "Flask.handle_exception: raises 1 exception type(s): e",
+      "location": "flask/app.py: lines 941",
+      "confidence": "verified",
+      "evidence": "lines 941",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0434",
+      "category": "关键实现",
+      "type": "编排调用",
+      "description": "Flask.handle_exception: multi-step orchestration (8 internal calls)",
+      "location": "flask/app.py:900-951",
+      "confidence": "verified",
+      "evidence": "from call count",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0435",
+      "category": "关键实现",
+      "type": "设计模式",
+      "description": "Flask.handle_exception: uses Service / Facade Pattern",
+      "location": "flask/app.py:900-951",
+      "confidence": "inferred",
+      "evidence": "from pattern detector",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0436",
+      "category": "关键实现",
+      "type": "守卫子句",
+      "description": "Flask.handle_exception: propagate -> raise",
+      "location": "flask/app.py:935",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的前置检查 + 提前退出模式",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0437",
+      "category": "关键实现",
+      "type": "异常抛出",
+      "description": "Flask.handle_exception: 抛出 e",
+      "location": "flask/app.py:941",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的 raise 语句",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0438",
+      "category": "关键实现",
+      "type": "算法特征",
+      "description": "Flask.handle_exception: conditional checks (no loops)",
+      "location": "flask/app.py:900-951",
+      "confidence": "verified",
+      "evidence": "1 guard clauses, no loops",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0439",
+      "category": "关键实现",
+      "type": "复杂度",
+      "description": "Flask.handle_exception: 圈复杂度 5（循环 0，分支 4）",
+      "location": "flask/app.py:900-951",
+      "confidence": "verified",
+      "evidence": "从 AST 直接计数：if/try 为分支，for/while 为循环",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0440",
+      "category": "关键实现",
+      "type": "核心方法",
+      "description": "ScriptInfo.load_app() 是核心实现点（重要度 8.0）",
+      "location": "flask/cli.py:333-372",
+      "confidence": "verified",
+      "evidence": "入选原因: high complexity implementation; includes boundary validation; includes exception raises",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0441",
+      "category": "关键实现",
+      "type": "守卫条件",
+      "description": "ScriptInfo.load_app: 2 pre-flight validations",
+      "location": "flask/cli.py: lines 338, 358",
+      "confidence": "verified",
+      "evidence": "lines 338, 358",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0442",
+      "category": "关键实现",
+      "type": "异常处理",
+      "description": "ScriptInfo.load_app: raises 1 exception type(s): NoAppException",
+      "location": "flask/cli.py: lines 359",
+      "confidence": "verified",
+      "evidence": "lines 359",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0443",
+      "category": "关键实现",
+      "type": "算法模式",
+      "description": "ScriptInfo.load_app: search traversal (early exit on match)",
+      "location": "flask/cli.py:333-372",
+      "confidence": "verified",
+      "evidence": "1 loop(s) detected",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0444",
+      "category": "关键实现",
+      "type": "编排调用",
+      "description": "ScriptInfo.load_app: multi-step orchestration (8 internal calls)",
+      "location": "flask/cli.py:333-372",
+      "confidence": "verified",
+      "evidence": "from call count",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0445",
+      "category": "关键实现",
+      "type": "守卫子句",
+      "description": "ScriptInfo.load_app: self._loaded_app is not None -> early return",
+      "location": "flask/cli.py:338",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的前置检查 + 提前退出模式",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0446",
+      "category": "关键实现",
+      "type": "守卫子句",
+      "description": "ScriptInfo.load_app: app is None -> raise",
+      "location": "flask/cli.py:358",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的前置检查 + 提前退出模式",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0447",
+      "category": "关键实现",
+      "type": "异常抛出",
+      "description": "ScriptInfo.load_app: 抛出 NoAppException: Could not locate a Flask application. Use the 'flask --ap...",
+      "location": "flask/cli.py:359",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的 raise 语句",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0448",
+      "category": "关键实现",
+      "type": "算法特征",
+      "description": "ScriptInfo.load_app: pure computation / statistics",
+      "location": "flask/cli.py:333-372",
+      "confidence": "verified",
+      "evidence": "1 loop(s), no state mutation",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0449",
+      "category": "关键实现",
+      "type": "复杂度",
+      "description": "ScriptInfo.load_app: 圈复杂度 8（循环 1，分支 6）",
+      "location": "flask/cli.py:333-372",
+      "confidence": "verified",
+      "evidence": "从 AST 直接计数：if/try 为分支，for/while 为循环",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0450",
+      "category": "关键实现",
+      "type": "核心方法",
+      "description": "TaggedJSONSerializer._untag_scan() 是核心实现点（重要度 8.0）",
+      "location": "json/tag.py:309-319",
+      "confidence": "verified",
+      "evidence": "入选原因: high complexity implementation; core method called by many; core private implementation (high complexity)",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0451",
+      "category": "关键实现",
+      "type": "递归",
+      "description": "TaggedJSONSerializer._untag_scan: recursive implementation",
+      "location": "json/tag.py:309-319",
+      "confidence": "verified",
+      "evidence": "2 recursive call(s) at line 309",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0452",
+      "category": "关键实现",
+      "type": "编排调用",
+      "description": "TaggedJSONSerializer._untag_scan: multi-step orchestration (6 internal calls)",
+      "location": "json/tag.py:309-319",
+      "confidence": "verified",
+      "evidence": "from call count",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0453",
+      "category": "关键实现",
+      "type": "算法特征",
+      "description": "TaggedJSONSerializer._untag_scan: recursion",
+      "location": "json/tag.py:309-319",
+      "confidence": "verified",
+      "evidence": "2 recursive call(s)",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0454",
+      "category": "关键实现",
+      "type": "复杂度",
+      "description": "TaggedJSONSerializer._untag_scan: 圈复杂度 5（循环 2，分支 2）",
+      "location": "json/tag.py:309-319",
+      "confidence": "verified",
+      "evidence": "从 AST 直接计数：if/try 为分支，for/while 为循环",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0455",
+      "category": "关键实现",
+      "type": "核心方法",
+      "description": "App.add_url_rule() 是核心实现点（重要度 8.0）",
+      "location": "sansio/app.py:605-661",
+      "confidence": "verified",
+      "evidence": "入选原因: high complexity implementation; includes boundary validation; includes exception raises",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0456",
+      "category": "关键实现",
+      "type": "守卫条件",
+      "description": "App.add_url_rule: 1 pre-flight validations",
+      "location": "sansio/app.py: lines 623",
+      "confidence": "verified",
+      "evidence": "lines 623",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0457",
+      "category": "关键实现",
+      "type": "异常处理",
+      "description": "App.add_url_rule: raises 2 exception type(s): AssertionError, TypeError",
+      "location": "sansio/app.py: lines 624, 657",
+      "confidence": "verified",
+      "evidence": "lines 624, 657",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0458",
+      "category": "关键实现",
+      "type": "状态变更",
+      "description": "App.add_url_rule: modifies 2 state attributes: url_map, view_functions",
+      "location": "sansio/app.py:605-661",
+      "confidence": "verified",
+      "evidence": "from state tracker",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0459",
+      "category": "关键实现",
+      "type": "编排调用",
+      "description": "App.add_url_rule: multi-step orchestration (14 internal calls)",
+      "location": "sansio/app.py:605-661",
+      "confidence": "verified",
+      "evidence": "from call count",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0460",
+      "category": "关键实现",
+      "type": "设计模式",
+      "description": "App.add_url_rule: uses Repository Pattern",
+      "location": "sansio/app.py:605-661",
+      "confidence": "inferred",
+      "evidence": "from pattern detector",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0461",
+      "category": "关键实现",
+      "type": "守卫子句",
+      "description": "App.add_url_rule: isinstance() -> raise",
+      "location": "sansio/app.py:623",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的前置检查 + 提前退出模式",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0462",
+      "category": "关键实现",
+      "type": "异常抛出",
+      "description": "App.add_url_rule: 抛出 TypeError: Allowed methods must be a list of strings, for example: @...",
+      "location": "sansio/app.py:624",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的 raise 语句",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0463",
+      "category": "关键实现",
+      "type": "异常抛出",
+      "description": "App.add_url_rule: 抛出 AssertionError",
+      "location": "sansio/app.py:657",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的 raise 语句",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0464",
+      "category": "关键实现",
+      "type": "算法特征",
+      "description": "App.add_url_rule: general business logic",
+      "location": "sansio/app.py:605-661",
+      "confidence": "verified",
+      "evidence": "no distinctive algorithmic pattern",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0465",
+      "category": "关键实现",
+      "type": "复杂度",
+      "description": "App.add_url_rule: 圈复杂度 10（循环 1，分支 8）",
+      "location": "sansio/app.py:605-661",
+      "confidence": "verified",
+      "evidence": "从 AST 直接计数：if/try 为分支，for/while 为循环",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0466",
+      "category": "关键实现",
+      "type": "核心方法",
+      "description": "Flask.handle_http_exception() 是核心实现点（重要度 7.5）",
+      "location": "flask/app.py:833-866",
+      "confidence": "verified",
+      "evidence": "入选原因: medium complexity; multiple boundary validations; demonstrates Service / Facade Pattern",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0467",
+      "category": "关键实现",
+      "type": "守卫条件",
+      "description": "Flask.handle_http_exception: guard-clause style (3 pre-checks)",
+      "location": "flask/app.py: lines 854, 860, 864",
+      "confidence": "verified",
+      "evidence": "lines 854, 860, 864",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0468",
+      "category": "关键实现",
+      "type": "设计模式",
+      "description": "Flask.handle_http_exception: uses Service / Facade Pattern",
+      "location": "flask/app.py:833-866",
+      "confidence": "inferred",
+      "evidence": "from pattern detector",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0469",
+      "category": "关键实现",
+      "type": "守卫子句",
+      "description": "Flask.handle_http_exception: e.code is None -> early return",
+      "location": "flask/app.py:854",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的前置检查 + 提前退出模式",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0470",
+      "category": "关键实现",
+      "type": "守卫子句",
+      "description": "Flask.handle_http_exception: isinstance() -> early return",
+      "location": "flask/app.py:860",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的前置检查 + 提前退出模式",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0471",
+      "category": "关键实现",
+      "type": "守卫子句",
+      "description": "Flask.handle_http_exception: handler is None -> early return",
+      "location": "flask/app.py:864",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的前置检查 + 提前退出模式",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0472",
+      "category": "关键实现",
+      "type": "算法特征",
+      "description": "Flask.handle_http_exception: conditional checks (no loops)",
+      "location": "flask/app.py:833-866",
+      "confidence": "verified",
+      "evidence": "3 guard clauses, no loops",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0473",
+      "category": "关键实现",
+      "type": "复杂度",
+      "description": "Flask.handle_http_exception: 圈复杂度 4（循环 0，分支 3）",
+      "location": "flask/app.py:833-866",
+      "confidence": "verified",
+      "evidence": "从 AST 直接计数：if/try 为分支，for/while 为循环",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0474",
+      "category": "关键实现",
+      "type": "核心方法",
+      "description": "Flask.full_dispatch_request() 是核心实现点（重要度 7.5）",
+      "location": "flask/app.py:995-1022",
+      "confidence": "verified",
+      "evidence": "入选原因: high complexity implementation; orchestrates multiple sub-steps; demonstrates Service / Facade Pattern",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0475",
+      "category": "关键实现",
+      "type": "编排调用",
+      "description": "Flask.full_dispatch_request: multi-step orchestration (6 internal calls)",
+      "location": "flask/app.py:995-1022",
+      "confidence": "verified",
+      "evidence": "from call count",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0476",
+      "category": "关键实现",
+      "type": "设计模式",
+      "description": "Flask.full_dispatch_request: uses Service / Facade Pattern",
+      "location": "flask/app.py:995-1022",
+      "confidence": "inferred",
+      "evidence": "from pattern detector",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0477",
+      "category": "关键实现",
+      "type": "算法特征",
+      "description": "Flask.full_dispatch_request: general business logic",
+      "location": "flask/app.py:995-1022",
+      "confidence": "verified",
+      "evidence": "no distinctive algorithmic pattern",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0478",
+      "category": "关键实现",
+      "type": "复杂度",
+      "description": "Flask.full_dispatch_request: 圈复杂度 5（循环 0，分支 4）",
+      "location": "flask/app.py:995-1022",
+      "confidence": "verified",
+      "evidence": "从 AST 直接计数：if/try 为分支，for/while 为循环",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0479",
+      "category": "设计模式",
+      "type": "structural",
+      "description": "AppContext 疑似使用 Service / Facade Pattern",
+      "location": "AppContext",
+      "confidence": "inferred",
+      "evidence": "AppContext orchestrates business logic by coordinating lower-level components",
+      "source": "pattern_detector"
+    },
+    {
+      "fact_id": "F0480",
+      "category": "设计模式",
+      "type": "structural",
+      "description": "App 疑似使用 Service / Facade Pattern",
+      "location": "App",
+      "confidence": "inferred",
+      "evidence": "App orchestrates business logic by coordinating lower-level components",
+      "source": "pattern_detector"
+    },
+    {
+      "fact_id": "F0481",
+      "category": "设计模式",
+      "type": "structural",
+      "description": "App 疑似使用 Repository Pattern",
+      "location": "App",
+      "confidence": "inferred",
+      "evidence": "App encapsulates data access with CRUD operations and validation",
+      "source": "pattern_detector"
+    },
+    {
+      "fact_id": "F0482",
+      "category": "设计模式",
+      "type": "structural",
+      "description": "Blueprint 疑似使用 Repository Pattern",
+      "location": "Blueprint",
+      "confidence": "inferred",
+      "evidence": "Blueprint encapsulates data access with CRUD operations and validation",
+      "source": "pattern_detector"
+    },
+    {
+      "fact_id": "F0483",
+      "category": "设计模式",
+      "type": "structural",
+      "description": "Scaffold 疑似使用 Repository Pattern",
+      "location": "Scaffold",
+      "confidence": "inferred",
+      "evidence": "Scaffold encapsulates data access with CRUD operations and validation",
+      "source": "pattern_detector"
+    },
+    {
+      "fact_id": "F0484",
+      "category": "设计模式",
+      "type": "structural",
+      "description": "Flask 疑似使用 Service / Facade Pattern",
+      "location": "Flask",
+      "confidence": "inferred",
+      "evidence": "Flask orchestrates business logic by coordinating lower-level components",
+      "source": "pattern_detector"
+    },
+    {
+      "fact_id": "F0485",
+      "category": "设计模式",
+      "type": "structural",
+      "description": "Blueprint 疑似使用 Service / Facade Pattern",
+      "location": "Blueprint",
+      "confidence": "inferred",
+      "evidence": "Blueprint orchestrates business logic by coordinating lower-level components",
+      "source": "pattern_detector"
+    },
+    {
+      "fact_id": "F0486",
+      "category": "设计模式",
+      "type": "creational",
+      "description": "Flask 疑似使用 Factory Pattern (Abstract Factory)",
+      "location": "Flask",
+      "confidence": "inferred",
+      "evidence": "Flask encapsulates object creation logic",
+      "source": "pattern_detector"
+    },
+    {
+      "fact_id": "F0487",
+      "category": "设计模式",
+      "type": "behavioral",
+      "description": "DispatchingJinjaLoader 疑似使用 Template Method Pattern",
+      "location": "DispatchingJinjaLoader",
+      "confidence": "inferred",
+      "evidence": "DispatchingJinjaLoader defines algorithm steps within a template structure",
+      "source": "pattern_detector"
+    },
+    {
+      "fact_id": "F0488",
+      "category": "设计模式",
+      "type": "behavioral",
+      "description": "FlaskClient 疑似使用 Template Method Pattern",
+      "location": "FlaskClient",
+      "confidence": "inferred",
+      "evidence": "FlaskClient defines algorithm steps within a template structure",
+      "source": "pattern_detector"
+    }
+  ]
+}

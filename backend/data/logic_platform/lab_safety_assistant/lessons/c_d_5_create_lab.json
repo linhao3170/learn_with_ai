@@ -1,0 +1,1481 @@
+{
+  "lesson_version": "walkthrough-1.0",
+  "algorithm_version": "walkthrough-1.0",
+  "lesson_id": "lesson_c_d_5_create_lab",
+  "lesson_number": 1,
+  "title": "添加实验室",
+  "capability_id": "c_d_5_create_lab",
+  "capability_name": "添加实验室",
+  "section_id": "d_5",
+  "section_name": "预约管理模块",
+  "level": "L2",
+  "intro": "好，代码拿到了，咱们一段一段啃。你不用记住每一行，我会告诉你哪些是核心概念一定要记住，哪些只是「知道有这么回事」就行。",
+  "one_line_frame": "一句话先定调：「添加实验室」（属于板块「预约管理模块」） 一共切成 6 段，其中有 3 处守卫中断（raise） —— 这是本课要盯住的第一个重点。",
+  "segments": [
+    {
+      "segment_id": "seg_001",
+      "order": 1,
+      "title": "函数签名与职责说明",
+      "title_status": "from_structure",
+      "header_text": "第 1 段：函数签名与职责说明（25-36 行）",
+      "segment_kind": "prepare",
+      "source": {
+        "file": "reservation_manager.py",
+        "display_path": "reservation_manager.py",
+        "start_line": 25,
+        "end_line": 36,
+        "symbol": "add_lab",
+        "symbol_kind": "method",
+        "extra_ranges": [],
+        "member_symbol": "add_lab",
+        "member_start_line": 25,
+        "member_end_line": 54
+      },
+      "code_excerpt": "    def add_lab(self, lab_id: str, name: str, capacity: int,\n                location: str, safety_level: str = \"normal\") -> bool:\n        \"\"\"\n        添加实验室\n\n        Args:\n            lab_id: 实验室编号\n            name: 实验室名称\n            capacity: 容纳人数\n            location: 位置\n            safety_level: 安全等级（normal/medium/high）\n        \"\"\"",
+      "code_excerpt_hash": "sha256:3e96c59e0d3fe1ad4200cfe7f85898a8ed062db0155bc82b0e1b795f025a85e7",
+      "line_annotations": [],
+      "lead_in": "以下这段属于 reservation_manager.py 的 add_lab()（第 25-54 行）",
+      "emphasis_line": "",
+      "branch_detail": null,
+      "must_remember": [
+        {
+          "claim_id": "seg_001_c1",
+          "claim_text": "作者在这里自己写明了职责：「添加实验室」——这是**源码原文**（docstring），可信度最高，不是引擎的推断。",
+          "category": "symbol_meaning",
+          "evidence": [
+            {
+              "evidence_id": "ev_f5c5eb2be161",
+              "fact_id": "f_0121",
+              "file": "reservation_manager.py",
+              "start_line": 25,
+              "end_line": 36,
+              "symbol": "add_lab",
+              "excerpt": "    def add_lab(self, lab_id: str, name: str, capacity: int,\n                location: str, safety_level: str = \"normal\") -> bool:\n        \"\"\"\n        添加实验室\n\n        Args:\n            lab_id: 实验室编号\n            name: 实验室名称\n            capacity: 容纳人数\n            location: 位置\n            safety_level: 安全等级（normal/medium/high）\n        \"\"\"",
+              "excerpt_hash": "sha256:3e96c59e0d3fe1ad4200cfe7f85898a8ed062db0155bc82b0e1b795f025a85e7",
+              "confidence": "verified",
+              "reason": "函数签名与 docstring 所在行"
+            }
+          ],
+          "confidence": "verified",
+          "verified": true,
+          "reject_reason": ""
+        }
+      ],
+      "know_enough": [],
+      "one_sentence_summary": {
+        "claim_id": "seg_001_summary",
+        "claim_text": "add_lab() 的职责由作者写在 docstring 里：添加实验室",
+        "category": "symbol_meaning",
+        "evidence": [
+          {
+            "evidence_id": "ev_f5c5eb2be161",
+            "fact_id": "f_0121",
+            "file": "reservation_manager.py",
+            "start_line": 25,
+            "end_line": 36,
+            "symbol": "add_lab",
+            "excerpt": "    def add_lab(self, lab_id: str, name: str, capacity: int,\n                location: str, safety_level: str = \"normal\") -> bool:\n        \"\"\"\n        添加实验室\n\n        Args:\n            lab_id: 实验室编号\n            name: 实验室名称\n            capacity: 容纳人数\n            location: 位置\n            safety_level: 安全等级（normal/medium/high）\n        \"\"\"",
+            "excerpt_hash": "sha256:3e96c59e0d3fe1ad4200cfe7f85898a8ed062db0155bc82b0e1b795f025a85e7",
+            "confidence": "verified",
+            "reason": "函数签名与 docstring 所在行"
+          }
+        ],
+        "confidence": "verified",
+        "verified": true,
+        "reject_reason": ""
+      }
+    },
+    {
+      "segment_id": "seg_002",
+      "order": 2,
+      "title": "前置校验不通过就中断（lab_id in self.labs）",
+      "title_status": "from_structure",
+      "header_text": "第 2 段：前置校验不通过就中断（lab_id in self.labs）（37-38 行）",
+      "segment_kind": "branch",
+      "source": {
+        "file": "reservation_manager.py",
+        "display_path": "reservation_manager.py",
+        "start_line": 37,
+        "end_line": 38,
+        "symbol": "add_lab",
+        "symbol_kind": "method",
+        "extra_ranges": [],
+        "member_symbol": "add_lab",
+        "member_start_line": 25,
+        "member_end_line": 54
+      },
+      "code_excerpt": "        if lab_id in self.labs:\n            raise ValueError(f\"实验室 {lab_id} 已存在\")",
+      "code_excerpt_hash": "sha256:03cb78707f50b8f1c2bb8004e1e32d8c55c42d939f63c8c344ea60c82e78891a",
+      "line_annotations": [
+        {
+          "line": 38,
+          "text": "← 抛出异常，这条业务路径在此中断",
+          "role": "warn",
+          "is_original_comment": false
+        }
+      ],
+      "lead_in": "以下这段属于 reservation_manager.py 的 add_lab()（第 25-54 行）",
+      "emphasis_line": "",
+      "branch_detail": {
+        "condition_code": "lab_id in self.labs",
+        "condition_line": 37,
+        "evaluates_to": "depends_on_scenario",
+        "taken_path": "条件成立时执行本段",
+        "skipped_line_range": {
+          "start_line": 39,
+          "end_line": 54
+        },
+        "is_return": false,
+        "return_at_line": 0,
+        "return_expr": "",
+        "return_ordinal_in_function": 0,
+        "raises": true,
+        "is_terminal": true
+      },
+      "must_remember": [
+        {
+          "claim_id": "seg_002_c1",
+          "claim_text": "这里抛出异常，第 37 行的分支一旦命中就不再往下走。",
+          "category": "return_early_exit",
+          "evidence": [
+            {
+              "evidence_id": "ev_5add8d66fb57",
+              "fact_id": "f_0122",
+              "file": "reservation_manager.py",
+              "start_line": 37,
+              "end_line": 37,
+              "symbol": "add_lab",
+              "excerpt": "        if lab_id in self.labs:",
+              "excerpt_hash": "sha256:731aea84e5981778d038ff026fc2ecd33194db5852757b1912a3755090152816",
+              "confidence": "verified",
+              "reason": "return/raise 语句位置"
+            }
+          ],
+          "confidence": "verified",
+          "verified": true,
+          "reject_reason": ""
+        },
+        {
+          "claim_id": "seg_002_c2",
+          "claim_text": "分支条件是 `lab_id in self.labs`：它**是真是假取决于输入**，静态分析看不到运行数据，所以本课不替你判断走哪边，只把两条路都讲清楚。",
+          "category": "control_flow",
+          "evidence": [
+            {
+              "evidence_id": "ev_5add8d66fb57",
+              "fact_id": "f_0122",
+              "file": "reservation_manager.py",
+              "start_line": 37,
+              "end_line": 37,
+              "symbol": "add_lab",
+              "excerpt": "        if lab_id in self.labs:",
+              "excerpt_hash": "sha256:731aea84e5981778d038ff026fc2ecd33194db5852757b1912a3755090152816",
+              "confidence": "verified",
+              "reason": "条件表达式所在行"
+            }
+          ],
+          "confidence": "verified",
+          "verified": true,
+          "reject_reason": ""
+        }
+      ],
+      "know_enough": [],
+      "one_sentence_summary": {
+        "claim_id": "seg_002_summary",
+        "claim_text": "这里是主动 `raise`：条件不满足就把问题抛出函数，由调用方负责处理。",
+        "category": "control_flow",
+        "evidence": [
+          {
+            "evidence_id": "ev_341ba8fac909",
+            "fact_id": "f_0122",
+            "file": "reservation_manager.py",
+            "start_line": 37,
+            "end_line": 38,
+            "symbol": "add_lab",
+            "excerpt": "        if lab_id in self.labs:\n            raise ValueError(f\"实验室 {lab_id} 已存在\")",
+            "excerpt_hash": "sha256:03cb78707f50b8f1c2bb8004e1e32d8c55c42d939f63c8c344ea60c82e78891a",
+            "confidence": "verified",
+            "reason": "本段代码范围"
+          }
+        ],
+        "confidence": "verified",
+        "verified": true,
+        "reject_reason": ""
+      }
+    },
+    {
+      "segment_id": "seg_003",
+      "order": 3,
+      "title": "前置校验不通过就中断（capacity <= 0）",
+      "title_status": "from_structure",
+      "header_text": "第 3 段：前置校验不通过就中断（capacity <= 0）（40-41 行）",
+      "segment_kind": "branch",
+      "source": {
+        "file": "reservation_manager.py",
+        "display_path": "reservation_manager.py",
+        "start_line": 40,
+        "end_line": 41,
+        "symbol": "add_lab",
+        "symbol_kind": "method",
+        "extra_ranges": [],
+        "member_symbol": "add_lab",
+        "member_start_line": 25,
+        "member_end_line": 54
+      },
+      "code_excerpt": "        if capacity <= 0:\n            raise ValueError(\"容纳人数必须大于0\")",
+      "code_excerpt_hash": "sha256:f71ecc093cecd6c1675f1f1cf03c3a1fb77eb28391bb615e842dc239dc5ef220",
+      "line_annotations": [
+        {
+          "line": 41,
+          "text": "← 抛出异常，这条业务路径在此中断",
+          "role": "warn",
+          "is_original_comment": false
+        }
+      ],
+      "lead_in": "",
+      "emphasis_line": "",
+      "branch_detail": {
+        "condition_code": "capacity <= 0",
+        "condition_line": 40,
+        "evaluates_to": "depends_on_scenario",
+        "taken_path": "条件成立时执行本段",
+        "skipped_line_range": {
+          "start_line": 42,
+          "end_line": 54
+        },
+        "is_return": false,
+        "return_at_line": 0,
+        "return_expr": "",
+        "return_ordinal_in_function": 0,
+        "raises": true,
+        "is_terminal": true
+      },
+      "must_remember": [
+        {
+          "claim_id": "seg_003_c1",
+          "claim_text": "这里抛出异常，第 40 行的分支一旦命中就不再往下走。",
+          "category": "return_early_exit",
+          "evidence": [
+            {
+              "evidence_id": "ev_608ece66a2f5",
+              "fact_id": "f_0123",
+              "file": "reservation_manager.py",
+              "start_line": 40,
+              "end_line": 40,
+              "symbol": "add_lab",
+              "excerpt": "        if capacity <= 0:",
+              "excerpt_hash": "sha256:b2efc2bb8a23a746864d56c5366ecf4b58c4f442b4ca34992c0dd056843ad36b",
+              "confidence": "verified",
+              "reason": "return/raise 语句位置"
+            }
+          ],
+          "confidence": "verified",
+          "verified": true,
+          "reject_reason": ""
+        },
+        {
+          "claim_id": "seg_003_c2",
+          "claim_text": "分支条件是 `capacity <= 0`：它**是真是假取决于输入**，静态分析看不到运行数据，所以本课不替你判断走哪边，只把两条路都讲清楚。",
+          "category": "control_flow",
+          "evidence": [
+            {
+              "evidence_id": "ev_608ece66a2f5",
+              "fact_id": "f_0123",
+              "file": "reservation_manager.py",
+              "start_line": 40,
+              "end_line": 40,
+              "symbol": "add_lab",
+              "excerpt": "        if capacity <= 0:",
+              "excerpt_hash": "sha256:b2efc2bb8a23a746864d56c5366ecf4b58c4f442b4ca34992c0dd056843ad36b",
+              "confidence": "verified",
+              "reason": "条件表达式所在行"
+            }
+          ],
+          "confidence": "verified",
+          "verified": true,
+          "reject_reason": ""
+        },
+        {
+          "claim_id": "seg_003_c3",
+          "claim_text": "这里出现了写死的比较阈值 `capacity <= 0` —— 阈值来自代码本身，不是估算出来的；改代码才会改它。",
+          "category": "parameter_value",
+          "evidence": [
+            {
+              "evidence_id": "ev_608ece66a2f5",
+              "fact_id": "f_0123",
+              "file": "reservation_manager.py",
+              "start_line": 40,
+              "end_line": 40,
+              "symbol": "add_lab",
+              "excerpt": "        if capacity <= 0:",
+              "excerpt_hash": "sha256:b2efc2bb8a23a746864d56c5366ecf4b58c4f442b4ca34992c0dd056843ad36b",
+              "confidence": "verified",
+              "reason": "数字字面量所在行"
+            }
+          ],
+          "confidence": "verified",
+          "verified": true,
+          "reject_reason": ""
+        }
+      ],
+      "know_enough": [],
+      "one_sentence_summary": {
+        "claim_id": "seg_003_summary",
+        "claim_text": "这里是主动 `raise`：条件不满足就把问题抛出函数，由调用方负责处理。",
+        "category": "control_flow",
+        "evidence": [
+          {
+            "evidence_id": "ev_1ee926e53518",
+            "fact_id": "f_0123",
+            "file": "reservation_manager.py",
+            "start_line": 40,
+            "end_line": 41,
+            "symbol": "add_lab",
+            "excerpt": "        if capacity <= 0:\n            raise ValueError(\"容纳人数必须大于0\")",
+            "excerpt_hash": "sha256:f71ecc093cecd6c1675f1f1cf03c3a1fb77eb28391bb615e842dc239dc5ef220",
+            "confidence": "verified",
+            "reason": "本段代码范围"
+          }
+        ],
+        "confidence": "verified",
+        "verified": true,
+        "reject_reason": ""
+      }
+    },
+    {
+      "segment_id": "seg_004",
+      "order": 4,
+      "title": "取值与准备变量",
+      "title_status": "from_structure",
+      "header_text": "第 4 段：取值与准备变量（43-43 行）",
+      "segment_kind": "prepare",
+      "source": {
+        "file": "reservation_manager.py",
+        "display_path": "reservation_manager.py",
+        "start_line": 43,
+        "end_line": 43,
+        "symbol": "add_lab",
+        "symbol_kind": "method",
+        "extra_ranges": [],
+        "member_symbol": "add_lab",
+        "member_start_line": 25,
+        "member_end_line": 54
+      },
+      "code_excerpt": "        valid_levels = {\"normal\", \"medium\", \"high\"}",
+      "code_excerpt_hash": "sha256:a0bde5d93021e8555b8f7d3ad9368fd3ffdf0304d6cf5b165db6540543f3a7a0",
+      "line_annotations": [],
+      "lead_in": "",
+      "emphasis_line": "",
+      "branch_detail": null,
+      "must_remember": [
+        {
+          "claim_id": "seg_004_c1",
+          "claim_text": "`valid_levels` 是这一段新绑定的**局部变量**（不是对象状态）—— 它出了这个函数就不存在，所以它属于计算过程，不属于业务状态。",
+          "category": "data_structure",
+          "evidence": [
+            {
+              "evidence_id": "ev_8f9ca07cbce3",
+              "fact_id": "f_0121",
+              "file": "reservation_manager.py",
+              "start_line": 43,
+              "end_line": 43,
+              "symbol": "add_lab",
+              "excerpt": "        valid_levels = {\"normal\", \"medium\", \"high\"}",
+              "excerpt_hash": "sha256:a0bde5d93021e8555b8f7d3ad9368fd3ffdf0304d6cf5b165db6540543f3a7a0",
+              "confidence": "verified",
+              "reason": "局部变量绑定所在段"
+            }
+          ],
+          "confidence": "verified",
+          "verified": true,
+          "reject_reason": ""
+        },
+        {
+          "claim_id": "seg_004_c2",
+          "claim_text": "变量 `valid_levels` 在这一段被赋值，后面第 44 行还会用到它 —— 所以不要只看这一段就下结论。",
+          "category": "variable_usage",
+          "evidence": [
+            {
+              "evidence_id": "ev_030c1ddf2583",
+              "fact_id": "f_0124",
+              "file": "reservation_manager.py",
+              "start_line": 43,
+              "end_line": 44,
+              "symbol": "add_lab",
+              "excerpt": "        valid_levels = {\"normal\", \"medium\", \"high\"}\n        if safety_level not in valid_levels:",
+              "excerpt_hash": "sha256:1a3c41d7b47f8661b0391f18f53dcd4a9db873ce15abec7022f31cc784a41047",
+              "confidence": "verified",
+              "reason": "赋值段到后续读取行"
+            }
+          ],
+          "confidence": "verified",
+          "verified": true,
+          "reject_reason": ""
+        }
+      ],
+      "know_enough": [],
+      "one_sentence_summary": {
+        "claim_id": "seg_004_summary",
+        "claim_text": "做准备与取数：把后面要用到的值先算好、取好，这一步没有业务判断。",
+        "category": "control_flow",
+        "evidence": [
+          {
+            "evidence_id": "ev_8f9ca07cbce3",
+            "fact_id": "f_0121",
+            "file": "reservation_manager.py",
+            "start_line": 43,
+            "end_line": 43,
+            "symbol": "add_lab",
+            "excerpt": "        valid_levels = {\"normal\", \"medium\", \"high\"}",
+            "excerpt_hash": "sha256:a0bde5d93021e8555b8f7d3ad9368fd3ffdf0304d6cf5b165db6540543f3a7a0",
+            "confidence": "verified",
+            "reason": "本段代码范围"
+          }
+        ],
+        "confidence": "verified",
+        "verified": true,
+        "reject_reason": ""
+      }
+    },
+    {
+      "segment_id": "seg_005",
+      "order": 5,
+      "title": "前置校验不通过就中断（safety_level not in val…）",
+      "title_status": "from_structure",
+      "header_text": "第 5 段：前置校验不通过就中断（safety_level not in val…）（44-45 行）",
+      "segment_kind": "branch",
+      "source": {
+        "file": "reservation_manager.py",
+        "display_path": "reservation_manager.py",
+        "start_line": 44,
+        "end_line": 45,
+        "symbol": "add_lab",
+        "symbol_kind": "method",
+        "extra_ranges": [],
+        "member_symbol": "add_lab",
+        "member_start_line": 25,
+        "member_end_line": 54
+      },
+      "code_excerpt": "        if safety_level not in valid_levels:\n            raise ValueError(f\"非法安全等级: {safety_level}\")",
+      "code_excerpt_hash": "sha256:bef2aa0f4f859fd52c41f23421e8bc973faa5260aacc1f54034d148644c02902",
+      "line_annotations": [
+        {
+          "line": 45,
+          "text": "← 抛出异常，这条业务路径在此中断",
+          "role": "warn",
+          "is_original_comment": false
+        }
+      ],
+      "lead_in": "",
+      "emphasis_line": "",
+      "branch_detail": {
+        "condition_code": "safety_level not in valid_levels",
+        "condition_line": 44,
+        "evaluates_to": "depends_on_scenario",
+        "taken_path": "条件成立时执行本段",
+        "skipped_line_range": {
+          "start_line": 46,
+          "end_line": 54
+        },
+        "is_return": false,
+        "return_at_line": 0,
+        "return_expr": "",
+        "return_ordinal_in_function": 0,
+        "raises": true,
+        "is_terminal": true
+      },
+      "must_remember": [
+        {
+          "claim_id": "seg_005_c1",
+          "claim_text": "这里抛出异常，第 44 行的分支一旦命中就不再往下走。",
+          "category": "return_early_exit",
+          "evidence": [
+            {
+              "evidence_id": "ev_bd6ef759780b",
+              "fact_id": "f_0124",
+              "file": "reservation_manager.py",
+              "start_line": 44,
+              "end_line": 44,
+              "symbol": "add_lab",
+              "excerpt": "        if safety_level not in valid_levels:",
+              "excerpt_hash": "sha256:c33edfc8696b765a131d740d280831e74b9a02cc356e20c1fcc8621b761ef28a",
+              "confidence": "verified",
+              "reason": "return/raise 语句位置"
+            }
+          ],
+          "confidence": "verified",
+          "verified": true,
+          "reject_reason": ""
+        },
+        {
+          "claim_id": "seg_005_c2",
+          "claim_text": "分支条件是 `safety_level not in valid_levels`：它**是真是假取决于输入**，静态分析看不到运行数据，所以本课不替你判断走哪边，只把两条路都讲清楚。",
+          "category": "control_flow",
+          "evidence": [
+            {
+              "evidence_id": "ev_bd6ef759780b",
+              "fact_id": "f_0124",
+              "file": "reservation_manager.py",
+              "start_line": 44,
+              "end_line": 44,
+              "symbol": "add_lab",
+              "excerpt": "        if safety_level not in valid_levels:",
+              "excerpt_hash": "sha256:c33edfc8696b765a131d740d280831e74b9a02cc356e20c1fcc8621b761ef28a",
+              "confidence": "verified",
+              "reason": "条件表达式所在行"
+            }
+          ],
+          "confidence": "verified",
+          "verified": true,
+          "reject_reason": ""
+        }
+      ],
+      "know_enough": [],
+      "one_sentence_summary": {
+        "claim_id": "seg_005_summary",
+        "claim_text": "这里是主动 `raise`：条件不满足就把问题抛出函数，由调用方负责处理。",
+        "category": "control_flow",
+        "evidence": [
+          {
+            "evidence_id": "ev_a25a2b54df37",
+            "fact_id": "f_0124",
+            "file": "reservation_manager.py",
+            "start_line": 44,
+            "end_line": 45,
+            "symbol": "add_lab",
+            "excerpt": "        if safety_level not in valid_levels:\n            raise ValueError(f\"非法安全等级: {safety_level}\")",
+            "excerpt_hash": "sha256:bef2aa0f4f859fd52c41f23421e8bc973faa5260aacc1f54034d148644c02902",
+            "confidence": "verified",
+            "reason": "本段代码范围"
+          }
+        ],
+        "confidence": "verified",
+        "verified": true,
+        "reject_reason": ""
+      }
+    },
+    {
+      "segment_id": "seg_006",
+      "order": 6,
+      "title": "更新状态",
+      "title_status": "from_structure",
+      "header_text": "第 6 段：更新状态（47-54 行）",
+      "segment_kind": "state_change",
+      "source": {
+        "file": "reservation_manager.py",
+        "display_path": "reservation_manager.py",
+        "start_line": 47,
+        "end_line": 54,
+        "symbol": "add_lab",
+        "symbol_kind": "method",
+        "extra_ranges": [],
+        "member_symbol": "add_lab",
+        "member_start_line": 25,
+        "member_end_line": 54
+      },
+      "code_excerpt": "        self.labs[lab_id] = {\n            \"name\": name,\n            \"capacity\": capacity,\n            \"location\": location,\n            \"safety_level\": safety_level,\n            \"equipment\": [],\n        }\n        return True",
+      "code_excerpt_hash": "sha256:9ee1c0d13a411548e2333e917d3f776d3201128c19bfce00f1ba0d2f4b6b4745",
+      "line_annotations": [
+        {
+          "line": 47,
+          "text": "← 写入状态 self.labs[lab_id]",
+          "role": "state_change",
+          "is_original_comment": false
+        },
+        {
+          "line": 54,
+          "text": "← 直接返回，函数结束！",
+          "role": "return_marker",
+          "is_original_comment": false
+        }
+      ],
+      "lead_in": "",
+      "emphasis_line": "",
+      "branch_detail": null,
+      "must_remember": [
+        {
+          "claim_id": "seg_006_c1",
+          "claim_text": "这一段会写入状态 `self.labs[lab_id]` —— 状态变化是业务副作用，读代码时要专门盯住「谁改了它、谁在后面读它」。",
+          "category": "data_structure",
+          "evidence": [
+            {
+              "evidence_id": "ev_2939f83c84bc",
+              "fact_id": "f_0121",
+              "file": "reservation_manager.py",
+              "start_line": 47,
+              "end_line": 54,
+              "symbol": "add_lab",
+              "excerpt": "        self.labs[lab_id] = {\n            \"name\": name,\n            \"capacity\": capacity,\n            \"location\": location,\n            \"safety_level\": safety_level,\n            \"equipment\": [],\n        }\n        return True",
+              "excerpt_hash": "sha256:9ee1c0d13a411548e2333e917d3f776d3201128c19bfce00f1ba0d2f4b6b4745",
+              "confidence": "verified",
+              "reason": "状态写入所在段"
+            }
+          ],
+          "confidence": "verified",
+          "verified": true,
+          "reject_reason": ""
+        }
+      ],
+      "know_enough": [],
+      "one_sentence_summary": {
+        "claim_id": "seg_006_summary",
+        "claim_text": "把这一步算出来的结果写进对象状态，供后面读取。",
+        "category": "control_flow",
+        "evidence": [
+          {
+            "evidence_id": "ev_2939f83c84bc",
+            "fact_id": "f_0121",
+            "file": "reservation_manager.py",
+            "start_line": 47,
+            "end_line": 54,
+            "symbol": "add_lab",
+            "excerpt": "        self.labs[lab_id] = {\n            \"name\": name,\n            \"capacity\": capacity,\n            \"location\": location,\n            \"safety_level\": safety_level,\n            \"equipment\": [],\n        }\n        return True",
+            "excerpt_hash": "sha256:9ee1c0d13a411548e2333e917d3f776d3201128c19bfce00f1ba0d2f4b6b4745",
+            "confidence": "verified",
+            "reason": "本段代码范围"
+          }
+        ],
+        "confidence": "verified",
+        "verified": true,
+        "reject_reason": ""
+      }
+    }
+  ],
+  "summary_diagram": "本课路径（按执行顺序）\n| 段 | 内容 | 行号 | 执行后是否结束函数 |\n|---|---|---|---|\n| 1 | 函数签名与职责说明 | 25-36 | 否 |\n| 2 | 前置校验不通过就中断（lab_id in self.labs） | 37-38 | 是（抛异常中断） |\n| 3 | 前置校验不通过就中断（capacity <= 0） | 40-41 | 是（抛异常中断） |\n| 4 | 取值与准备变量 | 43-43 | 否 |\n| 5 | 前置校验不通过就中断（safety_level not in val…） | 44-45 | 是（抛异常中断） |\n| 6 | 更新状态 | 47-54 | 否 |",
+  "lesson_recap": [
+    "「添加实验室」一共 6 段，顺序执行；看到 `return` 就表示这条业务分支结束了，后面的段不再执行。",
+    "本课有 3 处提前出口（第 37 行 raise、第 40 行 raise、第 44 行 raise）——条件一旦命中，它后面的段就不会执行。这是理解这段业务的关键节点。",
+    "段标题中来自图谱能力点名字的那些是**引擎推断**（inferred），来自结构推导的（如「提前返回」）是**代码事实**（verified）—— 界面上有标记，别混着信。"
+  ],
+  "consolidate": "消化一下，有哪段没看懂的随时问我。",
+  "next_action": "continue_reading",
+  "members_covered": [
+    {
+      "symbol": "add_lab",
+      "file": "reservation_manager.py",
+      "start_line": 25,
+      "end_line": 54,
+      "segments": [
+        "seg_001",
+        "seg_002",
+        "seg_003",
+        "seg_004",
+        "seg_005",
+        "seg_006"
+      ],
+      "truncated": false
+    }
+  ],
+  "members_total": 1,
+  "truncated": false,
+  "truncation_reason": "",
+  "source_hash": "sha256:5bdd3e89a09db9dd6d9d51a699411a0d",
+  "review": {
+    "status": "needs_review",
+    "can_publish": false,
+    "generated_by": "ast_rule_engine",
+    "llm_claim_ratio": 0.0,
+    "analysis_version": "walkthrough-1.0",
+    "source_hash": "sha256:5bdd3e89a09db9dd6d9d51a699411a0d",
+    "blocking_issues": [
+      "尚未经教师确认：段标题与业务含义均为引擎推断，发布权在教师"
+    ],
+    "verification_passed": true,
+    "verification_version": "verify-1.0",
+    "verified_checks": 75,
+    "failed_checks": 0
+  },
+  "caveats": [
+    "本课由 AST 规则确定性生成（无 LLM、无联网），同一份源码两次生成结果逐字节一致。",
+    "段标题有两类来源：命中图谱能力点中文名（from_capability_name，该名本身为 inferred）或纯结构推导（from_structure）。标题**不是**代码事实，只是讲解顺序的抓手。",
+    "分支真假恒为 depends_on_scenario：静态分析看不到输入，不敢替输入下结论。",
+    "未通过校验与教师确认前，本课不进入「已确认」状态，界面上一直显示待确认标记。",
+    "已知覆盖缺口①：`except` 分支当前不单独成段。源码里的异常处理路径只有主路径被讲到，错误处理路径需要教师补充或等后续版本。",
+    "已知覆盖缺口②：「知道就行」只对**模块级函数**与 `self.方法()` 做跨能力点指引；形如 `reader.read_regex()` 这类「库对象上的调用」引擎没有接收者类型信息，不做指引，也不猜它是什么。",
+    "已知覆盖缺口③：段内如果出现同名函数，取的是行号最近的那个（确定性优先），并不保证就是运行时真正被调用的那个。"
+  ],
+  "render": {
+    "header_format": "第 {order} 段：{title}（{start}-{end} 行）",
+    "header_format_alt": "第 {start}-{end} 行：{title}",
+    "bullets_heading": "重点记什么：",
+    "summary_heading": "一句话概括： ",
+    "know_enough_heading": "知道就行：",
+    "lesson_recap_heading": "你现在需要记住的 {n} 个核心要点：",
+    "lesson_open": "好，代码拿到了，咱们一段一段啃。你不用记住每一行，我会告诉你哪些是核心概念一定要记住，哪些只是「知道有这么回事」就行。",
+    "lesson_frame_prefix": "一句话先定调：",
+    "lesson_close": "消化一下，有哪段没看懂的随时问我。"
+  },
+  "verification": {
+    "verify_version": "verify-1.0",
+    "algorithm_version": "verify-1.0",
+    "lesson_id": "lesson_c_d_5_create_lab",
+    "can_publish": true,
+    "counts": {
+      "checks": 75,
+      "passed": 75,
+      "failed": 0,
+      "skipped": 0,
+      "rejected_claims": 0,
+      "rejected_segments": 0
+    },
+    "checks": [
+      {
+        "check_id": "V01_path_relative",
+        "check_name": "证据文件路径为项目内相对路径",
+        "scope": "segment",
+        "target_id": "seg_001",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 0,
+        "detail": ""
+      },
+      {
+        "check_id": "V02_span_valid",
+        "check_name": "行区间合法（1 <= start <= end <= 总行数）",
+        "scope": "segment",
+        "target_id": "seg_001",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 25,
+        "detail": ""
+      },
+      {
+        "check_id": "V05_segment_excerpt",
+        "check_name": "段的代码摘录与磁盘源码逐字符一致",
+        "scope": "segment",
+        "target_id": "seg_001",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 25,
+        "detail": ""
+      },
+      {
+        "check_id": "V06_symbol_exists",
+        "check_name": "段引用的函数在 AST 中真实存在且覆盖段行范围",
+        "scope": "segment",
+        "target_id": "seg_001",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 25,
+        "detail": ""
+      },
+      {
+        "check_id": "V10_claim_has_evidence",
+        "check_name": "每条断言都带至少一条证据",
+        "scope": "claim",
+        "target_id": "seg_001_c1",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 25,
+        "detail": ""
+      },
+      {
+        "check_id": "V03_excerpt_fidelity",
+        "check_name": "存下的摘录与磁盘源码逐字符一致",
+        "scope": "claim",
+        "target_id": "seg_001_c1",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 25,
+        "detail": ""
+      },
+      {
+        "check_id": "V04_hash_matches",
+        "check_name": "摘录哈希与存下的哈希一致",
+        "scope": "claim",
+        "target_id": "seg_001_c1",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 25,
+        "detail": ""
+      },
+      {
+        "check_id": "V10_claim_has_evidence",
+        "check_name": "每条断言都带至少一条证据",
+        "scope": "claim",
+        "target_id": "seg_001_summary",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 25,
+        "detail": ""
+      },
+      {
+        "check_id": "V03_excerpt_fidelity",
+        "check_name": "存下的摘录与磁盘源码逐字符一致",
+        "scope": "claim",
+        "target_id": "seg_001_summary",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 25,
+        "detail": ""
+      },
+      {
+        "check_id": "V04_hash_matches",
+        "check_name": "摘录哈希与存下的哈希一致",
+        "scope": "claim",
+        "target_id": "seg_001_summary",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 25,
+        "detail": ""
+      },
+      {
+        "check_id": "V01_path_relative",
+        "check_name": "证据文件路径为项目内相对路径",
+        "scope": "segment",
+        "target_id": "seg_002",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 0,
+        "detail": ""
+      },
+      {
+        "check_id": "V02_span_valid",
+        "check_name": "行区间合法（1 <= start <= end <= 总行数）",
+        "scope": "segment",
+        "target_id": "seg_002",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 37,
+        "detail": ""
+      },
+      {
+        "check_id": "V05_segment_excerpt",
+        "check_name": "段的代码摘录与磁盘源码逐字符一致",
+        "scope": "segment",
+        "target_id": "seg_002",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 37,
+        "detail": ""
+      },
+      {
+        "check_id": "V06_symbol_exists",
+        "check_name": "段引用的函数在 AST 中真实存在且覆盖段行范围",
+        "scope": "segment",
+        "target_id": "seg_002",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 25,
+        "detail": ""
+      },
+      {
+        "check_id": "V10_claim_has_evidence",
+        "check_name": "每条断言都带至少一条证据",
+        "scope": "claim",
+        "target_id": "seg_002_c1",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 37,
+        "detail": ""
+      },
+      {
+        "check_id": "V03_excerpt_fidelity",
+        "check_name": "存下的摘录与磁盘源码逐字符一致",
+        "scope": "claim",
+        "target_id": "seg_002_c1",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 37,
+        "detail": ""
+      },
+      {
+        "check_id": "V04_hash_matches",
+        "check_name": "摘录哈希与存下的哈希一致",
+        "scope": "claim",
+        "target_id": "seg_002_c1",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 37,
+        "detail": ""
+      },
+      {
+        "check_id": "V10_claim_has_evidence",
+        "check_name": "每条断言都带至少一条证据",
+        "scope": "claim",
+        "target_id": "seg_002_c2",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 37,
+        "detail": ""
+      },
+      {
+        "check_id": "V03_excerpt_fidelity",
+        "check_name": "存下的摘录与磁盘源码逐字符一致",
+        "scope": "claim",
+        "target_id": "seg_002_c2",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 37,
+        "detail": ""
+      },
+      {
+        "check_id": "V04_hash_matches",
+        "check_name": "摘录哈希与存下的哈希一致",
+        "scope": "claim",
+        "target_id": "seg_002_c2",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 37,
+        "detail": ""
+      },
+      {
+        "check_id": "V10_claim_has_evidence",
+        "check_name": "每条断言都带至少一条证据",
+        "scope": "claim",
+        "target_id": "seg_002_summary",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 37,
+        "detail": ""
+      },
+      {
+        "check_id": "V03_excerpt_fidelity",
+        "check_name": "存下的摘录与磁盘源码逐字符一致",
+        "scope": "claim",
+        "target_id": "seg_002_summary",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 37,
+        "detail": ""
+      },
+      {
+        "check_id": "V04_hash_matches",
+        "check_name": "摘录哈希与存下的哈希一致",
+        "scope": "claim",
+        "target_id": "seg_002_summary",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 37,
+        "detail": ""
+      },
+      {
+        "check_id": "V01_path_relative",
+        "check_name": "证据文件路径为项目内相对路径",
+        "scope": "segment",
+        "target_id": "seg_003",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 0,
+        "detail": ""
+      },
+      {
+        "check_id": "V02_span_valid",
+        "check_name": "行区间合法（1 <= start <= end <= 总行数）",
+        "scope": "segment",
+        "target_id": "seg_003",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 40,
+        "detail": ""
+      },
+      {
+        "check_id": "V05_segment_excerpt",
+        "check_name": "段的代码摘录与磁盘源码逐字符一致",
+        "scope": "segment",
+        "target_id": "seg_003",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 40,
+        "detail": ""
+      },
+      {
+        "check_id": "V06_symbol_exists",
+        "check_name": "段引用的函数在 AST 中真实存在且覆盖段行范围",
+        "scope": "segment",
+        "target_id": "seg_003",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 25,
+        "detail": ""
+      },
+      {
+        "check_id": "V10_claim_has_evidence",
+        "check_name": "每条断言都带至少一条证据",
+        "scope": "claim",
+        "target_id": "seg_003_c1",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 40,
+        "detail": ""
+      },
+      {
+        "check_id": "V03_excerpt_fidelity",
+        "check_name": "存下的摘录与磁盘源码逐字符一致",
+        "scope": "claim",
+        "target_id": "seg_003_c1",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 40,
+        "detail": ""
+      },
+      {
+        "check_id": "V04_hash_matches",
+        "check_name": "摘录哈希与存下的哈希一致",
+        "scope": "claim",
+        "target_id": "seg_003_c1",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 40,
+        "detail": ""
+      },
+      {
+        "check_id": "V10_claim_has_evidence",
+        "check_name": "每条断言都带至少一条证据",
+        "scope": "claim",
+        "target_id": "seg_003_c2",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 40,
+        "detail": ""
+      },
+      {
+        "check_id": "V03_excerpt_fidelity",
+        "check_name": "存下的摘录与磁盘源码逐字符一致",
+        "scope": "claim",
+        "target_id": "seg_003_c2",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 40,
+        "detail": ""
+      },
+      {
+        "check_id": "V04_hash_matches",
+        "check_name": "摘录哈希与存下的哈希一致",
+        "scope": "claim",
+        "target_id": "seg_003_c2",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 40,
+        "detail": ""
+      },
+      {
+        "check_id": "V10_claim_has_evidence",
+        "check_name": "每条断言都带至少一条证据",
+        "scope": "claim",
+        "target_id": "seg_003_c3",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 40,
+        "detail": ""
+      },
+      {
+        "check_id": "V03_excerpt_fidelity",
+        "check_name": "存下的摘录与磁盘源码逐字符一致",
+        "scope": "claim",
+        "target_id": "seg_003_c3",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 40,
+        "detail": ""
+      },
+      {
+        "check_id": "V04_hash_matches",
+        "check_name": "摘录哈希与存下的哈希一致",
+        "scope": "claim",
+        "target_id": "seg_003_c3",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 40,
+        "detail": ""
+      },
+      {
+        "check_id": "V10_claim_has_evidence",
+        "check_name": "每条断言都带至少一条证据",
+        "scope": "claim",
+        "target_id": "seg_003_summary",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 40,
+        "detail": ""
+      },
+      {
+        "check_id": "V03_excerpt_fidelity",
+        "check_name": "存下的摘录与磁盘源码逐字符一致",
+        "scope": "claim",
+        "target_id": "seg_003_summary",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 40,
+        "detail": ""
+      },
+      {
+        "check_id": "V04_hash_matches",
+        "check_name": "摘录哈希与存下的哈希一致",
+        "scope": "claim",
+        "target_id": "seg_003_summary",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 40,
+        "detail": ""
+      },
+      {
+        "check_id": "V01_path_relative",
+        "check_name": "证据文件路径为项目内相对路径",
+        "scope": "segment",
+        "target_id": "seg_004",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 0,
+        "detail": ""
+      },
+      {
+        "check_id": "V02_span_valid",
+        "check_name": "行区间合法（1 <= start <= end <= 总行数）",
+        "scope": "segment",
+        "target_id": "seg_004",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 43,
+        "detail": ""
+      },
+      {
+        "check_id": "V05_segment_excerpt",
+        "check_name": "段的代码摘录与磁盘源码逐字符一致",
+        "scope": "segment",
+        "target_id": "seg_004",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 43,
+        "detail": ""
+      },
+      {
+        "check_id": "V06_symbol_exists",
+        "check_name": "段引用的函数在 AST 中真实存在且覆盖段行范围",
+        "scope": "segment",
+        "target_id": "seg_004",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 25,
+        "detail": ""
+      },
+      {
+        "check_id": "V10_claim_has_evidence",
+        "check_name": "每条断言都带至少一条证据",
+        "scope": "claim",
+        "target_id": "seg_004_c1",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 43,
+        "detail": ""
+      },
+      {
+        "check_id": "V03_excerpt_fidelity",
+        "check_name": "存下的摘录与磁盘源码逐字符一致",
+        "scope": "claim",
+        "target_id": "seg_004_c1",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 43,
+        "detail": ""
+      },
+      {
+        "check_id": "V04_hash_matches",
+        "check_name": "摘录哈希与存下的哈希一致",
+        "scope": "claim",
+        "target_id": "seg_004_c1",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 43,
+        "detail": ""
+      },
+      {
+        "check_id": "V10_claim_has_evidence",
+        "check_name": "每条断言都带至少一条证据",
+        "scope": "claim",
+        "target_id": "seg_004_c2",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 43,
+        "detail": ""
+      },
+      {
+        "check_id": "V03_excerpt_fidelity",
+        "check_name": "存下的摘录与磁盘源码逐字符一致",
+        "scope": "claim",
+        "target_id": "seg_004_c2",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 43,
+        "detail": ""
+      },
+      {
+        "check_id": "V04_hash_matches",
+        "check_name": "摘录哈希与存下的哈希一致",
+        "scope": "claim",
+        "target_id": "seg_004_c2",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 43,
+        "detail": ""
+      },
+      {
+        "check_id": "V10_claim_has_evidence",
+        "check_name": "每条断言都带至少一条证据",
+        "scope": "claim",
+        "target_id": "seg_004_summary",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 43,
+        "detail": ""
+      },
+      {
+        "check_id": "V03_excerpt_fidelity",
+        "check_name": "存下的摘录与磁盘源码逐字符一致",
+        "scope": "claim",
+        "target_id": "seg_004_summary",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 43,
+        "detail": ""
+      },
+      {
+        "check_id": "V04_hash_matches",
+        "check_name": "摘录哈希与存下的哈希一致",
+        "scope": "claim",
+        "target_id": "seg_004_summary",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 43,
+        "detail": ""
+      },
+      {
+        "check_id": "V01_path_relative",
+        "check_name": "证据文件路径为项目内相对路径",
+        "scope": "segment",
+        "target_id": "seg_005",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 0,
+        "detail": ""
+      },
+      {
+        "check_id": "V02_span_valid",
+        "check_name": "行区间合法（1 <= start <= end <= 总行数）",
+        "scope": "segment",
+        "target_id": "seg_005",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 44,
+        "detail": ""
+      },
+      {
+        "check_id": "V05_segment_excerpt",
+        "check_name": "段的代码摘录与磁盘源码逐字符一致",
+        "scope": "segment",
+        "target_id": "seg_005",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 44,
+        "detail": ""
+      },
+      {
+        "check_id": "V06_symbol_exists",
+        "check_name": "段引用的函数在 AST 中真实存在且覆盖段行范围",
+        "scope": "segment",
+        "target_id": "seg_005",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 25,
+        "detail": ""
+      },
+      {
+        "check_id": "V10_claim_has_evidence",
+        "check_name": "每条断言都带至少一条证据",
+        "scope": "claim",
+        "target_id": "seg_005_c1",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 44,
+        "detail": ""
+      },
+      {
+        "check_id": "V03_excerpt_fidelity",
+        "check_name": "存下的摘录与磁盘源码逐字符一致",
+        "scope": "claim",
+        "target_id": "seg_005_c1",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 44,
+        "detail": ""
+      },
+      {
+        "check_id": "V04_hash_matches",
+        "check_name": "摘录哈希与存下的哈希一致",
+        "scope": "claim",
+        "target_id": "seg_005_c1",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 44,
+        "detail": ""
+      },
+      {
+        "check_id": "V10_claim_has_evidence",
+        "check_name": "每条断言都带至少一条证据",
+        "scope": "claim",
+        "target_id": "seg_005_c2",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 44,
+        "detail": ""
+      },
+      {
+        "check_id": "V03_excerpt_fidelity",
+        "check_name": "存下的摘录与磁盘源码逐字符一致",
+        "scope": "claim",
+        "target_id": "seg_005_c2",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 44,
+        "detail": ""
+      },
+      {
+        "check_id": "V04_hash_matches",
+        "check_name": "摘录哈希与存下的哈希一致",
+        "scope": "claim",
+        "target_id": "seg_005_c2",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 44,
+        "detail": ""
+      },
+      {
+        "check_id": "V10_claim_has_evidence",
+        "check_name": "每条断言都带至少一条证据",
+        "scope": "claim",
+        "target_id": "seg_005_summary",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 44,
+        "detail": ""
+      },
+      {
+        "check_id": "V03_excerpt_fidelity",
+        "check_name": "存下的摘录与磁盘源码逐字符一致",
+        "scope": "claim",
+        "target_id": "seg_005_summary",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 44,
+        "detail": ""
+      },
+      {
+        "check_id": "V04_hash_matches",
+        "check_name": "摘录哈希与存下的哈希一致",
+        "scope": "claim",
+        "target_id": "seg_005_summary",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 44,
+        "detail": ""
+      },
+      {
+        "check_id": "V01_path_relative",
+        "check_name": "证据文件路径为项目内相对路径",
+        "scope": "segment",
+        "target_id": "seg_006",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 0,
+        "detail": ""
+      },
+      {
+        "check_id": "V02_span_valid",
+        "check_name": "行区间合法（1 <= start <= end <= 总行数）",
+        "scope": "segment",
+        "target_id": "seg_006",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 47,
+        "detail": ""
+      },
+      {
+        "check_id": "V05_segment_excerpt",
+        "check_name": "段的代码摘录与磁盘源码逐字符一致",
+        "scope": "segment",
+        "target_id": "seg_006",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 47,
+        "detail": ""
+      },
+      {
+        "check_id": "V06_symbol_exists",
+        "check_name": "段引用的函数在 AST 中真实存在且覆盖段行范围",
+        "scope": "segment",
+        "target_id": "seg_006",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 25,
+        "detail": ""
+      },
+      {
+        "check_id": "V10_claim_has_evidence",
+        "check_name": "每条断言都带至少一条证据",
+        "scope": "claim",
+        "target_id": "seg_006_c1",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 47,
+        "detail": ""
+      },
+      {
+        "check_id": "V03_excerpt_fidelity",
+        "check_name": "存下的摘录与磁盘源码逐字符一致",
+        "scope": "claim",
+        "target_id": "seg_006_c1",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 47,
+        "detail": ""
+      },
+      {
+        "check_id": "V04_hash_matches",
+        "check_name": "摘录哈希与存下的哈希一致",
+        "scope": "claim",
+        "target_id": "seg_006_c1",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 47,
+        "detail": ""
+      },
+      {
+        "check_id": "V10_claim_has_evidence",
+        "check_name": "每条断言都带至少一条证据",
+        "scope": "claim",
+        "target_id": "seg_006_summary",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 47,
+        "detail": ""
+      },
+      {
+        "check_id": "V03_excerpt_fidelity",
+        "check_name": "存下的摘录与磁盘源码逐字符一致",
+        "scope": "claim",
+        "target_id": "seg_006_summary",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 47,
+        "detail": ""
+      },
+      {
+        "check_id": "V04_hash_matches",
+        "check_name": "摘录哈希与存下的哈希一致",
+        "scope": "claim",
+        "target_id": "seg_006_summary",
+        "status": "pass",
+        "file": "reservation_manager.py",
+        "line": 47,
+        "detail": ""
+      }
+    ],
+    "rejected_claim_ids": [],
+    "rejected_segment_ids": [],
+    "caveats": [
+      "校验器只做**机械复核**：它能证明「这句话引用的那段代码确实存在且逐字符一致」，不能证明「这句业务解释是对的」。后者只有人能判（README §13.4 三层判定主体分离）。",
+      "校验器刻意绕开 ast_cache，直接从磁盘重读源码 —— 它校验的是文件本身，不是生成时的记忆。",
+      "任何一项失败都会让 can_publish=False，且失败项必须在前端可见；不存在「错误率低于阈值就放行」的规则。",
+      "算法版本 verify-1.0；同一份输入两次运行结果逐字节一致（无随机、无网络、无时间依赖）。"
+    ]
+  }
+}

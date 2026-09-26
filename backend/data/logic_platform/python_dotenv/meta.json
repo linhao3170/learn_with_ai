@@ -1,0 +1,9 @@
+{
+  "analysis_id": "python_dotenv",
+  "project_id": "python_dotenv",
+  "project_name": "python_dotenv",
+  "source_kind": "demo",
+  "source_root_rel": "frontend/public/demo/projects/python_dotenv/source",
+  "source_hash": "sha256:1e0d7a1f50bb75f0c30e910eceb7bd35",
+  "platform_version": "lp-1.0"
+}

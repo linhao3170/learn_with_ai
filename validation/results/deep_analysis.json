@@ -1,0 +1,4448 @@
+{
+  "call_graph": {
+    "nodes": {
+      "app:LabSafetyApp.__init__": {
+        "name": "__init__",
+        "kind": "method",
+        "module": "app",
+        "class": "LabSafetyApp",
+        "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\app.py",
+        "start_line": 21,
+        "end_line": 25,
+        "docstring": null,
+        "calls": [],
+        "called_by": [],
+        "is_entry_point": false,
+        "tags": [
+          "creation",
+          "helper"
+        ]
+      },
+      "app:LabSafetyApp.initialize_sample_data": {
+        "name": "initialize_sample_data",
+        "kind": "method",
+        "module": "app",
+        "class": "LabSafetyApp",
+        "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\app.py",
+        "start_line": 27,
+        "end_line": 76,
+        "docstring": "初始化示例数据",
+        "calls": [
+          {
+            "to": "user_manager:UserManager.register",
+            "count": 1,
+            "type": "composite_attr",
+            "line": 30
+          },
+          {
+            "to": "reservation_manager:ReservationManager.add_lab",
+            "count": 1,
+            "type": "composite_attr",
+            "line": 38
+          },
+          {
+            "to": "reservation_manager:ReservationManager.add_lab",
+            "count": 1,
+            "type": "composite_attr",
+            "line": 45
+          },
+          {
+            "to": "equipment_manager:EquipmentManager.add_equipment",
+            "count": 1,
+            "type": "composite_attr",
+            "line": 54
+          },
+          {
+            "to": "equipment_manager:EquipmentManager.add_equipment",
+            "count": 1,
+            "type": "composite_attr",
+            "line": 57
+          },
+          {
+            "to": "safety_checker:SafetyChecker.add_check_item",
+            "count": 1,
+            "type": "composite_attr",
+            "line": 62
+          },
+          {
+            "to": "safety_checker:SafetyChecker.add_check_item",
+            "count": 1,
+            "type": "composite_attr",
+            "line": 67
+          },
+          {
+            "to": "safety_checker:SafetyChecker.add_check_item",
+            "count": 1,
+            "type": "composite_attr",
+            "line": 72
+          }
+        ],
+        "called_by": [],
+        "is_entry_point": true,
+        "tags": [
+          "creation",
+          "orchestrator"
+        ]
+      },
+      "app:LabSafetyApp.get_system_stats": {
+        "name": "get_system_stats",
+        "kind": "method",
+        "module": "app",
+        "class": "LabSafetyApp",
+        "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\app.py",
+        "start_line": 78,
+        "end_line": 94,
+        "docstring": "获取系统概览统计",
+        "calls": [],
+        "called_by": [],
+        "is_entry_point": false,
+        "tags": [
+          "query"
+        ]
+      },
+      "equipment_manager:EquipmentManager.__init__": {
+        "name": "__init__",
+        "kind": "method",
+        "module": "equipment_manager",
+        "class": "EquipmentManager",
+        "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\equipment_manager.py",
+        "start_line": 18,
+        "end_line": 22,
+        "docstring": null,
+        "calls": [],
+        "called_by": [],
+        "is_entry_point": false,
+        "tags": [
+          "creation",
+          "helper"
+        ]
+      },
+      "equipment_manager:EquipmentManager.add_equipment": {
+        "name": "add_equipment",
+        "kind": "method",
+        "module": "equipment_manager",
+        "class": "EquipmentManager",
+        "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\equipment_manager.py",
+        "start_line": 24,
+        "end_line": 51,
+        "docstring": "添加设备\n\nArgs:\n    name: 设备名称\n    model: 型号\n    lab_id: 所属实验室\n    manufacturer: 生产厂商\n    purchase_date: 购置日期",
+        "calls": [],
+        "called_by": [
+          {
+            "from": "app:LabSafetyApp.initialize_sample_data",
+            "count": 1,
+            "type": "composite_attr"
+          },
+          {
+            "from": "app:LabSafetyApp.initialize_sample_data",
+            "count": 1,
+            "type": "composite_attr"
+          }
+        ],
+        "is_entry_point": false,
+        "tags": [
+          "creation"
+        ]
+      },
+      "equipment_manager:EquipmentManager.borrow_equipment": {
+        "name": "borrow_equipment",
+        "kind": "method",
+        "module": "equipment_manager",
+        "class": "EquipmentManager",
+        "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\equipment_manager.py",
+        "start_line": 53,
+        "end_line": 85,
+        "docstring": "借出设备\n\nArgs:\n    equip_id: 设备 ID\n    username: 借用人\n    expected_return: 预计归还日期\n\nReturns:\n    借用记录 ID",
+        "calls": [],
+        "called_by": [],
+        "is_entry_point": true,
+        "tags": [
+          "update"
+        ]
+      },
+      "equipment_manager:EquipmentManager.return_equipment": {
+        "name": "return_equipment",
+        "kind": "method",
+        "module": "equipment_manager",
+        "class": "EquipmentManager",
+        "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\equipment_manager.py",
+        "start_line": 87,
+        "end_line": 101,
+        "docstring": "归还设备",
+        "calls": [],
+        "called_by": [],
+        "is_entry_point": false,
+        "tags": [
+          "update"
+        ]
+      },
+      "equipment_manager:EquipmentManager.add_maintenance": {
+        "name": "add_maintenance",
+        "kind": "method",
+        "module": "equipment_manager",
+        "class": "EquipmentManager",
+        "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\equipment_manager.py",
+        "start_line": 103,
+        "end_line": 128,
+        "docstring": "添加设备维护记录\n\nArgs:\n    equip_id: 设备 ID\n    content: 维护内容\n    operator: 维护人员\n    cost: 维护费用",
+        "calls": [],
+        "called_by": [],
+        "is_entry_point": true,
+        "tags": [
+          "creation"
+        ]
+      },
+      "equipment_manager:EquipmentManager.set_equipment_status": {
+        "name": "set_equipment_status",
+        "kind": "method",
+        "module": "equipment_manager",
+        "class": "EquipmentManager",
+        "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\equipment_manager.py",
+        "start_line": 130,
+        "end_line": 144,
+        "docstring": "设置设备状态（可用/维护中/报废）",
+        "calls": [],
+        "called_by": [],
+        "is_entry_point": false,
+        "tags": [
+          "state_change",
+          "update"
+        ]
+      },
+      "equipment_manager:EquipmentManager.list_equipments": {
+        "name": "list_equipments",
+        "kind": "method",
+        "module": "equipment_manager",
+        "class": "EquipmentManager",
+        "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\equipment_manager.py",
+        "start_line": 146,
+        "end_line": 156,
+        "docstring": "列出设备，可按实验室/状态筛选",
+        "calls": [],
+        "called_by": [],
+        "is_entry_point": false,
+        "tags": [
+          "query"
+        ]
+      },
+      "equipment_manager:EquipmentManager.get_maintenance_history": {
+        "name": "get_maintenance_history",
+        "kind": "method",
+        "module": "equipment_manager",
+        "class": "EquipmentManager",
+        "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\equipment_manager.py",
+        "start_line": 158,
+        "end_line": 162,
+        "docstring": "获取设备的维护历史",
+        "calls": [],
+        "called_by": [],
+        "is_entry_point": false,
+        "tags": [
+          "query"
+        ]
+      },
+      "reservation_manager:ReservationManager.__init__": {
+        "name": "__init__",
+        "kind": "method",
+        "module": "reservation_manager",
+        "class": "ReservationManager",
+        "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\reservation_manager.py",
+        "start_line": 20,
+        "end_line": 23,
+        "docstring": null,
+        "calls": [],
+        "called_by": [],
+        "is_entry_point": false,
+        "tags": [
+          "creation",
+          "helper"
+        ]
+      },
+      "reservation_manager:ReservationManager.add_lab": {
+        "name": "add_lab",
+        "kind": "method",
+        "module": "reservation_manager",
+        "class": "ReservationManager",
+        "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\reservation_manager.py",
+        "start_line": 25,
+        "end_line": 54,
+        "docstring": "添加实验室\n\nArgs:\n    lab_id: 实验室编号\n    name: 实验室名称\n    capacity: 容纳人数\n    location: 位置\n    safety_level: 安全等级（normal/medium/high）",
+        "calls": [],
+        "called_by": [
+          {
+            "from": "app:LabSafetyApp.initialize_sample_data",
+            "count": 1,
+            "type": "composite_attr"
+          },
+          {
+            "from": "app:LabSafetyApp.initialize_sample_data",
+            "count": 1,
+            "type": "composite_attr"
+          }
+        ],
+        "is_entry_point": false,
+        "tags": [
+          "creation"
+        ]
+      },
+      "reservation_manager:ReservationManager.create_reservation": {
+        "name": "create_reservation",
+        "kind": "method",
+        "module": "reservation_manager",
+        "class": "ReservationManager",
+        "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\reservation_manager.py",
+        "start_line": 56,
+        "end_line": 104,
+        "docstring": "创建预约申请\n\nArgs:\n    username: 申请人\n    lab_id: 实验室编号\n    start_time: 开始时间 'YYYY-MM-DD HH:MM'\n    end_time: 结束时间 'YYYY-MM-DD HH:MM'\n    purpose: 实验用途\n    num_people: 参与人数\n\nReturns:\n    预约 ID",
+        "calls": [
+          {
+            "to": "reservation_manager:ReservationManager._check_conflict",
+            "count": 1,
+            "type": "self_method",
+            "line": 86
+          }
+        ],
+        "called_by": [],
+        "is_entry_point": true,
+        "tags": [
+          "creation"
+        ]
+      },
+      "reservation_manager:ReservationManager._check_conflict": {
+        "name": "_check_conflict",
+        "kind": "method",
+        "module": "reservation_manager",
+        "class": "ReservationManager",
+        "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\reservation_manager.py",
+        "start_line": 106,
+        "end_line": 124,
+        "docstring": "检查预约冲突\n\n同一实验室同一时间段只能有一个有效预约（已批准的）。",
+        "calls": [],
+        "called_by": [
+          {
+            "from": "reservation_manager:ReservationManager.create_reservation",
+            "count": 1,
+            "type": "self_method"
+          }
+        ],
+        "is_entry_point": false,
+        "tags": [
+          "helper",
+          "query",
+          "validation"
+        ]
+      },
+      "reservation_manager:ReservationManager.approve_reservation": {
+        "name": "approve_reservation",
+        "kind": "method",
+        "module": "reservation_manager",
+        "class": "ReservationManager",
+        "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\reservation_manager.py",
+        "start_line": 126,
+        "end_line": 137,
+        "docstring": "审批通过预约",
+        "calls": [],
+        "called_by": [],
+        "is_entry_point": false,
+        "tags": [
+          "state_change",
+          "update"
+        ]
+      },
+      "reservation_manager:ReservationManager.reject_reservation": {
+        "name": "reject_reservation",
+        "kind": "method",
+        "module": "reservation_manager",
+        "class": "ReservationManager",
+        "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\reservation_manager.py",
+        "start_line": 139,
+        "end_line": 151,
+        "docstring": "拒绝预约",
+        "calls": [],
+        "called_by": [],
+        "is_entry_point": false,
+        "tags": [
+          "state_change",
+          "update"
+        ]
+      },
+      "reservation_manager:ReservationManager.cancel_reservation": {
+        "name": "cancel_reservation",
+        "kind": "method",
+        "module": "reservation_manager",
+        "class": "ReservationManager",
+        "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\reservation_manager.py",
+        "start_line": 153,
+        "end_line": 166,
+        "docstring": "用户取消自己的预约",
+        "calls": [],
+        "called_by": [],
+        "is_entry_point": false,
+        "tags": [
+          "state_change",
+          "update"
+        ]
+      },
+      "reservation_manager:ReservationManager.get_user_reservations": {
+        "name": "get_user_reservations",
+        "kind": "method",
+        "module": "reservation_manager",
+        "class": "ReservationManager",
+        "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\reservation_manager.py",
+        "start_line": 168,
+        "end_line": 170,
+        "docstring": "获取指定用户的所有预约",
+        "calls": [],
+        "called_by": [],
+        "is_entry_point": false,
+        "tags": [
+          "query"
+        ]
+      },
+      "reservation_manager:ReservationManager.get_lab_reservations": {
+        "name": "get_lab_reservations",
+        "kind": "method",
+        "module": "reservation_manager",
+        "class": "ReservationManager",
+        "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\reservation_manager.py",
+        "start_line": 172,
+        "end_line": 181,
+        "docstring": "获取指定实验室的预约，可按状态筛选",
+        "calls": [],
+        "called_by": [],
+        "is_entry_point": false,
+        "tags": [
+          "query"
+        ]
+      },
+      "reservation_manager:ReservationManager.list_labs": {
+        "name": "list_labs",
+        "kind": "method",
+        "module": "reservation_manager",
+        "class": "ReservationManager",
+        "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\reservation_manager.py",
+        "start_line": 183,
+        "end_line": 190,
+        "docstring": "列出实验室列表",
+        "calls": [],
+        "called_by": [],
+        "is_entry_point": false,
+        "tags": [
+          "query"
+        ]
+      },
+      "safety_checker:SafetyChecker.__init__": {
+        "name": "__init__",
+        "kind": "method",
+        "module": "safety_checker",
+        "class": "SafetyChecker",
+        "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\safety_checker.py",
+        "start_line": 21,
+        "end_line": 27,
+        "docstring": null,
+        "calls": [],
+        "called_by": [],
+        "is_entry_point": false,
+        "tags": [
+          "creation",
+          "helper"
+        ]
+      },
+      "safety_checker:SafetyChecker.add_check_item": {
+        "name": "add_check_item",
+        "kind": "method",
+        "module": "safety_checker",
+        "class": "SafetyChecker",
+        "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\safety_checker.py",
+        "start_line": 29,
+        "end_line": 57,
+        "docstring": "添加安全检查项\n\nArgs:\n    content: 检查内容\n    category: 检查类别（消防/用电/化学品/设备等）\n    standard: 检查标准\n    risk_level: 风险等级 low/medium/high",
+        "calls": [],
+        "called_by": [
+          {
+            "from": "app:LabSafetyApp.initialize_sample_data",
+            "count": 1,
+            "type": "composite_attr"
+          },
+          {
+            "from": "app:LabSafetyApp.initialize_sample_data",
+            "count": 1,
+            "type": "composite_attr"
+          },
+          {
+            "from": "app:LabSafetyApp.initialize_sample_data",
+            "count": 1,
+            "type": "composite_attr"
+          }
+        ],
+        "is_entry_point": false,
+        "tags": [
+          "creation",
+          "query",
+          "validation"
+        ]
+      },
+      "safety_checker:SafetyChecker.perform_check": {
+        "name": "perform_check",
+        "kind": "method",
+        "module": "safety_checker",
+        "class": "SafetyChecker",
+        "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\safety_checker.py",
+        "start_line": 59,
+        "end_line": 105,
+        "docstring": "执行一次安全检查\n\nArgs:\n    lab_id: 被检查的实验室\n    inspector: 检查人员\n    results: {检查项ID: 是否合格}\n\nReturns:\n    检查记录 ID",
+        "calls": [
+          {
+            "to": "safety_checker:SafetyChecker._create_hazard",
+            "count": 1,
+            "type": "self_method",
+            "line": 98
+          }
+        ],
+        "called_by": [],
+        "is_entry_point": true,
+        "tags": [
+          "query",
+          "validation"
+        ]
+      },
+      "safety_checker:SafetyChecker._create_hazard": {
+        "name": "_create_hazard",
+        "kind": "method",
+        "module": "safety_checker",
+        "class": "SafetyChecker",
+        "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\safety_checker.py",
+        "start_line": 107,
+        "end_line": 125,
+        "docstring": "创建一条隐患记录",
+        "calls": [],
+        "called_by": [
+          {
+            "from": "safety_checker:SafetyChecker.perform_check",
+            "count": 1,
+            "type": "self_method"
+          }
+        ],
+        "is_entry_point": false,
+        "tags": [
+          "creation",
+          "helper"
+        ]
+      },
+      "safety_checker:SafetyChecker.assign_hazard": {
+        "name": "assign_hazard",
+        "kind": "method",
+        "module": "safety_checker",
+        "class": "SafetyChecker",
+        "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\safety_checker.py",
+        "start_line": 127,
+        "end_line": 140,
+        "docstring": "指派隐患整改责任人及期限",
+        "calls": [
+          {
+            "to": "safety_checker:SafetyChecker._find_hazard",
+            "count": 1,
+            "type": "self_method",
+            "line": 130
+          }
+        ],
+        "called_by": [],
+        "is_entry_point": true,
+        "tags": [
+          "update"
+        ]
+      },
+      "safety_checker:SafetyChecker.close_hazard": {
+        "name": "close_hazard",
+        "kind": "method",
+        "module": "safety_checker",
+        "class": "SafetyChecker",
+        "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\safety_checker.py",
+        "start_line": 142,
+        "end_line": 154,
+        "docstring": "完成隐患整改并关闭",
+        "calls": [
+          {
+            "to": "safety_checker:SafetyChecker._find_hazard",
+            "count": 1,
+            "type": "self_method",
+            "line": 144
+          }
+        ],
+        "called_by": [],
+        "is_entry_point": true,
+        "tags": [
+          "state_change",
+          "update"
+        ]
+      },
+      "safety_checker:SafetyChecker._find_hazard": {
+        "name": "_find_hazard",
+        "kind": "method",
+        "module": "safety_checker",
+        "class": "SafetyChecker",
+        "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\safety_checker.py",
+        "start_line": 156,
+        "end_line": 161,
+        "docstring": "查找隐患",
+        "calls": [],
+        "called_by": [
+          {
+            "from": "safety_checker:SafetyChecker.assign_hazard",
+            "count": 1,
+            "type": "self_method"
+          },
+          {
+            "from": "safety_checker:SafetyChecker.close_hazard",
+            "count": 1,
+            "type": "self_method"
+          }
+        ],
+        "is_entry_point": false,
+        "tags": [
+          "helper",
+          "query"
+        ]
+      },
+      "safety_checker:SafetyChecker.get_hazards": {
+        "name": "get_hazards",
+        "kind": "method",
+        "module": "safety_checker",
+        "class": "SafetyChecker",
+        "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\safety_checker.py",
+        "start_line": 163,
+        "end_line": 176,
+        "docstring": "获取隐患列表，支持多条件筛选",
+        "calls": [],
+        "called_by": [],
+        "is_entry_point": false,
+        "tags": [
+          "query"
+        ]
+      },
+      "safety_checker:SafetyChecker.get_check_records": {
+        "name": "get_check_records",
+        "kind": "method",
+        "module": "safety_checker",
+        "class": "SafetyChecker",
+        "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\safety_checker.py",
+        "start_line": 178,
+        "end_line": 182,
+        "docstring": "获取检查记录",
+        "calls": [],
+        "called_by": [],
+        "is_entry_point": false,
+        "tags": [
+          "query",
+          "validation"
+        ]
+      },
+      "safety_checker:SafetyChecker.list_check_items": {
+        "name": "list_check_items",
+        "kind": "method",
+        "module": "safety_checker",
+        "class": "SafetyChecker",
+        "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\safety_checker.py",
+        "start_line": 184,
+        "end_line": 193,
+        "docstring": "列出检查项",
+        "calls": [],
+        "called_by": [],
+        "is_entry_point": false,
+        "tags": [
+          "query",
+          "validation"
+        ]
+      },
+      "user_manager:UserManager.__init__": {
+        "name": "__init__",
+        "kind": "method",
+        "module": "user_manager",
+        "class": "UserManager",
+        "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\user_manager.py",
+        "start_line": 12,
+        "end_line": 15,
+        "docstring": null,
+        "calls": [],
+        "called_by": [],
+        "is_entry_point": false,
+        "tags": [
+          "creation",
+          "helper"
+        ]
+      },
+      "user_manager:UserManager.register": {
+        "name": "register",
+        "kind": "method",
+        "module": "user_manager",
+        "class": "UserManager",
+        "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\user_manager.py",
+        "start_line": 17,
+        "end_line": 59,
+        "docstring": "注册新用户\n\nArgs:\n    username: 用户名\n    password: 密码（明文仅为演示，实际应加密）\n    role: 角色：student/teacher/lab_admin/admin\n    real_name: 真实姓名\n    department: 所属院系\n\nReturns:\n    用户 ID\n\nRaises:\n    ValueError: 用户已存在或角色不合法",
+        "calls": [],
+        "called_by": [
+          {
+            "from": "app:LabSafetyApp.initialize_sample_data",
+            "count": 1,
+            "type": "composite_attr"
+          }
+        ],
+        "is_entry_point": false,
+        "tags": [
+          "creation"
+        ]
+      },
+      "user_manager:UserManager.login": {
+        "name": "login",
+        "kind": "method",
+        "module": "user_manager",
+        "class": "UserManager",
+        "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\user_manager.py",
+        "start_line": 61,
+        "end_line": 83,
+        "docstring": "用户登录\n\nArgs:\n    username: 用户名\n    password: 密码\n\nReturns:\n    登录成功返回 True",
+        "calls": [],
+        "called_by": [],
+        "is_entry_point": true,
+        "tags": []
+      },
+      "user_manager:UserManager.logout": {
+        "name": "logout",
+        "kind": "method",
+        "module": "user_manager",
+        "class": "UserManager",
+        "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\user_manager.py",
+        "start_line": 85,
+        "end_line": 87,
+        "docstring": "用户登出",
+        "calls": [],
+        "called_by": [],
+        "is_entry_point": false,
+        "tags": []
+      },
+      "user_manager:UserManager.get_current_user": {
+        "name": "get_current_user",
+        "kind": "method",
+        "module": "user_manager",
+        "class": "UserManager",
+        "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\user_manager.py",
+        "start_line": 89,
+        "end_line": 93,
+        "docstring": "获取当前登录用户",
+        "calls": [],
+        "called_by": [
+          {
+            "from": "user_manager:UserManager.has_permission",
+            "count": 1,
+            "type": "self_method"
+          }
+        ],
+        "is_entry_point": false,
+        "tags": [
+          "query"
+        ]
+      },
+      "user_manager:UserManager.has_permission": {
+        "name": "has_permission",
+        "kind": "method",
+        "module": "user_manager",
+        "class": "UserManager",
+        "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\user_manager.py",
+        "start_line": 95,
+        "end_line": 118,
+        "docstring": "检查当前用户是否有指定权限\n\n权限规则：\n- admin: 所有权限\n- lab_admin: 设备/检查管理权限\n- teacher: 预约审批权限\n- student: 基础预约权限",
+        "calls": [
+          {
+            "to": "user_manager:UserManager.get_current_user",
+            "count": 1,
+            "type": "self_method",
+            "line": 105
+          }
+        ],
+        "called_by": [],
+        "is_entry_point": true,
+        "tags": [
+          "query",
+          "validation"
+        ]
+      },
+      "user_manager:UserManager.list_users": {
+        "name": "list_users",
+        "kind": "method",
+        "module": "user_manager",
+        "class": "UserManager",
+        "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\user_manager.py",
+        "start_line": 120,
+        "end_line": 128,
+        "docstring": "列出用户，可按角色筛选",
+        "calls": [],
+        "called_by": [],
+        "is_entry_point": false,
+        "tags": [
+          "query"
+        ]
+      },
+      "user_manager:UserManager.deactivate_user": {
+        "name": "deactivate_user",
+        "kind": "method",
+        "module": "user_manager",
+        "class": "UserManager",
+        "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\user_manager.py",
+        "start_line": 130,
+        "end_line": 135,
+        "docstring": "停用用户账户",
+        "calls": [],
+        "called_by": [],
+        "is_entry_point": false,
+        "tags": [
+          "update"
+        ]
+      }
+    },
+    "entry_points": [
+      "app:LabSafetyApp.initialize_sample_data",
+      "equipment_manager:EquipmentManager.borrow_equipment",
+      "equipment_manager:EquipmentManager.add_maintenance",
+      "reservation_manager:ReservationManager.create_reservation",
+      "safety_checker:SafetyChecker.perform_check",
+      "safety_checker:SafetyChecker.assign_hazard",
+      "safety_checker:SafetyChecker.close_hazard",
+      "user_manager:UserManager.login",
+      "user_manager:UserManager.has_permission"
+    ],
+    "leaves": [
+      "app:LabSafetyApp.__init__",
+      "app:LabSafetyApp.get_system_stats",
+      "equipment_manager:EquipmentManager.__init__",
+      "equipment_manager:EquipmentManager.add_equipment",
+      "equipment_manager:EquipmentManager.borrow_equipment",
+      "equipment_manager:EquipmentManager.return_equipment",
+      "equipment_manager:EquipmentManager.add_maintenance",
+      "equipment_manager:EquipmentManager.set_equipment_status",
+      "equipment_manager:EquipmentManager.list_equipments",
+      "equipment_manager:EquipmentManager.get_maintenance_history",
+      "reservation_manager:ReservationManager.__init__",
+      "reservation_manager:ReservationManager.add_lab",
+      "reservation_manager:ReservationManager._check_conflict",
+      "reservation_manager:ReservationManager.approve_reservation",
+      "reservation_manager:ReservationManager.reject_reservation",
+      "reservation_manager:ReservationManager.cancel_reservation",
+      "reservation_manager:ReservationManager.get_user_reservations",
+      "reservation_manager:ReservationManager.get_lab_reservations",
+      "reservation_manager:ReservationManager.list_labs",
+      "safety_checker:SafetyChecker.__init__",
+      "safety_checker:SafetyChecker.add_check_item",
+      "safety_checker:SafetyChecker._create_hazard",
+      "safety_checker:SafetyChecker._find_hazard",
+      "safety_checker:SafetyChecker.get_hazards",
+      "safety_checker:SafetyChecker.get_check_records",
+      "safety_checker:SafetyChecker.list_check_items",
+      "user_manager:UserManager.__init__",
+      "user_manager:UserManager.register",
+      "user_manager:UserManager.login",
+      "user_manager:UserManager.logout",
+      "user_manager:UserManager.get_current_user",
+      "user_manager:UserManager.list_users",
+      "user_manager:UserManager.deactivate_user"
+    ],
+    "modules": {
+      "__init__": [],
+      "app": [
+        "app:LabSafetyApp.__init__",
+        "app:LabSafetyApp.initialize_sample_data",
+        "app:LabSafetyApp.get_system_stats"
+      ],
+      "equipment_manager": [
+        "equipment_manager:EquipmentManager.__init__",
+        "equipment_manager:EquipmentManager.add_equipment",
+        "equipment_manager:EquipmentManager.borrow_equipment",
+        "equipment_manager:EquipmentManager.return_equipment",
+        "equipment_manager:EquipmentManager.add_maintenance",
+        "equipment_manager:EquipmentManager.set_equipment_status",
+        "equipment_manager:EquipmentManager.list_equipments",
+        "equipment_manager:EquipmentManager.get_maintenance_history"
+      ],
+      "reservation_manager": [
+        "reservation_manager:ReservationManager.__init__",
+        "reservation_manager:ReservationManager.add_lab",
+        "reservation_manager:ReservationManager.create_reservation",
+        "reservation_manager:ReservationManager._check_conflict",
+        "reservation_manager:ReservationManager.approve_reservation",
+        "reservation_manager:ReservationManager.reject_reservation",
+        "reservation_manager:ReservationManager.cancel_reservation",
+        "reservation_manager:ReservationManager.get_user_reservations",
+        "reservation_manager:ReservationManager.get_lab_reservations",
+        "reservation_manager:ReservationManager.list_labs"
+      ],
+      "safety_checker": [
+        "safety_checker:SafetyChecker.__init__",
+        "safety_checker:SafetyChecker.add_check_item",
+        "safety_checker:SafetyChecker.perform_check",
+        "safety_checker:SafetyChecker._create_hazard",
+        "safety_checker:SafetyChecker.assign_hazard",
+        "safety_checker:SafetyChecker.close_hazard",
+        "safety_checker:SafetyChecker._find_hazard",
+        "safety_checker:SafetyChecker.get_hazards",
+        "safety_checker:SafetyChecker.get_check_records",
+        "safety_checker:SafetyChecker.list_check_items"
+      ],
+      "user_manager": [
+        "user_manager:UserManager.__init__",
+        "user_manager:UserManager.register",
+        "user_manager:UserManager.login",
+        "user_manager:UserManager.logout",
+        "user_manager:UserManager.get_current_user",
+        "user_manager:UserManager.has_permission",
+        "user_manager:UserManager.list_users",
+        "user_manager:UserManager.deactivate_user"
+      ]
+    },
+    "total_nodes": 39,
+    "total_edges": 13
+  },
+  "state_analysis": {
+    "app:LabSafetyApp": {
+      "class": "LabSafetyApp",
+      "module": "app",
+      "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\app.py",
+      "state_attributes": [
+        "equipment_manager",
+        "reservation_manager",
+        "safety_checker",
+        "user_manager"
+      ],
+      "dict_like_attrs": [],
+      "class_constants": [],
+      "method_writes": {
+        "__init__": [
+          "equipment_manager",
+          "reservation_manager",
+          "safety_checker",
+          "user_manager"
+        ],
+        "initialize_sample_data": [],
+        "get_system_stats": []
+      },
+      "method_reads": {
+        "__init__": [
+          "equipment_manager",
+          "reservation_manager",
+          "safety_checker",
+          "user_manager"
+        ],
+        "initialize_sample_data": [
+          "equipment_manager",
+          "reservation_manager",
+          "safety_checker",
+          "user_manager"
+        ],
+        "get_system_stats": [
+          "equipment_manager",
+          "reservation_manager",
+          "safety_checker",
+          "user_manager"
+        ]
+      },
+      "method_dict_writes": {},
+      "method_dict_writes_inferred": {}
+    },
+    "equipment_manager:EquipmentManager": {
+      "class": "EquipmentManager",
+      "module": "equipment_manager",
+      "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\equipment_manager.py",
+      "state_attributes": [
+        "_next_id",
+        "borrow_records",
+        "equipments",
+        "maintenance_logs"
+      ],
+      "dict_like_attrs": [
+        "borrow_records",
+        "equipments",
+        "maintenance_logs"
+      ],
+      "class_constants": [
+        "STATUS_AVAILABLE",
+        "STATUS_BORROWED",
+        "STATUS_MAINTENANCE",
+        "STATUS_SCRAPPED"
+      ],
+      "method_writes": {
+        "__init__": [
+          "_next_id",
+          "borrow_records",
+          "equipments",
+          "maintenance_logs"
+        ],
+        "add_equipment": [
+          "_next_id",
+          "equipments"
+        ],
+        "borrow_equipment": [
+          "borrow_records",
+          "equipments"
+        ],
+        "return_equipment": [
+          "borrow_records",
+          "equipments"
+        ],
+        "add_maintenance": [
+          "equipments",
+          "maintenance_logs"
+        ],
+        "set_equipment_status": [
+          "equipments"
+        ],
+        "list_equipments": [],
+        "get_maintenance_history": []
+      },
+      "method_reads": {
+        "__init__": [
+          "_next_id",
+          "borrow_records",
+          "equipments",
+          "maintenance_logs"
+        ],
+        "add_equipment": [
+          "_next_id",
+          "equipments"
+        ],
+        "borrow_equipment": [
+          "borrow_records",
+          "equipments"
+        ],
+        "return_equipment": [
+          "borrow_records",
+          "equipments"
+        ],
+        "add_maintenance": [
+          "equipments",
+          "maintenance_logs"
+        ],
+        "set_equipment_status": [
+          "equipments"
+        ],
+        "list_equipments": [
+          "equipments"
+        ],
+        "get_maintenance_history": [
+          "equipments",
+          "maintenance_logs"
+        ]
+      },
+      "method_dict_writes": {
+        "add_equipment": [
+          "equipments"
+        ],
+        "return_equipment": [
+          "equipments.status"
+        ],
+        "add_maintenance": [
+          "equipments.last_maintenance"
+        ],
+        "set_equipment_status": [
+          "equipments.status"
+        ]
+      },
+      "method_dict_writes_inferred": {
+        "add_equipment": [
+          "equipments"
+        ],
+        "borrow_equipment": [
+          "borrow_records",
+          "equipments"
+        ],
+        "return_equipment": [
+          "borrow_records",
+          "equipments"
+        ],
+        "add_maintenance": [
+          "equipments",
+          "maintenance_logs"
+        ],
+        "set_equipment_status": [
+          "equipments"
+        ]
+      }
+    },
+    "reservation_manager:ReservationManager": {
+      "class": "ReservationManager",
+      "module": "reservation_manager",
+      "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\reservation_manager.py",
+      "state_attributes": [
+        "_next_id",
+        "labs",
+        "reservations"
+      ],
+      "dict_like_attrs": [
+        "labs",
+        "reservations"
+      ],
+      "class_constants": [
+        "STATUS_PENDING",
+        "STATUS_APPROVED",
+        "STATUS_REJECTED",
+        "STATUS_CANCELLED",
+        "STATUS_COMPLETED"
+      ],
+      "method_writes": {
+        "__init__": [
+          "_next_id",
+          "labs",
+          "reservations"
+        ],
+        "add_lab": [
+          "labs"
+        ],
+        "create_reservation": [
+          "_next_id",
+          "labs",
+          "reservations"
+        ],
+        "_check_conflict": [],
+        "approve_reservation": [
+          "reservations"
+        ],
+        "reject_reservation": [
+          "reservations"
+        ],
+        "cancel_reservation": [
+          "reservations"
+        ],
+        "get_user_reservations": [],
+        "get_lab_reservations": [],
+        "list_labs": []
+      },
+      "method_reads": {
+        "__init__": [
+          "_next_id",
+          "labs",
+          "reservations"
+        ],
+        "add_lab": [
+          "labs"
+        ],
+        "create_reservation": [
+          "_next_id",
+          "labs",
+          "reservations"
+        ],
+        "_check_conflict": [
+          "reservations"
+        ],
+        "approve_reservation": [
+          "reservations"
+        ],
+        "reject_reservation": [
+          "reservations"
+        ],
+        "cancel_reservation": [
+          "reservations"
+        ],
+        "get_user_reservations": [
+          "reservations"
+        ],
+        "get_lab_reservations": [
+          "reservations"
+        ],
+        "list_labs": [
+          "labs"
+        ]
+      },
+      "method_dict_writes": {
+        "add_lab": [
+          "labs"
+        ],
+        "create_reservation": [
+          "reservations"
+        ]
+      },
+      "method_dict_writes_inferred": {
+        "add_lab": [
+          "labs"
+        ],
+        "create_reservation": [
+          "labs",
+          "reservations"
+        ],
+        "approve_reservation": [
+          "reservations"
+        ],
+        "reject_reservation": [
+          "reservations"
+        ],
+        "cancel_reservation": [
+          "reservations"
+        ]
+      }
+    },
+    "safety_checker:SafetyChecker": {
+      "class": "SafetyChecker",
+      "module": "safety_checker",
+      "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\safety_checker.py",
+      "state_attributes": [
+        "_next_hazard_id",
+        "_next_item_id",
+        "_next_record_id",
+        "check_items",
+        "check_records",
+        "hazards"
+      ],
+      "dict_like_attrs": [
+        "check_items",
+        "check_records",
+        "hazards"
+      ],
+      "class_constants": [
+        "LEVEL_LOW",
+        "LEVEL_MEDIUM",
+        "LEVEL_HIGH",
+        "STATUS_OPEN",
+        "STATUS_IN_PROGRESS",
+        "STATUS_CLOSED"
+      ],
+      "method_writes": {
+        "__init__": [
+          "_next_hazard_id",
+          "_next_item_id",
+          "_next_record_id",
+          "check_items",
+          "check_records",
+          "hazards"
+        ],
+        "add_check_item": [
+          "_next_item_id",
+          "check_items"
+        ],
+        "perform_check": [
+          "_next_record_id",
+          "check_items",
+          "check_records"
+        ],
+        "_create_hazard": [
+          "_next_hazard_id",
+          "hazards"
+        ],
+        "assign_hazard": [],
+        "close_hazard": [],
+        "_find_hazard": [],
+        "get_hazards": [],
+        "get_check_records": [],
+        "list_check_items": []
+      },
+      "method_reads": {
+        "__init__": [
+          "_next_hazard_id",
+          "_next_item_id",
+          "_next_record_id",
+          "check_items",
+          "check_records",
+          "hazards"
+        ],
+        "add_check_item": [
+          "_next_item_id",
+          "check_items"
+        ],
+        "perform_check": [
+          "_next_record_id",
+          "check_items",
+          "check_records"
+        ],
+        "_create_hazard": [
+          "_next_hazard_id",
+          "hazards"
+        ],
+        "assign_hazard": [],
+        "close_hazard": [],
+        "_find_hazard": [
+          "hazards"
+        ],
+        "get_hazards": [
+          "hazards"
+        ],
+        "get_check_records": [
+          "check_records"
+        ],
+        "list_check_items": [
+          "check_items"
+        ]
+      },
+      "method_dict_writes": {
+        "add_check_item": [
+          "check_items"
+        ]
+      },
+      "method_dict_writes_inferred": {
+        "add_check_item": [
+          "check_items"
+        ],
+        "perform_check": [
+          "check_items",
+          "check_records"
+        ],
+        "_create_hazard": [
+          "hazards"
+        ]
+      }
+    },
+    "user_manager:UserManager": {
+      "class": "UserManager",
+      "module": "user_manager",
+      "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\user_manager.py",
+      "state_attributes": [
+        "_current_user",
+        "_next_id",
+        "users"
+      ],
+      "dict_like_attrs": [
+        "users"
+      ],
+      "class_constants": [],
+      "method_writes": {
+        "__init__": [
+          "_current_user",
+          "_next_id",
+          "users"
+        ],
+        "register": [
+          "_next_id",
+          "users"
+        ],
+        "login": [
+          "_current_user"
+        ],
+        "logout": [
+          "_current_user"
+        ],
+        "get_current_user": [],
+        "has_permission": [],
+        "list_users": [],
+        "deactivate_user": [
+          "users"
+        ]
+      },
+      "method_reads": {
+        "__init__": [
+          "_current_user",
+          "_next_id",
+          "users"
+        ],
+        "register": [
+          "_next_id",
+          "users"
+        ],
+        "login": [
+          "_current_user",
+          "users"
+        ],
+        "logout": [
+          "_current_user"
+        ],
+        "get_current_user": [
+          "_current_user",
+          "users"
+        ],
+        "has_permission": [],
+        "list_users": [
+          "users"
+        ],
+        "deactivate_user": [
+          "users"
+        ]
+      },
+      "method_dict_writes": {
+        "register": [
+          "users"
+        ],
+        "deactivate_user": [
+          "users.active"
+        ]
+      },
+      "method_dict_writes_inferred": {
+        "register": [
+          "users"
+        ],
+        "deactivate_user": [
+          "users"
+        ]
+      }
+    }
+  },
+  "dependency_strength": {
+    "modules": {
+      "app": {
+        "module": "app",
+        "fan_out": 4,
+        "fan_in": 0,
+        "centrality": 0.3,
+        "role": "orchestrator",
+        "internal_nodes": 3,
+        "depends_on": [
+          "user_manager",
+          "reservation_manager",
+          "equipment_manager",
+          "safety_checker"
+        ],
+        "depended_by": [],
+        "entry_points": [
+          "app:LabSafetyApp.initialize_sample_data"
+        ]
+      },
+      "equipment_manager": {
+        "module": "equipment_manager",
+        "fan_out": 0,
+        "fan_in": 1,
+        "centrality": 0.7,
+        "role": "core",
+        "internal_nodes": 8,
+        "depends_on": [],
+        "depended_by": [
+          "app"
+        ],
+        "entry_points": [
+          "equipment_manager:EquipmentManager.borrow_equipment",
+          "equipment_manager:EquipmentManager.add_maintenance"
+        ]
+      },
+      "reservation_manager": {
+        "module": "reservation_manager",
+        "fan_out": 0,
+        "fan_in": 1,
+        "centrality": 0.7,
+        "role": "core",
+        "internal_nodes": 10,
+        "depends_on": [],
+        "depended_by": [
+          "app"
+        ],
+        "entry_points": [
+          "reservation_manager:ReservationManager.create_reservation"
+        ]
+      },
+      "safety_checker": {
+        "module": "safety_checker",
+        "fan_out": 0,
+        "fan_in": 1,
+        "centrality": 0.7,
+        "role": "core",
+        "internal_nodes": 10,
+        "depends_on": [],
+        "depended_by": [
+          "app"
+        ],
+        "entry_points": [
+          "safety_checker:SafetyChecker.perform_check",
+          "safety_checker:SafetyChecker.assign_hazard",
+          "safety_checker:SafetyChecker.close_hazard"
+        ]
+      },
+      "user_manager": {
+        "module": "user_manager",
+        "fan_out": 0,
+        "fan_in": 1,
+        "centrality": 0.7,
+        "role": "core",
+        "internal_nodes": 8,
+        "depends_on": [],
+        "depended_by": [
+          "app"
+        ],
+        "entry_points": [
+          "user_manager:UserManager.login",
+          "user_manager:UserManager.has_permission"
+        ]
+      }
+    },
+    "edges": [
+      {
+        "from": "app",
+        "to": "safety_checker",
+        "call_count": 3,
+        "unique_methods": 1,
+        "strength": 0.68,
+        "details": [
+          {
+            "from_method": "app:LabSafetyApp.initialize_sample_data",
+            "to_method": "safety_checker:SafetyChecker.add_check_item",
+            "call_type": "composite_attr",
+            "line": 62,
+            "count": 1
+          },
+          {
+            "from_method": "app:LabSafetyApp.initialize_sample_data",
+            "to_method": "safety_checker:SafetyChecker.add_check_item",
+            "call_type": "composite_attr",
+            "line": 67,
+            "count": 1
+          },
+          {
+            "from_method": "app:LabSafetyApp.initialize_sample_data",
+            "to_method": "safety_checker:SafetyChecker.add_check_item",
+            "call_type": "composite_attr",
+            "line": 72,
+            "count": 1
+          }
+        ]
+      },
+      {
+        "from": "app",
+        "to": "reservation_manager",
+        "call_count": 2,
+        "unique_methods": 1,
+        "strength": 0.48,
+        "details": [
+          {
+            "from_method": "app:LabSafetyApp.initialize_sample_data",
+            "to_method": "reservation_manager:ReservationManager.add_lab",
+            "call_type": "composite_attr",
+            "line": 38,
+            "count": 1
+          },
+          {
+            "from_method": "app:LabSafetyApp.initialize_sample_data",
+            "to_method": "reservation_manager:ReservationManager.add_lab",
+            "call_type": "composite_attr",
+            "line": 45,
+            "count": 1
+          }
+        ]
+      },
+      {
+        "from": "app",
+        "to": "equipment_manager",
+        "call_count": 2,
+        "unique_methods": 1,
+        "strength": 0.48,
+        "details": [
+          {
+            "from_method": "app:LabSafetyApp.initialize_sample_data",
+            "to_method": "equipment_manager:EquipmentManager.add_equipment",
+            "call_type": "composite_attr",
+            "line": 54,
+            "count": 1
+          },
+          {
+            "from_method": "app:LabSafetyApp.initialize_sample_data",
+            "to_method": "equipment_manager:EquipmentManager.add_equipment",
+            "call_type": "composite_attr",
+            "line": 57,
+            "count": 1
+          }
+        ]
+      },
+      {
+        "from": "app",
+        "to": "user_manager",
+        "call_count": 1,
+        "unique_methods": 1,
+        "strength": 0.28,
+        "details": [
+          {
+            "from_method": "app:LabSafetyApp.initialize_sample_data",
+            "to_method": "user_manager:UserManager.register",
+            "call_type": "composite_attr",
+            "line": 30,
+            "count": 1
+          }
+        ]
+      }
+    ],
+    "core_modules": [
+      "equipment_manager",
+      "reservation_manager",
+      "safety_checker",
+      "user_manager",
+      "app"
+    ],
+    "peripheral_modules": [],
+    "summary": {
+      "total_modules": 5,
+      "total_edges": 4
+    }
+  },
+  "business_flows": [
+    {
+      "flow_id": "flow_1",
+      "name": "LabSafetyApp Initialization Flow",
+      "description": "初始化示例数据 Crosses 5 module(s) with 5 steps, 5 state change(s), 1 validation(s).",
+      "entry_node": "app:LabSafetyApp.initialize_sample_data",
+      "steps": [
+        {
+          "step_id": "s1",
+          "node_id": "app:LabSafetyApp.initialize_sample_data",
+          "module": "app",
+          "class": "LabSafetyApp",
+          "method": "initialize_sample_data",
+          "order": 1,
+          "depth": 0,
+          "call_type": "entry",
+          "line": 27,
+          "tags": [
+            "creation",
+            "orchestrator"
+          ],
+          "is_module_boundary": false,
+          "is_state_change": true,
+          "is_validation": false,
+          "description": "初始化示例数据"
+        },
+        {
+          "step_id": "s2",
+          "node_id": "user_manager:UserManager.register",
+          "module": "user_manager",
+          "class": "UserManager",
+          "method": "register",
+          "order": 2,
+          "depth": 1,
+          "call_type": "composite_attr",
+          "line": 30,
+          "tags": [
+            "creation"
+          ],
+          "is_module_boundary": true,
+          "is_state_change": true,
+          "is_validation": false,
+          "description": "注册新用户"
+        },
+        {
+          "step_id": "s3",
+          "node_id": "reservation_manager:ReservationManager.add_lab",
+          "module": "reservation_manager",
+          "class": "ReservationManager",
+          "method": "add_lab",
+          "order": 3,
+          "depth": 1,
+          "call_type": "composite_attr",
+          "line": 38,
+          "tags": [
+            "creation"
+          ],
+          "is_module_boundary": true,
+          "is_state_change": true,
+          "is_validation": false,
+          "description": "添加实验室"
+        },
+        {
+          "step_id": "s4",
+          "node_id": "equipment_manager:EquipmentManager.add_equipment",
+          "module": "equipment_manager",
+          "class": "EquipmentManager",
+          "method": "add_equipment",
+          "order": 4,
+          "depth": 1,
+          "call_type": "composite_attr",
+          "line": 54,
+          "tags": [
+            "creation"
+          ],
+          "is_module_boundary": true,
+          "is_state_change": true,
+          "is_validation": false,
+          "description": "添加设备"
+        },
+        {
+          "step_id": "s5",
+          "node_id": "safety_checker:SafetyChecker.add_check_item",
+          "module": "safety_checker",
+          "class": "SafetyChecker",
+          "method": "add_check_item",
+          "order": 5,
+          "depth": 1,
+          "call_type": "composite_attr",
+          "line": 62,
+          "tags": [
+            "creation",
+            "query",
+            "validation"
+          ],
+          "is_module_boundary": true,
+          "is_state_change": true,
+          "is_validation": true,
+          "description": "添加安全检查项"
+        }
+      ],
+      "modules_involved": [
+        "app",
+        "equipment_manager",
+        "reservation_manager",
+        "safety_checker",
+        "user_manager"
+      ],
+      "cross_module_count": 4,
+      "has_validation": true,
+      "has_state_change": true,
+      "complexity_score": 2.5,
+      "business_importance": 20.0
+    },
+    {
+      "flow_id": "flow_3",
+      "name": "SafetyChecker Execution Flow",
+      "description": "执行一次安全检查 Crosses 1 module(s) with 2 steps, 2 state change(s), 1 validation(s).",
+      "entry_node": "safety_checker:SafetyChecker.perform_check",
+      "steps": [
+        {
+          "step_id": "s1",
+          "node_id": "safety_checker:SafetyChecker.perform_check",
+          "module": "safety_checker",
+          "class": "SafetyChecker",
+          "method": "perform_check",
+          "order": 1,
+          "depth": 0,
+          "call_type": "entry",
+          "line": 59,
+          "tags": [
+            "query",
+            "validation"
+          ],
+          "is_module_boundary": false,
+          "is_state_change": true,
+          "is_validation": true,
+          "description": "执行一次安全检查"
+        },
+        {
+          "step_id": "s2",
+          "node_id": "safety_checker:SafetyChecker._create_hazard",
+          "module": "safety_checker",
+          "class": "SafetyChecker",
+          "method": "_create_hazard",
+          "order": 2,
+          "depth": 1,
+          "call_type": "self_method",
+          "line": 98,
+          "tags": [
+            "creation",
+            "helper"
+          ],
+          "is_module_boundary": false,
+          "is_state_change": true,
+          "is_validation": false,
+          "description": "创建一条隐患记录"
+        }
+      ],
+      "modules_involved": [
+        "safety_checker"
+      ],
+      "cross_module_count": 0,
+      "has_validation": true,
+      "has_state_change": true,
+      "complexity_score": 1.0,
+      "business_importance": 6.0
+    },
+    {
+      "flow_id": "flow_2",
+      "name": "ReservationManager Create / Submit Flow",
+      "description": "创建预约申请 Crosses 1 module(s) with 2 steps, 1 state change(s), 1 validation(s).",
+      "entry_node": "reservation_manager:ReservationManager.create_reservation",
+      "steps": [
+        {
+          "step_id": "s1",
+          "node_id": "reservation_manager:ReservationManager.create_reservation",
+          "module": "reservation_manager",
+          "class": "ReservationManager",
+          "method": "create_reservation",
+          "order": 1,
+          "depth": 0,
+          "call_type": "entry",
+          "line": 56,
+          "tags": [
+            "creation"
+          ],
+          "is_module_boundary": false,
+          "is_state_change": true,
+          "is_validation": false,
+          "description": "创建预约申请"
+        },
+        {
+          "step_id": "s2",
+          "node_id": "reservation_manager:ReservationManager._check_conflict",
+          "module": "reservation_manager",
+          "class": "ReservationManager",
+          "method": "_check_conflict",
+          "order": 2,
+          "depth": 1,
+          "call_type": "self_method",
+          "line": 86,
+          "tags": [
+            "helper",
+            "query",
+            "validation"
+          ],
+          "is_module_boundary": false,
+          "is_state_change": false,
+          "is_validation": true,
+          "description": "检查预约冲突"
+        }
+      ],
+      "modules_involved": [
+        "reservation_manager"
+      ],
+      "cross_module_count": 0,
+      "has_validation": true,
+      "has_state_change": true,
+      "complexity_score": 1.0,
+      "business_importance": 4.5
+    },
+    {
+      "flow_id": "flow_4",
+      "name": "SafetyChecker Assignment Flow",
+      "description": "指派隐患整改责任人及期限 Crosses 1 module(s) with 2 steps, 1 state change(s), 0 validation(s).",
+      "entry_node": "safety_checker:SafetyChecker.assign_hazard",
+      "steps": [
+        {
+          "step_id": "s1",
+          "node_id": "safety_checker:SafetyChecker.assign_hazard",
+          "module": "safety_checker",
+          "class": "SafetyChecker",
+          "method": "assign_hazard",
+          "order": 1,
+          "depth": 0,
+          "call_type": "entry",
+          "line": 127,
+          "tags": [
+            "update"
+          ],
+          "is_module_boundary": false,
+          "is_state_change": true,
+          "is_validation": false,
+          "description": "指派隐患整改责任人及期限"
+        },
+        {
+          "step_id": "s2",
+          "node_id": "safety_checker:SafetyChecker._find_hazard",
+          "module": "safety_checker",
+          "class": "SafetyChecker",
+          "method": "_find_hazard",
+          "order": 2,
+          "depth": 1,
+          "call_type": "self_method",
+          "line": 130,
+          "tags": [
+            "helper",
+            "query"
+          ],
+          "is_module_boundary": false,
+          "is_state_change": false,
+          "is_validation": false,
+          "description": "查找隐患"
+        }
+      ],
+      "modules_involved": [
+        "safety_checker"
+      ],
+      "cross_module_count": 0,
+      "has_validation": false,
+      "has_state_change": true,
+      "complexity_score": 1.0,
+      "business_importance": 3.5
+    },
+    {
+      "flow_id": "flow_5",
+      "name": "SafetyChecker Completion / Close Flow",
+      "description": "完成隐患整改并关闭 Crosses 1 module(s) with 2 steps, 1 state change(s), 0 validation(s).",
+      "entry_node": "safety_checker:SafetyChecker.close_hazard",
+      "steps": [
+        {
+          "step_id": "s1",
+          "node_id": "safety_checker:SafetyChecker.close_hazard",
+          "module": "safety_checker",
+          "class": "SafetyChecker",
+          "method": "close_hazard",
+          "order": 1,
+          "depth": 0,
+          "call_type": "entry",
+          "line": 142,
+          "tags": [
+            "state_change",
+            "update"
+          ],
+          "is_module_boundary": false,
+          "is_state_change": true,
+          "is_validation": false,
+          "description": "完成隐患整改并关闭"
+        },
+        {
+          "step_id": "s2",
+          "node_id": "safety_checker:SafetyChecker._find_hazard",
+          "module": "safety_checker",
+          "class": "SafetyChecker",
+          "method": "_find_hazard",
+          "order": 2,
+          "depth": 1,
+          "call_type": "self_method",
+          "line": 144,
+          "tags": [
+            "helper",
+            "query"
+          ],
+          "is_module_boundary": false,
+          "is_state_change": false,
+          "is_validation": false,
+          "description": "查找隐患"
+        }
+      ],
+      "modules_involved": [
+        "safety_checker"
+      ],
+      "cross_module_count": 0,
+      "has_validation": false,
+      "has_state_change": true,
+      "complexity_score": 1.0,
+      "business_importance": 3.5
+    },
+    {
+      "flow_id": "flow_6",
+      "name": "UserManager has_permission Flow",
+      "description": "检查当前用户是否有指定权限 Crosses 1 module(s) with 2 steps, 0 state change(s), 1 validation(s).",
+      "entry_node": "user_manager:UserManager.has_permission",
+      "steps": [
+        {
+          "step_id": "s1",
+          "node_id": "user_manager:UserManager.has_permission",
+          "module": "user_manager",
+          "class": "UserManager",
+          "method": "has_permission",
+          "order": 1,
+          "depth": 0,
+          "call_type": "entry",
+          "line": 95,
+          "tags": [
+            "query",
+            "validation"
+          ],
+          "is_module_boundary": false,
+          "is_state_change": false,
+          "is_validation": true,
+          "description": "检查当前用户是否有指定权限"
+        },
+        {
+          "step_id": "s2",
+          "node_id": "user_manager:UserManager.get_current_user",
+          "module": "user_manager",
+          "class": "UserManager",
+          "method": "get_current_user",
+          "order": 2,
+          "depth": 1,
+          "call_type": "self_method",
+          "line": 105,
+          "tags": [
+            "query"
+          ],
+          "is_module_boundary": false,
+          "is_state_change": false,
+          "is_validation": false,
+          "description": "获取当前登录用户"
+        }
+      ],
+      "modules_involved": [
+        "user_manager"
+      ],
+      "cross_module_count": 0,
+      "has_validation": true,
+      "has_state_change": false,
+      "complexity_score": 1.0,
+      "business_importance": 3.0
+    }
+  ],
+  "architecture": {
+    "nodes": {
+      "app": {
+        "module_id": "app",
+        "display_name": "App",
+        "layer": "orchestration",
+        "role": "orchestrator",
+        "x": 130.0,
+        "y": 40.0,
+        "width": 180.0,
+        "height": 80.0,
+        "method_count": 3,
+        "entry_points": [
+          "app:LabSafetyApp.initialize_sample_data"
+        ],
+        "responsibilities": [
+          "System Entry",
+          "Orchestration"
+        ]
+      },
+      "equipment_manager": {
+        "module_id": "equipment_manager",
+        "display_name": "Equipment Manager",
+        "layer": "business",
+        "role": "core",
+        "x": 40.0,
+        "y": 160.0,
+        "width": 180.0,
+        "height": 80.0,
+        "method_count": 8,
+        "entry_points": [
+          "equipment_manager:EquipmentManager.borrow_equipment",
+          "equipment_manager:EquipmentManager.add_maintenance"
+        ],
+        "responsibilities": [
+          "Equipment Tracking",
+          "Inventory",
+          "Management"
+        ]
+      },
+      "reservation_manager": {
+        "module_id": "reservation_manager",
+        "display_name": "Reservation Manager",
+        "layer": "business",
+        "role": "core",
+        "x": 260.0,
+        "y": 160.0,
+        "width": 180.0,
+        "height": 80.0,
+        "method_count": 10,
+        "entry_points": [
+          "reservation_manager:ReservationManager.create_reservation"
+        ],
+        "responsibilities": [
+          "Booking",
+          "Scheduling",
+          "Management"
+        ]
+      },
+      "safety_checker": {
+        "module_id": "safety_checker",
+        "display_name": "Safety Checker",
+        "layer": "business",
+        "role": "core",
+        "x": 480.0,
+        "y": 160.0,
+        "width": 180.0,
+        "height": 80.0,
+        "method_count": 10,
+        "entry_points": [
+          "safety_checker:SafetyChecker.perform_check",
+          "safety_checker:SafetyChecker.assign_hazard",
+          "safety_checker:SafetyChecker.close_hazard"
+        ],
+        "responsibilities": [
+          "Safety Checks",
+          "Compliance",
+          "Validation",
+          "Verification"
+        ]
+      },
+      "user_manager": {
+        "module_id": "user_manager",
+        "display_name": "User Manager",
+        "layer": "business",
+        "role": "core",
+        "x": 700.0,
+        "y": 160.0,
+        "width": 180.0,
+        "height": 80.0,
+        "method_count": 8,
+        "entry_points": [
+          "user_manager:UserManager.login",
+          "user_manager:UserManager.has_permission"
+        ],
+        "responsibilities": [
+          "User Management",
+          "Authentication",
+          "Management"
+        ]
+      }
+    },
+    "edges": [
+      {
+        "from": "app",
+        "to": "safety_checker",
+        "type": "orchestration",
+        "strength": 0.68,
+        "call_count": 3,
+        "label": "coordinates"
+      },
+      {
+        "from": "app",
+        "to": "reservation_manager",
+        "type": "orchestration",
+        "strength": 0.48,
+        "call_count": 2,
+        "label": "coordinates"
+      },
+      {
+        "from": "app",
+        "to": "equipment_manager",
+        "type": "orchestration",
+        "strength": 0.48,
+        "call_count": 2,
+        "label": "coordinates"
+      },
+      {
+        "from": "app",
+        "to": "user_manager",
+        "type": "orchestration",
+        "strength": 0.28,
+        "call_count": 1,
+        "label": "coordinates"
+      }
+    ],
+    "layers": [
+      "orchestration",
+      "business"
+    ],
+    "layout": {
+      "layer_count": 2,
+      "max_modules_per_layer": 4,
+      "row_height": 120.0,
+      "column_width": 220.0,
+      "total_height": 320.0,
+      "total_width": 960.0
+    }
+  },
+  "key_implementations": {
+    "implementations": [
+      {
+        "node_id": "reservation_manager:ReservationManager.create_reservation",
+        "module": "reservation_manager",
+        "class": "ReservationManager",
+        "method": "create_reservation",
+        "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\reservation_manager.py",
+        "start_line": 56,
+        "end_line": 104,
+        "importance_score": 11.5,
+        "importance_reasons": [
+          "high complexity implementation",
+          "multiple boundary validations",
+          "comprehensive error handling",
+          "modifies multiple state attributes",
+          "demonstrates Repository Pattern",
+          "well-considered edge cases"
+        ],
+        "design_approach": "guard-clause style (4 pre-checks); raises 1 exception type(s): ValueError; modifies 3 state attribute(s): _next_id, labs, reservations; multi-step orchestration (9 internal calls); uses Repository Pattern",
+        "design_characteristics": [
+          {
+            "category": "guard_clause",
+            "label": "guard-clause style (4 pre-checks)",
+            "evidence": "lines 73, 79, 82",
+            "confidence": "verified"
+          },
+          {
+            "category": "error_handling",
+            "label": "raises 1 exception type(s): ValueError",
+            "evidence": "lines 74, 80, 83",
+            "confidence": "verified"
+          },
+          {
+            "category": "state_mutation",
+            "label": "modifies 3 state attribute(s): _next_id, labs, reservations",
+            "evidence": "from state tracker",
+            "confidence": "verified"
+          },
+          {
+            "category": "orchestration",
+            "label": "multi-step orchestration (9 internal calls)",
+            "evidence": "from call count",
+            "confidence": "verified"
+          },
+          {
+            "category": "design_pattern",
+            "label": "uses Repository Pattern",
+            "evidence": "from pattern detector",
+            "confidence": "inferred"
+          }
+        ],
+        "edge_cases": [
+          "lab_id not in self.labs -> raise",
+          "start >= end -> raise",
+          "num_people > self.labs[...][...] -> raise",
+          "self._check_conflict() -> raise"
+        ],
+        "error_handling": [
+          "ValueError",
+          "ValueError: 结束时间必须晚于开始时间",
+          "ValueError: 该时间段已被预约"
+        ],
+        "state_writes": [
+          "_next_id",
+          "labs",
+          "reservations"
+        ],
+        "state_reads": [
+          "_next_id",
+          "labs",
+          "reservations"
+        ],
+        "state_writes_inferred": [
+          "labs",
+          "reservations"
+        ],
+        "validation_checks": [
+          "lab_id not in self.labs",
+          "start >= end",
+          "num_people > self.labs[...][...]",
+          "self._check_conflict()"
+        ],
+        "guard_clauses": [
+          "lab_id not in self.labs -> raise",
+          "start >= end -> raise",
+          "num_people > self.labs[...][...] -> raise",
+          "self._check_conflict() -> raise"
+        ],
+        "null_checks": [
+          "lab_id not in self.labs"
+        ],
+        "loop_patterns": [],
+        "recursion_depth": 0,
+        "design_pattern": "Repository Pattern",
+        "algorithm_type": "conditional checks (no loops)",
+        "algorithm_hints": {
+          "detected": "conditional checks (no loops)",
+          "confidence": "verified",
+          "reason": "4 guard clauses, no loops"
+        },
+        "complexity": 5,
+        "loop_count": 0,
+        "branch_count": 4,
+        "categories": [
+          "validation",
+          "state_mutation",
+          "error_handling",
+          "guard_clause",
+          "creation",
+          "design_pattern"
+        ],
+        "evidence_refs": [
+          {
+            "type": "error_handling",
+            "description": "ValueError",
+            "line": 74
+          },
+          {
+            "type": "error_handling",
+            "description": "ValueError: 结束时间必须晚于开始时间",
+            "line": 80
+          },
+          {
+            "type": "error_handling",
+            "description": "ValueError",
+            "line": 83
+          },
+          {
+            "type": "error_handling",
+            "description": "ValueError: 该时间段已被预约",
+            "line": 87
+          },
+          {
+            "type": "guard_clause",
+            "description": "lab_id not in self.labs -> raise",
+            "line": 73
+          },
+          {
+            "type": "guard_clause",
+            "description": "start >= end -> raise",
+            "line": 79
+          },
+          {
+            "type": "guard_clause",
+            "description": "num_people > self.labs[...][...] -> raise",
+            "line": 82
+          },
+          {
+            "type": "guard_clause",
+            "description": "self._check_conflict() -> raise",
+            "line": 86
+          }
+        ]
+      },
+      {
+        "node_id": "user_manager:UserManager.register",
+        "module": "user_manager",
+        "class": "UserManager",
+        "method": "register",
+        "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\user_manager.py",
+        "start_line": 17,
+        "end_line": 59,
+        "importance_score": 11.0,
+        "importance_reasons": [
+          "high complexity implementation",
+          "multiple boundary validations",
+          "comprehensive error handling",
+          "has state mutation",
+          "demonstrates Repository Pattern",
+          "well-considered edge cases"
+        ],
+        "design_approach": "guard-clause style (4 pre-checks); raises 1 exception type(s): ValueError; modifies 2 state attribute(s): _next_id, users; multi-step orchestration (6 internal calls); uses Repository Pattern",
+        "design_characteristics": [
+          {
+            "category": "guard_clause",
+            "label": "guard-clause style (4 pre-checks)",
+            "evidence": "lines 35, 38, 42",
+            "confidence": "verified"
+          },
+          {
+            "category": "error_handling",
+            "label": "raises 1 exception type(s): ValueError",
+            "evidence": "lines 36, 39, 43",
+            "confidence": "verified"
+          },
+          {
+            "category": "state_mutation",
+            "label": "modifies 2 state attribute(s): _next_id, users",
+            "evidence": "from state tracker",
+            "confidence": "verified"
+          },
+          {
+            "category": "orchestration",
+            "label": "multi-step orchestration (6 internal calls)",
+            "evidence": "from call count",
+            "confidence": "verified"
+          },
+          {
+            "category": "design_pattern",
+            "label": "uses Repository Pattern",
+            "evidence": "from pattern detector",
+            "confidence": "inferred"
+          }
+        ],
+        "edge_cases": [
+          "... or ... -> raise",
+          "username in self.users -> raise",
+          "role not in valid_roles -> raise"
+        ],
+        "error_handling": [
+          "ValueError: 用户名长度不能少于3位",
+          "ValueError",
+          "ValueError: 密码长度不能少于6位"
+        ],
+        "state_writes": [
+          "_next_id",
+          "users"
+        ],
+        "state_reads": [
+          "_next_id",
+          "users"
+        ],
+        "state_writes_inferred": [
+          "users"
+        ],
+        "validation_checks": [
+          "... or ...",
+          "username in self.users",
+          "role not in valid_roles",
+          "... or ..."
+        ],
+        "guard_clauses": [
+          "... or ... -> raise",
+          "username in self.users -> raise",
+          "role not in valid_roles -> raise",
+          "... or ... -> raise"
+        ],
+        "null_checks": [
+          "role not in valid_roles"
+        ],
+        "loop_patterns": [],
+        "recursion_depth": 0,
+        "design_pattern": "Repository Pattern",
+        "algorithm_type": "conditional checks (no loops)",
+        "algorithm_hints": {
+          "detected": "conditional checks (no loops)",
+          "confidence": "verified",
+          "reason": "4 guard clauses, no loops"
+        },
+        "complexity": 5,
+        "loop_count": 0,
+        "branch_count": 4,
+        "categories": [
+          "validation",
+          "state_mutation",
+          "error_handling",
+          "guard_clause",
+          "creation",
+          "design_pattern"
+        ],
+        "evidence_refs": [
+          {
+            "type": "error_handling",
+            "description": "ValueError: 用户名长度不能少于3位",
+            "line": 36
+          },
+          {
+            "type": "error_handling",
+            "description": "ValueError",
+            "line": 39
+          },
+          {
+            "type": "error_handling",
+            "description": "ValueError",
+            "line": 43
+          },
+          {
+            "type": "error_handling",
+            "description": "ValueError: 密码长度不能少于6位",
+            "line": 46
+          },
+          {
+            "type": "guard_clause",
+            "description": "... or ... -> raise",
+            "line": 35
+          },
+          {
+            "type": "guard_clause",
+            "description": "username in self.users -> raise",
+            "line": 38
+          },
+          {
+            "type": "guard_clause",
+            "description": "role not in valid_roles -> raise",
+            "line": 42
+          },
+          {
+            "type": "guard_clause",
+            "description": "... or ... -> raise",
+            "line": 45
+          }
+        ]
+      },
+      {
+        "node_id": "safety_checker:SafetyChecker.perform_check",
+        "module": "safety_checker",
+        "class": "SafetyChecker",
+        "method": "perform_check",
+        "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\safety_checker.py",
+        "start_line": 59,
+        "end_line": 105,
+        "importance_score": 10.0,
+        "importance_reasons": [
+          "high complexity implementation",
+          "includes boundary validation",
+          "includes exception raises",
+          "modifies multiple state attributes",
+          "contains core algorithmic logic",
+          "demonstrates Repository Pattern"
+        ],
+        "design_approach": "1 pre-flight validations; raises 1 exception type(s): ValueError; modifies 3 state attribute(s): _next_record_id, check_items, check_records; sequential traversal; multi-step orchestration (10 internal calls); uses Repository Pattern",
+        "design_characteristics": [
+          {
+            "category": "guard_clause",
+            "label": "1 pre-flight validations",
+            "evidence": "lines 72",
+            "confidence": "verified"
+          },
+          {
+            "category": "error_handling",
+            "label": "raises 1 exception type(s): ValueError",
+            "evidence": "lines 73",
+            "confidence": "verified"
+          },
+          {
+            "category": "state_mutation",
+            "label": "modifies 3 state attribute(s): _next_record_id, check_items, check_records",
+            "evidence": "from state tracker",
+            "confidence": "verified"
+          },
+          {
+            "category": "algorithmic",
+            "label": "sequential traversal",
+            "evidence": "2 loop(s) detected",
+            "confidence": "verified"
+          },
+          {
+            "category": "orchestration",
+            "label": "multi-step orchestration (10 internal calls)",
+            "evidence": "from call count",
+            "confidence": "verified"
+          },
+          {
+            "category": "design_pattern",
+            "label": "uses Repository Pattern",
+            "evidence": "from pattern detector",
+            "confidence": "inferred"
+          }
+        ],
+        "edge_cases": [
+          "not results -> raise"
+        ],
+        "error_handling": [
+          "ValueError: 检查结果不能为空"
+        ],
+        "state_writes": [
+          "_next_record_id",
+          "check_items",
+          "check_records"
+        ],
+        "state_reads": [
+          "_next_record_id",
+          "check_items",
+          "check_records"
+        ],
+        "state_writes_inferred": [
+          "check_items",
+          "check_records"
+        ],
+        "validation_checks": [
+          "not results"
+        ],
+        "guard_clauses": [
+          "not results -> raise"
+        ],
+        "null_checks": [],
+        "loop_patterns": [
+          "sequential traversal"
+        ],
+        "recursion_depth": 0,
+        "design_pattern": "Repository Pattern",
+        "algorithm_type": "state machine transition",
+        "algorithm_hints": {
+          "detected": "state machine transition",
+          "confidence": "verified",
+          "reason": "2 loops + 3 state writes"
+        },
+        "complexity": 5,
+        "loop_count": 2,
+        "branch_count": 2,
+        "categories": [
+          "validation",
+          "state_mutation",
+          "algorithmic",
+          "error_handling",
+          "guard_clause",
+          "design_pattern"
+        ],
+        "evidence_refs": [
+          {
+            "type": "error_handling",
+            "description": "ValueError: 检查结果不能为空",
+            "line": 73
+          },
+          {
+            "type": "guard_clause",
+            "description": "not results -> raise",
+            "line": 72
+          }
+        ]
+      },
+      {
+        "node_id": "user_manager:UserManager.login",
+        "module": "user_manager",
+        "class": "UserManager",
+        "method": "login",
+        "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\user_manager.py",
+        "start_line": 61,
+        "end_line": 83,
+        "importance_score": 9.5,
+        "importance_reasons": [
+          "medium complexity",
+          "multiple boundary validations",
+          "comprehensive error handling",
+          "has state mutation",
+          "demonstrates Repository Pattern",
+          "well-considered edge cases"
+        ],
+        "design_approach": "guard-clause style (3 pre-checks); raises 1 exception type(s): ValueError; modifies 1 state attribute(s): _current_user; uses Repository Pattern",
+        "design_characteristics": [
+          {
+            "category": "guard_clause",
+            "label": "guard-clause style (3 pre-checks)",
+            "evidence": "lines 72, 76, 79",
+            "confidence": "verified"
+          },
+          {
+            "category": "error_handling",
+            "label": "raises 1 exception type(s): ValueError",
+            "evidence": "lines 73, 77, 80",
+            "confidence": "verified"
+          },
+          {
+            "category": "state_mutation",
+            "label": "modifies 1 state attribute(s): _current_user",
+            "evidence": "from state tracker",
+            "confidence": "verified"
+          },
+          {
+            "category": "design_pattern",
+            "label": "uses Repository Pattern",
+            "evidence": "from pattern detector",
+            "confidence": "inferred"
+          }
+        ],
+        "edge_cases": [
+          "username not in self.users -> raise",
+          "not user[...] -> raise",
+          "user[...] != password -> raise"
+        ],
+        "error_handling": [
+          "ValueError",
+          "ValueError: 该账户已被停用",
+          "ValueError: 密码错误"
+        ],
+        "state_writes": [
+          "_current_user"
+        ],
+        "state_reads": [
+          "_current_user",
+          "users"
+        ],
+        "state_writes_inferred": [],
+        "validation_checks": [
+          "username not in self.users",
+          "not user[...]",
+          "user[...] != password"
+        ],
+        "guard_clauses": [
+          "username not in self.users -> raise",
+          "not user[...] -> raise",
+          "user[...] != password -> raise"
+        ],
+        "null_checks": [
+          "username not in self.users"
+        ],
+        "loop_patterns": [],
+        "recursion_depth": 0,
+        "design_pattern": "Repository Pattern",
+        "algorithm_type": "conditional checks (no loops)",
+        "algorithm_hints": {
+          "detected": "conditional checks (no loops)",
+          "confidence": "verified",
+          "reason": "3 guard clauses, no loops"
+        },
+        "complexity": 4,
+        "loop_count": 0,
+        "branch_count": 3,
+        "categories": [
+          "validation",
+          "state_mutation",
+          "error_handling",
+          "guard_clause",
+          "design_pattern"
+        ],
+        "evidence_refs": [
+          {
+            "type": "error_handling",
+            "description": "ValueError",
+            "line": 73
+          },
+          {
+            "type": "error_handling",
+            "description": "ValueError: 该账户已被停用",
+            "line": 77
+          },
+          {
+            "type": "error_handling",
+            "description": "ValueError: 密码错误",
+            "line": 80
+          },
+          {
+            "type": "guard_clause",
+            "description": "username not in self.users -> raise",
+            "line": 72
+          },
+          {
+            "type": "guard_clause",
+            "description": "not user[...] -> raise",
+            "line": 76
+          },
+          {
+            "type": "guard_clause",
+            "description": "user[...] != password -> raise",
+            "line": 79
+          }
+        ]
+      },
+      {
+        "node_id": "reservation_manager:ReservationManager.add_lab",
+        "module": "reservation_manager",
+        "class": "ReservationManager",
+        "method": "add_lab",
+        "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\reservation_manager.py",
+        "start_line": 25,
+        "end_line": 54,
+        "importance_score": 9.0,
+        "importance_reasons": [
+          "medium complexity",
+          "multiple boundary validations",
+          "includes exception raises",
+          "has state mutation",
+          "demonstrates Repository Pattern",
+          "well-considered edge cases"
+        ],
+        "design_approach": "guard-clause style (3 pre-checks); raises 1 exception type(s): ValueError; modifies 1 state attribute(s): labs; uses Repository Pattern",
+        "design_characteristics": [
+          {
+            "category": "guard_clause",
+            "label": "guard-clause style (3 pre-checks)",
+            "evidence": "lines 37, 40, 44",
+            "confidence": "verified"
+          },
+          {
+            "category": "error_handling",
+            "label": "raises 1 exception type(s): ValueError",
+            "evidence": "lines 38, 41, 45",
+            "confidence": "verified"
+          },
+          {
+            "category": "state_mutation",
+            "label": "modifies 1 state attribute(s): labs",
+            "evidence": "from state tracker",
+            "confidence": "verified"
+          },
+          {
+            "category": "design_pattern",
+            "label": "uses Repository Pattern",
+            "evidence": "from pattern detector",
+            "confidence": "inferred"
+          }
+        ],
+        "edge_cases": [
+          "lab_id in self.labs -> raise",
+          "capacity <= 0 -> raise",
+          "safety_level not in valid_levels -> raise"
+        ],
+        "error_handling": [
+          "ValueError",
+          "ValueError: 容纳人数必须大于0"
+        ],
+        "state_writes": [
+          "labs"
+        ],
+        "state_reads": [
+          "labs"
+        ],
+        "state_writes_inferred": [
+          "labs"
+        ],
+        "validation_checks": [
+          "lab_id in self.labs",
+          "capacity <= 0",
+          "safety_level not in valid_levels"
+        ],
+        "guard_clauses": [
+          "lab_id in self.labs -> raise",
+          "capacity <= 0 -> raise",
+          "safety_level not in valid_levels -> raise"
+        ],
+        "null_checks": [
+          "safety_level not in valid_levels"
+        ],
+        "loop_patterns": [],
+        "recursion_depth": 0,
+        "design_pattern": "Repository Pattern",
+        "algorithm_type": "conditional checks (no loops)",
+        "algorithm_hints": {
+          "detected": "conditional checks (no loops)",
+          "confidence": "verified",
+          "reason": "3 guard clauses, no loops"
+        },
+        "complexity": 4,
+        "loop_count": 0,
+        "branch_count": 3,
+        "categories": [
+          "validation",
+          "state_mutation",
+          "error_handling",
+          "guard_clause",
+          "creation",
+          "design_pattern"
+        ],
+        "evidence_refs": [
+          {
+            "type": "error_handling",
+            "description": "ValueError",
+            "line": 38
+          },
+          {
+            "type": "error_handling",
+            "description": "ValueError: 容纳人数必须大于0",
+            "line": 41
+          },
+          {
+            "type": "error_handling",
+            "description": "ValueError",
+            "line": 45
+          },
+          {
+            "type": "guard_clause",
+            "description": "lab_id in self.labs -> raise",
+            "line": 37
+          },
+          {
+            "type": "guard_clause",
+            "description": "capacity <= 0 -> raise",
+            "line": 40
+          },
+          {
+            "type": "guard_clause",
+            "description": "safety_level not in valid_levels -> raise",
+            "line": 44
+          }
+        ]
+      },
+      {
+        "node_id": "reservation_manager:ReservationManager.cancel_reservation",
+        "module": "reservation_manager",
+        "class": "ReservationManager",
+        "method": "cancel_reservation",
+        "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\reservation_manager.py",
+        "start_line": 153,
+        "end_line": 166,
+        "importance_score": 9.0,
+        "importance_reasons": [
+          "medium complexity",
+          "multiple boundary validations",
+          "comprehensive error handling",
+          "has state mutation",
+          "demonstrates Repository Pattern",
+          "well-considered edge cases"
+        ],
+        "design_approach": "guard-clause style (3 pre-checks); raises 3 exception type(s): KeyError, ValueError, PermissionError; modifies 1 state attribute(s): reservations; uses Repository Pattern",
+        "design_characteristics": [
+          {
+            "category": "guard_clause",
+            "label": "guard-clause style (3 pre-checks)",
+            "evidence": "lines 155, 159, 162",
+            "confidence": "verified"
+          },
+          {
+            "category": "error_handling",
+            "label": "raises 3 exception type(s): KeyError, ValueError, PermissionError",
+            "evidence": "lines 156, 160, 163",
+            "confidence": "verified"
+          },
+          {
+            "category": "state_mutation",
+            "label": "modifies 1 state attribute(s): reservations",
+            "evidence": "from state tracker",
+            "confidence": "verified"
+          },
+          {
+            "category": "design_pattern",
+            "label": "uses Repository Pattern",
+            "evidence": "from pattern detector",
+            "confidence": "inferred"
+          }
+        ],
+        "edge_cases": [
+          "res_id not in self.reservations -> raise",
+          "res[...] != username -> raise",
+          "res[...] not in ... -> raise"
+        ],
+        "error_handling": [
+          "KeyError",
+          "PermissionError: 只能取消自己的预约",
+          "ValueError: 该状态无法取消"
+        ],
+        "state_writes": [
+          "reservations"
+        ],
+        "state_reads": [
+          "reservations"
+        ],
+        "state_writes_inferred": [
+          "reservations"
+        ],
+        "validation_checks": [
+          "res_id not in self.reservations",
+          "res[...] != username",
+          "res[...] not in ..."
+        ],
+        "guard_clauses": [
+          "res_id not in self.reservations -> raise",
+          "res[...] != username -> raise",
+          "res[...] not in ... -> raise"
+        ],
+        "null_checks": [
+          "res_id not in self.reservations",
+          "res[...] not in ..."
+        ],
+        "loop_patterns": [],
+        "recursion_depth": 0,
+        "design_pattern": "Repository Pattern",
+        "algorithm_type": "conditional checks (no loops)",
+        "algorithm_hints": {
+          "detected": "conditional checks (no loops)",
+          "confidence": "verified",
+          "reason": "3 guard clauses, no loops"
+        },
+        "complexity": 4,
+        "loop_count": 0,
+        "branch_count": 3,
+        "categories": [
+          "validation",
+          "state_mutation",
+          "error_handling",
+          "guard_clause",
+          "state_transition",
+          "design_pattern"
+        ],
+        "evidence_refs": [
+          {
+            "type": "error_handling",
+            "description": "KeyError",
+            "line": 156
+          },
+          {
+            "type": "error_handling",
+            "description": "PermissionError: 只能取消自己的预约",
+            "line": 160
+          },
+          {
+            "type": "error_handling",
+            "description": "ValueError: 该状态无法取消",
+            "line": 163
+          },
+          {
+            "type": "guard_clause",
+            "description": "res_id not in self.reservations -> raise",
+            "line": 155
+          },
+          {
+            "type": "guard_clause",
+            "description": "res[...] != username -> raise",
+            "line": 159
+          },
+          {
+            "type": "guard_clause",
+            "description": "res[...] not in ... -> raise",
+            "line": 162
+          }
+        ]
+      },
+      {
+        "node_id": "safety_checker:SafetyChecker.add_check_item",
+        "module": "safety_checker",
+        "class": "SafetyChecker",
+        "method": "add_check_item",
+        "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\safety_checker.py",
+        "start_line": 29,
+        "end_line": 57,
+        "importance_score": 9.0,
+        "importance_reasons": [
+          "medium complexity",
+          "includes boundary validation",
+          "includes exception raises",
+          "has state mutation",
+          "core method called by many",
+          "demonstrates Repository Pattern"
+        ],
+        "design_approach": "2 pre-flight validations; raises 1 exception type(s): ValueError; modifies 2 state attribute(s): _next_item_id, check_items; uses Repository Pattern",
+        "design_characteristics": [
+          {
+            "category": "guard_clause",
+            "label": "2 pre-flight validations",
+            "evidence": "lines 40, 44",
+            "confidence": "verified"
+          },
+          {
+            "category": "error_handling",
+            "label": "raises 1 exception type(s): ValueError",
+            "evidence": "lines 41, 45",
+            "confidence": "verified"
+          },
+          {
+            "category": "state_mutation",
+            "label": "modifies 2 state attribute(s): _next_item_id, check_items",
+            "evidence": "from state tracker",
+            "confidence": "verified"
+          },
+          {
+            "category": "design_pattern",
+            "label": "uses Repository Pattern",
+            "evidence": "from pattern detector",
+            "confidence": "inferred"
+          }
+        ],
+        "edge_cases": [
+          "not content -> raise",
+          "risk_level not in valid_levels -> raise"
+        ],
+        "error_handling": [
+          "ValueError: 检查内容不能为空",
+          "ValueError"
+        ],
+        "state_writes": [
+          "_next_item_id",
+          "check_items"
+        ],
+        "state_reads": [
+          "_next_item_id",
+          "check_items"
+        ],
+        "state_writes_inferred": [
+          "check_items"
+        ],
+        "validation_checks": [
+          "not content",
+          "risk_level not in valid_levels"
+        ],
+        "guard_clauses": [
+          "not content -> raise",
+          "risk_level not in valid_levels -> raise"
+        ],
+        "null_checks": [
+          "risk_level not in valid_levels"
+        ],
+        "loop_patterns": [],
+        "recursion_depth": 0,
+        "design_pattern": "Repository Pattern",
+        "algorithm_type": "conditional checks (no loops)",
+        "algorithm_hints": {
+          "detected": "conditional checks (no loops)",
+          "confidence": "verified",
+          "reason": "2 guard clauses, no loops"
+        },
+        "complexity": 3,
+        "loop_count": 0,
+        "branch_count": 2,
+        "categories": [
+          "validation",
+          "state_mutation",
+          "error_handling",
+          "guard_clause",
+          "creation",
+          "design_pattern"
+        ],
+        "evidence_refs": [
+          {
+            "type": "error_handling",
+            "description": "ValueError: 检查内容不能为空",
+            "line": 41
+          },
+          {
+            "type": "error_handling",
+            "description": "ValueError",
+            "line": 45
+          },
+          {
+            "type": "guard_clause",
+            "description": "not content -> raise",
+            "line": 40
+          },
+          {
+            "type": "guard_clause",
+            "description": "risk_level not in valid_levels -> raise",
+            "line": 44
+          }
+        ]
+      },
+      {
+        "node_id": "equipment_manager:EquipmentManager.return_equipment",
+        "module": "equipment_manager",
+        "class": "EquipmentManager",
+        "method": "return_equipment",
+        "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\equipment_manager.py",
+        "start_line": 87,
+        "end_line": 101,
+        "importance_score": 7.5,
+        "importance_reasons": [
+          "medium complexity",
+          "includes boundary validation",
+          "includes exception raises",
+          "modifies multiple state attributes",
+          "demonstrates Repository Pattern"
+        ],
+        "design_approach": "raises 2 exception type(s): KeyError, ValueError; modifies 3 state attribute(s): borrow_records, equipments, equipments.status; sequential traversal; uses Repository Pattern",
+        "design_characteristics": [
+          {
+            "category": "error_handling",
+            "label": "raises 2 exception type(s): KeyError, ValueError",
+            "evidence": "lines 101, 92",
+            "confidence": "verified"
+          },
+          {
+            "category": "state_mutation",
+            "label": "modifies 3 state attribute(s): borrow_records, equipments, equipments.status",
+            "evidence": "from state tracker",
+            "confidence": "verified"
+          },
+          {
+            "category": "algorithmic",
+            "label": "sequential traversal",
+            "evidence": "1 loop(s) detected",
+            "confidence": "verified"
+          },
+          {
+            "category": "design_pattern",
+            "label": "uses Repository Pattern",
+            "evidence": "from pattern detector",
+            "confidence": "inferred"
+          }
+        ],
+        "edge_cases": [],
+        "error_handling": [
+          "KeyError",
+          "ValueError: 该借用记录已归还"
+        ],
+        "state_writes": [
+          "borrow_records",
+          "equipments",
+          "equipments.status"
+        ],
+        "state_reads": [
+          "borrow_records",
+          "equipments"
+        ],
+        "state_writes_inferred": [
+          "borrow_records",
+          "equipments"
+        ],
+        "validation_checks": [
+          "record[...] == record_id",
+          "record[...] != 'borrowed'"
+        ],
+        "guard_clauses": [],
+        "null_checks": [],
+        "loop_patterns": [
+          "sequential traversal"
+        ],
+        "recursion_depth": 0,
+        "design_pattern": "Repository Pattern",
+        "algorithm_type": "general business logic",
+        "algorithm_hints": {
+          "detected": "general business logic",
+          "confidence": "verified",
+          "reason": "no distinctive algorithmic pattern"
+        },
+        "complexity": 4,
+        "loop_count": 1,
+        "branch_count": 2,
+        "categories": [
+          "validation",
+          "state_mutation",
+          "algorithmic",
+          "error_handling",
+          "design_pattern"
+        ],
+        "evidence_refs": [
+          {
+            "type": "error_handling",
+            "description": "KeyError",
+            "line": 101
+          },
+          {
+            "type": "error_handling",
+            "description": "ValueError: 该借用记录已归还",
+            "line": 92
+          }
+        ]
+      },
+      {
+        "node_id": "equipment_manager:EquipmentManager.borrow_equipment",
+        "module": "equipment_manager",
+        "class": "EquipmentManager",
+        "method": "borrow_equipment",
+        "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\equipment_manager.py",
+        "start_line": 53,
+        "end_line": 85,
+        "importance_score": 7.0,
+        "importance_reasons": [
+          "medium complexity",
+          "includes boundary validation",
+          "includes exception raises",
+          "has state mutation",
+          "demonstrates Repository Pattern"
+        ],
+        "design_approach": "2 pre-flight validations; raises 2 exception type(s): KeyError, ValueError; modifies 2 state attribute(s): borrow_records, equipments; multi-step orchestration (6 internal calls); uses Repository Pattern",
+        "design_characteristics": [
+          {
+            "category": "guard_clause",
+            "label": "2 pre-flight validations",
+            "evidence": "lines 66, 70",
+            "confidence": "verified"
+          },
+          {
+            "category": "error_handling",
+            "label": "raises 2 exception type(s): KeyError, ValueError",
+            "evidence": "lines 67, 71",
+            "confidence": "verified"
+          },
+          {
+            "category": "state_mutation",
+            "label": "modifies 2 state attribute(s): borrow_records, equipments",
+            "evidence": "from state tracker",
+            "confidence": "verified"
+          },
+          {
+            "category": "orchestration",
+            "label": "multi-step orchestration (6 internal calls)",
+            "evidence": "from call count",
+            "confidence": "verified"
+          },
+          {
+            "category": "design_pattern",
+            "label": "uses Repository Pattern",
+            "evidence": "from pattern detector",
+            "confidence": "inferred"
+          }
+        ],
+        "edge_cases": [
+          "equip_id not in self.equipments -> raise",
+          "equip[...] != self.STATUS_AVAILABLE -> raise"
+        ],
+        "error_handling": [
+          "KeyError",
+          "ValueError"
+        ],
+        "state_writes": [
+          "borrow_records",
+          "equipments"
+        ],
+        "state_reads": [
+          "borrow_records",
+          "equipments"
+        ],
+        "state_writes_inferred": [
+          "borrow_records",
+          "equipments"
+        ],
+        "validation_checks": [
+          "equip_id not in self.equipments",
+          "equip[...] != self.STATUS_AVAILABLE"
+        ],
+        "guard_clauses": [
+          "equip_id not in self.equipments -> raise",
+          "equip[...] != self.STATUS_AVAILABLE -> raise"
+        ],
+        "null_checks": [
+          "equip_id not in self.equipments"
+        ],
+        "loop_patterns": [],
+        "recursion_depth": 0,
+        "design_pattern": "Repository Pattern",
+        "algorithm_type": "conditional checks (no loops)",
+        "algorithm_hints": {
+          "detected": "conditional checks (no loops)",
+          "confidence": "verified",
+          "reason": "2 guard clauses, no loops"
+        },
+        "complexity": 3,
+        "loop_count": 0,
+        "branch_count": 2,
+        "categories": [
+          "validation",
+          "state_mutation",
+          "error_handling",
+          "guard_clause",
+          "design_pattern"
+        ],
+        "evidence_refs": [
+          {
+            "type": "error_handling",
+            "description": "KeyError",
+            "line": 67
+          },
+          {
+            "type": "error_handling",
+            "description": "ValueError",
+            "line": 71
+          },
+          {
+            "type": "guard_clause",
+            "description": "equip_id not in self.equipments -> raise",
+            "line": 66
+          },
+          {
+            "type": "guard_clause",
+            "description": "equip[...] != self.STATUS_AVAILABLE -> raise",
+            "line": 70
+          }
+        ]
+      },
+      {
+        "node_id": "equipment_manager:EquipmentManager.set_equipment_status",
+        "module": "equipment_manager",
+        "class": "EquipmentManager",
+        "method": "set_equipment_status",
+        "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\equipment_manager.py",
+        "start_line": 130,
+        "end_line": 144,
+        "importance_score": 6.5,
+        "importance_reasons": [
+          "medium complexity",
+          "includes boundary validation",
+          "includes exception raises",
+          "has state mutation",
+          "demonstrates Repository Pattern"
+        ],
+        "design_approach": "2 pre-flight validations; raises 2 exception type(s): KeyError, ValueError; modifies 2 state attribute(s): equipments, equipments.status; uses Repository Pattern",
+        "design_characteristics": [
+          {
+            "category": "guard_clause",
+            "label": "2 pre-flight validations",
+            "evidence": "lines 132, 140",
+            "confidence": "verified"
+          },
+          {
+            "category": "error_handling",
+            "label": "raises 2 exception type(s): KeyError, ValueError",
+            "evidence": "lines 133, 141",
+            "confidence": "verified"
+          },
+          {
+            "category": "state_mutation",
+            "label": "modifies 2 state attribute(s): equipments, equipments.status",
+            "evidence": "from state tracker",
+            "confidence": "verified"
+          },
+          {
+            "category": "design_pattern",
+            "label": "uses Repository Pattern",
+            "evidence": "from pattern detector",
+            "confidence": "inferred"
+          }
+        ],
+        "edge_cases": [
+          "equip_id not in self.equipments -> raise",
+          "status not in valid_statuses -> raise"
+        ],
+        "error_handling": [
+          "KeyError",
+          "ValueError"
+        ],
+        "state_writes": [
+          "equipments",
+          "equipments.status"
+        ],
+        "state_reads": [
+          "equipments"
+        ],
+        "state_writes_inferred": [
+          "equipments"
+        ],
+        "validation_checks": [
+          "equip_id not in self.equipments",
+          "status not in valid_statuses"
+        ],
+        "guard_clauses": [
+          "equip_id not in self.equipments -> raise",
+          "status not in valid_statuses -> raise"
+        ],
+        "null_checks": [
+          "equip_id not in self.equipments",
+          "status not in valid_statuses"
+        ],
+        "loop_patterns": [],
+        "recursion_depth": 0,
+        "design_pattern": "Repository Pattern",
+        "algorithm_type": "conditional checks (no loops)",
+        "algorithm_hints": {
+          "detected": "conditional checks (no loops)",
+          "confidence": "verified",
+          "reason": "2 guard clauses, no loops"
+        },
+        "complexity": 3,
+        "loop_count": 0,
+        "branch_count": 2,
+        "categories": [
+          "validation",
+          "state_mutation",
+          "error_handling",
+          "guard_clause",
+          "design_pattern"
+        ],
+        "evidence_refs": [
+          {
+            "type": "error_handling",
+            "description": "KeyError",
+            "line": 133
+          },
+          {
+            "type": "error_handling",
+            "description": "ValueError",
+            "line": 141
+          },
+          {
+            "type": "guard_clause",
+            "description": "equip_id not in self.equipments -> raise",
+            "line": 132
+          },
+          {
+            "type": "guard_clause",
+            "description": "status not in valid_statuses -> raise",
+            "line": 140
+          }
+        ]
+      }
+    ],
+    "total": 10,
+    "categories": {
+      "validation": 10,
+      "state_mutation": 10,
+      "error_handling": 10,
+      "design_pattern": 10,
+      "guard_clause": 9,
+      "creation": 4,
+      "algorithmic": 2,
+      "state_transition": 1
+    }
+  },
+  "design_patterns": {
+    "patterns": [
+      {
+        "pattern_id": "repository",
+        "pattern_name": "Repository Pattern",
+        "category": "structural",
+        "confidence": "high",
+        "score": 0.85,
+        "target_type": "class",
+        "target_name": "ReservationManager",
+        "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\reservation_manager.py",
+        "description": "ReservationManager encapsulates data access with CRUD operations and validation",
+        "evidence": [
+          {
+            "description": "CRUD methods (6): covers 3 of 4 operations",
+            "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\reservation_manager.py",
+            "line_start": 0,
+            "line_end": 0,
+            "evidence_type": "method"
+          },
+          {
+            "description": "Internal data storage: labs, reservations",
+            "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\reservation_manager.py",
+            "line_start": 0,
+            "line_end": 0,
+            "evidence_type": "structure"
+          },
+          {
+            "description": "Class name 'ReservationManager' indicates data management role",
+            "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\reservation_manager.py",
+            "line_start": 11,
+            "line_end": 0,
+            "evidence_type": "naming"
+          },
+          {
+            "description": "Includes validation logic before data operations",
+            "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\reservation_manager.py",
+            "line_start": 0,
+            "line_end": 0,
+            "evidence_type": "structure"
+          }
+        ],
+        "related_classes": [
+          "ReservationManager"
+        ]
+      },
+      {
+        "pattern_id": "repository",
+        "pattern_name": "Repository Pattern",
+        "category": "structural",
+        "confidence": "high",
+        "score": 0.75,
+        "target_type": "class",
+        "target_name": "EquipmentManager",
+        "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\equipment_manager.py",
+        "description": "EquipmentManager encapsulates data access with CRUD operations and validation",
+        "evidence": [
+          {
+            "description": "CRUD methods (5): covers 3 of 4 operations",
+            "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\equipment_manager.py",
+            "line_start": 0,
+            "line_end": 0,
+            "evidence_type": "method"
+          },
+          {
+            "description": "Internal data storage: maintenance_logs, borrow_records, equipments",
+            "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\equipment_manager.py",
+            "line_start": 0,
+            "line_end": 0,
+            "evidence_type": "structure"
+          },
+          {
+            "description": "Class name 'EquipmentManager' indicates data management role",
+            "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\equipment_manager.py",
+            "line_start": 10,
+            "line_end": 0,
+            "evidence_type": "naming"
+          }
+        ],
+        "related_classes": [
+          "EquipmentManager"
+        ]
+      },
+      {
+        "pattern_id": "repository",
+        "pattern_name": "Repository Pattern",
+        "category": "structural",
+        "confidence": "high",
+        "score": 0.75,
+        "target_type": "class",
+        "target_name": "UserManager",
+        "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\user_manager.py",
+        "description": "UserManager encapsulates data access with CRUD operations and validation",
+        "evidence": [
+          {
+            "description": "CRUD methods (4): covers 3 of 4 operations",
+            "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\user_manager.py",
+            "line_start": 0,
+            "line_end": 0,
+            "evidence_type": "method"
+          },
+          {
+            "description": "Internal data storage: users",
+            "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\user_manager.py",
+            "line_start": 0,
+            "line_end": 0,
+            "evidence_type": "structure"
+          },
+          {
+            "description": "Class name 'UserManager' indicates data management role",
+            "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\user_manager.py",
+            "line_start": 9,
+            "line_end": 0,
+            "evidence_type": "naming"
+          }
+        ],
+        "related_classes": [
+          "UserManager"
+        ]
+      },
+      {
+        "pattern_id": "repository",
+        "pattern_name": "Repository Pattern",
+        "category": "structural",
+        "confidence": "medium",
+        "score": 0.6,
+        "target_type": "class",
+        "target_name": "SafetyChecker",
+        "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\safety_checker.py",
+        "description": "SafetyChecker encapsulates data access with CRUD operations and validation",
+        "evidence": [
+          {
+            "description": "CRUD methods (5): covers 3 of 4 operations",
+            "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\safety_checker.py",
+            "line_start": 0,
+            "line_end": 0,
+            "evidence_type": "method"
+          },
+          {
+            "description": "Internal data storage: hazards, check_records, check_items",
+            "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\safety_checker.py",
+            "line_start": 0,
+            "line_end": 0,
+            "evidence_type": "structure"
+          },
+          {
+            "description": "Includes validation logic before data operations",
+            "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\safety_checker.py",
+            "line_start": 0,
+            "line_end": 0,
+            "evidence_type": "structure"
+          }
+        ],
+        "related_classes": [
+          "SafetyChecker"
+        ]
+      },
+      {
+        "pattern_id": "service",
+        "pattern_name": "Service / Facade Pattern",
+        "category": "structural",
+        "confidence": "medium",
+        "score": 0.6,
+        "target_type": "class",
+        "target_name": "LabSafetyApp",
+        "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\app.py",
+        "description": "LabSafetyApp orchestrates business logic by coordinating lower-level components",
+        "evidence": [
+          {
+            "description": "Orchestrates 8 calls to other components",
+            "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\app.py",
+            "line_start": 0,
+            "line_end": 0,
+            "evidence_type": "structure"
+          },
+          {
+            "description": "Class name suggests coordination / facade role",
+            "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\app.py",
+            "line_start": 0,
+            "line_end": 0,
+            "evidence_type": "naming"
+          },
+          {
+            "description": "Composes 3 manager/service objects",
+            "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\app.py",
+            "line_start": 0,
+            "line_end": 0,
+            "evidence_type": "structure"
+          }
+        ],
+        "related_classes": [
+          "LabSafetyApp"
+        ]
+      },
+      {
+        "pattern_id": "service",
+        "pattern_name": "Service / Facade Pattern",
+        "category": "structural",
+        "confidence": "low",
+        "score": 0.5,
+        "target_type": "class",
+        "target_name": "ReservationManager",
+        "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\reservation_manager.py",
+        "description": "ReservationManager orchestrates business logic by coordinating lower-level components",
+        "evidence": [
+          {
+            "description": "Orchestrates 4 calls to other components",
+            "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\reservation_manager.py",
+            "line_start": 0,
+            "line_end": 0,
+            "evidence_type": "structure"
+          },
+          {
+            "description": "3 high-level methods delegate to lower-level operations",
+            "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\reservation_manager.py",
+            "line_start": 0,
+            "line_end": 0,
+            "evidence_type": "structure"
+          }
+        ],
+        "related_classes": [
+          "ReservationManager"
+        ]
+      }
+    ],
+    "total": 6,
+    "by_category": {
+      "structural": [
+        {
+          "pattern_id": "repository",
+          "pattern_name": "Repository Pattern",
+          "category": "structural",
+          "confidence": "high",
+          "score": 0.75,
+          "target_type": "class",
+          "target_name": "EquipmentManager",
+          "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\equipment_manager.py",
+          "description": "EquipmentManager encapsulates data access with CRUD operations and validation",
+          "evidence": [
+            {
+              "description": "CRUD methods (5): covers 3 of 4 operations",
+              "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\equipment_manager.py",
+              "line_start": 0,
+              "line_end": 0,
+              "evidence_type": "method"
+            },
+            {
+              "description": "Internal data storage: maintenance_logs, borrow_records, equipments",
+              "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\equipment_manager.py",
+              "line_start": 0,
+              "line_end": 0,
+              "evidence_type": "structure"
+            },
+            {
+              "description": "Class name 'EquipmentManager' indicates data management role",
+              "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\equipment_manager.py",
+              "line_start": 10,
+              "line_end": 0,
+              "evidence_type": "naming"
+            }
+          ],
+          "related_classes": [
+            "EquipmentManager"
+          ]
+        },
+        {
+          "pattern_id": "repository",
+          "pattern_name": "Repository Pattern",
+          "category": "structural",
+          "confidence": "high",
+          "score": 0.85,
+          "target_type": "class",
+          "target_name": "ReservationManager",
+          "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\reservation_manager.py",
+          "description": "ReservationManager encapsulates data access with CRUD operations and validation",
+          "evidence": [
+            {
+              "description": "CRUD methods (6): covers 3 of 4 operations",
+              "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\reservation_manager.py",
+              "line_start": 0,
+              "line_end": 0,
+              "evidence_type": "method"
+            },
+            {
+              "description": "Internal data storage: labs, reservations",
+              "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\reservation_manager.py",
+              "line_start": 0,
+              "line_end": 0,
+              "evidence_type": "structure"
+            },
+            {
+              "description": "Class name 'ReservationManager' indicates data management role",
+              "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\reservation_manager.py",
+              "line_start": 11,
+              "line_end": 0,
+              "evidence_type": "naming"
+            },
+            {
+              "description": "Includes validation logic before data operations",
+              "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\reservation_manager.py",
+              "line_start": 0,
+              "line_end": 0,
+              "evidence_type": "structure"
+            }
+          ],
+          "related_classes": [
+            "ReservationManager"
+          ]
+        },
+        {
+          "pattern_id": "repository",
+          "pattern_name": "Repository Pattern",
+          "category": "structural",
+          "confidence": "medium",
+          "score": 0.6,
+          "target_type": "class",
+          "target_name": "SafetyChecker",
+          "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\safety_checker.py",
+          "description": "SafetyChecker encapsulates data access with CRUD operations and validation",
+          "evidence": [
+            {
+              "description": "CRUD methods (5): covers 3 of 4 operations",
+              "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\safety_checker.py",
+              "line_start": 0,
+              "line_end": 0,
+              "evidence_type": "method"
+            },
+            {
+              "description": "Internal data storage: hazards, check_records, check_items",
+              "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\safety_checker.py",
+              "line_start": 0,
+              "line_end": 0,
+              "evidence_type": "structure"
+            },
+            {
+              "description": "Includes validation logic before data operations",
+              "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\safety_checker.py",
+              "line_start": 0,
+              "line_end": 0,
+              "evidence_type": "structure"
+            }
+          ],
+          "related_classes": [
+            "SafetyChecker"
+          ]
+        },
+        {
+          "pattern_id": "repository",
+          "pattern_name": "Repository Pattern",
+          "category": "structural",
+          "confidence": "high",
+          "score": 0.75,
+          "target_type": "class",
+          "target_name": "UserManager",
+          "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\user_manager.py",
+          "description": "UserManager encapsulates data access with CRUD operations and validation",
+          "evidence": [
+            {
+              "description": "CRUD methods (4): covers 3 of 4 operations",
+              "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\user_manager.py",
+              "line_start": 0,
+              "line_end": 0,
+              "evidence_type": "method"
+            },
+            {
+              "description": "Internal data storage: users",
+              "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\user_manager.py",
+              "line_start": 0,
+              "line_end": 0,
+              "evidence_type": "structure"
+            },
+            {
+              "description": "Class name 'UserManager' indicates data management role",
+              "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\user_manager.py",
+              "line_start": 9,
+              "line_end": 0,
+              "evidence_type": "naming"
+            }
+          ],
+          "related_classes": [
+            "UserManager"
+          ]
+        },
+        {
+          "pattern_id": "service",
+          "pattern_name": "Service / Facade Pattern",
+          "category": "structural",
+          "confidence": "medium",
+          "score": 0.6,
+          "target_type": "class",
+          "target_name": "LabSafetyApp",
+          "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\app.py",
+          "description": "LabSafetyApp orchestrates business logic by coordinating lower-level components",
+          "evidence": [
+            {
+              "description": "Orchestrates 8 calls to other components",
+              "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\app.py",
+              "line_start": 0,
+              "line_end": 0,
+              "evidence_type": "structure"
+            },
+            {
+              "description": "Class name suggests coordination / facade role",
+              "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\app.py",
+              "line_start": 0,
+              "line_end": 0,
+              "evidence_type": "naming"
+            },
+            {
+              "description": "Composes 3 manager/service objects",
+              "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\app.py",
+              "line_start": 0,
+              "line_end": 0,
+              "evidence_type": "structure"
+            }
+          ],
+          "related_classes": [
+            "LabSafetyApp"
+          ]
+        },
+        {
+          "pattern_id": "service",
+          "pattern_name": "Service / Facade Pattern",
+          "category": "structural",
+          "confidence": "low",
+          "score": 0.5,
+          "target_type": "class",
+          "target_name": "ReservationManager",
+          "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\reservation_manager.py",
+          "description": "ReservationManager orchestrates business logic by coordinating lower-level components",
+          "evidence": [
+            {
+              "description": "Orchestrates 4 calls to other components",
+              "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\reservation_manager.py",
+              "line_start": 0,
+              "line_end": 0,
+              "evidence_type": "structure"
+            },
+            {
+              "description": "3 high-level methods delegate to lower-level operations",
+              "filepath": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\reservation_manager.py",
+              "line_start": 0,
+              "line_end": 0,
+              "evidence_type": "structure"
+            }
+          ],
+          "related_classes": [
+            "ReservationManager"
+          ]
+        }
+      ]
+    }
+  },
+  "business_priority": {
+    "algorithm": {
+      "name": "Evidence-aware Business Logic Priority Score",
+      "version": "BLPS-1.0",
+      "purpose": "为教师确定核心讲解路径和审核顺序，不替代事实判定",
+      "node_weights": {
+        "centrality": 0.35,
+        "flow_reachability": 0.25,
+        "state_mutation": 0.2,
+        "boundary_role": 0.1,
+        "evidence_completeness": 0.1
+      },
+      "flow_weights": {
+        "business_importance": 0.45,
+        "state_ratio": 0.2,
+        "validation_ratio": 0.15,
+        "boundary_ratio": 0.1,
+        "evidence_completeness": 0.1
+      },
+      "setup_flow_factor": 0.2,
+      "setup_detection": "entry_node/name contains initialize, bootstrap, seed, sample_data or setup",
+      "formula": "S_node=100*(0.35*C+0.25*R+0.20*M+0.10*B+0.10*E)",
+      "pagerank": "PR(v)=(1-d)/N+d*sum(PR(u)*w_uv/sum(w_ux)); cross-module edge weight=1.2",
+      "caveat": "score 是可复现的排序信号；verified 事实仍以 AST、状态追踪和行号证据为准"
+    },
+    "node_scores": [
+      {
+        "node_id": "safety_checker:SafetyChecker.add_check_item",
+        "module": "safety_checker",
+        "method": "add_check_item",
+        "location": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\safety_checker.py:29",
+        "score": 61.18,
+        "metrics": {
+          "centrality": 0.4884,
+          "flow_reachability": 0.1633,
+          "state_mutation": 1.0,
+          "boundary_role": 1.0,
+          "evidence_completeness": 1.0
+        },
+        "reasons": [
+          "会改变业务状态",
+          "位于跨模块边界"
+        ],
+        "flow_ids": [
+          "flow_1"
+        ],
+        "confidence": "inferred"
+      },
+      {
+        "node_id": "safety_checker:SafetyChecker._create_hazard",
+        "module": "safety_checker",
+        "method": "_create_hazard",
+        "location": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\safety_checker.py:107",
+        "score": 60.1,
+        "metrics": {
+          "centrality": 0.6852,
+          "flow_reachability": 0.2449,
+          "state_mutation": 1.0,
+          "boundary_role": 0.0,
+          "evidence_completeness": 1.0
+        },
+        "reasons": [
+          "调用图结构中心",
+          "会改变业务状态"
+        ],
+        "flow_ids": [
+          "flow_3"
+        ],
+        "confidence": "inferred"
+      },
+      {
+        "node_id": "equipment_manager:EquipmentManager.add_equipment",
+        "module": "equipment_manager",
+        "method": "add_equipment",
+        "location": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\equipment_manager.py:24",
+        "score": 59.8,
+        "metrics": {
+          "centrality": 0.4491,
+          "flow_reachability": 0.1633,
+          "state_mutation": 1.0,
+          "boundary_role": 1.0,
+          "evidence_completeness": 1.0
+        },
+        "reasons": [
+          "会改变业务状态",
+          "位于跨模块边界"
+        ],
+        "flow_ids": [
+          "flow_1"
+        ],
+        "confidence": "inferred"
+      },
+      {
+        "node_id": "reservation_manager:ReservationManager.add_lab",
+        "module": "reservation_manager",
+        "method": "add_lab",
+        "location": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\reservation_manager.py:25",
+        "score": 59.8,
+        "metrics": {
+          "centrality": 0.4491,
+          "flow_reachability": 0.1633,
+          "state_mutation": 1.0,
+          "boundary_role": 1.0,
+          "evidence_completeness": 1.0
+        },
+        "reasons": [
+          "会改变业务状态",
+          "位于跨模块边界"
+        ],
+        "flow_ids": [
+          "flow_1"
+        ],
+        "confidence": "inferred"
+      },
+      {
+        "node_id": "user_manager:UserManager.register",
+        "module": "user_manager",
+        "method": "register",
+        "location": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\user_manager.py:17",
+        "score": 58.42,
+        "metrics": {
+          "centrality": 0.4097,
+          "flow_reachability": 0.1633,
+          "state_mutation": 1.0,
+          "boundary_role": 1.0,
+          "evidence_completeness": 1.0
+        },
+        "reasons": [
+          "会改变业务状态",
+          "位于跨模块边界"
+        ],
+        "flow_ids": [
+          "flow_1"
+        ],
+        "confidence": "inferred"
+      },
+      {
+        "node_id": "app:LabSafetyApp.initialize_sample_data",
+        "module": "app",
+        "method": "initialize_sample_data",
+        "location": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\app.py:27",
+        "score": 57.04,
+        "metrics": {
+          "centrality": 0.3704,
+          "flow_reachability": 0.1633,
+          "state_mutation": 1.0,
+          "boundary_role": 1.0,
+          "evidence_completeness": 1.0
+        },
+        "reasons": [
+          "会改变业务状态",
+          "位于跨模块边界"
+        ],
+        "flow_ids": [
+          "flow_1"
+        ],
+        "confidence": "inferred"
+      },
+      {
+        "node_id": "safety_checker:SafetyChecker._find_hazard",
+        "module": "safety_checker",
+        "method": "_find_hazard",
+        "location": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\safety_checker.py:156",
+        "score": 52.14,
+        "metrics": {
+          "centrality": 1.0,
+          "flow_reachability": 0.2857,
+          "state_mutation": 0.0,
+          "boundary_role": 0.0,
+          "evidence_completeness": 1.0
+        },
+        "reasons": [
+          "调用图结构中心"
+        ],
+        "flow_ids": [
+          "flow_4",
+          "flow_5"
+        ],
+        "confidence": "inferred"
+      },
+      {
+        "node_id": "safety_checker:SafetyChecker.perform_check",
+        "module": "safety_checker",
+        "method": "perform_check",
+        "location": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\safety_checker.py:59",
+        "score": 49.09,
+        "metrics": {
+          "centrality": 0.3704,
+          "flow_reachability": 0.2449,
+          "state_mutation": 1.0,
+          "boundary_role": 0.0,
+          "evidence_completeness": 1.0
+        },
+        "reasons": [
+          "会改变业务状态"
+        ],
+        "flow_ids": [
+          "flow_3"
+        ],
+        "confidence": "inferred"
+      },
+      {
+        "node_id": "reservation_manager:ReservationManager.create_reservation",
+        "module": "reservation_manager",
+        "method": "create_reservation",
+        "location": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\reservation_manager.py:56",
+        "score": 47.55,
+        "metrics": {
+          "centrality": 0.3704,
+          "flow_reachability": 0.1837,
+          "state_mutation": 1.0,
+          "boundary_role": 0.0,
+          "evidence_completeness": 1.0
+        },
+        "reasons": [
+          "会改变业务状态"
+        ],
+        "flow_ids": [
+          "flow_2"
+        ],
+        "confidence": "inferred"
+      },
+      {
+        "node_id": "safety_checker:SafetyChecker.assign_hazard",
+        "module": "safety_checker",
+        "method": "assign_hazard",
+        "location": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\safety_checker.py:127",
+        "score": 46.53,
+        "metrics": {
+          "centrality": 0.3704,
+          "flow_reachability": 0.1429,
+          "state_mutation": 1.0,
+          "boundary_role": 0.0,
+          "evidence_completeness": 1.0
+        },
+        "reasons": [
+          "会改变业务状态"
+        ],
+        "flow_ids": [
+          "flow_4"
+        ],
+        "confidence": "inferred"
+      },
+      {
+        "node_id": "safety_checker:SafetyChecker.close_hazard",
+        "module": "safety_checker",
+        "method": "close_hazard",
+        "location": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\safety_checker.py:142",
+        "score": 46.53,
+        "metrics": {
+          "centrality": 0.3704,
+          "flow_reachability": 0.1429,
+          "state_mutation": 1.0,
+          "boundary_role": 0.0,
+          "evidence_completeness": 1.0
+        },
+        "reasons": [
+          "会改变业务状态"
+        ],
+        "flow_ids": [
+          "flow_5"
+        ],
+        "confidence": "inferred"
+      },
+      {
+        "node_id": "app:LabSafetyApp.__init__",
+        "module": "app",
+        "method": "__init__",
+        "location": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\app.py:21",
+        "score": 42.96,
+        "metrics": {
+          "centrality": 0.3704,
+          "flow_reachability": 0.0,
+          "state_mutation": 1.0,
+          "boundary_role": 0.0,
+          "evidence_completeness": 1.0
+        },
+        "reasons": [
+          "会改变业务状态"
+        ],
+        "flow_ids": [],
+        "confidence": "inferred"
+      },
+      {
+        "node_id": "equipment_manager:EquipmentManager.__init__",
+        "module": "equipment_manager",
+        "method": "__init__",
+        "location": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\equipment_manager.py:18",
+        "score": 42.96,
+        "metrics": {
+          "centrality": 0.3704,
+          "flow_reachability": 0.0,
+          "state_mutation": 1.0,
+          "boundary_role": 0.0,
+          "evidence_completeness": 1.0
+        },
+        "reasons": [
+          "会改变业务状态"
+        ],
+        "flow_ids": [],
+        "confidence": "inferred"
+      },
+      {
+        "node_id": "equipment_manager:EquipmentManager.add_maintenance",
+        "module": "equipment_manager",
+        "method": "add_maintenance",
+        "location": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\equipment_manager.py:103",
+        "score": 42.96,
+        "metrics": {
+          "centrality": 0.3704,
+          "flow_reachability": 0.0,
+          "state_mutation": 1.0,
+          "boundary_role": 0.0,
+          "evidence_completeness": 1.0
+        },
+        "reasons": [
+          "会改变业务状态"
+        ],
+        "flow_ids": [],
+        "confidence": "inferred"
+      },
+      {
+        "node_id": "equipment_manager:EquipmentManager.borrow_equipment",
+        "module": "equipment_manager",
+        "method": "borrow_equipment",
+        "location": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\equipment_manager.py:53",
+        "score": 42.96,
+        "metrics": {
+          "centrality": 0.3704,
+          "flow_reachability": 0.0,
+          "state_mutation": 1.0,
+          "boundary_role": 0.0,
+          "evidence_completeness": 1.0
+        },
+        "reasons": [
+          "会改变业务状态"
+        ],
+        "flow_ids": [],
+        "confidence": "inferred"
+      },
+      {
+        "node_id": "equipment_manager:EquipmentManager.return_equipment",
+        "module": "equipment_manager",
+        "method": "return_equipment",
+        "location": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\equipment_manager.py:87",
+        "score": 42.96,
+        "metrics": {
+          "centrality": 0.3704,
+          "flow_reachability": 0.0,
+          "state_mutation": 1.0,
+          "boundary_role": 0.0,
+          "evidence_completeness": 1.0
+        },
+        "reasons": [
+          "会改变业务状态"
+        ],
+        "flow_ids": [],
+        "confidence": "inferred"
+      },
+      {
+        "node_id": "equipment_manager:EquipmentManager.set_equipment_status",
+        "module": "equipment_manager",
+        "method": "set_equipment_status",
+        "location": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\equipment_manager.py:130",
+        "score": 42.96,
+        "metrics": {
+          "centrality": 0.3704,
+          "flow_reachability": 0.0,
+          "state_mutation": 1.0,
+          "boundary_role": 0.0,
+          "evidence_completeness": 1.0
+        },
+        "reasons": [
+          "会改变业务状态"
+        ],
+        "flow_ids": [],
+        "confidence": "inferred"
+      },
+      {
+        "node_id": "reservation_manager:ReservationManager.__init__",
+        "module": "reservation_manager",
+        "method": "__init__",
+        "location": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\reservation_manager.py:20",
+        "score": 42.96,
+        "metrics": {
+          "centrality": 0.3704,
+          "flow_reachability": 0.0,
+          "state_mutation": 1.0,
+          "boundary_role": 0.0,
+          "evidence_completeness": 1.0
+        },
+        "reasons": [
+          "会改变业务状态"
+        ],
+        "flow_ids": [],
+        "confidence": "inferred"
+      },
+      {
+        "node_id": "reservation_manager:ReservationManager.approve_reservation",
+        "module": "reservation_manager",
+        "method": "approve_reservation",
+        "location": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\reservation_manager.py:126",
+        "score": 42.96,
+        "metrics": {
+          "centrality": 0.3704,
+          "flow_reachability": 0.0,
+          "state_mutation": 1.0,
+          "boundary_role": 0.0,
+          "evidence_completeness": 1.0
+        },
+        "reasons": [
+          "会改变业务状态"
+        ],
+        "flow_ids": [],
+        "confidence": "inferred"
+      },
+      {
+        "node_id": "reservation_manager:ReservationManager.cancel_reservation",
+        "module": "reservation_manager",
+        "method": "cancel_reservation",
+        "location": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\reservation_manager.py:153",
+        "score": 42.96,
+        "metrics": {
+          "centrality": 0.3704,
+          "flow_reachability": 0.0,
+          "state_mutation": 1.0,
+          "boundary_role": 0.0,
+          "evidence_completeness": 1.0
+        },
+        "reasons": [
+          "会改变业务状态"
+        ],
+        "flow_ids": [],
+        "confidence": "inferred"
+      }
+    ],
+    "flow_scores": [
+      {
+        "flow_id": "flow_3",
+        "name": "SafetyChecker Execution Flow",
+        "priority_score": 82.5,
+        "review_risk": 0.0,
+        "metrics": {
+          "business_importance": 1.0,
+          "raw_business_importance": 6.0,
+          "operational_factor": 1.0,
+          "state_ratio": 1.0,
+          "validation_ratio": 0.5,
+          "boundary_ratio": 0.0,
+          "evidence_completeness": 1.0
+        },
+        "top_nodes": [
+          "safety_checker:SafetyChecker._create_hazard",
+          "safety_checker:SafetyChecker.perform_check"
+        ],
+        "reasons": [
+          "业务重要度高",
+          "包含状态变更",
+          "存在校验步骤"
+        ],
+        "confidence": "inferred"
+      },
+      {
+        "flow_id": "flow_1",
+        "name": "LabSafetyApp Initialization Flow",
+        "priority_score": 73.0,
+        "review_risk": 0.0,
+        "metrics": {
+          "business_importance": 0.6667,
+          "raw_business_importance": 20.0,
+          "operational_factor": 0.2,
+          "state_ratio": 1.0,
+          "validation_ratio": 0.2,
+          "boundary_ratio": 1.0,
+          "evidence_completeness": 1.0
+        },
+        "top_nodes": [
+          "safety_checker:SafetyChecker.add_check_item",
+          "reservation_manager:ReservationManager.add_lab",
+          "equipment_manager:EquipmentManager.add_equipment",
+          "user_manager:UserManager.register",
+          "app:LabSafetyApp.initialize_sample_data"
+        ],
+        "reasons": [
+          "生命周期/样例数据流程已降权",
+          "业务重要度高",
+          "跨模块协作明显",
+          "包含状态变更",
+          "存在校验步骤"
+        ],
+        "confidence": "inferred"
+      },
+      {
+        "flow_id": "flow_2",
+        "name": "ReservationManager Create / Submit Flow",
+        "priority_score": 61.25,
+        "review_risk": 0.0,
+        "metrics": {
+          "business_importance": 0.75,
+          "raw_business_importance": 4.5,
+          "operational_factor": 1.0,
+          "state_ratio": 0.5,
+          "validation_ratio": 0.5,
+          "boundary_ratio": 0.0,
+          "evidence_completeness": 1.0
+        },
+        "top_nodes": [
+          "reservation_manager:ReservationManager.create_reservation",
+          "reservation_manager:ReservationManager._check_conflict"
+        ],
+        "reasons": [
+          "业务重要度高",
+          "包含状态变更",
+          "存在校验步骤"
+        ],
+        "confidence": "inferred"
+      },
+      {
+        "flow_id": "flow_4",
+        "name": "SafetyChecker Assignment Flow",
+        "priority_score": 46.25,
+        "review_risk": 65.0,
+        "metrics": {
+          "business_importance": 0.5833,
+          "raw_business_importance": 3.5,
+          "operational_factor": 1.0,
+          "state_ratio": 0.5,
+          "validation_ratio": 0.0,
+          "boundary_ratio": 0.0,
+          "evidence_completeness": 1.0
+        },
+        "top_nodes": [
+          "safety_checker:SafetyChecker._find_hazard",
+          "safety_checker:SafetyChecker.assign_hazard"
+        ],
+        "reasons": [
+          "包含状态变更",
+          "状态变更但未发现显式校验"
+        ],
+        "confidence": "inferred"
+      },
+      {
+        "flow_id": "flow_5",
+        "name": "SafetyChecker Completion / Close Flow",
+        "priority_score": 46.25,
+        "review_risk": 65.0,
+        "metrics": {
+          "business_importance": 0.5833,
+          "raw_business_importance": 3.5,
+          "operational_factor": 1.0,
+          "state_ratio": 0.5,
+          "validation_ratio": 0.0,
+          "boundary_ratio": 0.0,
+          "evidence_completeness": 1.0
+        },
+        "top_nodes": [
+          "safety_checker:SafetyChecker._find_hazard",
+          "safety_checker:SafetyChecker.close_hazard"
+        ],
+        "reasons": [
+          "包含状态变更",
+          "状态变更但未发现显式校验"
+        ],
+        "confidence": "inferred"
+      },
+      {
+        "flow_id": "flow_6",
+        "name": "UserManager has_permission Flow",
+        "priority_score": 40.0,
+        "review_risk": 0.0,
+        "metrics": {
+          "business_importance": 0.5,
+          "raw_business_importance": 3.0,
+          "operational_factor": 1.0,
+          "state_ratio": 0.0,
+          "validation_ratio": 0.5,
+          "boundary_ratio": 0.0,
+          "evidence_completeness": 1.0
+        },
+        "top_nodes": [
+          "user_manager:UserManager.get_current_user",
+          "user_manager:UserManager.has_permission"
+        ],
+        "reasons": [
+          "存在校验步骤"
+        ],
+        "confidence": "inferred"
+      }
+    ],
+    "evidence_gaps": [
+      {
+        "type": "state_change_without_validation",
+        "severity": "high",
+        "flow_id": "flow_4",
+        "title": "状态变更流程缺少显式校验步骤",
+        "description": "该流程包含状态写入，但当前提取结果没有发现校验步骤，建议教师先审核边界条件。",
+        "location": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\safety_checker.py:127"
+      },
+      {
+        "type": "state_change_without_validation",
+        "severity": "high",
+        "flow_id": "flow_5",
+        "title": "状态变更流程缺少显式校验步骤",
+        "description": "该流程包含状态写入，但当前提取结果没有发现校验步骤，建议教师先审核边界条件。",
+        "location": "D:\\learn_with_ai\\sample_projects\\lab_safety_assistant\\safety_checker.py:142"
+      }
+    ],
+    "summary": {
+      "total_nodes": 39,
+      "total_flows": 6,
+      "top_node": "safety_checker:SafetyChecker.add_check_item",
+      "top_flow": "flow_3",
+      "high_priority_flow_count": 3,
+      "review_gap_count": 2,
+      "evidence_completeness": 1.0
+    }
+  },
+  "project": {
+    "name": "lab_safety_assistant",
+    "total_files": 6,
+    "total_lines": 784,
+    "total_classes": 5,
+    "total_functions": 39
+  }
+}

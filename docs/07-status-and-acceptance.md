@@ -1,6 +1,6 @@
 # 现状与验收（原 README 第十六 ~ 十八章 + 附录 B）
 
-> 更新触发：**每轮**（改了功能行为 / 跑了验收 / 调了优先级就要动这份） | 上次更新：W0 集成轮（2026-09-26）
+> 更新触发：**每轮**（改了功能行为 / 跑了验收 / 调了优先级就要动这份） | 上次更新：克隆完整性一轮（2026-09-26）
 > 来源：原 `README.md` 的 §16 / §17 / §18 / 附录 B **整章搬移，逐字未改**；章节号保持不变，
 > 所以 `§16.1` / `§17.2` / `§18` 这类引用（README 正文、代码注释、脚本里都有）仍然解析得到这里。
 > **数字规矩**：验收数字**不许手抄** —— 以 `validation/acceptance_latest.md` 为唯一来源
@@ -361,6 +361,36 @@
 
 **仓库卫生与基线（WO-01 一轮 + W0 集成轮，2026-09-26）**：这一轮**不改任何产品行为**，交付的是"所有并行线从同一个已提交的基线开工"：把此前几轮（阶段 0 / 文档拆分阶段 1·2 / UI 重设计 / 证据折叠 / 入口完善）**只在工作区里的改动**按轮次分次提交，并在 W0 集成轮打成标签 **`wave-0`**；清掉根目录零引用残留（已清理：`aud.m4s` / `vid.m4s` / `generated_assets_motion_tiles_20260926/` / 空目录 `assets/`）与 `sample_projects/flask_crud_demo` 的空壳（源码确认丢失、决定不恢复）。`.gitignore` 补上 `*.m4s` / `generated_assets_*` / `.ai_orchestrator/` 三条规则。清理登记见 `docs/90-archive.md` 附录 C.2，交接事实见 `docs/08` §19.6，顺带抓到的门禁缺陷见 `docs/08` §19.1 第 28 条。三条验收命令的原始输出见该轮交付说明；**明确没做的**：没有 push（`origin/master` 仍停在 `1d640fb`）。
 
+**克隆完整性一轮（2026-09-26）：让「别人克隆下来」等于「作者本机」**
+
+> 起因是一条验收标准：**别人 `git clone` 之后跑一条命令，应当拿到和作者本机一样的进度与数据。**
+> 实测下来克隆会缺四样东西，缺哪一样都会让手册里的命令在别人机器上直接跑不通。
+> 这一轮**不改任何产品行为、不改任何判定口径**，改的全是"仓库里到底有没有那份东西"。
+
+| 缺什么 | 为什么会缺 | 这一轮怎么修 |
+|---|---|---|
+| `validation/flask` 的**全部源码** | 它在索引里是 gitlink（mode `160000`），而仓库**没有 `.gitmodules`** → 克隆下来是个**空目录**；于是三个真实第三方验证项目（`python_dotenv` / `flask` / `urllib3`）少一个 | `validation/flask` 里的 `.git` 改名为 `.git.bak`（**与 `validation/urllib3` 同一惯例**），把 236 个源码文件纳入跟踪。顺带解除了"`git status` 必须加 `--ignore-submodules=all`"这条老约束（见 `docs/06` §19.5） |
+| `validation/results/` 的**事实表与深分析产物** | 根 `.gitignore` 里的 `results/` 是"任何层级叫 results 都排掉"的无差别规则，把**证据层**一起排掉了；而手册 §20.3 ⑥ 是把其中的 `python_dotenv_facts.csv` 当**输入**用的 | 加一条放行规则（见下方代码块），10 个文件纳入跟踪 |
+| 业务逻辑分析平台的 **demo 项目快照** | 整个 `backend/data/logic_platform/` 被忽略（**原意是对的**：挡住用户上传件） | 改成"忽略子项 + 逐项放行"：只放行 `lab_safety_assistant` 与 `python_dotenv` —— 这两个的 `meta.json` 里 `source_kind` 是 `demo`、**没有 source/ 副本**、`source_root_rel` 指向仓库内**已跟踪的相对路径**、不含任何绝对路径 |
+| **一条装环境的命令** | 原先 §0.3 直接从 `cd D:\learn_with_ai` 开始，隐含"作者机器上一切已装好"，README 里也没有 clone 步骤 | 新增 `scripts/bootstrap.ps1`（前置检查 → 建 `.venv` → 装两份 requirements → 前端 npm ci → 跑 `build_demo_snapshots.py`），并在 `README.md` §0.3 补上「从零克隆」一段 |
+
+其中那条放行规则的写法有个**实测踩到的坑**（已并入 `docs/08` §19.1 第 29 条）：
+忽略整个父目录后再用 `!` 放行子目录**是不生效的**（git 的规则：父目录被排除时，子目录上的放行不生效），
+必须写成"忽略子项 + 逐项放行"：
+
+```gitignore
+backend/data/logic_platform/*
+!backend/data/logic_platform/lab_safety_assistant/
+!backend/data/logic_platform/python_dotenv/
+```
+
+**故意不进来、且必须继续不进来的**：`backend/data/logic_platform/` 下那 6 个 lp_ 前缀项目
+（`source_kind` 是 `upload`，`source/` 里是**用户上传源码的副本** —— 提交它等于把别人上传的代码公开出去）、
+`.venv`、`frontend/node_modules/`、`frontend/dist/`、`frontend/.smoke-dist/`（都可再生，加 `-Build` 一条命令就能重建）。
+**这一轮明确没做的**：① 没有把任何运行产物塞进仓库去换"看起来完整"；
+② `validation/urllib3` 按它自己 `.gitignore` 的 `.*` 规则仍不含点文件（沿用原有处置，这一轮没动它）；
+③ 前端构建产物仍靠 `-Build` 现场生成，**没有**提交 `dist`。
+
 ### 16.2 ⚠️ 部分完成
 
 **入口完善一轮（2026-09-26）**：系统首页新增本地演示登录窗口（可游客继续）、`/` 快捷搜索和业务模块快捷跳转。搜索直接复用现有契约与图谱卡片，不新增业务判定；登录明确标注为本地演示身份。编译验证：`node node_modules/vite/bin/vite.js build` 通过。完整边界见 `docs/features/login-and-quick-navigation.md`。
@@ -436,6 +466,10 @@ python scripts/verify_sprint0.py
 ### 17.2 全部验收命令
 
 ```bash
+# —— 环境引导（克隆之后的第一步；作者本机依赖已装齐，可跳过）——
+powershell -ExecutionPolicy Bypass -File scripts/bootstrap.ps1   # 建 .venv + 装依赖 + npm ci + 生成演示快照
+#   开关：-Build 顺带构建 frontend/dist 与走查 bundle；-Verify 顺带跑下面那三道门禁；-SkipFrontend 只装 Python 侧
+
 # —— 文档门禁（阶段 0 新增；先跑它，再跑别的，能立刻知道文档有没有说过头）——
 python scripts/build_acceptance_report.py       # 跑 13 个只读验收脚本 → validation/acceptance_latest.json / .md
 python scripts/verify_docs.py                   # 核对文档：路径 / 章节引用 / 版本号 / 数字 / 行号 / 文档清单（7 项）

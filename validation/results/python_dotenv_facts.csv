@@ -1,0 +1,190 @@
+﻿fact_id,category,type,description,location,confidence,evidence,source
+F0001,模块架构,分层架构,系统采用 3 层架构: 编排层 / 业务层 / 支撑层,全局,verified,基于模块依赖方向和角色自动分层,architecture
+F0002,模块架构,模块分层,模块 cli: 位于支撑层，角色为外围模块，9 个方法,cli,verified,推断职责: Business Logic,architecture
+F0003,模块架构,模块分层,模块 ipython: 位于支撑层，角色为外围模块，2 个方法,ipython,verified,推断职责: Business Logic,architecture
+F0004,模块架构,模块分层,模块 main: 位于编排层，角色为编排器，18 个方法,main,verified,"推断职责: Main Entry, Coordination",architecture
+F0005,模块架构,模块分层,模块 parser: 位于业务层，角色为中间模块，18 个方法,parser,verified,推断职责: Business Logic,architecture
+F0006,模块架构,模块分层,模块 variables: 位于业务层，角色为中间模块，13 个方法,variables,verified,推断职责: Business Logic,architecture
+F0007,模块架构,模块分层,模块 version: 位于支撑层，角色为外围模块，0 个方法,version,verified,推断职责: Business Logic,architecture
+F0008,模块架构,模块依赖,cli → main（数据流依赖，强度 0.84，5 次调用）,cli → main,verified,基于调用图的依赖强度计算,architecture
+F0009,模块架构,模块依赖,main → parser（编排依赖，强度 0.44，3 次调用）,main → parser,verified,基于调用图的依赖强度计算,architecture
+F0010,模块架构,模块依赖,ipython → main（工具依赖，强度 0.40，2 次调用）,ipython → main,verified,基于调用图的依赖强度计算,architecture
+F0011,模块架构,模块依赖,main → variables（编排依赖，强度 0.20，1 次调用）,main → variables,verified,基于调用图的依赖强度计算,architecture
+F0012,调用链,调用链-模块内,load_ipython_extension 调用 load_ipython_extension,python_dotenv/__init__.py:9,verified,调用类型: direct,call_graph
+F0013,调用链,调用链-模块内,cli 调用 enumerate_env,python_dotenv/cli.py:42,verified,调用类型: direct,call_graph
+F0014,调用链,调用链-模块内,get 调用 stream_file,python_dotenv/cli.py:141,verified,调用类型: direct,call_graph
+F0015,调用链,调用链-跨模块,get 调用 dotenv_values（跨模块）,python_dotenv/cli.py:142,verified,调用类型: imported,call_graph
+F0016,调用链,调用链-模块内,list_values 调用 stream_file,python_dotenv/cli.py:97,verified,调用类型: direct,call_graph
+F0017,调用链,调用链-跨模块,list_values 调用 dotenv_values（跨模块）,python_dotenv/cli.py:98,verified,调用类型: imported,call_graph
+F0018,调用链,调用链-跨模块,run 调用 dotenv_values（跨模块）,python_dotenv/cli.py:193,verified,调用类型: imported,call_graph
+F0019,调用链,调用链-模块内,run 调用 run_command,python_dotenv/cli.py:201,verified,调用类型: direct,call_graph
+F0020,调用链,调用链-跨模块,set_value 调用 set_key（跨模块）,python_dotenv/cli.py:127,verified,调用类型: imported,call_graph
+F0021,调用链,调用链-跨模块,unset 调用 unset_key（跨模块）,python_dotenv/cli.py:163,verified,调用类型: imported,call_graph
+F0022,调用链,调用链-跨模块,IPythonDotEnv.dotenv 调用 find_dotenv（跨模块）,python_dotenv/ipython.py:39,verified,调用类型: imported,call_graph
+F0023,调用链,调用链-跨模块,IPythonDotEnv.dotenv 调用 load_dotenv（跨模块）,python_dotenv/ipython.py:45,verified,调用类型: imported,call_graph
+F0024,调用链,调用链-模块内,DotEnv._get_stream 调用 _is_file_or_fifo,python_dotenv/main.py:62,verified,调用类型: direct,call_graph
+F0025,调用链,调用链-模块内,DotEnv.dict 调用 DotEnv.parse,python_dotenv/main.py:80,verified,调用类型: self_method,call_graph
+F0026,调用链,调用链-模块内,DotEnv.dict 调用 resolve_variables,python_dotenv/main.py:84,verified,调用类型: direct,call_graph
+F0027,调用链,调用链-模块内,DotEnv.get 调用 DotEnv.dict,python_dotenv/main.py:114,verified,调用类型: self_method,call_graph
+F0028,调用链,调用链-模块内,DotEnv.parse 调用 DotEnv._get_stream,python_dotenv/main.py:92,verified,调用类型: self_method,call_graph
+F0029,调用链,调用链-模块内,DotEnv.parse 调用 with_warn_for_invalid_lines,python_dotenv/main.py:93,verified,调用类型: direct,call_graph
+F0030,调用链,调用链-跨模块,DotEnv.parse 调用 parse_stream（跨模块）,python_dotenv/main.py:93,verified,调用类型: imported,call_graph
+F0031,调用链,调用链-模块内,DotEnv.set_as_environment_variables 调用 DotEnv.dict,python_dotenv/main.py:101,verified,调用类型: self_method,call_graph
+F0032,调用链,调用链-模块内,dotenv_values 调用 find_dotenv,python_dotenv/main.py:463,verified,调用类型: direct,call_graph
+F0033,调用链,调用链-模块内,find_dotenv 调用 _walk_to_root,python_dotenv/main.py:377,verified,调用类型: direct,call_graph
+F0034,调用链,调用链-模块内,find_dotenv 调用 _is_file_or_fifo,python_dotenv/main.py:379,verified,调用类型: direct,call_graph
+F0035,调用链,调用链-模块内,load_dotenv 调用 _load_dotenv_disabled,python_dotenv/main.py:418,verified,调用类型: direct,call_graph
+F0036,调用链,调用链-模块内,load_dotenv 调用 find_dotenv,python_dotenv/main.py:425,verified,调用类型: direct,call_graph
+F0037,调用链,调用链-跨模块,resolve_variables 调用 parse_variables（跨模块）,python_dotenv/main.py:304,verified,调用类型: imported,call_graph
+F0038,调用链,调用链-模块内,set_key 调用 rewrite,python_dotenv/main.py:232,verified,调用类型: direct,call_graph
+F0039,调用链,调用链-模块内,set_key 调用 with_warn_for_invalid_lines,python_dotenv/main.py:238,verified,调用类型: direct,call_graph
+F0040,调用链,调用链-跨模块,set_key 调用 parse_stream（跨模块）,python_dotenv/main.py:238,verified,调用类型: imported,call_graph
+F0041,调用链,调用链-模块内,unset_key 调用 rewrite,python_dotenv/main.py:275,verified,调用类型: direct,call_graph
+F0042,调用链,调用链-模块内,unset_key 调用 with_warn_for_invalid_lines,python_dotenv/main.py:279,verified,调用类型: direct,call_graph
+F0043,调用链,调用链-跨模块,unset_key 调用 parse_stream（跨模块）,python_dotenv/main.py:279,verified,调用类型: imported,call_graph
+F0044,调用链,调用链-模块内,parse_binding 调用 parse_key,python_dotenv/parser.py:156,verified,调用类型: direct,call_graph
+F0045,调用链,调用链-模块内,parse_binding 调用 parse_value,python_dotenv/parser.py:160,verified,调用类型: direct,call_graph
+F0046,调用链,调用链-模块内,parse_stream 调用 parse_binding,python_dotenv/parser.py:184,verified,调用类型: direct,call_graph
+F0047,调用链,调用链-模块内,parse_value 调用 decode_escapes,python_dotenv/parser.py:134,verified,调用类型: direct,call_graph
+F0048,调用链,调用链-模块内,parse_value 调用 parse_unquoted_value,python_dotenv/parser.py:141,verified,调用类型: direct,call_graph
+F0049,调用链,入口点,cli 是系统入口点,python_dotenv/cli.py:62,verified,出度 1，标签: 无,call_graph
+F0050,调用链,入口点,list_values 是系统入口点,python_dotenv/cli.py:93,verified,出度 2，标签: query,call_graph
+F0051,调用链,入口点,set_value 是系统入口点,python_dotenv/cli.py:116,verified,出度 1，标签: update,call_graph
+F0052,调用链,入口点,get 是系统入口点,python_dotenv/cli.py:137,verified,出度 2，标签: query,call_graph
+F0053,调用链,入口点,unset 是系统入口点,python_dotenv/cli.py:154,verified,出度 1，标签: update,call_graph
+F0054,调用链,入口点,run 是系统入口点,python_dotenv/cli.py:184,verified,出度 2，标签: 无,call_graph
+F0055,调用链,入口点,load_ipython_extension 是系统入口点,python_dotenv/ipython.py:48,verified,出度 0，标签: 无,call_graph
+F0056,调用链,入口点,IPythonDotEnv.dotenv 是系统入口点,python_dotenv/ipython.py:34,verified,出度 2，标签: 无,call_graph
+F0057,调用链,入口点,DotEnv.set_as_environment_variables 是系统入口点,python_dotenv/main.py:97,verified,出度 2，标签: update,call_graph
+F0058,调用链,入口点,DotEnv.get 是系统入口点,python_dotenv/main.py:112,verified,出度 1，标签: query,call_graph
+F0059,状态变更,状态属性,"Position 拥有 2 个状态属性: chars, line",python_dotenv/parser.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0060,状态变更,属性写入,"Position.__init__() 修改 2 个属性: chars, line",python_dotenv/parser.py:50,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0061,状态变更,属性写入,"Position.advance() 修改 2 个属性: chars, line",python_dotenv/parser.py:62,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0062,状态变更,属性写入,"Position.set() 修改 2 个属性: chars, line",python_dotenv/parser.py:58,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0063,状态变更,状态属性,"Reader 拥有 3 个状态属性: mark, position, string",python_dotenv/parser.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0064,状态变更,属性写入,"Reader.__init__() 修改 3 个属性: mark, position, string",python_dotenv/parser.py:72,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0065,状态变更,查询方法,"Reader 有 6 个纯查询方法: has_next, set_mark, get_marked, peek, read",python_dotenv/parser.py,verified,方法体中只读取不修改状态属性,state_tracker
+F0066,状态变更,状态属性,Literal 拥有 1 个状态属性: value,python_dotenv/variables.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0067,状态变更,属性写入,Literal.__init__() 修改 1 个属性: value,python_dotenv/variables.py:30,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0068,状态变更,查询方法,Literal 有 1 个纯查询方法: resolve,python_dotenv/variables.py,verified,方法体中只读取不修改状态属性,state_tracker
+F0069,状态变更,状态属性,"Variable 拥有 2 个状态属性: default, name",python_dotenv/variables.py,verified,从 __init__ 中提取的 self.xxx 赋值,state_tracker
+F0070,状态变更,属性写入,"Variable.__init__() 修改 2 个属性: default, name",python_dotenv/variables.py:49,verified,AST 静态分析: self.attr = / self.attr.append() 等模式,state_tracker
+F0071,状态变更,查询方法,Variable 有 1 个纯查询方法: resolve,python_dotenv/variables.py,verified,方法体中只读取不修改状态属性,state_tracker
+F0072,业务流程,流程总览,流程 'set_value Flow': 涉及 3 个模块，10 个步骤，2 次跨模块调用,"cli, main, parser",verified,入口: cli:set_value，业务重要度: 13.0,flow_extractor
+F0073,业务流程,流程步骤,set_value Flow · 步骤 0 层: set_value()（状态变更）,python_dotenv/cli.py:116,verified,调用类型: entry,flow_extractor
+F0074,业务流程,流程步骤,"set_value Flow · 步骤 1 层: set_key()（跨模块, 状态变更）",python_dotenv/main.py:127,verified,调用类型: imported,flow_extractor
+F0075,业务流程,流程步骤,set_value Flow · 步骤 2 层: rewrite(),python_dotenv/main.py:232,verified,调用类型: direct,flow_extractor
+F0076,业务流程,流程步骤,set_value Flow · 步骤 2 层: with_warn_for_invalid_lines(),python_dotenv/main.py:238,verified,调用类型: direct,flow_extractor
+F0077,业务流程,流程步骤,set_value Flow · 步骤 2 层: parse_stream()（跨模块）,python_dotenv/parser.py:238,verified,调用类型: imported,flow_extractor
+F0078,业务流程,流程步骤,set_value Flow · 步骤 3 层: parse_binding(),python_dotenv/parser.py:184,verified,调用类型: direct,flow_extractor
+F0079,业务流程,流程步骤,set_value Flow · 步骤 4 层: parse_key(),python_dotenv/parser.py:156,verified,调用类型: direct,flow_extractor
+F0080,业务流程,流程步骤,set_value Flow · 步骤 4 层: parse_value(),python_dotenv/parser.py:160,verified,调用类型: direct,flow_extractor
+F0081,业务流程,流程步骤,set_value Flow · 步骤 5 层: decode_escapes(),python_dotenv/parser.py:134,verified,调用类型: direct,flow_extractor
+F0082,业务流程,流程步骤,set_value Flow · 步骤 5 层: parse_unquoted_value(),python_dotenv/parser.py:141,verified,调用类型: direct,flow_extractor
+F0083,业务流程,流程总览,流程 'unset Flow': 涉及 3 个模块，10 个步骤，2 次跨模块调用,"cli, main, parser",verified,入口: cli:unset，业务重要度: 13.0,flow_extractor
+F0084,业务流程,流程步骤,unset Flow · 步骤 0 层: unset()（状态变更）,python_dotenv/cli.py:154,verified,调用类型: entry,flow_extractor
+F0085,业务流程,流程步骤,"unset Flow · 步骤 1 层: unset_key()（跨模块, 状态变更）",python_dotenv/main.py:163,verified,调用类型: imported,flow_extractor
+F0086,业务流程,流程步骤,unset Flow · 步骤 2 层: rewrite(),python_dotenv/main.py:275,verified,调用类型: direct,flow_extractor
+F0087,业务流程,流程步骤,unset Flow · 步骤 2 层: with_warn_for_invalid_lines(),python_dotenv/main.py:279,verified,调用类型: direct,flow_extractor
+F0088,业务流程,流程步骤,unset Flow · 步骤 2 层: parse_stream()（跨模块）,python_dotenv/parser.py:279,verified,调用类型: imported,flow_extractor
+F0089,业务流程,流程步骤,unset Flow · 步骤 3 层: parse_binding(),python_dotenv/parser.py:184,verified,调用类型: direct,flow_extractor
+F0090,业务流程,流程步骤,unset Flow · 步骤 4 层: parse_key(),python_dotenv/parser.py:156,verified,调用类型: direct,flow_extractor
+F0091,业务流程,流程步骤,unset Flow · 步骤 4 层: parse_value(),python_dotenv/parser.py:160,verified,调用类型: direct,flow_extractor
+F0092,业务流程,流程步骤,unset Flow · 步骤 5 层: decode_escapes(),python_dotenv/parser.py:134,verified,调用类型: direct,flow_extractor
+F0093,业务流程,流程步骤,unset Flow · 步骤 5 层: parse_unquoted_value(),python_dotenv/parser.py:141,verified,调用类型: direct,flow_extractor
+F0094,业务流程,流程总览,流程 'DotEnv set_as_environment_variables Flow': 涉及 3 个模块，13 个步骤，2 次跨模块调用,"main, parser, variables",verified,入口: main:DotEnv.set_as_environment_variables，业务重要度: 11.5,flow_extractor
+F0095,业务流程,流程步骤,DotEnv set_as_environment_variables Flow · 步骤 0 层: DotEnv.set_as_environment_variables()（状态变更）,python_dotenv/main.py:97,verified,调用类型: entry,flow_extractor
+F0096,业务流程,流程步骤,DotEnv set_as_environment_variables Flow · 步骤 1 层: DotEnv.dict(),python_dotenv/main.py:101,verified,调用类型: self_method,flow_extractor
+F0097,业务流程,流程步骤,DotEnv set_as_environment_variables Flow · 步骤 2 层: DotEnv.parse(),python_dotenv/main.py:80,verified,调用类型: self_method,flow_extractor
+F0098,业务流程,流程步骤,DotEnv set_as_environment_variables Flow · 步骤 2 层: resolve_variables(),python_dotenv/main.py:84,verified,调用类型: direct,flow_extractor
+F0099,业务流程,流程步骤,DotEnv set_as_environment_variables Flow · 步骤 3 层: DotEnv._get_stream(),python_dotenv/main.py:92,verified,调用类型: self_method,flow_extractor
+F0100,业务流程,流程步骤,DotEnv set_as_environment_variables Flow · 步骤 3 层: with_warn_for_invalid_lines(),python_dotenv/main.py:93,verified,调用类型: direct,flow_extractor
+F0101,业务流程,流程步骤,DotEnv set_as_environment_variables Flow · 步骤 3 层: parse_stream()（跨模块）,python_dotenv/parser.py:93,verified,调用类型: imported,flow_extractor
+F0102,业务流程,流程步骤,DotEnv set_as_environment_variables Flow · 步骤 3 层: parse_variables()（跨模块）,python_dotenv/variables.py:304,verified,调用类型: imported,flow_extractor
+F0103,业务流程,流程步骤,DotEnv set_as_environment_variables Flow · 步骤 4 层: parse_binding(),python_dotenv/parser.py:184,verified,调用类型: direct,flow_extractor
+F0104,业务流程,流程步骤,DotEnv set_as_environment_variables Flow · 步骤 5 层: parse_key(),python_dotenv/parser.py:156,verified,调用类型: direct,flow_extractor
+F0105,业务流程,流程步骤,DotEnv set_as_environment_variables Flow · 步骤 5 层: parse_value(),python_dotenv/parser.py:160,verified,调用类型: direct,flow_extractor
+F0106,业务流程,流程步骤,DotEnv set_as_environment_variables Flow · 步骤 6 层: decode_escapes(),python_dotenv/parser.py:134,verified,调用类型: direct,flow_extractor
+F0107,业务流程,流程步骤,DotEnv set_as_environment_variables Flow · 步骤 6 层: parse_unquoted_value(),python_dotenv/parser.py:141,verified,调用类型: direct,flow_extractor
+F0108,业务流程,流程总览,流程 'IPythonDotEnv dotenv Flow': 涉及 2 个模块，6 个步骤，2 次跨模块调用,"ipython, main",verified,入口: ipython:IPythonDotEnv.dotenv，业务重要度: 7.0,flow_extractor
+F0109,业务流程,流程步骤,IPythonDotEnv dotenv Flow · 步骤 0 层: IPythonDotEnv.dotenv(),python_dotenv/ipython.py:34,verified,调用类型: entry,flow_extractor
+F0110,业务流程,流程步骤,IPythonDotEnv dotenv Flow · 步骤 1 层: load_dotenv()（跨模块）,python_dotenv/main.py:45,verified,调用类型: imported,flow_extractor
+F0111,业务流程,流程步骤,IPythonDotEnv dotenv Flow · 步骤 1 层: find_dotenv()（跨模块）,python_dotenv/main.py:39,verified,调用类型: imported,flow_extractor
+F0112,业务流程,流程步骤,IPythonDotEnv dotenv Flow · 步骤 2 层: _load_dotenv_disabled(),python_dotenv/main.py:418,verified,调用类型: direct,flow_extractor
+F0113,业务流程,流程步骤,IPythonDotEnv dotenv Flow · 步骤 2 层: _walk_to_root(),python_dotenv/main.py:377,verified,调用类型: direct,flow_extractor
+F0114,业务流程,流程步骤,IPythonDotEnv dotenv Flow · 步骤 2 层: _is_file_or_fifo(),python_dotenv/main.py:379,verified,调用类型: direct,flow_extractor
+F0115,业务流程,流程总览,流程 'list_values Flow': 涉及 2 个模块，6 个步骤，1 次跨模块调用,"cli, main",verified,入口: cli:list_values，业务重要度: 6.0,flow_extractor
+F0116,业务流程,流程步骤,list_values Flow · 步骤 0 层: list_values(),python_dotenv/cli.py:93,verified,调用类型: entry,flow_extractor
+F0117,业务流程,流程步骤,list_values Flow · 步骤 1 层: stream_file(),python_dotenv/cli.py:97,verified,调用类型: direct,flow_extractor
+F0118,业务流程,流程步骤,list_values Flow · 步骤 1 层: dotenv_values()（跨模块）,python_dotenv/main.py:98,verified,调用类型: imported,flow_extractor
+F0119,业务流程,流程步骤,list_values Flow · 步骤 2 层: find_dotenv(),python_dotenv/main.py:463,verified,调用类型: direct,flow_extractor
+F0120,业务流程,流程步骤,list_values Flow · 步骤 3 层: _walk_to_root(),python_dotenv/main.py:377,verified,调用类型: direct,flow_extractor
+F0121,业务流程,流程步骤,list_values Flow · 步骤 3 层: _is_file_or_fifo(),python_dotenv/main.py:379,verified,调用类型: direct,flow_extractor
+F0122,业务流程,流程总览,流程 'get Flow': 涉及 2 个模块，6 个步骤，1 次跨模块调用,"cli, main",verified,入口: cli:get，业务重要度: 6.0,flow_extractor
+F0123,业务流程,流程步骤,get Flow · 步骤 0 层: get(),python_dotenv/cli.py:137,verified,调用类型: entry,flow_extractor
+F0124,业务流程,流程步骤,get Flow · 步骤 1 层: stream_file(),python_dotenv/cli.py:141,verified,调用类型: direct,flow_extractor
+F0125,业务流程,流程步骤,get Flow · 步骤 1 层: dotenv_values()（跨模块）,python_dotenv/main.py:142,verified,调用类型: imported,flow_extractor
+F0126,业务流程,流程步骤,get Flow · 步骤 2 层: find_dotenv(),python_dotenv/main.py:463,verified,调用类型: direct,flow_extractor
+F0127,业务流程,流程步骤,get Flow · 步骤 3 层: _walk_to_root(),python_dotenv/main.py:377,verified,调用类型: direct,flow_extractor
+F0128,业务流程,流程步骤,get Flow · 步骤 3 层: _is_file_or_fifo(),python_dotenv/main.py:379,verified,调用类型: direct,flow_extractor
+F0129,业务流程,流程总览,流程 'run Flow': 涉及 2 个模块，6 个步骤，1 次跨模块调用,"cli, main",verified,入口: cli:run，业务重要度: 6.0,flow_extractor
+F0130,业务流程,流程步骤,run Flow · 步骤 0 层: run(),python_dotenv/cli.py:184,verified,调用类型: entry,flow_extractor
+F0131,业务流程,流程步骤,run Flow · 步骤 1 层: run_command(),python_dotenv/cli.py:201,verified,调用类型: direct,flow_extractor
+F0132,业务流程,流程步骤,run Flow · 步骤 1 层: dotenv_values()（跨模块）,python_dotenv/main.py:193,verified,调用类型: imported,flow_extractor
+F0133,业务流程,流程步骤,run Flow · 步骤 2 层: find_dotenv(),python_dotenv/main.py:463,verified,调用类型: direct,flow_extractor
+F0134,业务流程,流程步骤,run Flow · 步骤 3 层: _walk_to_root(),python_dotenv/main.py:377,verified,调用类型: direct,flow_extractor
+F0135,业务流程,流程步骤,run Flow · 步骤 3 层: _is_file_or_fifo(),python_dotenv/main.py:379,verified,调用类型: direct,flow_extractor
+F0136,业务流程,流程总览,流程 'cli Flow': 涉及 1 个模块，2 个步骤，0 次跨模块调用,cli,verified,入口: cli:cli，业务重要度: 2.0,flow_extractor
+F0137,业务流程,流程步骤,cli Flow · 步骤 0 层: cli(),python_dotenv/cli.py:62,verified,调用类型: entry,flow_extractor
+F0138,业务流程,流程步骤,cli Flow · 步骤 1 层: enumerate_env(),python_dotenv/cli.py:42,verified,调用类型: direct,flow_extractor
+F0139,关键实现,核心方法,DotEnv.dict() 是核心实现点（重要度 6.5）,python_dotenv/main.py:75-89,verified,入选原因: medium complexity; includes boundary validation; core method called by many,key_implementation
+F0140,关键实现,守卫条件,DotEnv.dict: 1 pre-flight validations,python_dotenv/main.py: lines 77,verified,lines 77,key_implementation
+F0141,关键实现,守卫子句,DotEnv.dict: self._dict is not None -> early return,python_dotenv/main.py:77,verified,从 AST 检测到的前置检查 + 提前退出模式,key_implementation
+F0142,关键实现,算法特征,DotEnv.dict: conditional checks (no loops),python_dotenv/main.py:75-89,verified,"1 guard clauses, no loops",key_implementation
+F0143,关键实现,复杂度,DotEnv.dict: 圈复杂度 3（循环 0，分支 2）,python_dotenv/main.py:75-89,verified,从 AST 直接计数：if/try 为分支，for/while 为循环,key_implementation
+F0144,关键实现,核心方法,DotEnv.set_as_environment_variables() 是核心实现点（重要度 6.5）,python_dotenv/main.py:97-110,verified,入选原因: high complexity implementation; includes boundary validation,key_implementation
+F0145,关键实现,守卫条件,DotEnv.set_as_environment_variables: 1 pre-flight validations,python_dotenv/main.py: lines 101,verified,lines 101,key_implementation
+F0146,关键实现,算法模式,DotEnv.set_as_environment_variables: sequential traversal,python_dotenv/main.py:97-110,verified,1 loop(s) detected,key_implementation
+F0147,关键实现,守卫子句,DotEnv.set_as_environment_variables: not self.dict() -> early return,python_dotenv/main.py:101,verified,从 AST 检测到的前置检查 + 提前退出模式,key_implementation
+F0148,关键实现,算法特征,DotEnv.set_as_environment_variables: pure computation / statistics,python_dotenv/main.py:97-110,verified,"1 loop(s), no state mutation",key_implementation
+F0149,关键实现,复杂度,DotEnv.set_as_environment_variables: 圈复杂度 5（循环 1，分支 3）,python_dotenv/main.py:97-110,verified,从 AST 直接计数：if/try 为分支，for/while 为循环,key_implementation
+F0150,关键实现,核心方法,DotEnv.parse() 是核心实现点（重要度 4.0）,python_dotenv/main.py:91-95,verified,入选原因: medium complexity,key_implementation
+F0151,关键实现,算法模式,DotEnv.parse: sequential traversal,python_dotenv/main.py:91-95,verified,1 loop(s) detected,key_implementation
+F0152,关键实现,算法特征,DotEnv.parse: pure computation / statistics,python_dotenv/main.py:91-95,verified,"1 loop(s), no state mutation",key_implementation
+F0153,关键实现,复杂度,DotEnv.parse: 圈复杂度 3（循环 1，分支 1）,python_dotenv/main.py:91-95,verified,从 AST 直接计数：if/try 为分支，for/while 为循环,key_implementation
+F0154,关键实现,核心方法,DotEnv.get() 是核心实现点（重要度 4.0）,python_dotenv/main.py:112-122,verified,入选原因: medium complexity; includes boundary validation,key_implementation
+F0155,关键实现,守卫条件,DotEnv.get: 1 pre-flight validations,python_dotenv/main.py: lines 116,verified,lines 116,key_implementation
+F0156,关键实现,守卫子句,DotEnv.get: key in data -> early return,python_dotenv/main.py:116,verified,从 AST 检测到的前置检查 + 提前退出模式,key_implementation
+F0157,关键实现,算法特征,DotEnv.get: conditional checks (no loops),python_dotenv/main.py:112-122,verified,"1 guard clauses, no loops",key_implementation
+F0158,关键实现,复杂度,DotEnv.get: 圈复杂度 3（循环 0，分支 2）,python_dotenv/main.py:112-122,verified,从 AST 直接计数：if/try 为分支，for/while 为循环,key_implementation
+F0159,关键实现,核心方法,IPythonDotEnv.dotenv() 是核心实现点（重要度 3.5）,python_dotenv/ipython.py:34-45,verified,入选原因: medium complexity,key_implementation
+F0160,关键实现,编排调用,IPythonDotEnv.dotenv: multi-step orchestration (8 internal calls),python_dotenv/ipython.py:34-45,verified,from call count,key_implementation
+F0161,关键实现,算法特征,IPythonDotEnv.dotenv: general business logic,python_dotenv/ipython.py:34-45,verified,no distinctive algorithmic pattern,key_implementation
+F0162,关键实现,复杂度,IPythonDotEnv.dotenv: 圈复杂度 3（循环 0，分支 2）,python_dotenv/ipython.py:34-45,verified,从 AST 直接计数：if/try 为分支，for/while 为循环,key_implementation
+F0163,关键实现,核心方法,Reader.read() 是核心实现点（重要度 2.5）,python_dotenv/parser.py:92-97,verified,入选原因: includes boundary validation; includes exception raises,key_implementation
+F0164,关键实现,守卫条件,Reader.read: 1 pre-flight validations,python_dotenv/parser.py: lines 94,verified,lines 94,key_implementation
+F0165,关键实现,异常处理,Reader.read: raises 1 exception type(s): Error,python_dotenv/parser.py: lines 95,verified,lines 95,key_implementation
+F0166,关键实现,守卫子句,Reader.read: len() < count -> raise,python_dotenv/parser.py:94,verified,从 AST 检测到的前置检查 + 提前退出模式,key_implementation
+F0167,关键实现,异常抛出,Reader.read: 抛出 Error: read: End of string,python_dotenv/parser.py:95,verified,从 AST 检测到的 raise 语句,key_implementation
+F0168,关键实现,算法特征,Reader.read: conditional checks (no loops),python_dotenv/parser.py:92-97,verified,"1 guard clauses, no loops",key_implementation
+F0169,关键实现,复杂度,Reader.read: 圈复杂度 2（循环 0，分支 1）,python_dotenv/parser.py:92-97,verified,从 AST 直接计数：if/try 为分支，for/while 为循环,key_implementation
+F0170,关键实现,核心方法,Reader.read_regex() 是核心实现点（重要度 2.5）,python_dotenv/parser.py:99-104,verified,入选原因: includes boundary validation; includes exception raises,key_implementation
+F0171,关键实现,守卫条件,Reader.read_regex: 1 pre-flight validations,python_dotenv/parser.py: lines 101,verified,lines 101,key_implementation
+F0172,关键实现,异常处理,Reader.read_regex: raises 1 exception type(s): Error,python_dotenv/parser.py: lines 102,verified,lines 102,key_implementation
+F0173,关键实现,编排调用,Reader.read_regex: multi-step orchestration (6 internal calls),python_dotenv/parser.py:99-104,verified,from call count,key_implementation
+F0174,关键实现,守卫子句,Reader.read_regex: match is None -> raise,python_dotenv/parser.py:101,verified,从 AST 检测到的前置检查 + 提前退出模式,key_implementation
+F0175,关键实现,异常抛出,Reader.read_regex: 抛出 Error: read_regex: Pattern not found,python_dotenv/parser.py:102,verified,从 AST 检测到的 raise 语句,key_implementation
+F0176,关键实现,算法特征,Reader.read_regex: conditional checks (no loops),python_dotenv/parser.py:99-104,verified,"1 guard clauses, no loops",key_implementation
+F0177,关键实现,复杂度,Reader.read_regex: 圈复杂度 2（循环 0，分支 1）,python_dotenv/parser.py:99-104,verified,从 AST 直接计数：if/try 为分支，for/while 为循环,key_implementation
+F0178,关键实现,核心方法,DotEnv._get_stream() 是核心实现点（重要度 2.0）,python_dotenv/main.py:61-73,verified,入选原因: medium complexity,key_implementation
+F0179,关键实现,设计特征,DotEnv._get_stream: general business logic,python_dotenv/main.py:61-73,verified,no distinctive structural features,key_implementation
+F0180,关键实现,算法特征,DotEnv._get_stream: general business logic,python_dotenv/main.py:61-73,verified,no distinctive algorithmic pattern,key_implementation
+F0181,关键实现,复杂度,DotEnv._get_stream: 圈复杂度 4（循环 0，分支 3）,python_dotenv/main.py:61-73,verified,从 AST 直接计数：if/try 为分支，for/while 为循环,key_implementation
+F0182,关键实现,核心方法,Position.set() 是核心实现点（重要度 1.5）,python_dotenv/parser.py:58-60,verified,入选原因: has state mutation,key_implementation
+F0183,关键实现,状态变更,"Position.set: modifies 2 state attributes: chars, line",python_dotenv/parser.py:58-60,verified,from state tracker,key_implementation
+F0184,关键实现,算法特征,Position.set: general business logic,python_dotenv/parser.py:58-60,verified,no distinctive algorithmic pattern,key_implementation
+F0185,关键实现,复杂度,Position.set: 圈复杂度 1（循环 0，分支 0）,python_dotenv/parser.py:58-60,verified,从 AST 直接计数：if/try 为分支，for/while 为循环,key_implementation
+F0186,关键实现,核心方法,Position.advance() 是核心实现点（重要度 1.5）,python_dotenv/parser.py:62-64,verified,入选原因: has state mutation,key_implementation
+F0187,关键实现,状态变更,"Position.advance: modifies 2 state attributes: chars, line",python_dotenv/parser.py:62-64,verified,from state tracker,key_implementation
+F0188,关键实现,算法特征,Position.advance: general business logic,python_dotenv/parser.py:62-64,verified,no distinctive algorithmic pattern,key_implementation
+F0189,关键实现,复杂度,Position.advance: 圈复杂度 1（循环 0，分支 0）,python_dotenv/parser.py:62-64,verified,从 AST 直接计数：if/try 为分支，for/while 为循环,key_implementation

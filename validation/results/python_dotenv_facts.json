@@ -1,0 +1,1919 @@
+{
+  "project": {
+    "name": "python_dotenv",
+    "files": 8,
+    "lines": 1112
+  },
+  "summary": {
+    "total": 189,
+    "by_category": {
+      "业务流程": 67,
+      "关键实现": 51,
+      "调用链": 47,
+      "状态变更": 13,
+      "模块架构": 11
+    },
+    "by_confidence": {
+      "verified": 189
+    },
+    "by_source": {
+      "architecture": 11,
+      "call_graph": 47,
+      "state_tracker": 13,
+      "flow_extractor": 67,
+      "key_implementation": 51
+    }
+  },
+  "facts": [
+    {
+      "fact_id": "F0001",
+      "category": "模块架构",
+      "type": "分层架构",
+      "description": "系统采用 3 层架构: 编排层 / 业务层 / 支撑层",
+      "location": "全局",
+      "confidence": "verified",
+      "evidence": "基于模块依赖方向和角色自动分层",
+      "source": "architecture"
+    },
+    {
+      "fact_id": "F0002",
+      "category": "模块架构",
+      "type": "模块分层",
+      "description": "模块 cli: 位于支撑层，角色为外围模块，9 个方法",
+      "location": "cli",
+      "confidence": "verified",
+      "evidence": "推断职责: Business Logic",
+      "source": "architecture"
+    },
+    {
+      "fact_id": "F0003",
+      "category": "模块架构",
+      "type": "模块分层",
+      "description": "模块 ipython: 位于支撑层，角色为外围模块，2 个方法",
+      "location": "ipython",
+      "confidence": "verified",
+      "evidence": "推断职责: Business Logic",
+      "source": "architecture"
+    },
+    {
+      "fact_id": "F0004",
+      "category": "模块架构",
+      "type": "模块分层",
+      "description": "模块 main: 位于编排层，角色为编排器，18 个方法",
+      "location": "main",
+      "confidence": "verified",
+      "evidence": "推断职责: Main Entry, Coordination",
+      "source": "architecture"
+    },
+    {
+      "fact_id": "F0005",
+      "category": "模块架构",
+      "type": "模块分层",
+      "description": "模块 parser: 位于业务层，角色为中间模块，18 个方法",
+      "location": "parser",
+      "confidence": "verified",
+      "evidence": "推断职责: Business Logic",
+      "source": "architecture"
+    },
+    {
+      "fact_id": "F0006",
+      "category": "模块架构",
+      "type": "模块分层",
+      "description": "模块 variables: 位于业务层，角色为中间模块，13 个方法",
+      "location": "variables",
+      "confidence": "verified",
+      "evidence": "推断职责: Business Logic",
+      "source": "architecture"
+    },
+    {
+      "fact_id": "F0007",
+      "category": "模块架构",
+      "type": "模块分层",
+      "description": "模块 version: 位于支撑层，角色为外围模块，0 个方法",
+      "location": "version",
+      "confidence": "verified",
+      "evidence": "推断职责: Business Logic",
+      "source": "architecture"
+    },
+    {
+      "fact_id": "F0008",
+      "category": "模块架构",
+      "type": "模块依赖",
+      "description": "cli → main（数据流依赖，强度 0.84，5 次调用）",
+      "location": "cli → main",
+      "confidence": "verified",
+      "evidence": "基于调用图的依赖强度计算",
+      "source": "architecture"
+    },
+    {
+      "fact_id": "F0009",
+      "category": "模块架构",
+      "type": "模块依赖",
+      "description": "main → parser（编排依赖，强度 0.44，3 次调用）",
+      "location": "main → parser",
+      "confidence": "verified",
+      "evidence": "基于调用图的依赖强度计算",
+      "source": "architecture"
+    },
+    {
+      "fact_id": "F0010",
+      "category": "模块架构",
+      "type": "模块依赖",
+      "description": "ipython → main（工具依赖，强度 0.40，2 次调用）",
+      "location": "ipython → main",
+      "confidence": "verified",
+      "evidence": "基于调用图的依赖强度计算",
+      "source": "architecture"
+    },
+    {
+      "fact_id": "F0011",
+      "category": "模块架构",
+      "type": "模块依赖",
+      "description": "main → variables（编排依赖，强度 0.20，1 次调用）",
+      "location": "main → variables",
+      "confidence": "verified",
+      "evidence": "基于调用图的依赖强度计算",
+      "source": "architecture"
+    },
+    {
+      "fact_id": "F0012",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "load_ipython_extension 调用 load_ipython_extension",
+      "location": "python_dotenv/__init__.py:9",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0013",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "cli 调用 enumerate_env",
+      "location": "python_dotenv/cli.py:42",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0014",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "get 调用 stream_file",
+      "location": "python_dotenv/cli.py:141",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0015",
+      "category": "调用链",
+      "type": "调用链-跨模块",
+      "description": "get 调用 dotenv_values（跨模块）",
+      "location": "python_dotenv/cli.py:142",
+      "confidence": "verified",
+      "evidence": "调用类型: imported",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0016",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "list_values 调用 stream_file",
+      "location": "python_dotenv/cli.py:97",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0017",
+      "category": "调用链",
+      "type": "调用链-跨模块",
+      "description": "list_values 调用 dotenv_values（跨模块）",
+      "location": "python_dotenv/cli.py:98",
+      "confidence": "verified",
+      "evidence": "调用类型: imported",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0018",
+      "category": "调用链",
+      "type": "调用链-跨模块",
+      "description": "run 调用 dotenv_values（跨模块）",
+      "location": "python_dotenv/cli.py:193",
+      "confidence": "verified",
+      "evidence": "调用类型: imported",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0019",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "run 调用 run_command",
+      "location": "python_dotenv/cli.py:201",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0020",
+      "category": "调用链",
+      "type": "调用链-跨模块",
+      "description": "set_value 调用 set_key（跨模块）",
+      "location": "python_dotenv/cli.py:127",
+      "confidence": "verified",
+      "evidence": "调用类型: imported",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0021",
+      "category": "调用链",
+      "type": "调用链-跨模块",
+      "description": "unset 调用 unset_key（跨模块）",
+      "location": "python_dotenv/cli.py:163",
+      "confidence": "verified",
+      "evidence": "调用类型: imported",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0022",
+      "category": "调用链",
+      "type": "调用链-跨模块",
+      "description": "IPythonDotEnv.dotenv 调用 find_dotenv（跨模块）",
+      "location": "python_dotenv/ipython.py:39",
+      "confidence": "verified",
+      "evidence": "调用类型: imported",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0023",
+      "category": "调用链",
+      "type": "调用链-跨模块",
+      "description": "IPythonDotEnv.dotenv 调用 load_dotenv（跨模块）",
+      "location": "python_dotenv/ipython.py:45",
+      "confidence": "verified",
+      "evidence": "调用类型: imported",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0024",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "DotEnv._get_stream 调用 _is_file_or_fifo",
+      "location": "python_dotenv/main.py:62",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0025",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "DotEnv.dict 调用 DotEnv.parse",
+      "location": "python_dotenv/main.py:80",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0026",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "DotEnv.dict 调用 resolve_variables",
+      "location": "python_dotenv/main.py:84",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0027",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "DotEnv.get 调用 DotEnv.dict",
+      "location": "python_dotenv/main.py:114",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0028",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "DotEnv.parse 调用 DotEnv._get_stream",
+      "location": "python_dotenv/main.py:92",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0029",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "DotEnv.parse 调用 with_warn_for_invalid_lines",
+      "location": "python_dotenv/main.py:93",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0030",
+      "category": "调用链",
+      "type": "调用链-跨模块",
+      "description": "DotEnv.parse 调用 parse_stream（跨模块）",
+      "location": "python_dotenv/main.py:93",
+      "confidence": "verified",
+      "evidence": "调用类型: imported",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0031",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "DotEnv.set_as_environment_variables 调用 DotEnv.dict",
+      "location": "python_dotenv/main.py:101",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0032",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "dotenv_values 调用 find_dotenv",
+      "location": "python_dotenv/main.py:463",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0033",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "find_dotenv 调用 _walk_to_root",
+      "location": "python_dotenv/main.py:377",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0034",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "find_dotenv 调用 _is_file_or_fifo",
+      "location": "python_dotenv/main.py:379",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0035",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "load_dotenv 调用 _load_dotenv_disabled",
+      "location": "python_dotenv/main.py:418",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0036",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "load_dotenv 调用 find_dotenv",
+      "location": "python_dotenv/main.py:425",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0037",
+      "category": "调用链",
+      "type": "调用链-跨模块",
+      "description": "resolve_variables 调用 parse_variables（跨模块）",
+      "location": "python_dotenv/main.py:304",
+      "confidence": "verified",
+      "evidence": "调用类型: imported",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0038",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "set_key 调用 rewrite",
+      "location": "python_dotenv/main.py:232",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0039",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "set_key 调用 with_warn_for_invalid_lines",
+      "location": "python_dotenv/main.py:238",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0040",
+      "category": "调用链",
+      "type": "调用链-跨模块",
+      "description": "set_key 调用 parse_stream（跨模块）",
+      "location": "python_dotenv/main.py:238",
+      "confidence": "verified",
+      "evidence": "调用类型: imported",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0041",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "unset_key 调用 rewrite",
+      "location": "python_dotenv/main.py:275",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0042",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "unset_key 调用 with_warn_for_invalid_lines",
+      "location": "python_dotenv/main.py:279",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0043",
+      "category": "调用链",
+      "type": "调用链-跨模块",
+      "description": "unset_key 调用 parse_stream（跨模块）",
+      "location": "python_dotenv/main.py:279",
+      "confidence": "verified",
+      "evidence": "调用类型: imported",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0044",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "parse_binding 调用 parse_key",
+      "location": "python_dotenv/parser.py:156",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0045",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "parse_binding 调用 parse_value",
+      "location": "python_dotenv/parser.py:160",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0046",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "parse_stream 调用 parse_binding",
+      "location": "python_dotenv/parser.py:184",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0047",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "parse_value 调用 decode_escapes",
+      "location": "python_dotenv/parser.py:134",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0048",
+      "category": "调用链",
+      "type": "调用链-模块内",
+      "description": "parse_value 调用 parse_unquoted_value",
+      "location": "python_dotenv/parser.py:141",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0049",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "cli 是系统入口点",
+      "location": "python_dotenv/cli.py:62",
+      "confidence": "verified",
+      "evidence": "出度 1，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0050",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "list_values 是系统入口点",
+      "location": "python_dotenv/cli.py:93",
+      "confidence": "verified",
+      "evidence": "出度 2，标签: query",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0051",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "set_value 是系统入口点",
+      "location": "python_dotenv/cli.py:116",
+      "confidence": "verified",
+      "evidence": "出度 1，标签: update",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0052",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "get 是系统入口点",
+      "location": "python_dotenv/cli.py:137",
+      "confidence": "verified",
+      "evidence": "出度 2，标签: query",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0053",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "unset 是系统入口点",
+      "location": "python_dotenv/cli.py:154",
+      "confidence": "verified",
+      "evidence": "出度 1，标签: update",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0054",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "run 是系统入口点",
+      "location": "python_dotenv/cli.py:184",
+      "confidence": "verified",
+      "evidence": "出度 2，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0055",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "load_ipython_extension 是系统入口点",
+      "location": "python_dotenv/ipython.py:48",
+      "confidence": "verified",
+      "evidence": "出度 0，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0056",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "IPythonDotEnv.dotenv 是系统入口点",
+      "location": "python_dotenv/ipython.py:34",
+      "confidence": "verified",
+      "evidence": "出度 2，标签: 无",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0057",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "DotEnv.set_as_environment_variables 是系统入口点",
+      "location": "python_dotenv/main.py:97",
+      "confidence": "verified",
+      "evidence": "出度 2，标签: update",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0058",
+      "category": "调用链",
+      "type": "入口点",
+      "description": "DotEnv.get 是系统入口点",
+      "location": "python_dotenv/main.py:112",
+      "confidence": "verified",
+      "evidence": "出度 1，标签: query",
+      "source": "call_graph"
+    },
+    {
+      "fact_id": "F0059",
+      "category": "状态变更",
+      "type": "状态属性",
+      "description": "Position 拥有 2 个状态属性: chars, line",
+      "location": "python_dotenv/parser.py",
+      "confidence": "verified",
+      "evidence": "从 __init__ 中提取的 self.xxx 赋值",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0060",
+      "category": "状态变更",
+      "type": "属性写入",
+      "description": "Position.__init__() 修改 2 个属性: chars, line",
+      "location": "python_dotenv/parser.py:50",
+      "confidence": "verified",
+      "evidence": "AST 静态分析: self.attr = / self.attr.append() 等模式",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0061",
+      "category": "状态变更",
+      "type": "属性写入",
+      "description": "Position.advance() 修改 2 个属性: chars, line",
+      "location": "python_dotenv/parser.py:62",
+      "confidence": "verified",
+      "evidence": "AST 静态分析: self.attr = / self.attr.append() 等模式",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0062",
+      "category": "状态变更",
+      "type": "属性写入",
+      "description": "Position.set() 修改 2 个属性: chars, line",
+      "location": "python_dotenv/parser.py:58",
+      "confidence": "verified",
+      "evidence": "AST 静态分析: self.attr = / self.attr.append() 等模式",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0063",
+      "category": "状态变更",
+      "type": "状态属性",
+      "description": "Reader 拥有 3 个状态属性: mark, position, string",
+      "location": "python_dotenv/parser.py",
+      "confidence": "verified",
+      "evidence": "从 __init__ 中提取的 self.xxx 赋值",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0064",
+      "category": "状态变更",
+      "type": "属性写入",
+      "description": "Reader.__init__() 修改 3 个属性: mark, position, string",
+      "location": "python_dotenv/parser.py:72",
+      "confidence": "verified",
+      "evidence": "AST 静态分析: self.attr = / self.attr.append() 等模式",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0065",
+      "category": "状态变更",
+      "type": "查询方法",
+      "description": "Reader 有 6 个纯查询方法: has_next, set_mark, get_marked, peek, read",
+      "location": "python_dotenv/parser.py",
+      "confidence": "verified",
+      "evidence": "方法体中只读取不修改状态属性",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0066",
+      "category": "状态变更",
+      "type": "状态属性",
+      "description": "Literal 拥有 1 个状态属性: value",
+      "location": "python_dotenv/variables.py",
+      "confidence": "verified",
+      "evidence": "从 __init__ 中提取的 self.xxx 赋值",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0067",
+      "category": "状态变更",
+      "type": "属性写入",
+      "description": "Literal.__init__() 修改 1 个属性: value",
+      "location": "python_dotenv/variables.py:30",
+      "confidence": "verified",
+      "evidence": "AST 静态分析: self.attr = / self.attr.append() 等模式",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0068",
+      "category": "状态变更",
+      "type": "查询方法",
+      "description": "Literal 有 1 个纯查询方法: resolve",
+      "location": "python_dotenv/variables.py",
+      "confidence": "verified",
+      "evidence": "方法体中只读取不修改状态属性",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0069",
+      "category": "状态变更",
+      "type": "状态属性",
+      "description": "Variable 拥有 2 个状态属性: default, name",
+      "location": "python_dotenv/variables.py",
+      "confidence": "verified",
+      "evidence": "从 __init__ 中提取的 self.xxx 赋值",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0070",
+      "category": "状态变更",
+      "type": "属性写入",
+      "description": "Variable.__init__() 修改 2 个属性: default, name",
+      "location": "python_dotenv/variables.py:49",
+      "confidence": "verified",
+      "evidence": "AST 静态分析: self.attr = / self.attr.append() 等模式",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0071",
+      "category": "状态变更",
+      "type": "查询方法",
+      "description": "Variable 有 1 个纯查询方法: resolve",
+      "location": "python_dotenv/variables.py",
+      "confidence": "verified",
+      "evidence": "方法体中只读取不修改状态属性",
+      "source": "state_tracker"
+    },
+    {
+      "fact_id": "F0072",
+      "category": "业务流程",
+      "type": "流程总览",
+      "description": "流程 'set_value Flow': 涉及 3 个模块，10 个步骤，2 次跨模块调用",
+      "location": "cli, main, parser",
+      "confidence": "verified",
+      "evidence": "入口: cli:set_value，业务重要度: 13.0",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0073",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "set_value Flow · 步骤 0 层: set_value()（状态变更）",
+      "location": "python_dotenv/cli.py:116",
+      "confidence": "verified",
+      "evidence": "调用类型: entry",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0074",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "set_value Flow · 步骤 1 层: set_key()（跨模块, 状态变更）",
+      "location": "python_dotenv/main.py:127",
+      "confidence": "verified",
+      "evidence": "调用类型: imported",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0075",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "set_value Flow · 步骤 2 层: rewrite()",
+      "location": "python_dotenv/main.py:232",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0076",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "set_value Flow · 步骤 2 层: with_warn_for_invalid_lines()",
+      "location": "python_dotenv/main.py:238",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0077",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "set_value Flow · 步骤 2 层: parse_stream()（跨模块）",
+      "location": "python_dotenv/parser.py:238",
+      "confidence": "verified",
+      "evidence": "调用类型: imported",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0078",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "set_value Flow · 步骤 3 层: parse_binding()",
+      "location": "python_dotenv/parser.py:184",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0079",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "set_value Flow · 步骤 4 层: parse_key()",
+      "location": "python_dotenv/parser.py:156",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0080",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "set_value Flow · 步骤 4 层: parse_value()",
+      "location": "python_dotenv/parser.py:160",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0081",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "set_value Flow · 步骤 5 层: decode_escapes()",
+      "location": "python_dotenv/parser.py:134",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0082",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "set_value Flow · 步骤 5 层: parse_unquoted_value()",
+      "location": "python_dotenv/parser.py:141",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0083",
+      "category": "业务流程",
+      "type": "流程总览",
+      "description": "流程 'unset Flow': 涉及 3 个模块，10 个步骤，2 次跨模块调用",
+      "location": "cli, main, parser",
+      "confidence": "verified",
+      "evidence": "入口: cli:unset，业务重要度: 13.0",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0084",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "unset Flow · 步骤 0 层: unset()（状态变更）",
+      "location": "python_dotenv/cli.py:154",
+      "confidence": "verified",
+      "evidence": "调用类型: entry",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0085",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "unset Flow · 步骤 1 层: unset_key()（跨模块, 状态变更）",
+      "location": "python_dotenv/main.py:163",
+      "confidence": "verified",
+      "evidence": "调用类型: imported",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0086",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "unset Flow · 步骤 2 层: rewrite()",
+      "location": "python_dotenv/main.py:275",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0087",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "unset Flow · 步骤 2 层: with_warn_for_invalid_lines()",
+      "location": "python_dotenv/main.py:279",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0088",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "unset Flow · 步骤 2 层: parse_stream()（跨模块）",
+      "location": "python_dotenv/parser.py:279",
+      "confidence": "verified",
+      "evidence": "调用类型: imported",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0089",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "unset Flow · 步骤 3 层: parse_binding()",
+      "location": "python_dotenv/parser.py:184",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0090",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "unset Flow · 步骤 4 层: parse_key()",
+      "location": "python_dotenv/parser.py:156",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0091",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "unset Flow · 步骤 4 层: parse_value()",
+      "location": "python_dotenv/parser.py:160",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0092",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "unset Flow · 步骤 5 层: decode_escapes()",
+      "location": "python_dotenv/parser.py:134",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0093",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "unset Flow · 步骤 5 层: parse_unquoted_value()",
+      "location": "python_dotenv/parser.py:141",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0094",
+      "category": "业务流程",
+      "type": "流程总览",
+      "description": "流程 'DotEnv set_as_environment_variables Flow': 涉及 3 个模块，13 个步骤，2 次跨模块调用",
+      "location": "main, parser, variables",
+      "confidence": "verified",
+      "evidence": "入口: main:DotEnv.set_as_environment_variables，业务重要度: 11.5",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0095",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "DotEnv set_as_environment_variables Flow · 步骤 0 层: DotEnv.set_as_environment_variables()（状态变更）",
+      "location": "python_dotenv/main.py:97",
+      "confidence": "verified",
+      "evidence": "调用类型: entry",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0096",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "DotEnv set_as_environment_variables Flow · 步骤 1 层: DotEnv.dict()",
+      "location": "python_dotenv/main.py:101",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0097",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "DotEnv set_as_environment_variables Flow · 步骤 2 层: DotEnv.parse()",
+      "location": "python_dotenv/main.py:80",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0098",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "DotEnv set_as_environment_variables Flow · 步骤 2 层: resolve_variables()",
+      "location": "python_dotenv/main.py:84",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0099",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "DotEnv set_as_environment_variables Flow · 步骤 3 层: DotEnv._get_stream()",
+      "location": "python_dotenv/main.py:92",
+      "confidence": "verified",
+      "evidence": "调用类型: self_method",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0100",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "DotEnv set_as_environment_variables Flow · 步骤 3 层: with_warn_for_invalid_lines()",
+      "location": "python_dotenv/main.py:93",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0101",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "DotEnv set_as_environment_variables Flow · 步骤 3 层: parse_stream()（跨模块）",
+      "location": "python_dotenv/parser.py:93",
+      "confidence": "verified",
+      "evidence": "调用类型: imported",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0102",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "DotEnv set_as_environment_variables Flow · 步骤 3 层: parse_variables()（跨模块）",
+      "location": "python_dotenv/variables.py:304",
+      "confidence": "verified",
+      "evidence": "调用类型: imported",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0103",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "DotEnv set_as_environment_variables Flow · 步骤 4 层: parse_binding()",
+      "location": "python_dotenv/parser.py:184",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0104",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "DotEnv set_as_environment_variables Flow · 步骤 5 层: parse_key()",
+      "location": "python_dotenv/parser.py:156",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0105",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "DotEnv set_as_environment_variables Flow · 步骤 5 层: parse_value()",
+      "location": "python_dotenv/parser.py:160",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0106",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "DotEnv set_as_environment_variables Flow · 步骤 6 层: decode_escapes()",
+      "location": "python_dotenv/parser.py:134",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0107",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "DotEnv set_as_environment_variables Flow · 步骤 6 层: parse_unquoted_value()",
+      "location": "python_dotenv/parser.py:141",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0108",
+      "category": "业务流程",
+      "type": "流程总览",
+      "description": "流程 'IPythonDotEnv dotenv Flow': 涉及 2 个模块，6 个步骤，2 次跨模块调用",
+      "location": "ipython, main",
+      "confidence": "verified",
+      "evidence": "入口: ipython:IPythonDotEnv.dotenv，业务重要度: 7.0",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0109",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "IPythonDotEnv dotenv Flow · 步骤 0 层: IPythonDotEnv.dotenv()",
+      "location": "python_dotenv/ipython.py:34",
+      "confidence": "verified",
+      "evidence": "调用类型: entry",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0110",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "IPythonDotEnv dotenv Flow · 步骤 1 层: load_dotenv()（跨模块）",
+      "location": "python_dotenv/main.py:45",
+      "confidence": "verified",
+      "evidence": "调用类型: imported",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0111",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "IPythonDotEnv dotenv Flow · 步骤 1 层: find_dotenv()（跨模块）",
+      "location": "python_dotenv/main.py:39",
+      "confidence": "verified",
+      "evidence": "调用类型: imported",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0112",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "IPythonDotEnv dotenv Flow · 步骤 2 层: _load_dotenv_disabled()",
+      "location": "python_dotenv/main.py:418",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0113",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "IPythonDotEnv dotenv Flow · 步骤 2 层: _walk_to_root()",
+      "location": "python_dotenv/main.py:377",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0114",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "IPythonDotEnv dotenv Flow · 步骤 2 层: _is_file_or_fifo()",
+      "location": "python_dotenv/main.py:379",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0115",
+      "category": "业务流程",
+      "type": "流程总览",
+      "description": "流程 'list_values Flow': 涉及 2 个模块，6 个步骤，1 次跨模块调用",
+      "location": "cli, main",
+      "confidence": "verified",
+      "evidence": "入口: cli:list_values，业务重要度: 6.0",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0116",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "list_values Flow · 步骤 0 层: list_values()",
+      "location": "python_dotenv/cli.py:93",
+      "confidence": "verified",
+      "evidence": "调用类型: entry",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0117",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "list_values Flow · 步骤 1 层: stream_file()",
+      "location": "python_dotenv/cli.py:97",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0118",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "list_values Flow · 步骤 1 层: dotenv_values()（跨模块）",
+      "location": "python_dotenv/main.py:98",
+      "confidence": "verified",
+      "evidence": "调用类型: imported",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0119",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "list_values Flow · 步骤 2 层: find_dotenv()",
+      "location": "python_dotenv/main.py:463",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0120",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "list_values Flow · 步骤 3 层: _walk_to_root()",
+      "location": "python_dotenv/main.py:377",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0121",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "list_values Flow · 步骤 3 层: _is_file_or_fifo()",
+      "location": "python_dotenv/main.py:379",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0122",
+      "category": "业务流程",
+      "type": "流程总览",
+      "description": "流程 'get Flow': 涉及 2 个模块，6 个步骤，1 次跨模块调用",
+      "location": "cli, main",
+      "confidence": "verified",
+      "evidence": "入口: cli:get，业务重要度: 6.0",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0123",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "get Flow · 步骤 0 层: get()",
+      "location": "python_dotenv/cli.py:137",
+      "confidence": "verified",
+      "evidence": "调用类型: entry",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0124",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "get Flow · 步骤 1 层: stream_file()",
+      "location": "python_dotenv/cli.py:141",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0125",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "get Flow · 步骤 1 层: dotenv_values()（跨模块）",
+      "location": "python_dotenv/main.py:142",
+      "confidence": "verified",
+      "evidence": "调用类型: imported",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0126",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "get Flow · 步骤 2 层: find_dotenv()",
+      "location": "python_dotenv/main.py:463",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0127",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "get Flow · 步骤 3 层: _walk_to_root()",
+      "location": "python_dotenv/main.py:377",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0128",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "get Flow · 步骤 3 层: _is_file_or_fifo()",
+      "location": "python_dotenv/main.py:379",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0129",
+      "category": "业务流程",
+      "type": "流程总览",
+      "description": "流程 'run Flow': 涉及 2 个模块，6 个步骤，1 次跨模块调用",
+      "location": "cli, main",
+      "confidence": "verified",
+      "evidence": "入口: cli:run，业务重要度: 6.0",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0130",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "run Flow · 步骤 0 层: run()",
+      "location": "python_dotenv/cli.py:184",
+      "confidence": "verified",
+      "evidence": "调用类型: entry",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0131",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "run Flow · 步骤 1 层: run_command()",
+      "location": "python_dotenv/cli.py:201",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0132",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "run Flow · 步骤 1 层: dotenv_values()（跨模块）",
+      "location": "python_dotenv/main.py:193",
+      "confidence": "verified",
+      "evidence": "调用类型: imported",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0133",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "run Flow · 步骤 2 层: find_dotenv()",
+      "location": "python_dotenv/main.py:463",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0134",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "run Flow · 步骤 3 层: _walk_to_root()",
+      "location": "python_dotenv/main.py:377",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0135",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "run Flow · 步骤 3 层: _is_file_or_fifo()",
+      "location": "python_dotenv/main.py:379",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0136",
+      "category": "业务流程",
+      "type": "流程总览",
+      "description": "流程 'cli Flow': 涉及 1 个模块，2 个步骤，0 次跨模块调用",
+      "location": "cli",
+      "confidence": "verified",
+      "evidence": "入口: cli:cli，业务重要度: 2.0",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0137",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "cli Flow · 步骤 0 层: cli()",
+      "location": "python_dotenv/cli.py:62",
+      "confidence": "verified",
+      "evidence": "调用类型: entry",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0138",
+      "category": "业务流程",
+      "type": "流程步骤",
+      "description": "cli Flow · 步骤 1 层: enumerate_env()",
+      "location": "python_dotenv/cli.py:42",
+      "confidence": "verified",
+      "evidence": "调用类型: direct",
+      "source": "flow_extractor"
+    },
+    {
+      "fact_id": "F0139",
+      "category": "关键实现",
+      "type": "核心方法",
+      "description": "DotEnv.dict() 是核心实现点（重要度 6.5）",
+      "location": "python_dotenv/main.py:75-89",
+      "confidence": "verified",
+      "evidence": "入选原因: medium complexity; includes boundary validation; core method called by many",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0140",
+      "category": "关键实现",
+      "type": "守卫条件",
+      "description": "DotEnv.dict: 1 pre-flight validations",
+      "location": "python_dotenv/main.py: lines 77",
+      "confidence": "verified",
+      "evidence": "lines 77",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0141",
+      "category": "关键实现",
+      "type": "守卫子句",
+      "description": "DotEnv.dict: self._dict is not None -> early return",
+      "location": "python_dotenv/main.py:77",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的前置检查 + 提前退出模式",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0142",
+      "category": "关键实现",
+      "type": "算法特征",
+      "description": "DotEnv.dict: conditional checks (no loops)",
+      "location": "python_dotenv/main.py:75-89",
+      "confidence": "verified",
+      "evidence": "1 guard clauses, no loops",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0143",
+      "category": "关键实现",
+      "type": "复杂度",
+      "description": "DotEnv.dict: 圈复杂度 3（循环 0，分支 2）",
+      "location": "python_dotenv/main.py:75-89",
+      "confidence": "verified",
+      "evidence": "从 AST 直接计数：if/try 为分支，for/while 为循环",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0144",
+      "category": "关键实现",
+      "type": "核心方法",
+      "description": "DotEnv.set_as_environment_variables() 是核心实现点（重要度 6.5）",
+      "location": "python_dotenv/main.py:97-110",
+      "confidence": "verified",
+      "evidence": "入选原因: high complexity implementation; includes boundary validation",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0145",
+      "category": "关键实现",
+      "type": "守卫条件",
+      "description": "DotEnv.set_as_environment_variables: 1 pre-flight validations",
+      "location": "python_dotenv/main.py: lines 101",
+      "confidence": "verified",
+      "evidence": "lines 101",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0146",
+      "category": "关键实现",
+      "type": "算法模式",
+      "description": "DotEnv.set_as_environment_variables: sequential traversal",
+      "location": "python_dotenv/main.py:97-110",
+      "confidence": "verified",
+      "evidence": "1 loop(s) detected",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0147",
+      "category": "关键实现",
+      "type": "守卫子句",
+      "description": "DotEnv.set_as_environment_variables: not self.dict() -> early return",
+      "location": "python_dotenv/main.py:101",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的前置检查 + 提前退出模式",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0148",
+      "category": "关键实现",
+      "type": "算法特征",
+      "description": "DotEnv.set_as_environment_variables: pure computation / statistics",
+      "location": "python_dotenv/main.py:97-110",
+      "confidence": "verified",
+      "evidence": "1 loop(s), no state mutation",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0149",
+      "category": "关键实现",
+      "type": "复杂度",
+      "description": "DotEnv.set_as_environment_variables: 圈复杂度 5（循环 1，分支 3）",
+      "location": "python_dotenv/main.py:97-110",
+      "confidence": "verified",
+      "evidence": "从 AST 直接计数：if/try 为分支，for/while 为循环",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0150",
+      "category": "关键实现",
+      "type": "核心方法",
+      "description": "DotEnv.parse() 是核心实现点（重要度 4.0）",
+      "location": "python_dotenv/main.py:91-95",
+      "confidence": "verified",
+      "evidence": "入选原因: medium complexity",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0151",
+      "category": "关键实现",
+      "type": "算法模式",
+      "description": "DotEnv.parse: sequential traversal",
+      "location": "python_dotenv/main.py:91-95",
+      "confidence": "verified",
+      "evidence": "1 loop(s) detected",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0152",
+      "category": "关键实现",
+      "type": "算法特征",
+      "description": "DotEnv.parse: pure computation / statistics",
+      "location": "python_dotenv/main.py:91-95",
+      "confidence": "verified",
+      "evidence": "1 loop(s), no state mutation",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0153",
+      "category": "关键实现",
+      "type": "复杂度",
+      "description": "DotEnv.parse: 圈复杂度 3（循环 1，分支 1）",
+      "location": "python_dotenv/main.py:91-95",
+      "confidence": "verified",
+      "evidence": "从 AST 直接计数：if/try 为分支，for/while 为循环",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0154",
+      "category": "关键实现",
+      "type": "核心方法",
+      "description": "DotEnv.get() 是核心实现点（重要度 4.0）",
+      "location": "python_dotenv/main.py:112-122",
+      "confidence": "verified",
+      "evidence": "入选原因: medium complexity; includes boundary validation",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0155",
+      "category": "关键实现",
+      "type": "守卫条件",
+      "description": "DotEnv.get: 1 pre-flight validations",
+      "location": "python_dotenv/main.py: lines 116",
+      "confidence": "verified",
+      "evidence": "lines 116",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0156",
+      "category": "关键实现",
+      "type": "守卫子句",
+      "description": "DotEnv.get: key in data -> early return",
+      "location": "python_dotenv/main.py:116",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的前置检查 + 提前退出模式",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0157",
+      "category": "关键实现",
+      "type": "算法特征",
+      "description": "DotEnv.get: conditional checks (no loops)",
+      "location": "python_dotenv/main.py:112-122",
+      "confidence": "verified",
+      "evidence": "1 guard clauses, no loops",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0158",
+      "category": "关键实现",
+      "type": "复杂度",
+      "description": "DotEnv.get: 圈复杂度 3（循环 0，分支 2）",
+      "location": "python_dotenv/main.py:112-122",
+      "confidence": "verified",
+      "evidence": "从 AST 直接计数：if/try 为分支，for/while 为循环",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0159",
+      "category": "关键实现",
+      "type": "核心方法",
+      "description": "IPythonDotEnv.dotenv() 是核心实现点（重要度 3.5）",
+      "location": "python_dotenv/ipython.py:34-45",
+      "confidence": "verified",
+      "evidence": "入选原因: medium complexity",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0160",
+      "category": "关键实现",
+      "type": "编排调用",
+      "description": "IPythonDotEnv.dotenv: multi-step orchestration (8 internal calls)",
+      "location": "python_dotenv/ipython.py:34-45",
+      "confidence": "verified",
+      "evidence": "from call count",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0161",
+      "category": "关键实现",
+      "type": "算法特征",
+      "description": "IPythonDotEnv.dotenv: general business logic",
+      "location": "python_dotenv/ipython.py:34-45",
+      "confidence": "verified",
+      "evidence": "no distinctive algorithmic pattern",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0162",
+      "category": "关键实现",
+      "type": "复杂度",
+      "description": "IPythonDotEnv.dotenv: 圈复杂度 3（循环 0，分支 2）",
+      "location": "python_dotenv/ipython.py:34-45",
+      "confidence": "verified",
+      "evidence": "从 AST 直接计数：if/try 为分支，for/while 为循环",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0163",
+      "category": "关键实现",
+      "type": "核心方法",
+      "description": "Reader.read() 是核心实现点（重要度 2.5）",
+      "location": "python_dotenv/parser.py:92-97",
+      "confidence": "verified",
+      "evidence": "入选原因: includes boundary validation; includes exception raises",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0164",
+      "category": "关键实现",
+      "type": "守卫条件",
+      "description": "Reader.read: 1 pre-flight validations",
+      "location": "python_dotenv/parser.py: lines 94",
+      "confidence": "verified",
+      "evidence": "lines 94",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0165",
+      "category": "关键实现",
+      "type": "异常处理",
+      "description": "Reader.read: raises 1 exception type(s): Error",
+      "location": "python_dotenv/parser.py: lines 95",
+      "confidence": "verified",
+      "evidence": "lines 95",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0166",
+      "category": "关键实现",
+      "type": "守卫子句",
+      "description": "Reader.read: len() < count -> raise",
+      "location": "python_dotenv/parser.py:94",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的前置检查 + 提前退出模式",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0167",
+      "category": "关键实现",
+      "type": "异常抛出",
+      "description": "Reader.read: 抛出 Error: read: End of string",
+      "location": "python_dotenv/parser.py:95",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的 raise 语句",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0168",
+      "category": "关键实现",
+      "type": "算法特征",
+      "description": "Reader.read: conditional checks (no loops)",
+      "location": "python_dotenv/parser.py:92-97",
+      "confidence": "verified",
+      "evidence": "1 guard clauses, no loops",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0169",
+      "category": "关键实现",
+      "type": "复杂度",
+      "description": "Reader.read: 圈复杂度 2（循环 0，分支 1）",
+      "location": "python_dotenv/parser.py:92-97",
+      "confidence": "verified",
+      "evidence": "从 AST 直接计数：if/try 为分支，for/while 为循环",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0170",
+      "category": "关键实现",
+      "type": "核心方法",
+      "description": "Reader.read_regex() 是核心实现点（重要度 2.5）",
+      "location": "python_dotenv/parser.py:99-104",
+      "confidence": "verified",
+      "evidence": "入选原因: includes boundary validation; includes exception raises",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0171",
+      "category": "关键实现",
+      "type": "守卫条件",
+      "description": "Reader.read_regex: 1 pre-flight validations",
+      "location": "python_dotenv/parser.py: lines 101",
+      "confidence": "verified",
+      "evidence": "lines 101",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0172",
+      "category": "关键实现",
+      "type": "异常处理",
+      "description": "Reader.read_regex: raises 1 exception type(s): Error",
+      "location": "python_dotenv/parser.py: lines 102",
+      "confidence": "verified",
+      "evidence": "lines 102",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0173",
+      "category": "关键实现",
+      "type": "编排调用",
+      "description": "Reader.read_regex: multi-step orchestration (6 internal calls)",
+      "location": "python_dotenv/parser.py:99-104",
+      "confidence": "verified",
+      "evidence": "from call count",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0174",
+      "category": "关键实现",
+      "type": "守卫子句",
+      "description": "Reader.read_regex: match is None -> raise",
+      "location": "python_dotenv/parser.py:101",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的前置检查 + 提前退出模式",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0175",
+      "category": "关键实现",
+      "type": "异常抛出",
+      "description": "Reader.read_regex: 抛出 Error: read_regex: Pattern not found",
+      "location": "python_dotenv/parser.py:102",
+      "confidence": "verified",
+      "evidence": "从 AST 检测到的 raise 语句",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0176",
+      "category": "关键实现",
+      "type": "算法特征",
+      "description": "Reader.read_regex: conditional checks (no loops)",
+      "location": "python_dotenv/parser.py:99-104",
+      "confidence": "verified",
+      "evidence": "1 guard clauses, no loops",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0177",
+      "category": "关键实现",
+      "type": "复杂度",
+      "description": "Reader.read_regex: 圈复杂度 2（循环 0，分支 1）",
+      "location": "python_dotenv/parser.py:99-104",
+      "confidence": "verified",
+      "evidence": "从 AST 直接计数：if/try 为分支，for/while 为循环",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0178",
+      "category": "关键实现",
+      "type": "核心方法",
+      "description": "DotEnv._get_stream() 是核心实现点（重要度 2.0）",
+      "location": "python_dotenv/main.py:61-73",
+      "confidence": "verified",
+      "evidence": "入选原因: medium complexity",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0179",
+      "category": "关键实现",
+      "type": "设计特征",
+      "description": "DotEnv._get_stream: general business logic",
+      "location": "python_dotenv/main.py:61-73",
+      "confidence": "verified",
+      "evidence": "no distinctive structural features",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0180",
+      "category": "关键实现",
+      "type": "算法特征",
+      "description": "DotEnv._get_stream: general business logic",
+      "location": "python_dotenv/main.py:61-73",
+      "confidence": "verified",
+      "evidence": "no distinctive algorithmic pattern",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0181",
+      "category": "关键实现",
+      "type": "复杂度",
+      "description": "DotEnv._get_stream: 圈复杂度 4（循环 0，分支 3）",
+      "location": "python_dotenv/main.py:61-73",
+      "confidence": "verified",
+      "evidence": "从 AST 直接计数：if/try 为分支，for/while 为循环",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0182",
+      "category": "关键实现",
+      "type": "核心方法",
+      "description": "Position.set() 是核心实现点（重要度 1.5）",
+      "location": "python_dotenv/parser.py:58-60",
+      "confidence": "verified",
+      "evidence": "入选原因: has state mutation",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0183",
+      "category": "关键实现",
+      "type": "状态变更",
+      "description": "Position.set: modifies 2 state attributes: chars, line",
+      "location": "python_dotenv/parser.py:58-60",
+      "confidence": "verified",
+      "evidence": "from state tracker",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0184",
+      "category": "关键实现",
+      "type": "算法特征",
+      "description": "Position.set: general business logic",
+      "location": "python_dotenv/parser.py:58-60",
+      "confidence": "verified",
+      "evidence": "no distinctive algorithmic pattern",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0185",
+      "category": "关键实现",
+      "type": "复杂度",
+      "description": "Position.set: 圈复杂度 1（循环 0，分支 0）",
+      "location": "python_dotenv/parser.py:58-60",
+      "confidence": "verified",
+      "evidence": "从 AST 直接计数：if/try 为分支，for/while 为循环",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0186",
+      "category": "关键实现",
+      "type": "核心方法",
+      "description": "Position.advance() 是核心实现点（重要度 1.5）",
+      "location": "python_dotenv/parser.py:62-64",
+      "confidence": "verified",
+      "evidence": "入选原因: has state mutation",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0187",
+      "category": "关键实现",
+      "type": "状态变更",
+      "description": "Position.advance: modifies 2 state attributes: chars, line",
+      "location": "python_dotenv/parser.py:62-64",
+      "confidence": "verified",
+      "evidence": "from state tracker",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0188",
+      "category": "关键实现",
+      "type": "算法特征",
+      "description": "Position.advance: general business logic",
+      "location": "python_dotenv/parser.py:62-64",
+      "confidence": "verified",
+      "evidence": "no distinctive algorithmic pattern",
+      "source": "key_implementation"
+    },
+    {
+      "fact_id": "F0189",
+      "category": "关键实现",
+      "type": "复杂度",
+      "description": "Position.advance: 圈复杂度 1（循环 0，分支 0）",
+      "location": "python_dotenv/parser.py:62-64",
+      "confidence": "verified",
+      "evidence": "从 AST 直接计数：if/try 为分支，for/while 为循环",
+      "source": "key_implementation"
+    }
+  ]
+}

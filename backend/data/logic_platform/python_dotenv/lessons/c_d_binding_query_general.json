@@ -1,0 +1,4030 @@
+{
+  "lesson_version": "walkthrough-1.0",
+  "algorithm_version": "walkthrough-1.0",
+  "lesson_id": "lesson_c_d_binding_query_general",
+  "lesson_number": 1,
+  "title": "查询/读取操作",
+  "capability_id": "c_d_binding_query_general",
+  "capability_name": "查询/读取操作",
+  "section_id": "d_binding",
+  "section_name": "Binding",
+  "level": "L2",
+  "intro": "好，代码拿到了，咱们一段一段啃。你不用记住每一行，我会告诉你哪些是核心概念一定要记住，哪些只是「知道有这么回事」就行。",
+  "one_line_frame": "一句话先定调：「查询/读取操作」（属于板块「Binding」） 一共切成 16 段，其中有 1 处提前返回、2 处守卫中断（raise） —— 这是本课要盯住的第一个重点。",
+  "segments": [
+    {
+      "segment_id": "seg_001",
+      "order": 1,
+      "title": "函数签名与职责说明",
+      "title_status": "from_structure",
+      "header_text": "第 1 段：函数签名与职责说明（83-83 行）",
+      "segment_kind": "prepare",
+      "source": {
+        "file": "parser.py",
+        "display_path": "parser.py",
+        "start_line": 83,
+        "end_line": 83,
+        "symbol": "get_marked",
+        "symbol_kind": "method",
+        "extra_ranges": [],
+        "member_symbol": "get_marked",
+        "member_start_line": 83,
+        "member_end_line": 87
+      },
+      "code_excerpt": "    def get_marked(self) -> Original:",
+      "code_excerpt_hash": "sha256:fc3535d6b2e7a2afe49ead51273210505907970471ea0f76eb3e0951b27741a9",
+      "line_annotations": [],
+      "lead_in": "以下这段属于 parser.py 的 get_marked()（第 83-87 行）",
+      "emphasis_line": "",
+      "branch_detail": null,
+      "must_remember": [
+        {
+          "claim_id": "seg_001_c1",
+          "claim_text": "get_marked() **没有 docstring** —— 它的职责只能从代码结构推断。引擎不替作者补一句职责说明，因为那句话没有证据。",
+          "category": "symbol_meaning",
+          "evidence": [
+            {
+              "evidence_id": "ev_54bfc9c022a3",
+              "fact_id": "",
+              "file": "parser.py",
+              "start_line": 83,
+              "end_line": 83,
+              "symbol": "get_marked",
+              "excerpt": "    def get_marked(self) -> Original:",
+              "excerpt_hash": "sha256:fc3535d6b2e7a2afe49ead51273210505907970471ea0f76eb3e0951b27741a9",
+              "confidence": "verified",
+              "reason": "函数签名与 docstring 所在行"
+            }
+          ],
+          "confidence": "verified",
+          "verified": true,
+          "reject_reason": ""
+        }
+      ],
+      "know_enough": [],
+      "one_sentence_summary": {
+        "claim_id": "seg_001_summary",
+        "claim_text": "get_marked() 没有 docstring；本课只讲它的代码结构，不猜它的业务意图。",
+        "category": "symbol_meaning",
+        "evidence": [
+          {
+            "evidence_id": "ev_54bfc9c022a3",
+            "fact_id": "",
+            "file": "parser.py",
+            "start_line": 83,
+            "end_line": 83,
+            "symbol": "get_marked",
+            "excerpt": "    def get_marked(self) -> Original:",
+            "excerpt_hash": "sha256:fc3535d6b2e7a2afe49ead51273210505907970471ea0f76eb3e0951b27741a9",
+            "confidence": "verified",
+            "reason": "函数签名与 docstring 所在行"
+          }
+        ],
+        "confidence": "verified",
+        "verified": true,
+        "reject_reason": ""
+      }
+    },
+    {
+      "segment_id": "seg_002",
+      "order": 2,
+      "title": "返回结果，函数结束",
+      "title_status": "from_structure",
+      "header_text": "第 2 段：返回结果，函数结束（84-87 行）",
+      "segment_kind": "return",
+      "source": {
+        "file": "parser.py",
+        "display_path": "parser.py",
+        "start_line": 84,
+        "end_line": 87,
+        "symbol": "get_marked",
+        "symbol_kind": "method",
+        "extra_ranges": [],
+        "member_symbol": "get_marked",
+        "member_start_line": 83,
+        "member_end_line": 87
+      },
+      "code_excerpt": "        return Original(\n            string=self.string[self.mark.chars : self.position.chars],\n            line=self.mark.line,\n        )",
+      "code_excerpt_hash": "sha256:7c9e92d806538df3c9e9a097f1b3756004a06cb7e6a0a85a26a4a2c866238dd2",
+      "line_annotations": [
+        {
+          "line": 84,
+          "text": "← 直接返回，函数结束！",
+          "role": "return_marker",
+          "is_original_comment": false
+        }
+      ],
+      "lead_in": "以下这段属于 parser.py 的 get_marked()（第 83-87 行）",
+      "emphasis_line": "这里是提前返回，非常关键！看到 return 就表示这条业务分支已经结束。",
+      "branch_detail": {
+        "condition_code": "",
+        "condition_line": 84,
+        "evaluates_to": "depends_on_scenario",
+        "taken_path": "顺序执行到此处",
+        "skipped_line_range": null,
+        "is_return": true,
+        "return_at_line": 84,
+        "return_expr": "Original(string=self.string[self.mark.chars:self.position.chars], line=self.mar…",
+        "return_ordinal_in_function": 1,
+        "raises": false,
+        "is_terminal": true
+      },
+      "must_remember": [
+        {
+          "claim_id": "seg_002_c1",
+          "claim_text": "看到 `return` 就表示这条业务分支已经结束：第 84 行一旦执行，函数立即返回，它已经是函数的最后一步。这是函数里的第 1 个 return。",
+          "category": "return_early_exit",
+          "evidence": [
+            {
+              "evidence_id": "ev_80a242ac410d",
+              "fact_id": "",
+              "file": "parser.py",
+              "start_line": 84,
+              "end_line": 84,
+              "symbol": "get_marked",
+              "excerpt": "        return Original(",
+              "excerpt_hash": "sha256:f22eb7f4373ec46c14e6ca80b7b95195aed35a05784dba168445254a4aafbdb0",
+              "confidence": "verified",
+              "reason": "return/raise 语句位置"
+            }
+          ],
+          "confidence": "verified",
+          "verified": true,
+          "reject_reason": ""
+        },
+        {
+          "claim_id": "seg_002_c2",
+          "claim_text": "这是收尾返回：不管前面走了哪条分支，函数最终都从这里把结果交出去 —— 返回格式统一是这条路径的设计目标。",
+          "category": "wrap_up_duty",
+          "evidence": [
+            {
+              "evidence_id": "ev_539e3e73dd13",
+              "fact_id": "",
+              "file": "parser.py",
+              "start_line": 84,
+              "end_line": 87,
+              "symbol": "get_marked",
+              "excerpt": "        return Original(\n            string=self.string[self.mark.chars : self.position.chars],\n            line=self.mark.line,\n        )",
+              "excerpt_hash": "sha256:7c9e92d806538df3c9e9a097f1b3756004a06cb7e6a0a85a26a4a2c866238dd2",
+              "confidence": "verified",
+              "reason": "函数末尾的返回语句"
+            }
+          ],
+          "confidence": "verified",
+          "verified": true,
+          "reject_reason": ""
+        }
+      ],
+      "know_enough": [
+        {
+          "claim_id": "seg_002_k1",
+          "claim_text": "`Original()` 不在本能力点的成员里 —— 你不用进它的内部，只要知道它是被借用的外部能力；要看它自己点开下面的证据跳转。",
+          "category": "symbol_meaning",
+          "evidence": [
+            {
+              "evidence_id": "ev_539e3e73dd13",
+              "fact_id": "",
+              "file": "parser.py",
+              "start_line": 84,
+              "end_line": 87,
+              "symbol": "get_marked",
+              "excerpt": "        return Original(\n            string=self.string[self.mark.chars : self.position.chars],\n            line=self.mark.line,\n        )",
+              "excerpt_hash": "sha256:7c9e92d806538df3c9e9a097f1b3756004a06cb7e6a0a85a26a4a2c866238dd2",
+              "confidence": "inferred",
+              "reason": "外部调用点所在段（该函数不属于本能力点，故为推断边界）"
+            }
+          ],
+          "confidence": "inferred",
+          "verified": true,
+          "reject_reason": ""
+        }
+      ],
+      "one_sentence_summary": {
+        "claim_id": "seg_002_summary",
+        "claim_text": "收尾：把这一段算出来的结果交出去，函数在这里结束。",
+        "category": "control_flow",
+        "evidence": [
+          {
+            "evidence_id": "ev_539e3e73dd13",
+            "fact_id": "",
+            "file": "parser.py",
+            "start_line": 84,
+            "end_line": 87,
+            "symbol": "get_marked",
+            "excerpt": "        return Original(\n            string=self.string[self.mark.chars : self.position.chars],\n            line=self.mark.line,\n        )",
+            "excerpt_hash": "sha256:7c9e92d806538df3c9e9a097f1b3756004a06cb7e6a0a85a26a4a2c866238dd2",
+            "confidence": "verified",
+            "reason": "本段代码范围"
+          }
+        ],
+        "confidence": "verified",
+        "verified": true,
+        "reject_reason": ""
+      }
+    },
+    {
+      "segment_id": "seg_003",
+      "order": 3,
+      "title": "函数签名与职责说明",
+      "title_status": "from_structure",
+      "header_text": "第 3 段：函数签名与职责说明（92-92 行）",
+      "segment_kind": "prepare",
+      "source": {
+        "file": "parser.py",
+        "display_path": "parser.py",
+        "start_line": 92,
+        "end_line": 92,
+        "symbol": "read",
+        "symbol_kind": "method",
+        "extra_ranges": [],
+        "member_symbol": "read",
+        "member_start_line": 92,
+        "member_end_line": 97
+      },
+      "code_excerpt": "    def read(self, count: int) -> str:",
+      "code_excerpt_hash": "sha256:502fb53cc00ff33dde5b1030a778691612e9d13ebd7ab7157102ee7b5cd7c04d",
+      "line_annotations": [],
+      "lead_in": "以下这段属于 parser.py 的 read()（第 92-97 行）",
+      "emphasis_line": "",
+      "branch_detail": null,
+      "must_remember": [
+        {
+          "claim_id": "seg_003_c1",
+          "claim_text": "read() **没有 docstring** —— 它的职责只能从代码结构推断。引擎不替作者补一句职责说明，因为那句话没有证据。",
+          "category": "symbol_meaning",
+          "evidence": [
+            {
+              "evidence_id": "ev_4d96053efa02",
+              "fact_id": "",
+              "file": "parser.py",
+              "start_line": 92,
+              "end_line": 92,
+              "symbol": "read",
+              "excerpt": "    def read(self, count: int) -> str:",
+              "excerpt_hash": "sha256:502fb53cc00ff33dde5b1030a778691612e9d13ebd7ab7157102ee7b5cd7c04d",
+              "confidence": "verified",
+              "reason": "函数签名与 docstring 所在行"
+            }
+          ],
+          "confidence": "verified",
+          "verified": true,
+          "reject_reason": ""
+        }
+      ],
+      "know_enough": [],
+      "one_sentence_summary": {
+        "claim_id": "seg_003_summary",
+        "claim_text": "read() 没有 docstring；本课只讲它的代码结构，不猜它的业务意图。",
+        "category": "symbol_meaning",
+        "evidence": [
+          {
+            "evidence_id": "ev_4d96053efa02",
+            "fact_id": "",
+            "file": "parser.py",
+            "start_line": 92,
+            "end_line": 92,
+            "symbol": "read",
+            "excerpt": "    def read(self, count: int) -> str:",
+            "excerpt_hash": "sha256:502fb53cc00ff33dde5b1030a778691612e9d13ebd7ab7157102ee7b5cd7c04d",
+            "confidence": "verified",
+            "reason": "函数签名与 docstring 所在行"
+          }
+        ],
+        "confidence": "verified",
+        "verified": true,
+        "reject_reason": ""
+      }
+    },
+    {
+      "segment_id": "seg_004",
+      "order": 4,
+      "title": "取值与准备变量",
+      "title_status": "from_structure",
+      "header_text": "第 4 段：取值与准备变量（93-93 行）",
+      "segment_kind": "prepare",
+      "source": {
+        "file": "parser.py",
+        "display_path": "parser.py",
+        "start_line": 93,
+        "end_line": 93,
+        "symbol": "read",
+        "symbol_kind": "method",
+        "extra_ranges": [],
+        "member_symbol": "read",
+        "member_start_line": 92,
+        "member_end_line": 97
+      },
+      "code_excerpt": "        result = self.string[self.position.chars : self.position.chars + count]",
+      "code_excerpt_hash": "sha256:87965b61173e114bf708f362a9ca8234806d36072790b1e7e3620681ec3a2f77",
+      "line_annotations": [],
+      "lead_in": "以下这段属于 parser.py 的 read()（第 92-97 行）",
+      "emphasis_line": "",
+      "branch_detail": null,
+      "must_remember": [
+        {
+          "claim_id": "seg_004_c1",
+          "claim_text": "`result` 是这一段新绑定的**局部变量**（不是对象状态）—— 它出了这个函数就不存在，所以它属于计算过程，不属于业务状态。",
+          "category": "data_structure",
+          "evidence": [
+            {
+              "evidence_id": "ev_1f9ad9eabdb6",
+              "fact_id": "",
+              "file": "parser.py",
+              "start_line": 93,
+              "end_line": 93,
+              "symbol": "read",
+              "excerpt": "        result = self.string[self.position.chars : self.position.chars + count]",
+              "excerpt_hash": "sha256:87965b61173e114bf708f362a9ca8234806d36072790b1e7e3620681ec3a2f77",
+              "confidence": "verified",
+              "reason": "局部变量绑定所在段"
+            }
+          ],
+          "confidence": "verified",
+          "verified": true,
+          "reject_reason": ""
+        },
+        {
+          "claim_id": "seg_004_c2",
+          "claim_text": "变量 `result` 在这一段被赋值，后面第 97 行还会用到它 —— 所以不要只看这一段就下结论。",
+          "category": "variable_usage",
+          "evidence": [
+            {
+              "evidence_id": "ev_adda3ea9937e",
+              "fact_id": "f_0005",
+              "file": "parser.py",
+              "start_line": 93,
+              "end_line": 97,
+              "symbol": "read",
+              "excerpt": "        result = self.string[self.position.chars : self.position.chars + count]\n        if len(result) < count:\n            raise Error(\"read: End of string\")\n        self.position.advance(result)\n        return result",
+              "excerpt_hash": "sha256:ec9156a2e7c8c6a832b5fa3a1017443b84bba71b8154fa80e6f772f6b4fca1b3",
+              "confidence": "verified",
+              "reason": "赋值段到后续读取行"
+            }
+          ],
+          "confidence": "verified",
+          "verified": true,
+          "reject_reason": ""
+        }
+      ],
+      "know_enough": [],
+      "one_sentence_summary": {
+        "claim_id": "seg_004_summary",
+        "claim_text": "做准备与取数：把后面要用到的值先算好、取好，这一步没有业务判断。",
+        "category": "control_flow",
+        "evidence": [
+          {
+            "evidence_id": "ev_1f9ad9eabdb6",
+            "fact_id": "",
+            "file": "parser.py",
+            "start_line": 93,
+            "end_line": 93,
+            "symbol": "read",
+            "excerpt": "        result = self.string[self.position.chars : self.position.chars + count]",
+            "excerpt_hash": "sha256:87965b61173e114bf708f362a9ca8234806d36072790b1e7e3620681ec3a2f77",
+            "confidence": "verified",
+            "reason": "本段代码范围"
+          }
+        ],
+        "confidence": "verified",
+        "verified": true,
+        "reject_reason": ""
+      }
+    },
+    {
+      "segment_id": "seg_005",
+      "order": 5,
+      "title": "前置校验不通过就中断（len(result) < count）",
+      "title_status": "from_structure",
+      "header_text": "第 5 段：前置校验不通过就中断（len(result) < count）（94-95 行）",
+      "segment_kind": "branch",
+      "source": {
+        "file": "parser.py",
+        "display_path": "parser.py",
+        "start_line": 94,
+        "end_line": 95,
+        "symbol": "read",
+        "symbol_kind": "method",
+        "extra_ranges": [],
+        "member_symbol": "read",
+        "member_start_line": 92,
+        "member_end_line": 97
+      },
+      "code_excerpt": "        if len(result) < count:\n            raise Error(\"read: End of string\")",
+      "code_excerpt_hash": "sha256:93b8d639e6b52bb03a63e2e3c21624c83de45b4f46cf5e900f8ec49a94465848",
+      "line_annotations": [
+        {
+          "line": 95,
+          "text": "← 抛出异常，这条业务路径在此中断",
+          "role": "warn",
+          "is_original_comment": false
+        }
+      ],
+      "lead_in": "",
+      "emphasis_line": "",
+      "branch_detail": {
+        "condition_code": "len(result) < count",
+        "condition_line": 94,
+        "evaluates_to": "depends_on_scenario",
+        "taken_path": "条件成立时执行本段",
+        "skipped_line_range": {
+          "start_line": 96,
+          "end_line": 97
+        },
+        "is_return": false,
+        "return_at_line": 0,
+        "return_expr": "",
+        "return_ordinal_in_function": 0,
+        "raises": true,
+        "is_terminal": true
+      },
+      "must_remember": [
+        {
+          "claim_id": "seg_005_c1",
+          "claim_text": "这里抛出异常，第 94 行的分支一旦命中就不再往下走。",
+          "category": "return_early_exit",
+          "evidence": [
+            {
+              "evidence_id": "ev_d76f792e7f2e",
+              "fact_id": "f_0005",
+              "file": "parser.py",
+              "start_line": 94,
+              "end_line": 94,
+              "symbol": "read",
+              "excerpt": "        if len(result) < count:",
+              "excerpt_hash": "sha256:3336e8cb850bd469ad64ed93bae2087a1746d339d6f3236d4e4bdf053267bded",
+              "confidence": "verified",
+              "reason": "return/raise 语句位置"
+            }
+          ],
+          "confidence": "verified",
+          "verified": true,
+          "reject_reason": ""
+        },
+        {
+          "claim_id": "seg_005_c2",
+          "claim_text": "分支条件是 `len(result) < count`：它**是真是假取决于输入**，静态分析看不到运行数据，所以本课不替你判断走哪边，只把两条路都讲清楚。",
+          "category": "control_flow",
+          "evidence": [
+            {
+              "evidence_id": "ev_d76f792e7f2e",
+              "fact_id": "f_0005",
+              "file": "parser.py",
+              "start_line": 94,
+              "end_line": 94,
+              "symbol": "read",
+              "excerpt": "        if len(result) < count:",
+              "excerpt_hash": "sha256:3336e8cb850bd469ad64ed93bae2087a1746d339d6f3236d4e4bdf053267bded",
+              "confidence": "verified",
+              "reason": "条件表达式所在行"
+            }
+          ],
+          "confidence": "verified",
+          "verified": true,
+          "reject_reason": ""
+        }
+      ],
+      "know_enough": [
+        {
+          "claim_id": "seg_005_k1",
+          "claim_text": "`Error()` 不在本能力点的成员里 —— 你不用进它的内部，只要知道它是被借用的外部能力；要看它自己点开下面的证据跳转。",
+          "category": "symbol_meaning",
+          "evidence": [
+            {
+              "evidence_id": "ev_74f30ffdfa5c",
+              "fact_id": "f_0005",
+              "file": "parser.py",
+              "start_line": 94,
+              "end_line": 95,
+              "symbol": "read",
+              "excerpt": "        if len(result) < count:\n            raise Error(\"read: End of string\")",
+              "excerpt_hash": "sha256:93b8d639e6b52bb03a63e2e3c21624c83de45b4f46cf5e900f8ec49a94465848",
+              "confidence": "inferred",
+              "reason": "外部调用点所在段（该函数不属于本能力点，故为推断边界）"
+            }
+          ],
+          "confidence": "inferred",
+          "verified": true,
+          "reject_reason": ""
+        }
+      ],
+      "one_sentence_summary": {
+        "claim_id": "seg_005_summary",
+        "claim_text": "这里是主动 `raise`：条件不满足就把问题抛出函数，由调用方负责处理。",
+        "category": "control_flow",
+        "evidence": [
+          {
+            "evidence_id": "ev_74f30ffdfa5c",
+            "fact_id": "f_0005",
+            "file": "parser.py",
+            "start_line": 94,
+            "end_line": 95,
+            "symbol": "read",
+            "excerpt": "        if len(result) < count:\n            raise Error(\"read: End of string\")",
+            "excerpt_hash": "sha256:93b8d639e6b52bb03a63e2e3c21624c83de45b4f46cf5e900f8ec49a94465848",
+            "confidence": "verified",
+            "reason": "本段代码范围"
+          }
+        ],
+        "confidence": "verified",
+        "verified": true,
+        "reject_reason": ""
+      }
+    },
+    {
+      "segment_id": "seg_006",
+      "order": 6,
+      "title": "收尾并返回",
+      "title_status": "from_structure",
+      "header_text": "第 6 段：收尾并返回（96-97 行）",
+      "segment_kind": "wrap_up",
+      "source": {
+        "file": "parser.py",
+        "display_path": "parser.py",
+        "start_line": 96,
+        "end_line": 97,
+        "symbol": "read",
+        "symbol_kind": "method",
+        "extra_ranges": [],
+        "member_symbol": "read",
+        "member_start_line": 92,
+        "member_end_line": 97
+      },
+      "code_excerpt": "        self.position.advance(result)\n        return result",
+      "code_excerpt_hash": "sha256:0f3069c2d03e1d1d78380dc3d059b3cff926223e34016e91cf91c57c18e53a21",
+      "line_annotations": [
+        {
+          "line": 96,
+          "text": "← 调用「其他能力（待归类：advance、has_next、peek）」",
+          "role": "key_call",
+          "is_original_comment": false
+        },
+        {
+          "line": 97,
+          "text": "← 直接返回，函数结束！",
+          "role": "return_marker",
+          "is_original_comment": false
+        }
+      ],
+      "lead_in": "",
+      "emphasis_line": "",
+      "branch_detail": null,
+      "must_remember": [
+        {
+          "claim_id": "seg_006_c1",
+          "claim_text": "`advance()` 在图谱里还没被归到具名能力点（引擎暂时把它堆在「其他能力（待归类：advance、has_next、peek）」里） —— 本课会用到它，但它的内部实现不在本课范围。",
+          "category": "symbol_meaning",
+          "evidence": [
+            {
+              "evidence_id": "ev_c8a10d1a1b90",
+              "fact_id": "",
+              "file": "parser.py",
+              "start_line": 96,
+              "end_line": 96,
+              "symbol": "read",
+              "excerpt": "        self.position.advance(result)",
+              "excerpt_hash": "sha256:b369b3e919ac1b43201e26a059d58f6c72f6449801e591c6f6f11fc624104a8c",
+              "confidence": "verified",
+              "reason": "调用点行号"
+            }
+          ],
+          "confidence": "verified",
+          "verified": true,
+          "reject_reason": ""
+        },
+        {
+          "claim_id": "seg_006_c2",
+          "claim_text": "这是收尾返回：不管前面走了哪条分支，函数最终都从这里把结果交出去 —— 返回格式统一是这条路径的设计目标。",
+          "category": "wrap_up_duty",
+          "evidence": [
+            {
+              "evidence_id": "ev_3641951d0db6",
+              "fact_id": "",
+              "file": "parser.py",
+              "start_line": 96,
+              "end_line": 97,
+              "symbol": "read",
+              "excerpt": "        self.position.advance(result)\n        return result",
+              "excerpt_hash": "sha256:0f3069c2d03e1d1d78380dc3d059b3cff926223e34016e91cf91c57c18e53a21",
+              "confidence": "verified",
+              "reason": "函数末尾的返回语句"
+            }
+          ],
+          "confidence": "verified",
+          "verified": true,
+          "reject_reason": ""
+        }
+      ],
+      "know_enough": [],
+      "one_sentence_summary": {
+        "claim_id": "seg_006_summary",
+        "claim_text": "收尾：把结果统一交出去，函数在这里结束。",
+        "category": "control_flow",
+        "evidence": [
+          {
+            "evidence_id": "ev_3641951d0db6",
+            "fact_id": "",
+            "file": "parser.py",
+            "start_line": 96,
+            "end_line": 97,
+            "symbol": "read",
+            "excerpt": "        self.position.advance(result)\n        return result",
+            "excerpt_hash": "sha256:0f3069c2d03e1d1d78380dc3d059b3cff926223e34016e91cf91c57c18e53a21",
+            "confidence": "verified",
+            "reason": "本段代码范围"
+          }
+        ],
+        "confidence": "verified",
+        "verified": true,
+        "reject_reason": ""
+      }
+    },
+    {
+      "segment_id": "seg_007",
+      "order": 7,
+      "title": "函数签名与职责说明",
+      "title_status": "from_structure",
+      "header_text": "第 7 段：函数签名与职责说明（99-99 行）",
+      "segment_kind": "prepare",
+      "source": {
+        "file": "parser.py",
+        "display_path": "parser.py",
+        "start_line": 99,
+        "end_line": 99,
+        "symbol": "read_regex",
+        "symbol_kind": "method",
+        "extra_ranges": [],
+        "member_symbol": "read_regex",
+        "member_start_line": 99,
+        "member_end_line": 104
+      },
+      "code_excerpt": "    def read_regex(self, regex: Pattern[str]) -> Sequence[str]:",
+      "code_excerpt_hash": "sha256:733357789d522d094bed177571e6aa0bf07453c7a971e0d40201729f466bfe54",
+      "line_annotations": [],
+      "lead_in": "以下这段属于 parser.py 的 read_regex()（第 99-104 行）",
+      "emphasis_line": "",
+      "branch_detail": null,
+      "must_remember": [
+        {
+          "claim_id": "seg_007_c1",
+          "claim_text": "read_regex() **没有 docstring** —— 它的职责只能从代码结构推断。引擎不替作者补一句职责说明，因为那句话没有证据。",
+          "category": "symbol_meaning",
+          "evidence": [
+            {
+              "evidence_id": "ev_98627a8118b7",
+              "fact_id": "",
+              "file": "parser.py",
+              "start_line": 99,
+              "end_line": 99,
+              "symbol": "read_regex",
+              "excerpt": "    def read_regex(self, regex: Pattern[str]) -> Sequence[str]:",
+              "excerpt_hash": "sha256:733357789d522d094bed177571e6aa0bf07453c7a971e0d40201729f466bfe54",
+              "confidence": "verified",
+              "reason": "函数签名与 docstring 所在行"
+            }
+          ],
+          "confidence": "verified",
+          "verified": true,
+          "reject_reason": ""
+        }
+      ],
+      "know_enough": [],
+      "one_sentence_summary": {
+        "claim_id": "seg_007_summary",
+        "claim_text": "read_regex() 没有 docstring；本课只讲它的代码结构，不猜它的业务意图。",
+        "category": "symbol_meaning",
+        "evidence": [
+          {
+            "evidence_id": "ev_98627a8118b7",
+            "fact_id": "",
+            "file": "parser.py",
+            "start_line": 99,
+            "end_line": 99,
+            "symbol": "read_regex",
+            "excerpt": "    def read_regex(self, regex: Pattern[str]) -> Sequence[str]:",
+            "excerpt_hash": "sha256:733357789d522d094bed177571e6aa0bf07453c7a971e0d40201729f466bfe54",
+            "confidence": "verified",
+            "reason": "函数签名与 docstring 所在行"
+          }
+        ],
+        "confidence": "verified",
+        "verified": true,
+        "reject_reason": ""
+      }
+    },
+    {
+      "segment_id": "seg_008",
+      "order": 8,
+      "title": "取值与准备变量",
+      "title_status": "from_structure",
+      "header_text": "第 8 段：取值与准备变量（100-100 行）",
+      "segment_kind": "prepare",
+      "source": {
+        "file": "parser.py",
+        "display_path": "parser.py",
+        "start_line": 100,
+        "end_line": 100,
+        "symbol": "read_regex",
+        "symbol_kind": "method",
+        "extra_ranges": [],
+        "member_symbol": "read_regex",
+        "member_start_line": 99,
+        "member_end_line": 104
+      },
+      "code_excerpt": "        match = regex.match(self.string, self.position.chars)",
+      "code_excerpt_hash": "sha256:b357d668144cc96af3e37db9182705ba69d5ca104e0fb327ad1b45981ce79428",
+      "line_annotations": [],
+      "lead_in": "以下这段属于 parser.py 的 read_regex()（第 99-104 行）",
+      "emphasis_line": "",
+      "branch_detail": null,
+      "must_remember": [
+        {
+          "claim_id": "seg_008_c1",
+          "claim_text": "`match` 是这一段新绑定的**局部变量**（不是对象状态）—— 它出了这个函数就不存在，所以它属于计算过程，不属于业务状态。",
+          "category": "data_structure",
+          "evidence": [
+            {
+              "evidence_id": "ev_e7ad81ece8fc",
+              "fact_id": "",
+              "file": "parser.py",
+              "start_line": 100,
+              "end_line": 100,
+              "symbol": "read_regex",
+              "excerpt": "        match = regex.match(self.string, self.position.chars)",
+              "excerpt_hash": "sha256:b357d668144cc96af3e37db9182705ba69d5ca104e0fb327ad1b45981ce79428",
+              "confidence": "verified",
+              "reason": "局部变量绑定所在段"
+            }
+          ],
+          "confidence": "verified",
+          "verified": true,
+          "reject_reason": ""
+        },
+        {
+          "claim_id": "seg_008_c2",
+          "claim_text": "变量 `match` 在这一段被赋值，后面第 101 行还会用到它 —— 所以不要只看这一段就下结论。",
+          "category": "variable_usage",
+          "evidence": [
+            {
+              "evidence_id": "ev_fe63c3746155",
+              "fact_id": "f_0007",
+              "file": "parser.py",
+              "start_line": 100,
+              "end_line": 101,
+              "symbol": "read_regex",
+              "excerpt": "        match = regex.match(self.string, self.position.chars)\n        if match is None:",
+              "excerpt_hash": "sha256:7714e64fbf704d83165c883ac016719dc655a702b5a672ec8ae3b4d0d292c0f8",
+              "confidence": "verified",
+              "reason": "赋值段到后续读取行"
+            }
+          ],
+          "confidence": "verified",
+          "verified": true,
+          "reject_reason": ""
+        }
+      ],
+      "know_enough": [],
+      "one_sentence_summary": {
+        "claim_id": "seg_008_summary",
+        "claim_text": "做准备与取数：把后面要用到的值先算好、取好，这一步没有业务判断。",
+        "category": "control_flow",
+        "evidence": [
+          {
+            "evidence_id": "ev_e7ad81ece8fc",
+            "fact_id": "",
+            "file": "parser.py",
+            "start_line": 100,
+            "end_line": 100,
+            "symbol": "read_regex",
+            "excerpt": "        match = regex.match(self.string, self.position.chars)",
+            "excerpt_hash": "sha256:b357d668144cc96af3e37db9182705ba69d5ca104e0fb327ad1b45981ce79428",
+            "confidence": "verified",
+            "reason": "本段代码范围"
+          }
+        ],
+        "confidence": "verified",
+        "verified": true,
+        "reject_reason": ""
+      }
+    },
+    {
+      "segment_id": "seg_009",
+      "order": 9,
+      "title": "前置校验不通过就中断（match is None）",
+      "title_status": "from_structure",
+      "header_text": "第 9 段：前置校验不通过就中断（match is None）（101-102 行）",
+      "segment_kind": "branch",
+      "source": {
+        "file": "parser.py",
+        "display_path": "parser.py",
+        "start_line": 101,
+        "end_line": 102,
+        "symbol": "read_regex",
+        "symbol_kind": "method",
+        "extra_ranges": [],
+        "member_symbol": "read_regex",
+        "member_start_line": 99,
+        "member_end_line": 104
+      },
+      "code_excerpt": "        if match is None:\n            raise Error(\"read_regex: Pattern not found\")",
+      "code_excerpt_hash": "sha256:aaae32029ab0ceec0640b8eb3aef17ee043e562fb9fb945dfccf9e2e3d3fd488",
+      "line_annotations": [
+        {
+          "line": 102,
+          "text": "← 抛出异常，这条业务路径在此中断",
+          "role": "warn",
+          "is_original_comment": false
+        }
+      ],
+      "lead_in": "",
+      "emphasis_line": "",
+      "branch_detail": {
+        "condition_code": "match is None",
+        "condition_line": 101,
+        "evaluates_to": "depends_on_scenario",
+        "taken_path": "条件成立时执行本段",
+        "skipped_line_range": {
+          "start_line": 103,
+          "end_line": 104
+        },
+        "is_return": false,
+        "return_at_line": 0,
+        "return_expr": "",
+        "return_ordinal_in_function": 0,
+        "raises": true,
+        "is_terminal": true
+      },
+      "must_remember": [
+        {
+          "claim_id": "seg_009_c1",
+          "claim_text": "这里抛出异常，第 101 行的分支一旦命中就不再往下走。",
+          "category": "return_early_exit",
+          "evidence": [
+            {
+              "evidence_id": "ev_a53facde2b78",
+              "fact_id": "f_0007",
+              "file": "parser.py",
+              "start_line": 101,
+              "end_line": 101,
+              "symbol": "read_regex",
+              "excerpt": "        if match is None:",
+              "excerpt_hash": "sha256:d37e77091cd6d35a144abc6e4d77e63f1d43a9e2458441e912d8f70a80e0f3d2",
+              "confidence": "verified",
+              "reason": "return/raise 语句位置"
+            }
+          ],
+          "confidence": "verified",
+          "verified": true,
+          "reject_reason": ""
+        },
+        {
+          "claim_id": "seg_009_c2",
+          "claim_text": "分支条件是 `match is None`：它**是真是假取决于输入**，静态分析看不到运行数据，所以本课不替你判断走哪边，只把两条路都讲清楚。",
+          "category": "control_flow",
+          "evidence": [
+            {
+              "evidence_id": "ev_a53facde2b78",
+              "fact_id": "f_0007",
+              "file": "parser.py",
+              "start_line": 101,
+              "end_line": 101,
+              "symbol": "read_regex",
+              "excerpt": "        if match is None:",
+              "excerpt_hash": "sha256:d37e77091cd6d35a144abc6e4d77e63f1d43a9e2458441e912d8f70a80e0f3d2",
+              "confidence": "verified",
+              "reason": "条件表达式所在行"
+            }
+          ],
+          "confidence": "verified",
+          "verified": true,
+          "reject_reason": ""
+        }
+      ],
+      "know_enough": [
+        {
+          "claim_id": "seg_009_k1",
+          "claim_text": "`Error()` 不在本能力点的成员里 —— 你不用进它的内部，只要知道它是被借用的外部能力；要看它自己点开下面的证据跳转。",
+          "category": "symbol_meaning",
+          "evidence": [
+            {
+              "evidence_id": "ev_2612ffa3ce82",
+              "fact_id": "f_0007",
+              "file": "parser.py",
+              "start_line": 101,
+              "end_line": 102,
+              "symbol": "read_regex",
+              "excerpt": "        if match is None:\n            raise Error(\"read_regex: Pattern not found\")",
+              "excerpt_hash": "sha256:aaae32029ab0ceec0640b8eb3aef17ee043e562fb9fb945dfccf9e2e3d3fd488",
+              "confidence": "inferred",
+              "reason": "外部调用点所在段（该函数不属于本能力点，故为推断边界）"
+            }
+          ],
+          "confidence": "inferred",
+          "verified": true,
+          "reject_reason": ""
+        }
+      ],
+      "one_sentence_summary": {
+        "claim_id": "seg_009_summary",
+        "claim_text": "这里是主动 `raise`：条件不满足就把问题抛出函数，由调用方负责处理。",
+        "category": "control_flow",
+        "evidence": [
+          {
+            "evidence_id": "ev_2612ffa3ce82",
+            "fact_id": "f_0007",
+            "file": "parser.py",
+            "start_line": 101,
+            "end_line": 102,
+            "symbol": "read_regex",
+            "excerpt": "        if match is None:\n            raise Error(\"read_regex: Pattern not found\")",
+            "excerpt_hash": "sha256:aaae32029ab0ceec0640b8eb3aef17ee043e562fb9fb945dfccf9e2e3d3fd488",
+            "confidence": "verified",
+            "reason": "本段代码范围"
+          }
+        ],
+        "confidence": "verified",
+        "verified": true,
+        "reject_reason": ""
+      }
+    },
+    {
+      "segment_id": "seg_010",
+      "order": 10,
+      "title": "状态流转操作",
+      "title_status": "from_capability_name",
+      "header_text": "第 10 段：状态流转操作（103-104 行）",
+      "segment_kind": "call",
+      "source": {
+        "file": "parser.py",
+        "display_path": "parser.py",
+        "start_line": 103,
+        "end_line": 104,
+        "symbol": "read_regex",
+        "symbol_kind": "method",
+        "extra_ranges": [],
+        "member_symbol": "read_regex",
+        "member_start_line": 99,
+        "member_end_line": 104
+      },
+      "code_excerpt": "        self.position.advance(self.string[match.start() : match.end()])\n        return match.groups()",
+      "code_excerpt_hash": "sha256:2511962e2ef4b0ab3a40c109c6583785eb2dccbed369e927c141910f6b9234e7",
+      "line_annotations": [
+        {
+          "line": 103,
+          "text": "← 调用「其他能力（待归类：advance、has_next、peek）」",
+          "role": "key_call",
+          "is_original_comment": false
+        },
+        {
+          "line": 104,
+          "text": "← 直接返回，函数结束！",
+          "role": "return_marker",
+          "is_original_comment": false
+        }
+      ],
+      "lead_in": "",
+      "emphasis_line": "",
+      "branch_detail": null,
+      "must_remember": [
+        {
+          "claim_id": "seg_010_c1",
+          "claim_text": "`advance()` 在图谱里还没被归到具名能力点（引擎暂时把它堆在「其他能力（待归类：advance、has_next、peek）」里） —— 本课会用到它，但它的内部实现不在本课范围。",
+          "category": "symbol_meaning",
+          "evidence": [
+            {
+              "evidence_id": "ev_7125d60611af",
+              "fact_id": "",
+              "file": "parser.py",
+              "start_line": 103,
+              "end_line": 103,
+              "symbol": "read_regex",
+              "excerpt": "        self.position.advance(self.string[match.start() : match.end()])",
+              "excerpt_hash": "sha256:4bbfd55e620436aa7bcb41876e335a05cb5996671141541522ca7d66a15984d4",
+              "confidence": "verified",
+              "reason": "调用点行号"
+            }
+          ],
+          "confidence": "verified",
+          "verified": true,
+          "reject_reason": ""
+        },
+        {
+          "claim_id": "seg_010_c2",
+          "claim_text": "`start()` 是「状态流转操作」的能力实现 —— 本课会用到它，但它的内部实现不在本课范围。",
+          "category": "symbol_meaning",
+          "evidence": [
+            {
+              "evidence_id": "ev_7125d60611af",
+              "fact_id": "",
+              "file": "parser.py",
+              "start_line": 103,
+              "end_line": 103,
+              "symbol": "read_regex",
+              "excerpt": "        self.position.advance(self.string[match.start() : match.end()])",
+              "excerpt_hash": "sha256:4bbfd55e620436aa7bcb41876e335a05cb5996671141541522ca7d66a15984d4",
+              "confidence": "verified",
+              "reason": "调用点行号"
+            }
+          ],
+          "confidence": "verified",
+          "verified": true,
+          "reject_reason": ""
+        }
+      ],
+      "know_enough": [],
+      "one_sentence_summary": {
+        "claim_id": "seg_010_summary",
+        "claim_text": "调用「状态流转操作」完成这一步的业务动作，拿到它的结果继续往下。",
+        "category": "control_flow",
+        "evidence": [
+          {
+            "evidence_id": "ev_0a1df54c547d",
+            "fact_id": "",
+            "file": "parser.py",
+            "start_line": 103,
+            "end_line": 104,
+            "symbol": "read_regex",
+            "excerpt": "        self.position.advance(self.string[match.start() : match.end()])\n        return match.groups()",
+            "excerpt_hash": "sha256:2511962e2ef4b0ab3a40c109c6583785eb2dccbed369e927c141910f6b9234e7",
+            "confidence": "verified",
+            "reason": "本段代码范围"
+          }
+        ],
+        "confidence": "verified",
+        "verified": true,
+        "reject_reason": ""
+      }
+    },
+    {
+      "segment_id": "seg_011",
+      "order": 11,
+      "title": "函数签名与职责说明",
+      "title_status": "from_structure",
+      "header_text": "第 11 段：函数签名与职责说明（144-144 行）",
+      "segment_kind": "prepare",
+      "source": {
+        "file": "parser.py",
+        "display_path": "parser.py",
+        "start_line": 144,
+        "end_line": 144,
+        "symbol": "parse_binding",
+        "symbol_kind": "function",
+        "extra_ranges": [],
+        "member_symbol": "parse_binding",
+        "member_start_line": 144,
+        "member_end_line": 178
+      },
+      "code_excerpt": "def parse_binding(reader: Reader) -> Binding:",
+      "code_excerpt_hash": "sha256:c66ccfb0b3392a810113600060d14532e9b0ebd9172e51f48688104771c1e9a0",
+      "line_annotations": [],
+      "lead_in": "以下这段属于 parser.py 的 parse_binding()（第 144-178 行）",
+      "emphasis_line": "",
+      "branch_detail": null,
+      "must_remember": [
+        {
+          "claim_id": "seg_011_c1",
+          "claim_text": "parse_binding() **没有 docstring** —— 它的职责只能从代码结构推断。引擎不替作者补一句职责说明，因为那句话没有证据。",
+          "category": "symbol_meaning",
+          "evidence": [
+            {
+              "evidence_id": "ev_f7888610cc20",
+              "fact_id": "",
+              "file": "parser.py",
+              "start_line": 144,
+              "end_line": 144,
+              "symbol": "parse_binding",
+              "excerpt": "def parse_binding(reader: Reader) -> Binding:",
+              "excerpt_hash": "sha256:c66ccfb0b3392a810113600060d14532e9b0ebd9172e51f48688104771c1e9a0",
+              "confidence": "verified",
+              "reason": "函数签名与 docstring 所在行"
+            }
+          ],
+          "confidence": "verified",
+          "verified": true,
+          "reject_reason": ""
+        }
+      ],
+      "know_enough": [],
+      "one_sentence_summary": {
+        "claim_id": "seg_011_summary",
+        "claim_text": "parse_binding() 没有 docstring；本课只讲它的代码结构，不猜它的业务意图。",
+        "category": "symbol_meaning",
+        "evidence": [
+          {
+            "evidence_id": "ev_f7888610cc20",
+            "fact_id": "",
+            "file": "parser.py",
+            "start_line": 144,
+            "end_line": 144,
+            "symbol": "parse_binding",
+            "excerpt": "def parse_binding(reader: Reader) -> Binding:",
+            "excerpt_hash": "sha256:c66ccfb0b3392a810113600060d14532e9b0ebd9172e51f48688104771c1e9a0",
+            "confidence": "verified",
+            "reason": "函数签名与 docstring 所在行"
+          }
+        ],
+        "confidence": "verified",
+        "verified": true,
+        "reject_reason": ""
+      }
+    },
+    {
+      "segment_id": "seg_012",
+      "order": 12,
+      "title": "更新/修改操作",
+      "title_status": "from_capability_name",
+      "header_text": "第 12 段：更新/修改操作（145-145 行）",
+      "segment_kind": "call",
+      "source": {
+        "file": "parser.py",
+        "display_path": "parser.py",
+        "start_line": 145,
+        "end_line": 145,
+        "symbol": "parse_binding",
+        "symbol_kind": "function",
+        "extra_ranges": [],
+        "member_symbol": "parse_binding",
+        "member_start_line": 144,
+        "member_end_line": 178
+      },
+      "code_excerpt": "    reader.set_mark()",
+      "code_excerpt_hash": "sha256:f578aded261bd0167f558b970b126ffdeb420e7812b97282abbaeadff73c515c",
+      "line_annotations": [
+        {
+          "line": 145,
+          "text": "← 调用「更新/修改操作」",
+          "role": "key_call",
+          "is_original_comment": false
+        }
+      ],
+      "lead_in": "以下这段属于 parser.py 的 parse_binding()（第 144-178 行）",
+      "emphasis_line": "",
+      "branch_detail": null,
+      "must_remember": [
+        {
+          "claim_id": "seg_012_c1",
+          "claim_text": "`set_mark()` 是「更新/修改操作」的能力实现 —— 本课会用到它，但它的内部实现不在本课范围。",
+          "category": "symbol_meaning",
+          "evidence": [
+            {
+              "evidence_id": "ev_f482c3e92cec",
+              "fact_id": "",
+              "file": "parser.py",
+              "start_line": 145,
+              "end_line": 145,
+              "symbol": "parse_binding",
+              "excerpt": "    reader.set_mark()",
+              "excerpt_hash": "sha256:f578aded261bd0167f558b970b126ffdeb420e7812b97282abbaeadff73c515c",
+              "confidence": "verified",
+              "reason": "调用点行号"
+            }
+          ],
+          "confidence": "verified",
+          "verified": true,
+          "reject_reason": ""
+        }
+      ],
+      "know_enough": [],
+      "one_sentence_summary": {
+        "claim_id": "seg_012_summary",
+        "claim_text": "调用「更新/修改操作」完成这一步的业务动作，拿到它的结果继续往下。",
+        "category": "control_flow",
+        "evidence": [
+          {
+            "evidence_id": "ev_f482c3e92cec",
+            "fact_id": "",
+            "file": "parser.py",
+            "start_line": 145,
+            "end_line": 145,
+            "symbol": "parse_binding",
+            "excerpt": "    reader.set_mark()",
+            "excerpt_hash": "sha256:f578aded261bd0167f558b970b126ffdeb420e7812b97282abbaeadff73c515c",
+            "confidence": "verified",
+            "reason": "本段代码范围"
+          }
+        ],
+        "confidence": "verified",
+        "verified": true,
+        "reject_reason": ""
+      }
+    },
+    {
+      "segment_id": "seg_013",
+      "order": 13,
+      "title": "查询/读取操作",
+      "title_status": "from_capability_name",
+      "header_text": "第 13 段：查询/读取操作（146-178 行）",
+      "segment_kind": "call",
+      "source": {
+        "file": "parser.py",
+        "display_path": "parser.py",
+        "start_line": 146,
+        "end_line": 178,
+        "symbol": "parse_binding",
+        "symbol_kind": "function",
+        "extra_ranges": [],
+        "member_symbol": "parse_binding",
+        "member_start_line": 144,
+        "member_end_line": 178
+      },
+      "code_excerpt": "    try:\n        reader.read_regex(_multiline_whitespace)\n        if not reader.has_next():\n            return Binding(\n                key=None,\n                value=None,\n                original=reader.get_marked(),\n                error=False,\n            )\n        reader.read_regex(_export)\n        key = parse_key(reader)\n        reader.read_regex(_whitespace)\n        if reader.peek(1) == \"=\":\n            reader.read_regex(_equal_sign)\n            value: Optional[str] = parse_value(reader)\n        else:\n            value = None\n        reader.read_regex(_comment)\n        reader.read_regex(_end_of_line)\n        return Binding(\n            key=key,\n            value=value,\n            original=reader.get_marked(),\n            error=False,\n        )\n    except Error:\n        reader.read_regex(_rest_of_line)\n        return Binding(\n            key=None,\n            value=None,\n            original=reader.get_marked(),\n            error=True,\n        )",
+      "code_excerpt_hash": "sha256:8e5ffd96b733eabd1cd8a2082d22286d1fd58fcc8ff84be994e4797b0bcaab50",
+      "line_annotations": [
+        {
+          "line": 147,
+          "text": "← 调用「查询/读取操作」",
+          "role": "key_call",
+          "is_original_comment": false
+        },
+        {
+          "line": 148,
+          "text": "← 调用「其他能力（待归类：advance、has_next、peek）」",
+          "role": "key_call",
+          "is_original_comment": false
+        },
+        {
+          "line": 149,
+          "text": "← 直接返回，函数结束！",
+          "role": "return_marker",
+          "is_original_comment": false
+        },
+        {
+          "line": 152,
+          "text": "← 调用「查询/读取操作」",
+          "role": "key_call",
+          "is_original_comment": false
+        },
+        {
+          "line": 165,
+          "text": "← 直接返回，函数结束！",
+          "role": "return_marker",
+          "is_original_comment": false
+        },
+        {
+          "line": 173,
+          "text": "← 直接返回，函数结束！",
+          "role": "return_marker",
+          "is_original_comment": false
+        }
+      ],
+      "lead_in": "",
+      "emphasis_line": "",
+      "branch_detail": null,
+      "must_remember": [
+        {
+          "claim_id": "seg_013_c1",
+          "claim_text": "`read_regex()` 是「查询/读取操作」的能力实现 —— 本课会用到它，但它的内部实现不在本课范围。",
+          "category": "symbol_meaning",
+          "evidence": [
+            {
+              "evidence_id": "ev_14d5a6b7da98",
+              "fact_id": "",
+              "file": "parser.py",
+              "start_line": 147,
+              "end_line": 147,
+              "symbol": "parse_binding",
+              "excerpt": "        reader.read_regex(_multiline_whitespace)",
+              "excerpt_hash": "sha256:46c60e6fc8568230a9dd856619b64220c3233653a2f0c8d3af34773c323a7bb3",
+              "confidence": "verified",
+              "reason": "调用点行号"
+            }
+          ],
+          "confidence": "verified",
+          "verified": true,
+          "reject_reason": ""
+        },
+        {
+          "claim_id": "seg_013_c2",
+          "claim_text": "`has_next()` 在图谱里还没被归到具名能力点（引擎暂时把它堆在「其他能力（待归类：advance、has_next、peek）」里） —— 本课会用到它，但它的内部实现不在本课范围。",
+          "category": "symbol_meaning",
+          "evidence": [
+            {
+              "evidence_id": "ev_388d0ef01d0c",
+              "fact_id": "f_0009",
+              "file": "parser.py",
+              "start_line": 148,
+              "end_line": 148,
+              "symbol": "parse_binding",
+              "excerpt": "        if not reader.has_next():",
+              "excerpt_hash": "sha256:80343915f61ae51c06d541e1682abea9519ea085974ded375f654bbe530215c0",
+              "confidence": "verified",
+              "reason": "调用点行号"
+            }
+          ],
+          "confidence": "verified",
+          "verified": true,
+          "reject_reason": ""
+        },
+        {
+          "claim_id": "seg_013_c3",
+          "claim_text": "`get_marked()` 是「查询/读取操作」的能力实现 —— 本课会用到它，但它的内部实现不在本课范围。",
+          "category": "symbol_meaning",
+          "evidence": [
+            {
+              "evidence_id": "ev_e21dfb03d278",
+              "fact_id": "",
+              "file": "parser.py",
+              "start_line": 152,
+              "end_line": 152,
+              "symbol": "parse_binding",
+              "excerpt": "                original=reader.get_marked(),",
+              "excerpt_hash": "sha256:ff6261ceff7544465fcd51f77e01a5fb4394bb90792c5c277e320c6626af5c4f",
+              "confidence": "verified",
+              "reason": "调用点行号"
+            }
+          ],
+          "confidence": "verified",
+          "verified": true,
+          "reject_reason": ""
+        },
+        {
+          "claim_id": "seg_013_c4",
+          "claim_text": "`parse_key()` 是「查询数据项」的能力实现 —— 本课会用到它，但它的内部实现不在本课范围。",
+          "category": "symbol_meaning",
+          "evidence": [
+            {
+              "evidence_id": "ev_c4d37ad6629b",
+              "fact_id": "",
+              "file": "parser.py",
+              "start_line": 156,
+              "end_line": 156,
+              "symbol": "parse_binding",
+              "excerpt": "        key = parse_key(reader)",
+              "excerpt_hash": "sha256:b7bbf05e9d5cd16c7ff1ed796529ca0991a38795a3df789c0485ec38d1c9863b",
+              "confidence": "verified",
+              "reason": "调用点行号"
+            }
+          ],
+          "confidence": "verified",
+          "verified": true,
+          "reject_reason": ""
+        },
+        {
+          "claim_id": "seg_013_c5",
+          "claim_text": "`peek()` 在图谱里还没被归到具名能力点（引擎暂时把它堆在「其他能力（待归类：advance、has_next、peek）」里） —— 本课会用到它，但它的内部实现不在本课范围。",
+          "category": "symbol_meaning",
+          "evidence": [
+            {
+              "evidence_id": "ev_ac93c0d0ecd7",
+              "fact_id": "f_0010",
+              "file": "parser.py",
+              "start_line": 158,
+              "end_line": 158,
+              "symbol": "parse_binding",
+              "excerpt": "        if reader.peek(1) == \"=\":",
+              "excerpt_hash": "sha256:739d7f90ccea3b21547338fe9ffd43e2a302b1089a2b22f175699f8c2aa4d4e5",
+              "confidence": "verified",
+              "reason": "调用点行号"
+            }
+          ],
+          "confidence": "verified",
+          "verified": true,
+          "reject_reason": ""
+        }
+      ],
+      "know_enough": [
+        {
+          "claim_id": "seg_013_k1",
+          "claim_text": "`Binding()` 不在本能力点的成员里 —— 你不用进它的内部，只要知道它是被借用的外部能力；要看它自己点开下面的证据跳转。",
+          "category": "symbol_meaning",
+          "evidence": [
+            {
+              "evidence_id": "ev_414749011464",
+              "fact_id": "f_0009",
+              "file": "parser.py",
+              "start_line": 146,
+              "end_line": 178,
+              "symbol": "parse_binding",
+              "excerpt": "    try:\n        reader.read_regex(_multiline_whitespace)\n        if not reader.has_next():\n            return Binding(\n                key=None,\n                value=None,\n                original=reader.get_marked(),\n                error=False,\n            )\n        reader.read_regex(_export)\n        key = parse_key(reader)\n        reader.read_regex(_whitespace)\n        if reader.peek(1) == \"=\":\n            reader.read_regex(_equal_sign)\n            value: Optional[str] = parse_value(reader)\n        else:\n            value = None\n        reader.read_regex(_comment)\n        reader.read_regex(_end_of_line)\n        return Binding(\n            key=key,\n            value=value,\n            original=reader.get_marked(),\n            error=False,\n        )\n    except Error:\n        reader.read_regex(_rest_of_line)\n        return Binding(\n            key=None,\n            value=None,\n            original=reader.get_marked(),\n            error=True,\n        )",
+              "excerpt_hash": "sha256:8e5ffd96b733eabd1cd8a2082d22286d1fd58fcc8ff84be994e4797b0bcaab50",
+              "confidence": "inferred",
+              "reason": "外部调用点所在段（该函数不属于本能力点，故为推断边界）"
+            }
+          ],
+          "confidence": "inferred",
+          "verified": true,
+          "reject_reason": ""
+        }
+      ],
+      "one_sentence_summary": {
+        "claim_id": "seg_013_summary",
+        "claim_text": "调用「查询/读取操作」完成这一步的业务动作，拿到它的结果继续往下。",
+        "category": "control_flow",
+        "evidence": [
+          {
+            "evidence_id": "ev_414749011464",
+            "fact_id": "f_0009",
+            "file": "parser.py",
+            "start_line": 146,
+            "end_line": 178,
+            "symbol": "parse_binding",
+            "excerpt": "    try:\n        reader.read_regex(_multiline_whitespace)\n        if not reader.has_next():\n            return Binding(\n                key=None,\n                value=None,\n                original=reader.get_marked(),\n                error=False,\n            )\n        reader.read_regex(_export)\n        key = parse_key(reader)\n        reader.read_regex(_whitespace)\n        if reader.peek(1) == \"=\":\n            reader.read_regex(_equal_sign)\n            value: Optional[str] = parse_value(reader)\n        else:\n            value = None\n        reader.read_regex(_comment)\n        reader.read_regex(_end_of_line)\n        return Binding(\n            key=key,\n            value=value,\n            original=reader.get_marked(),\n            error=False,\n        )\n    except Error:\n        reader.read_regex(_rest_of_line)\n        return Binding(\n            key=None,\n            value=None,\n            original=reader.get_marked(),\n            error=True,\n        )",
+            "excerpt_hash": "sha256:8e5ffd96b733eabd1cd8a2082d22286d1fd58fcc8ff84be994e4797b0bcaab50",
+            "confidence": "verified",
+            "reason": "本段代码范围"
+          }
+        ],
+        "confidence": "verified",
+        "verified": true,
+        "reject_reason": ""
+      }
+    },
+    {
+      "segment_id": "seg_014",
+      "order": 14,
+      "title": "函数签名与职责说明",
+      "title_status": "from_structure",
+      "header_text": "第 14 段：函数签名与职责说明（181-181 行）",
+      "segment_kind": "prepare",
+      "source": {
+        "file": "parser.py",
+        "display_path": "parser.py",
+        "start_line": 181,
+        "end_line": 181,
+        "symbol": "parse_stream",
+        "symbol_kind": "function",
+        "extra_ranges": [],
+        "member_symbol": "parse_stream",
+        "member_start_line": 181,
+        "member_end_line": 184
+      },
+      "code_excerpt": "def parse_stream(stream: IO[str]) -> Iterator[Binding]:",
+      "code_excerpt_hash": "sha256:4d95662a13e2575f26d50ef02475fd53d209a76d7e9a42f3ca5a45c8b054f1cf",
+      "line_annotations": [],
+      "lead_in": "以下这段属于 parser.py 的 parse_stream()（第 181-184 行）",
+      "emphasis_line": "",
+      "branch_detail": null,
+      "must_remember": [
+        {
+          "claim_id": "seg_014_c1",
+          "claim_text": "parse_stream() **没有 docstring** —— 它的职责只能从代码结构推断。引擎不替作者补一句职责说明，因为那句话没有证据。",
+          "category": "symbol_meaning",
+          "evidence": [
+            {
+              "evidence_id": "ev_5dfb1098377a",
+              "fact_id": "",
+              "file": "parser.py",
+              "start_line": 181,
+              "end_line": 181,
+              "symbol": "parse_stream",
+              "excerpt": "def parse_stream(stream: IO[str]) -> Iterator[Binding]:",
+              "excerpt_hash": "sha256:4d95662a13e2575f26d50ef02475fd53d209a76d7e9a42f3ca5a45c8b054f1cf",
+              "confidence": "verified",
+              "reason": "函数签名与 docstring 所在行"
+            }
+          ],
+          "confidence": "verified",
+          "verified": true,
+          "reject_reason": ""
+        }
+      ],
+      "know_enough": [],
+      "one_sentence_summary": {
+        "claim_id": "seg_014_summary",
+        "claim_text": "parse_stream() 没有 docstring；本课只讲它的代码结构，不猜它的业务意图。",
+        "category": "symbol_meaning",
+        "evidence": [
+          {
+            "evidence_id": "ev_5dfb1098377a",
+            "fact_id": "",
+            "file": "parser.py",
+            "start_line": 181,
+            "end_line": 181,
+            "symbol": "parse_stream",
+            "excerpt": "def parse_stream(stream: IO[str]) -> Iterator[Binding]:",
+            "excerpt_hash": "sha256:4d95662a13e2575f26d50ef02475fd53d209a76d7e9a42f3ca5a45c8b054f1cf",
+            "confidence": "verified",
+            "reason": "函数签名与 docstring 所在行"
+          }
+        ],
+        "confidence": "verified",
+        "verified": true,
+        "reject_reason": ""
+      }
+    },
+    {
+      "segment_id": "seg_015",
+      "order": 15,
+      "title": "取值与准备变量",
+      "title_status": "from_structure",
+      "header_text": "第 15 段：取值与准备变量（182-182 行）",
+      "segment_kind": "prepare",
+      "source": {
+        "file": "parser.py",
+        "display_path": "parser.py",
+        "start_line": 182,
+        "end_line": 182,
+        "symbol": "parse_stream",
+        "symbol_kind": "function",
+        "extra_ranges": [],
+        "member_symbol": "parse_stream",
+        "member_start_line": 181,
+        "member_end_line": 184
+      },
+      "code_excerpt": "    reader = Reader(stream)",
+      "code_excerpt_hash": "sha256:a9ecff60a9a3f9929f780302a2fe4458f5f4c552d9daf9cd5a0756c8e565fbcc",
+      "line_annotations": [],
+      "lead_in": "以下这段属于 parser.py 的 parse_stream()（第 181-184 行）",
+      "emphasis_line": "",
+      "branch_detail": null,
+      "must_remember": [
+        {
+          "claim_id": "seg_015_c1",
+          "claim_text": "`reader` 是这一段新绑定的**局部变量**（不是对象状态）—— 它出了这个函数就不存在，所以它属于计算过程，不属于业务状态。",
+          "category": "data_structure",
+          "evidence": [
+            {
+              "evidence_id": "ev_b49b7b74e9e7",
+              "fact_id": "",
+              "file": "parser.py",
+              "start_line": 182,
+              "end_line": 182,
+              "symbol": "parse_stream",
+              "excerpt": "    reader = Reader(stream)",
+              "excerpt_hash": "sha256:a9ecff60a9a3f9929f780302a2fe4458f5f4c552d9daf9cd5a0756c8e565fbcc",
+              "confidence": "verified",
+              "reason": "局部变量绑定所在段"
+            }
+          ],
+          "confidence": "verified",
+          "verified": true,
+          "reject_reason": ""
+        },
+        {
+          "claim_id": "seg_015_c2",
+          "claim_text": "变量 `reader` 在这一段被赋值，后面第 183 行还会用到它 —— 所以不要只看这一段就下结论。",
+          "category": "variable_usage",
+          "evidence": [
+            {
+              "evidence_id": "ev_f91669c021ec",
+              "fact_id": "",
+              "file": "parser.py",
+              "start_line": 182,
+              "end_line": 183,
+              "symbol": "parse_stream",
+              "excerpt": "    reader = Reader(stream)\n    while reader.has_next():",
+              "excerpt_hash": "sha256:35f2f2b1ae2478786b24f3ea15ef54486eee12c01f668742fffefd3b99cd0994",
+              "confidence": "verified",
+              "reason": "赋值段到后续读取行"
+            }
+          ],
+          "confidence": "verified",
+          "verified": true,
+          "reject_reason": ""
+        }
+      ],
+      "know_enough": [
+        {
+          "claim_id": "seg_015_k1",
+          "claim_text": "`Reader()` 不在本能力点的成员里 —— 你不用进它的内部，只要知道它是被借用的外部能力；要看它自己点开下面的证据跳转。",
+          "category": "symbol_meaning",
+          "evidence": [
+            {
+              "evidence_id": "ev_b49b7b74e9e7",
+              "fact_id": "",
+              "file": "parser.py",
+              "start_line": 182,
+              "end_line": 182,
+              "symbol": "parse_stream",
+              "excerpt": "    reader = Reader(stream)",
+              "excerpt_hash": "sha256:a9ecff60a9a3f9929f780302a2fe4458f5f4c552d9daf9cd5a0756c8e565fbcc",
+              "confidence": "inferred",
+              "reason": "外部调用点所在段（该函数不属于本能力点，故为推断边界）"
+            }
+          ],
+          "confidence": "inferred",
+          "verified": true,
+          "reject_reason": ""
+        }
+      ],
+      "one_sentence_summary": {
+        "claim_id": "seg_015_summary",
+        "claim_text": "做准备与取数：把后面要用到的值先算好、取好，这一步没有业务判断。",
+        "category": "control_flow",
+        "evidence": [
+          {
+            "evidence_id": "ev_b49b7b74e9e7",
+            "fact_id": "",
+            "file": "parser.py",
+            "start_line": 182,
+            "end_line": 182,
+            "symbol": "parse_stream",
+            "excerpt": "    reader = Reader(stream)",
+            "excerpt_hash": "sha256:a9ecff60a9a3f9929f780302a2fe4458f5f4c552d9daf9cd5a0756c8e565fbcc",
+            "confidence": "verified",
+            "reason": "本段代码范围"
+          }
+        ],
+        "confidence": "verified",
+        "verified": true,
+        "reject_reason": ""
+      }
+    },
+    {
+      "segment_id": "seg_016",
+      "order": 16,
+      "title": "查询/读取操作",
+      "title_status": "from_capability_name",
+      "header_text": "第 16 段：查询/读取操作（183-184 行）",
+      "segment_kind": "call",
+      "source": {
+        "file": "parser.py",
+        "display_path": "parser.py",
+        "start_line": 183,
+        "end_line": 184,
+        "symbol": "parse_stream",
+        "symbol_kind": "function",
+        "extra_ranges": [],
+        "member_symbol": "parse_stream",
+        "member_start_line": 181,
+        "member_end_line": 184
+      },
+      "code_excerpt": "    while reader.has_next():\n        yield parse_binding(reader)",
+      "code_excerpt_hash": "sha256:c53abe0344cf694b4276947b0da917b8a2b7493884385450e08651f5d719fbe6",
+      "line_annotations": [
+        {
+          "line": 183,
+          "text": "← 调用「其他能力（待归类：advance、has_next、peek）」",
+          "role": "key_call",
+          "is_original_comment": false
+        },
+        {
+          "line": 184,
+          "text": "← 调用「查询/读取操作」",
+          "role": "key_call",
+          "is_original_comment": false
+        }
+      ],
+      "lead_in": "",
+      "emphasis_line": "",
+      "branch_detail": null,
+      "must_remember": [
+        {
+          "claim_id": "seg_016_c1",
+          "claim_text": "`has_next()` 在图谱里还没被归到具名能力点（引擎暂时把它堆在「其他能力（待归类：advance、has_next、peek）」里） —— 本课会用到它，但它的内部实现不在本课范围。",
+          "category": "symbol_meaning",
+          "evidence": [
+            {
+              "evidence_id": "ev_1a26412d4e4e",
+              "fact_id": "",
+              "file": "parser.py",
+              "start_line": 183,
+              "end_line": 183,
+              "symbol": "parse_stream",
+              "excerpt": "    while reader.has_next():",
+              "excerpt_hash": "sha256:5309ce1354ea8cf15ec0fa59a67205964e6ac79f99701bf9c4b0621e0de8ca19",
+              "confidence": "verified",
+              "reason": "调用点行号"
+            }
+          ],
+          "confidence": "verified",
+          "verified": true,
+          "reject_reason": ""
+        },
+        {
+          "claim_id": "seg_016_c2",
+          "claim_text": "`parse_binding()` 是「查询/读取操作」的能力实现 —— 本课会用到它，但它的内部实现不在本课范围。",
+          "category": "symbol_meaning",
+          "evidence": [
+            {
+              "evidence_id": "ev_f71f11737f81",
+              "fact_id": "",
+              "file": "parser.py",
+              "start_line": 184,
+              "end_line": 184,
+              "symbol": "parse_stream",
+              "excerpt": "        yield parse_binding(reader)",
+              "excerpt_hash": "sha256:7ca65f69f1a0ba37d7eef0f2ffc71c1b1493bb55eefe97300004b7ecbbc7924c",
+              "confidence": "verified",
+              "reason": "调用点行号"
+            }
+          ],
+          "confidence": "verified",
+          "verified": true,
+          "reject_reason": ""
+        }
+      ],
+      "know_enough": [],
+      "one_sentence_summary": {
+        "claim_id": "seg_016_summary",
+        "claim_text": "调用「查询/读取操作」完成这一步的业务动作，拿到它的结果继续往下。",
+        "category": "control_flow",
+        "evidence": [
+          {
+            "evidence_id": "ev_9469fe0a19a7",
+            "fact_id": "",
+            "file": "parser.py",
+            "start_line": 183,
+            "end_line": 184,
+            "symbol": "parse_stream",
+            "excerpt": "    while reader.has_next():\n        yield parse_binding(reader)",
+            "excerpt_hash": "sha256:c53abe0344cf694b4276947b0da917b8a2b7493884385450e08651f5d719fbe6",
+            "confidence": "verified",
+            "reason": "本段代码范围"
+          }
+        ],
+        "confidence": "verified",
+        "verified": true,
+        "reject_reason": ""
+      }
+    }
+  ],
+  "summary_diagram": "本课路径（按执行顺序）\n| 段 | 内容 | 行号 | 执行后是否结束函数 |\n|---|---|---|---|\n| 1 | 函数签名与职责说明 | 83-83 | 否 |\n| 2 | 返回结果，函数结束 | 84-87 | 是（第 84 行 return） |\n| 3 | 函数签名与职责说明 | 92-92 | 否 |\n| 4 | 取值与准备变量 | 93-93 | 否 |\n| 5 | 前置校验不通过就中断（len(result) < count） | 94-95 | 是（抛异常中断） |\n| 6 | 收尾并返回 | 96-97 | 否 |\n| 7 | 函数签名与职责说明 | 99-99 | 否 |\n| 8 | 取值与准备变量 | 100-100 | 否 |\n| 9 | 前置校验不通过就中断（match is None） | 101-102 | 是（抛异常中断） |\n| 10 | 状态流转操作 | 103-104 | 否 |\n| 11 | 函数签名与职责说明 | 144-144 | 否 |\n| 12 | 更新/修改操作 | 145-145 | 否 |\n| 13 | 查询/读取操作 | 146-178 | 否 |\n| 14 | 函数签名与职责说明 | 181-181 | 否 |\n| 15 | 取值与准备变量 | 182-182 | 否 |\n| 16 | 查询/读取操作 | 183-184 | 否 |",
+  "lesson_recap": [
+    "「查询/读取操作」一共 16 段，顺序执行；看到 `return` 就表示这条业务分支结束了，后面的段不再执行。",
+    "本课有 3 处提前出口（第 84 行 return；第 94 行 raise、第 101 行 raise）——条件一旦命中，它后面的段就不会执行。这是理解这段业务的关键节点。",
+    "段标题中来自图谱能力点名字的那些是**引擎推断**（inferred），来自结构推导的（如「提前返回」）是**代码事实**（verified）—— 界面上有标记，别混着信。"
+  ],
+  "consolidate": "消化一下，有哪段没看懂的随时问我。",
+  "next_action": "continue_reading",
+  "members_covered": [
+    {
+      "symbol": "get_marked",
+      "file": "parser.py",
+      "start_line": 83,
+      "end_line": 87,
+      "segments": [
+        "seg_001",
+        "seg_002"
+      ],
+      "truncated": false
+    },
+    {
+      "symbol": "read",
+      "file": "parser.py",
+      "start_line": 92,
+      "end_line": 97,
+      "segments": [
+        "seg_003",
+        "seg_004",
+        "seg_005",
+        "seg_006"
+      ],
+      "truncated": false
+    },
+    {
+      "symbol": "read_regex",
+      "file": "parser.py",
+      "start_line": 99,
+      "end_line": 104,
+      "segments": [
+        "seg_007",
+        "seg_008",
+        "seg_009",
+        "seg_010"
+      ],
+      "truncated": false
+    },
+    {
+      "symbol": "parse_binding",
+      "file": "parser.py",
+      "start_line": 144,
+      "end_line": 178,
+      "segments": [
+        "seg_011",
+        "seg_012",
+        "seg_013"
+      ],
+      "truncated": false
+    },
+    {
+      "symbol": "parse_stream",
+      "file": "parser.py",
+      "start_line": 181,
+      "end_line": 184,
+      "segments": [
+        "seg_014",
+        "seg_015",
+        "seg_016"
+      ],
+      "truncated": false
+    }
+  ],
+  "members_total": 5,
+  "truncated": false,
+  "truncation_reason": "",
+  "source_hash": "sha256:1e0d7a1f50bb75f0c30e910eceb7bd35",
+  "review": {
+    "status": "needs_review",
+    "can_publish": false,
+    "generated_by": "ast_rule_engine",
+    "llm_claim_ratio": 0.0,
+    "analysis_version": "walkthrough-1.0",
+    "source_hash": "sha256:1e0d7a1f50bb75f0c30e910eceb7bd35",
+    "blocking_issues": [
+      "尚未经教师确认：段标题与业务含义均为引擎推断，发布权在教师"
+    ],
+    "verification_passed": true,
+    "verification_version": "verify-1.0",
+    "verified_checks": 216,
+    "failed_checks": 0,
+    "human_review": {
+      "status": "none",
+      "stale": false,
+      "claims": {}
+    }
+  },
+  "caveats": [
+    "本课由 AST 规则确定性生成（无 LLM、无联网），同一份源码两次生成结果逐字节一致。",
+    "段标题有两类来源：命中图谱能力点中文名（from_capability_name，该名本身为 inferred）或纯结构推导（from_structure）。标题**不是**代码事实，只是讲解顺序的抓手。",
+    "分支真假恒为 depends_on_scenario：静态分析看不到输入，不敢替输入下结论。",
+    "未通过校验与教师确认前，本课不进入「已确认」状态，界面上一直显示待确认标记。",
+    "已知覆盖缺口①：`except` 分支当前不单独成段。源码里的异常处理路径只有主路径被讲到，错误处理路径需要教师补充或等后续版本。",
+    "已知覆盖缺口②：「知道就行」只对**模块级函数**与 `self.方法()` 做跨能力点指引；形如 `reader.read_regex()` 这类「库对象上的调用」引擎没有接收者类型信息，不做指引，也不猜它是什么。",
+    "已知覆盖缺口③：段内如果出现同名函数，取的是行号最近的那个（确定性优先），并不保证就是运行时真正被调用的那个。"
+  ],
+  "render": {
+    "header_format": "第 {order} 段：{title}（{start}-{end} 行）",
+    "header_format_alt": "第 {start}-{end} 行：{title}",
+    "bullets_heading": "重点记什么：",
+    "summary_heading": "一句话概括： ",
+    "know_enough_heading": "知道就行：",
+    "lesson_recap_heading": "你现在需要记住的 {n} 个核心要点：",
+    "lesson_open": "好，代码拿到了，咱们一段一段啃。你不用记住每一行，我会告诉你哪些是核心概念一定要记住，哪些只是「知道有这么回事」就行。",
+    "lesson_frame_prefix": "一句话先定调：",
+    "lesson_close": "消化一下，有哪段没看懂的随时问我。"
+  },
+  "verification": {
+    "verify_version": "verify-1.0",
+    "algorithm_version": "verify-1.0",
+    "lesson_id": "lesson_c_d_binding_query_general",
+    "can_publish": true,
+    "counts": {
+      "checks": 216,
+      "passed": 216,
+      "failed": 0,
+      "skipped": 0,
+      "rejected_claims": 0,
+      "rejected_segments": 0
+    },
+    "checks": [
+      {
+        "check_id": "V01_path_relative",
+        "check_name": "证据文件路径为项目内相对路径",
+        "scope": "segment",
+        "target_id": "seg_001",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 0,
+        "detail": ""
+      },
+      {
+        "check_id": "V02_span_valid",
+        "check_name": "行区间合法（1 <= start <= end <= 总行数）",
+        "scope": "segment",
+        "target_id": "seg_001",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 83,
+        "detail": ""
+      },
+      {
+        "check_id": "V05_segment_excerpt",
+        "check_name": "段的代码摘录与磁盘源码逐字符一致",
+        "scope": "segment",
+        "target_id": "seg_001",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 83,
+        "detail": ""
+      },
+      {
+        "check_id": "V06_symbol_exists",
+        "check_name": "段引用的函数在 AST 中真实存在且覆盖段行范围",
+        "scope": "segment",
+        "target_id": "seg_001",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 83,
+        "detail": ""
+      },
+      {
+        "check_id": "V10_claim_has_evidence",
+        "check_name": "每条断言都带至少一条证据",
+        "scope": "claim",
+        "target_id": "seg_001_c1",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 83,
+        "detail": ""
+      },
+      {
+        "check_id": "V03_excerpt_fidelity",
+        "check_name": "存下的摘录与磁盘源码逐字符一致",
+        "scope": "claim",
+        "target_id": "seg_001_c1",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 83,
+        "detail": ""
+      },
+      {
+        "check_id": "V04_hash_matches",
+        "check_name": "摘录哈希与存下的哈希一致",
+        "scope": "claim",
+        "target_id": "seg_001_c1",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 83,
+        "detail": ""
+      },
+      {
+        "check_id": "V10_claim_has_evidence",
+        "check_name": "每条断言都带至少一条证据",
+        "scope": "claim",
+        "target_id": "seg_001_summary",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 83,
+        "detail": ""
+      },
+      {
+        "check_id": "V03_excerpt_fidelity",
+        "check_name": "存下的摘录与磁盘源码逐字符一致",
+        "scope": "claim",
+        "target_id": "seg_001_summary",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 83,
+        "detail": ""
+      },
+      {
+        "check_id": "V04_hash_matches",
+        "check_name": "摘录哈希与存下的哈希一致",
+        "scope": "claim",
+        "target_id": "seg_001_summary",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 83,
+        "detail": ""
+      },
+      {
+        "check_id": "V01_path_relative",
+        "check_name": "证据文件路径为项目内相对路径",
+        "scope": "segment",
+        "target_id": "seg_002",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 0,
+        "detail": ""
+      },
+      {
+        "check_id": "V02_span_valid",
+        "check_name": "行区间合法（1 <= start <= end <= 总行数）",
+        "scope": "segment",
+        "target_id": "seg_002",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 84,
+        "detail": ""
+      },
+      {
+        "check_id": "V05_segment_excerpt",
+        "check_name": "段的代码摘录与磁盘源码逐字符一致",
+        "scope": "segment",
+        "target_id": "seg_002",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 84,
+        "detail": ""
+      },
+      {
+        "check_id": "V06_symbol_exists",
+        "check_name": "段引用的函数在 AST 中真实存在且覆盖段行范围",
+        "scope": "segment",
+        "target_id": "seg_002",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 83,
+        "detail": ""
+      },
+      {
+        "check_id": "V07_return_claim",
+        "check_name": "声称的 return 行在 AST 中真有 Return",
+        "scope": "segment",
+        "target_id": "seg_002",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 84,
+        "detail": ""
+      },
+      {
+        "check_id": "V08_return_ordinal",
+        "check_name": "「第几个 return」由 AST 重新计数后一致",
+        "scope": "segment",
+        "target_id": "seg_002",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 84,
+        "detail": ""
+      },
+      {
+        "check_id": "V10_claim_has_evidence",
+        "check_name": "每条断言都带至少一条证据",
+        "scope": "claim",
+        "target_id": "seg_002_c1",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 84,
+        "detail": ""
+      },
+      {
+        "check_id": "V03_excerpt_fidelity",
+        "check_name": "存下的摘录与磁盘源码逐字符一致",
+        "scope": "claim",
+        "target_id": "seg_002_c1",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 84,
+        "detail": ""
+      },
+      {
+        "check_id": "V04_hash_matches",
+        "check_name": "摘录哈希与存下的哈希一致",
+        "scope": "claim",
+        "target_id": "seg_002_c1",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 84,
+        "detail": ""
+      },
+      {
+        "check_id": "V10_claim_has_evidence",
+        "check_name": "每条断言都带至少一条证据",
+        "scope": "claim",
+        "target_id": "seg_002_c2",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 84,
+        "detail": ""
+      },
+      {
+        "check_id": "V03_excerpt_fidelity",
+        "check_name": "存下的摘录与磁盘源码逐字符一致",
+        "scope": "claim",
+        "target_id": "seg_002_c2",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 84,
+        "detail": ""
+      },
+      {
+        "check_id": "V04_hash_matches",
+        "check_name": "摘录哈希与存下的哈希一致",
+        "scope": "claim",
+        "target_id": "seg_002_c2",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 84,
+        "detail": ""
+      },
+      {
+        "check_id": "V10_claim_has_evidence",
+        "check_name": "每条断言都带至少一条证据",
+        "scope": "claim",
+        "target_id": "seg_002_k1",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 84,
+        "detail": ""
+      },
+      {
+        "check_id": "V03_excerpt_fidelity",
+        "check_name": "存下的摘录与磁盘源码逐字符一致",
+        "scope": "claim",
+        "target_id": "seg_002_k1",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 84,
+        "detail": ""
+      },
+      {
+        "check_id": "V04_hash_matches",
+        "check_name": "摘录哈希与存下的哈希一致",
+        "scope": "claim",
+        "target_id": "seg_002_k1",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 84,
+        "detail": ""
+      },
+      {
+        "check_id": "V10_claim_has_evidence",
+        "check_name": "每条断言都带至少一条证据",
+        "scope": "claim",
+        "target_id": "seg_002_summary",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 84,
+        "detail": ""
+      },
+      {
+        "check_id": "V03_excerpt_fidelity",
+        "check_name": "存下的摘录与磁盘源码逐字符一致",
+        "scope": "claim",
+        "target_id": "seg_002_summary",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 84,
+        "detail": ""
+      },
+      {
+        "check_id": "V04_hash_matches",
+        "check_name": "摘录哈希与存下的哈希一致",
+        "scope": "claim",
+        "target_id": "seg_002_summary",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 84,
+        "detail": ""
+      },
+      {
+        "check_id": "V01_path_relative",
+        "check_name": "证据文件路径为项目内相对路径",
+        "scope": "segment",
+        "target_id": "seg_003",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 0,
+        "detail": ""
+      },
+      {
+        "check_id": "V02_span_valid",
+        "check_name": "行区间合法（1 <= start <= end <= 总行数）",
+        "scope": "segment",
+        "target_id": "seg_003",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 92,
+        "detail": ""
+      },
+      {
+        "check_id": "V05_segment_excerpt",
+        "check_name": "段的代码摘录与磁盘源码逐字符一致",
+        "scope": "segment",
+        "target_id": "seg_003",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 92,
+        "detail": ""
+      },
+      {
+        "check_id": "V06_symbol_exists",
+        "check_name": "段引用的函数在 AST 中真实存在且覆盖段行范围",
+        "scope": "segment",
+        "target_id": "seg_003",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 92,
+        "detail": ""
+      },
+      {
+        "check_id": "V10_claim_has_evidence",
+        "check_name": "每条断言都带至少一条证据",
+        "scope": "claim",
+        "target_id": "seg_003_c1",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 92,
+        "detail": ""
+      },
+      {
+        "check_id": "V03_excerpt_fidelity",
+        "check_name": "存下的摘录与磁盘源码逐字符一致",
+        "scope": "claim",
+        "target_id": "seg_003_c1",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 92,
+        "detail": ""
+      },
+      {
+        "check_id": "V04_hash_matches",
+        "check_name": "摘录哈希与存下的哈希一致",
+        "scope": "claim",
+        "target_id": "seg_003_c1",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 92,
+        "detail": ""
+      },
+      {
+        "check_id": "V10_claim_has_evidence",
+        "check_name": "每条断言都带至少一条证据",
+        "scope": "claim",
+        "target_id": "seg_003_summary",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 92,
+        "detail": ""
+      },
+      {
+        "check_id": "V03_excerpt_fidelity",
+        "check_name": "存下的摘录与磁盘源码逐字符一致",
+        "scope": "claim",
+        "target_id": "seg_003_summary",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 92,
+        "detail": ""
+      },
+      {
+        "check_id": "V04_hash_matches",
+        "check_name": "摘录哈希与存下的哈希一致",
+        "scope": "claim",
+        "target_id": "seg_003_summary",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 92,
+        "detail": ""
+      },
+      {
+        "check_id": "V01_path_relative",
+        "check_name": "证据文件路径为项目内相对路径",
+        "scope": "segment",
+        "target_id": "seg_004",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 0,
+        "detail": ""
+      },
+      {
+        "check_id": "V02_span_valid",
+        "check_name": "行区间合法（1 <= start <= end <= 总行数）",
+        "scope": "segment",
+        "target_id": "seg_004",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 93,
+        "detail": ""
+      },
+      {
+        "check_id": "V05_segment_excerpt",
+        "check_name": "段的代码摘录与磁盘源码逐字符一致",
+        "scope": "segment",
+        "target_id": "seg_004",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 93,
+        "detail": ""
+      },
+      {
+        "check_id": "V06_symbol_exists",
+        "check_name": "段引用的函数在 AST 中真实存在且覆盖段行范围",
+        "scope": "segment",
+        "target_id": "seg_004",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 92,
+        "detail": ""
+      },
+      {
+        "check_id": "V10_claim_has_evidence",
+        "check_name": "每条断言都带至少一条证据",
+        "scope": "claim",
+        "target_id": "seg_004_c1",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 93,
+        "detail": ""
+      },
+      {
+        "check_id": "V03_excerpt_fidelity",
+        "check_name": "存下的摘录与磁盘源码逐字符一致",
+        "scope": "claim",
+        "target_id": "seg_004_c1",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 93,
+        "detail": ""
+      },
+      {
+        "check_id": "V04_hash_matches",
+        "check_name": "摘录哈希与存下的哈希一致",
+        "scope": "claim",
+        "target_id": "seg_004_c1",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 93,
+        "detail": ""
+      },
+      {
+        "check_id": "V10_claim_has_evidence",
+        "check_name": "每条断言都带至少一条证据",
+        "scope": "claim",
+        "target_id": "seg_004_c2",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 93,
+        "detail": ""
+      },
+      {
+        "check_id": "V03_excerpt_fidelity",
+        "check_name": "存下的摘录与磁盘源码逐字符一致",
+        "scope": "claim",
+        "target_id": "seg_004_c2",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 93,
+        "detail": ""
+      },
+      {
+        "check_id": "V04_hash_matches",
+        "check_name": "摘录哈希与存下的哈希一致",
+        "scope": "claim",
+        "target_id": "seg_004_c2",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 93,
+        "detail": ""
+      },
+      {
+        "check_id": "V10_claim_has_evidence",
+        "check_name": "每条断言都带至少一条证据",
+        "scope": "claim",
+        "target_id": "seg_004_summary",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 93,
+        "detail": ""
+      },
+      {
+        "check_id": "V03_excerpt_fidelity",
+        "check_name": "存下的摘录与磁盘源码逐字符一致",
+        "scope": "claim",
+        "target_id": "seg_004_summary",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 93,
+        "detail": ""
+      },
+      {
+        "check_id": "V04_hash_matches",
+        "check_name": "摘录哈希与存下的哈希一致",
+        "scope": "claim",
+        "target_id": "seg_004_summary",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 93,
+        "detail": ""
+      },
+      {
+        "check_id": "V01_path_relative",
+        "check_name": "证据文件路径为项目内相对路径",
+        "scope": "segment",
+        "target_id": "seg_005",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 0,
+        "detail": ""
+      },
+      {
+        "check_id": "V02_span_valid",
+        "check_name": "行区间合法（1 <= start <= end <= 总行数）",
+        "scope": "segment",
+        "target_id": "seg_005",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 94,
+        "detail": ""
+      },
+      {
+        "check_id": "V05_segment_excerpt",
+        "check_name": "段的代码摘录与磁盘源码逐字符一致",
+        "scope": "segment",
+        "target_id": "seg_005",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 94,
+        "detail": ""
+      },
+      {
+        "check_id": "V06_symbol_exists",
+        "check_name": "段引用的函数在 AST 中真实存在且覆盖段行范围",
+        "scope": "segment",
+        "target_id": "seg_005",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 92,
+        "detail": ""
+      },
+      {
+        "check_id": "V10_claim_has_evidence",
+        "check_name": "每条断言都带至少一条证据",
+        "scope": "claim",
+        "target_id": "seg_005_c1",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 94,
+        "detail": ""
+      },
+      {
+        "check_id": "V03_excerpt_fidelity",
+        "check_name": "存下的摘录与磁盘源码逐字符一致",
+        "scope": "claim",
+        "target_id": "seg_005_c1",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 94,
+        "detail": ""
+      },
+      {
+        "check_id": "V04_hash_matches",
+        "check_name": "摘录哈希与存下的哈希一致",
+        "scope": "claim",
+        "target_id": "seg_005_c1",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 94,
+        "detail": ""
+      },
+      {
+        "check_id": "V10_claim_has_evidence",
+        "check_name": "每条断言都带至少一条证据",
+        "scope": "claim",
+        "target_id": "seg_005_c2",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 94,
+        "detail": ""
+      },
+      {
+        "check_id": "V03_excerpt_fidelity",
+        "check_name": "存下的摘录与磁盘源码逐字符一致",
+        "scope": "claim",
+        "target_id": "seg_005_c2",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 94,
+        "detail": ""
+      },
+      {
+        "check_id": "V04_hash_matches",
+        "check_name": "摘录哈希与存下的哈希一致",
+        "scope": "claim",
+        "target_id": "seg_005_c2",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 94,
+        "detail": ""
+      },
+      {
+        "check_id": "V10_claim_has_evidence",
+        "check_name": "每条断言都带至少一条证据",
+        "scope": "claim",
+        "target_id": "seg_005_k1",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 94,
+        "detail": ""
+      },
+      {
+        "check_id": "V03_excerpt_fidelity",
+        "check_name": "存下的摘录与磁盘源码逐字符一致",
+        "scope": "claim",
+        "target_id": "seg_005_k1",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 94,
+        "detail": ""
+      },
+      {
+        "check_id": "V04_hash_matches",
+        "check_name": "摘录哈希与存下的哈希一致",
+        "scope": "claim",
+        "target_id": "seg_005_k1",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 94,
+        "detail": ""
+      },
+      {
+        "check_id": "V10_claim_has_evidence",
+        "check_name": "每条断言都带至少一条证据",
+        "scope": "claim",
+        "target_id": "seg_005_summary",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 94,
+        "detail": ""
+      },
+      {
+        "check_id": "V03_excerpt_fidelity",
+        "check_name": "存下的摘录与磁盘源码逐字符一致",
+        "scope": "claim",
+        "target_id": "seg_005_summary",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 94,
+        "detail": ""
+      },
+      {
+        "check_id": "V04_hash_matches",
+        "check_name": "摘录哈希与存下的哈希一致",
+        "scope": "claim",
+        "target_id": "seg_005_summary",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 94,
+        "detail": ""
+      },
+      {
+        "check_id": "V01_path_relative",
+        "check_name": "证据文件路径为项目内相对路径",
+        "scope": "segment",
+        "target_id": "seg_006",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 0,
+        "detail": ""
+      },
+      {
+        "check_id": "V02_span_valid",
+        "check_name": "行区间合法（1 <= start <= end <= 总行数）",
+        "scope": "segment",
+        "target_id": "seg_006",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 96,
+        "detail": ""
+      },
+      {
+        "check_id": "V05_segment_excerpt",
+        "check_name": "段的代码摘录与磁盘源码逐字符一致",
+        "scope": "segment",
+        "target_id": "seg_006",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 96,
+        "detail": ""
+      },
+      {
+        "check_id": "V06_symbol_exists",
+        "check_name": "段引用的函数在 AST 中真实存在且覆盖段行范围",
+        "scope": "segment",
+        "target_id": "seg_006",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 92,
+        "detail": ""
+      },
+      {
+        "check_id": "V10_claim_has_evidence",
+        "check_name": "每条断言都带至少一条证据",
+        "scope": "claim",
+        "target_id": "seg_006_c1",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 96,
+        "detail": ""
+      },
+      {
+        "check_id": "V03_excerpt_fidelity",
+        "check_name": "存下的摘录与磁盘源码逐字符一致",
+        "scope": "claim",
+        "target_id": "seg_006_c1",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 96,
+        "detail": ""
+      },
+      {
+        "check_id": "V04_hash_matches",
+        "check_name": "摘录哈希与存下的哈希一致",
+        "scope": "claim",
+        "target_id": "seg_006_c1",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 96,
+        "detail": ""
+      },
+      {
+        "check_id": "V10_claim_has_evidence",
+        "check_name": "每条断言都带至少一条证据",
+        "scope": "claim",
+        "target_id": "seg_006_c2",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 96,
+        "detail": ""
+      },
+      {
+        "check_id": "V03_excerpt_fidelity",
+        "check_name": "存下的摘录与磁盘源码逐字符一致",
+        "scope": "claim",
+        "target_id": "seg_006_c2",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 96,
+        "detail": ""
+      },
+      {
+        "check_id": "V04_hash_matches",
+        "check_name": "摘录哈希与存下的哈希一致",
+        "scope": "claim",
+        "target_id": "seg_006_c2",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 96,
+        "detail": ""
+      },
+      {
+        "check_id": "V10_claim_has_evidence",
+        "check_name": "每条断言都带至少一条证据",
+        "scope": "claim",
+        "target_id": "seg_006_summary",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 96,
+        "detail": ""
+      },
+      {
+        "check_id": "V03_excerpt_fidelity",
+        "check_name": "存下的摘录与磁盘源码逐字符一致",
+        "scope": "claim",
+        "target_id": "seg_006_summary",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 96,
+        "detail": ""
+      },
+      {
+        "check_id": "V04_hash_matches",
+        "check_name": "摘录哈希与存下的哈希一致",
+        "scope": "claim",
+        "target_id": "seg_006_summary",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 96,
+        "detail": ""
+      },
+      {
+        "check_id": "V01_path_relative",
+        "check_name": "证据文件路径为项目内相对路径",
+        "scope": "segment",
+        "target_id": "seg_007",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 0,
+        "detail": ""
+      },
+      {
+        "check_id": "V02_span_valid",
+        "check_name": "行区间合法（1 <= start <= end <= 总行数）",
+        "scope": "segment",
+        "target_id": "seg_007",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 99,
+        "detail": ""
+      },
+      {
+        "check_id": "V05_segment_excerpt",
+        "check_name": "段的代码摘录与磁盘源码逐字符一致",
+        "scope": "segment",
+        "target_id": "seg_007",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 99,
+        "detail": ""
+      },
+      {
+        "check_id": "V06_symbol_exists",
+        "check_name": "段引用的函数在 AST 中真实存在且覆盖段行范围",
+        "scope": "segment",
+        "target_id": "seg_007",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 99,
+        "detail": ""
+      },
+      {
+        "check_id": "V10_claim_has_evidence",
+        "check_name": "每条断言都带至少一条证据",
+        "scope": "claim",
+        "target_id": "seg_007_c1",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 99,
+        "detail": ""
+      },
+      {
+        "check_id": "V03_excerpt_fidelity",
+        "check_name": "存下的摘录与磁盘源码逐字符一致",
+        "scope": "claim",
+        "target_id": "seg_007_c1",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 99,
+        "detail": ""
+      },
+      {
+        "check_id": "V04_hash_matches",
+        "check_name": "摘录哈希与存下的哈希一致",
+        "scope": "claim",
+        "target_id": "seg_007_c1",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 99,
+        "detail": ""
+      },
+      {
+        "check_id": "V10_claim_has_evidence",
+        "check_name": "每条断言都带至少一条证据",
+        "scope": "claim",
+        "target_id": "seg_007_summary",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 99,
+        "detail": ""
+      },
+      {
+        "check_id": "V03_excerpt_fidelity",
+        "check_name": "存下的摘录与磁盘源码逐字符一致",
+        "scope": "claim",
+        "target_id": "seg_007_summary",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 99,
+        "detail": ""
+      },
+      {
+        "check_id": "V04_hash_matches",
+        "check_name": "摘录哈希与存下的哈希一致",
+        "scope": "claim",
+        "target_id": "seg_007_summary",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 99,
+        "detail": ""
+      },
+      {
+        "check_id": "V01_path_relative",
+        "check_name": "证据文件路径为项目内相对路径",
+        "scope": "segment",
+        "target_id": "seg_008",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 0,
+        "detail": ""
+      },
+      {
+        "check_id": "V02_span_valid",
+        "check_name": "行区间合法（1 <= start <= end <= 总行数）",
+        "scope": "segment",
+        "target_id": "seg_008",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 100,
+        "detail": ""
+      },
+      {
+        "check_id": "V05_segment_excerpt",
+        "check_name": "段的代码摘录与磁盘源码逐字符一致",
+        "scope": "segment",
+        "target_id": "seg_008",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 100,
+        "detail": ""
+      },
+      {
+        "check_id": "V06_symbol_exists",
+        "check_name": "段引用的函数在 AST 中真实存在且覆盖段行范围",
+        "scope": "segment",
+        "target_id": "seg_008",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 99,
+        "detail": ""
+      },
+      {
+        "check_id": "V10_claim_has_evidence",
+        "check_name": "每条断言都带至少一条证据",
+        "scope": "claim",
+        "target_id": "seg_008_c1",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 100,
+        "detail": ""
+      },
+      {
+        "check_id": "V03_excerpt_fidelity",
+        "check_name": "存下的摘录与磁盘源码逐字符一致",
+        "scope": "claim",
+        "target_id": "seg_008_c1",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 100,
+        "detail": ""
+      },
+      {
+        "check_id": "V04_hash_matches",
+        "check_name": "摘录哈希与存下的哈希一致",
+        "scope": "claim",
+        "target_id": "seg_008_c1",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 100,
+        "detail": ""
+      },
+      {
+        "check_id": "V10_claim_has_evidence",
+        "check_name": "每条断言都带至少一条证据",
+        "scope": "claim",
+        "target_id": "seg_008_c2",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 100,
+        "detail": ""
+      },
+      {
+        "check_id": "V03_excerpt_fidelity",
+        "check_name": "存下的摘录与磁盘源码逐字符一致",
+        "scope": "claim",
+        "target_id": "seg_008_c2",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 100,
+        "detail": ""
+      },
+      {
+        "check_id": "V04_hash_matches",
+        "check_name": "摘录哈希与存下的哈希一致",
+        "scope": "claim",
+        "target_id": "seg_008_c2",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 100,
+        "detail": ""
+      },
+      {
+        "check_id": "V10_claim_has_evidence",
+        "check_name": "每条断言都带至少一条证据",
+        "scope": "claim",
+        "target_id": "seg_008_summary",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 100,
+        "detail": ""
+      },
+      {
+        "check_id": "V03_excerpt_fidelity",
+        "check_name": "存下的摘录与磁盘源码逐字符一致",
+        "scope": "claim",
+        "target_id": "seg_008_summary",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 100,
+        "detail": ""
+      },
+      {
+        "check_id": "V04_hash_matches",
+        "check_name": "摘录哈希与存下的哈希一致",
+        "scope": "claim",
+        "target_id": "seg_008_summary",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 100,
+        "detail": ""
+      },
+      {
+        "check_id": "V01_path_relative",
+        "check_name": "证据文件路径为项目内相对路径",
+        "scope": "segment",
+        "target_id": "seg_009",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 0,
+        "detail": ""
+      },
+      {
+        "check_id": "V02_span_valid",
+        "check_name": "行区间合法（1 <= start <= end <= 总行数）",
+        "scope": "segment",
+        "target_id": "seg_009",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 101,
+        "detail": ""
+      },
+      {
+        "check_id": "V05_segment_excerpt",
+        "check_name": "段的代码摘录与磁盘源码逐字符一致",
+        "scope": "segment",
+        "target_id": "seg_009",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 101,
+        "detail": ""
+      },
+      {
+        "check_id": "V06_symbol_exists",
+        "check_name": "段引用的函数在 AST 中真实存在且覆盖段行范围",
+        "scope": "segment",
+        "target_id": "seg_009",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 99,
+        "detail": ""
+      },
+      {
+        "check_id": "V10_claim_has_evidence",
+        "check_name": "每条断言都带至少一条证据",
+        "scope": "claim",
+        "target_id": "seg_009_c1",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 101,
+        "detail": ""
+      },
+      {
+        "check_id": "V03_excerpt_fidelity",
+        "check_name": "存下的摘录与磁盘源码逐字符一致",
+        "scope": "claim",
+        "target_id": "seg_009_c1",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 101,
+        "detail": ""
+      },
+      {
+        "check_id": "V04_hash_matches",
+        "check_name": "摘录哈希与存下的哈希一致",
+        "scope": "claim",
+        "target_id": "seg_009_c1",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 101,
+        "detail": ""
+      },
+      {
+        "check_id": "V10_claim_has_evidence",
+        "check_name": "每条断言都带至少一条证据",
+        "scope": "claim",
+        "target_id": "seg_009_c2",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 101,
+        "detail": ""
+      },
+      {
+        "check_id": "V03_excerpt_fidelity",
+        "check_name": "存下的摘录与磁盘源码逐字符一致",
+        "scope": "claim",
+        "target_id": "seg_009_c2",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 101,
+        "detail": ""
+      },
+      {
+        "check_id": "V04_hash_matches",
+        "check_name": "摘录哈希与存下的哈希一致",
+        "scope": "claim",
+        "target_id": "seg_009_c2",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 101,
+        "detail": ""
+      },
+      {
+        "check_id": "V10_claim_has_evidence",
+        "check_name": "每条断言都带至少一条证据",
+        "scope": "claim",
+        "target_id": "seg_009_k1",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 101,
+        "detail": ""
+      },
+      {
+        "check_id": "V03_excerpt_fidelity",
+        "check_name": "存下的摘录与磁盘源码逐字符一致",
+        "scope": "claim",
+        "target_id": "seg_009_k1",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 101,
+        "detail": ""
+      },
+      {
+        "check_id": "V04_hash_matches",
+        "check_name": "摘录哈希与存下的哈希一致",
+        "scope": "claim",
+        "target_id": "seg_009_k1",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 101,
+        "detail": ""
+      },
+      {
+        "check_id": "V10_claim_has_evidence",
+        "check_name": "每条断言都带至少一条证据",
+        "scope": "claim",
+        "target_id": "seg_009_summary",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 101,
+        "detail": ""
+      },
+      {
+        "check_id": "V03_excerpt_fidelity",
+        "check_name": "存下的摘录与磁盘源码逐字符一致",
+        "scope": "claim",
+        "target_id": "seg_009_summary",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 101,
+        "detail": ""
+      },
+      {
+        "check_id": "V04_hash_matches",
+        "check_name": "摘录哈希与存下的哈希一致",
+        "scope": "claim",
+        "target_id": "seg_009_summary",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 101,
+        "detail": ""
+      },
+      {
+        "check_id": "V01_path_relative",
+        "check_name": "证据文件路径为项目内相对路径",
+        "scope": "segment",
+        "target_id": "seg_010",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 0,
+        "detail": ""
+      },
+      {
+        "check_id": "V02_span_valid",
+        "check_name": "行区间合法（1 <= start <= end <= 总行数）",
+        "scope": "segment",
+        "target_id": "seg_010",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 103,
+        "detail": ""
+      },
+      {
+        "check_id": "V05_segment_excerpt",
+        "check_name": "段的代码摘录与磁盘源码逐字符一致",
+        "scope": "segment",
+        "target_id": "seg_010",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 103,
+        "detail": ""
+      },
+      {
+        "check_id": "V06_symbol_exists",
+        "check_name": "段引用的函数在 AST 中真实存在且覆盖段行范围",
+        "scope": "segment",
+        "target_id": "seg_010",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 99,
+        "detail": ""
+      },
+      {
+        "check_id": "V10_claim_has_evidence",
+        "check_name": "每条断言都带至少一条证据",
+        "scope": "claim",
+        "target_id": "seg_010_c1",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 103,
+        "detail": ""
+      },
+      {
+        "check_id": "V03_excerpt_fidelity",
+        "check_name": "存下的摘录与磁盘源码逐字符一致",
+        "scope": "claim",
+        "target_id": "seg_010_c1",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 103,
+        "detail": ""
+      },
+      {
+        "check_id": "V04_hash_matches",
+        "check_name": "摘录哈希与存下的哈希一致",
+        "scope": "claim",
+        "target_id": "seg_010_c1",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 103,
+        "detail": ""
+      },
+      {
+        "check_id": "V10_claim_has_evidence",
+        "check_name": "每条断言都带至少一条证据",
+        "scope": "claim",
+        "target_id": "seg_010_c2",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 103,
+        "detail": ""
+      },
+      {
+        "check_id": "V03_excerpt_fidelity",
+        "check_name": "存下的摘录与磁盘源码逐字符一致",
+        "scope": "claim",
+        "target_id": "seg_010_c2",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 103,
+        "detail": ""
+      },
+      {
+        "check_id": "V04_hash_matches",
+        "check_name": "摘录哈希与存下的哈希一致",
+        "scope": "claim",
+        "target_id": "seg_010_c2",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 103,
+        "detail": ""
+      },
+      {
+        "check_id": "V10_claim_has_evidence",
+        "check_name": "每条断言都带至少一条证据",
+        "scope": "claim",
+        "target_id": "seg_010_summary",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 103,
+        "detail": ""
+      },
+      {
+        "check_id": "V03_excerpt_fidelity",
+        "check_name": "存下的摘录与磁盘源码逐字符一致",
+        "scope": "claim",
+        "target_id": "seg_010_summary",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 103,
+        "detail": ""
+      },
+      {
+        "check_id": "V04_hash_matches",
+        "check_name": "摘录哈希与存下的哈希一致",
+        "scope": "claim",
+        "target_id": "seg_010_summary",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 103,
+        "detail": ""
+      },
+      {
+        "check_id": "V01_path_relative",
+        "check_name": "证据文件路径为项目内相对路径",
+        "scope": "segment",
+        "target_id": "seg_011",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 0,
+        "detail": ""
+      },
+      {
+        "check_id": "V02_span_valid",
+        "check_name": "行区间合法（1 <= start <= end <= 总行数）",
+        "scope": "segment",
+        "target_id": "seg_011",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 144,
+        "detail": ""
+      },
+      {
+        "check_id": "V05_segment_excerpt",
+        "check_name": "段的代码摘录与磁盘源码逐字符一致",
+        "scope": "segment",
+        "target_id": "seg_011",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 144,
+        "detail": ""
+      },
+      {
+        "check_id": "V06_symbol_exists",
+        "check_name": "段引用的函数在 AST 中真实存在且覆盖段行范围",
+        "scope": "segment",
+        "target_id": "seg_011",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 144,
+        "detail": ""
+      },
+      {
+        "check_id": "V10_claim_has_evidence",
+        "check_name": "每条断言都带至少一条证据",
+        "scope": "claim",
+        "target_id": "seg_011_c1",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 144,
+        "detail": ""
+      },
+      {
+        "check_id": "V03_excerpt_fidelity",
+        "check_name": "存下的摘录与磁盘源码逐字符一致",
+        "scope": "claim",
+        "target_id": "seg_011_c1",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 144,
+        "detail": ""
+      },
+      {
+        "check_id": "V04_hash_matches",
+        "check_name": "摘录哈希与存下的哈希一致",
+        "scope": "claim",
+        "target_id": "seg_011_c1",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 144,
+        "detail": ""
+      },
+      {
+        "check_id": "V10_claim_has_evidence",
+        "check_name": "每条断言都带至少一条证据",
+        "scope": "claim",
+        "target_id": "seg_011_summary",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 144,
+        "detail": ""
+      },
+      {
+        "check_id": "V03_excerpt_fidelity",
+        "check_name": "存下的摘录与磁盘源码逐字符一致",
+        "scope": "claim",
+        "target_id": "seg_011_summary",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 144,
+        "detail": ""
+      },
+      {
+        "check_id": "V04_hash_matches",
+        "check_name": "摘录哈希与存下的哈希一致",
+        "scope": "claim",
+        "target_id": "seg_011_summary",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 144,
+        "detail": ""
+      },
+      {
+        "check_id": "V01_path_relative",
+        "check_name": "证据文件路径为项目内相对路径",
+        "scope": "segment",
+        "target_id": "seg_012",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 0,
+        "detail": ""
+      },
+      {
+        "check_id": "V02_span_valid",
+        "check_name": "行区间合法（1 <= start <= end <= 总行数）",
+        "scope": "segment",
+        "target_id": "seg_012",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 145,
+        "detail": ""
+      },
+      {
+        "check_id": "V05_segment_excerpt",
+        "check_name": "段的代码摘录与磁盘源码逐字符一致",
+        "scope": "segment",
+        "target_id": "seg_012",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 145,
+        "detail": ""
+      },
+      {
+        "check_id": "V06_symbol_exists",
+        "check_name": "段引用的函数在 AST 中真实存在且覆盖段行范围",
+        "scope": "segment",
+        "target_id": "seg_012",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 144,
+        "detail": ""
+      },
+      {
+        "check_id": "V10_claim_has_evidence",
+        "check_name": "每条断言都带至少一条证据",
+        "scope": "claim",
+        "target_id": "seg_012_c1",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 145,
+        "detail": ""
+      },
+      {
+        "check_id": "V03_excerpt_fidelity",
+        "check_name": "存下的摘录与磁盘源码逐字符一致",
+        "scope": "claim",
+        "target_id": "seg_012_c1",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 145,
+        "detail": ""
+      },
+      {
+        "check_id": "V04_hash_matches",
+        "check_name": "摘录哈希与存下的哈希一致",
+        "scope": "claim",
+        "target_id": "seg_012_c1",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 145,
+        "detail": ""
+      },
+      {
+        "check_id": "V10_claim_has_evidence",
+        "check_name": "每条断言都带至少一条证据",
+        "scope": "claim",
+        "target_id": "seg_012_summary",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 145,
+        "detail": ""
+      },
+      {
+        "check_id": "V03_excerpt_fidelity",
+        "check_name": "存下的摘录与磁盘源码逐字符一致",
+        "scope": "claim",
+        "target_id": "seg_012_summary",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 145,
+        "detail": ""
+      },
+      {
+        "check_id": "V04_hash_matches",
+        "check_name": "摘录哈希与存下的哈希一致",
+        "scope": "claim",
+        "target_id": "seg_012_summary",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 145,
+        "detail": ""
+      },
+      {
+        "check_id": "V01_path_relative",
+        "check_name": "证据文件路径为项目内相对路径",
+        "scope": "segment",
+        "target_id": "seg_013",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 0,
+        "detail": ""
+      },
+      {
+        "check_id": "V02_span_valid",
+        "check_name": "行区间合法（1 <= start <= end <= 总行数）",
+        "scope": "segment",
+        "target_id": "seg_013",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 146,
+        "detail": ""
+      },
+      {
+        "check_id": "V05_segment_excerpt",
+        "check_name": "段的代码摘录与磁盘源码逐字符一致",
+        "scope": "segment",
+        "target_id": "seg_013",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 146,
+        "detail": ""
+      },
+      {
+        "check_id": "V06_symbol_exists",
+        "check_name": "段引用的函数在 AST 中真实存在且覆盖段行范围",
+        "scope": "segment",
+        "target_id": "seg_013",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 144,
+        "detail": ""
+      },
+      {
+        "check_id": "V10_claim_has_evidence",
+        "check_name": "每条断言都带至少一条证据",
+        "scope": "claim",
+        "target_id": "seg_013_c1",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 147,
+        "detail": ""
+      },
+      {
+        "check_id": "V03_excerpt_fidelity",
+        "check_name": "存下的摘录与磁盘源码逐字符一致",
+        "scope": "claim",
+        "target_id": "seg_013_c1",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 147,
+        "detail": ""
+      },
+      {
+        "check_id": "V04_hash_matches",
+        "check_name": "摘录哈希与存下的哈希一致",
+        "scope": "claim",
+        "target_id": "seg_013_c1",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 147,
+        "detail": ""
+      },
+      {
+        "check_id": "V10_claim_has_evidence",
+        "check_name": "每条断言都带至少一条证据",
+        "scope": "claim",
+        "target_id": "seg_013_c2",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 148,
+        "detail": ""
+      },
+      {
+        "check_id": "V03_excerpt_fidelity",
+        "check_name": "存下的摘录与磁盘源码逐字符一致",
+        "scope": "claim",
+        "target_id": "seg_013_c2",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 148,
+        "detail": ""
+      },
+      {
+        "check_id": "V04_hash_matches",
+        "check_name": "摘录哈希与存下的哈希一致",
+        "scope": "claim",
+        "target_id": "seg_013_c2",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 148,
+        "detail": ""
+      },
+      {
+        "check_id": "V10_claim_has_evidence",
+        "check_name": "每条断言都带至少一条证据",
+        "scope": "claim",
+        "target_id": "seg_013_c3",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 152,
+        "detail": ""
+      },
+      {
+        "check_id": "V03_excerpt_fidelity",
+        "check_name": "存下的摘录与磁盘源码逐字符一致",
+        "scope": "claim",
+        "target_id": "seg_013_c3",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 152,
+        "detail": ""
+      },
+      {
+        "check_id": "V04_hash_matches",
+        "check_name": "摘录哈希与存下的哈希一致",
+        "scope": "claim",
+        "target_id": "seg_013_c3",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 152,
+        "detail": ""
+      },
+      {
+        "check_id": "V10_claim_has_evidence",
+        "check_name": "每条断言都带至少一条证据",
+        "scope": "claim",
+        "target_id": "seg_013_c4",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 156,
+        "detail": ""
+      },
+      {
+        "check_id": "V03_excerpt_fidelity",
+        "check_name": "存下的摘录与磁盘源码逐字符一致",
+        "scope": "claim",
+        "target_id": "seg_013_c4",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 156,
+        "detail": ""
+      },
+      {
+        "check_id": "V04_hash_matches",
+        "check_name": "摘录哈希与存下的哈希一致",
+        "scope": "claim",
+        "target_id": "seg_013_c4",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 156,
+        "detail": ""
+      },
+      {
+        "check_id": "V10_claim_has_evidence",
+        "check_name": "每条断言都带至少一条证据",
+        "scope": "claim",
+        "target_id": "seg_013_c5",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 158,
+        "detail": ""
+      },
+      {
+        "check_id": "V03_excerpt_fidelity",
+        "check_name": "存下的摘录与磁盘源码逐字符一致",
+        "scope": "claim",
+        "target_id": "seg_013_c5",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 158,
+        "detail": ""
+      },
+      {
+        "check_id": "V04_hash_matches",
+        "check_name": "摘录哈希与存下的哈希一致",
+        "scope": "claim",
+        "target_id": "seg_013_c5",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 158,
+        "detail": ""
+      },
+      {
+        "check_id": "V10_claim_has_evidence",
+        "check_name": "每条断言都带至少一条证据",
+        "scope": "claim",
+        "target_id": "seg_013_k1",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 146,
+        "detail": ""
+      },
+      {
+        "check_id": "V03_excerpt_fidelity",
+        "check_name": "存下的摘录与磁盘源码逐字符一致",
+        "scope": "claim",
+        "target_id": "seg_013_k1",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 146,
+        "detail": ""
+      },
+      {
+        "check_id": "V04_hash_matches",
+        "check_name": "摘录哈希与存下的哈希一致",
+        "scope": "claim",
+        "target_id": "seg_013_k1",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 146,
+        "detail": ""
+      },
+      {
+        "check_id": "V10_claim_has_evidence",
+        "check_name": "每条断言都带至少一条证据",
+        "scope": "claim",
+        "target_id": "seg_013_summary",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 146,
+        "detail": ""
+      },
+      {
+        "check_id": "V03_excerpt_fidelity",
+        "check_name": "存下的摘录与磁盘源码逐字符一致",
+        "scope": "claim",
+        "target_id": "seg_013_summary",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 146,
+        "detail": ""
+      },
+      {
+        "check_id": "V04_hash_matches",
+        "check_name": "摘录哈希与存下的哈希一致",
+        "scope": "claim",
+        "target_id": "seg_013_summary",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 146,
+        "detail": ""
+      },
+      {
+        "check_id": "V01_path_relative",
+        "check_name": "证据文件路径为项目内相对路径",
+        "scope": "segment",
+        "target_id": "seg_014",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 0,
+        "detail": ""
+      },
+      {
+        "check_id": "V02_span_valid",
+        "check_name": "行区间合法（1 <= start <= end <= 总行数）",
+        "scope": "segment",
+        "target_id": "seg_014",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 181,
+        "detail": ""
+      },
+      {
+        "check_id": "V05_segment_excerpt",
+        "check_name": "段的代码摘录与磁盘源码逐字符一致",
+        "scope": "segment",
+        "target_id": "seg_014",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 181,
+        "detail": ""
+      },
+      {
+        "check_id": "V06_symbol_exists",
+        "check_name": "段引用的函数在 AST 中真实存在且覆盖段行范围",
+        "scope": "segment",
+        "target_id": "seg_014",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 181,
+        "detail": ""
+      },
+      {
+        "check_id": "V10_claim_has_evidence",
+        "check_name": "每条断言都带至少一条证据",
+        "scope": "claim",
+        "target_id": "seg_014_c1",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 181,
+        "detail": ""
+      },
+      {
+        "check_id": "V03_excerpt_fidelity",
+        "check_name": "存下的摘录与磁盘源码逐字符一致",
+        "scope": "claim",
+        "target_id": "seg_014_c1",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 181,
+        "detail": ""
+      },
+      {
+        "check_id": "V04_hash_matches",
+        "check_name": "摘录哈希与存下的哈希一致",
+        "scope": "claim",
+        "target_id": "seg_014_c1",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 181,
+        "detail": ""
+      },
+      {
+        "check_id": "V10_claim_has_evidence",
+        "check_name": "每条断言都带至少一条证据",
+        "scope": "claim",
+        "target_id": "seg_014_summary",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 181,
+        "detail": ""
+      },
+      {
+        "check_id": "V03_excerpt_fidelity",
+        "check_name": "存下的摘录与磁盘源码逐字符一致",
+        "scope": "claim",
+        "target_id": "seg_014_summary",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 181,
+        "detail": ""
+      },
+      {
+        "check_id": "V04_hash_matches",
+        "check_name": "摘录哈希与存下的哈希一致",
+        "scope": "claim",
+        "target_id": "seg_014_summary",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 181,
+        "detail": ""
+      },
+      {
+        "check_id": "V01_path_relative",
+        "check_name": "证据文件路径为项目内相对路径",
+        "scope": "segment",
+        "target_id": "seg_015",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 0,
+        "detail": ""
+      },
+      {
+        "check_id": "V02_span_valid",
+        "check_name": "行区间合法（1 <= start <= end <= 总行数）",
+        "scope": "segment",
+        "target_id": "seg_015",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 182,
+        "detail": ""
+      },
+      {
+        "check_id": "V05_segment_excerpt",
+        "check_name": "段的代码摘录与磁盘源码逐字符一致",
+        "scope": "segment",
+        "target_id": "seg_015",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 182,
+        "detail": ""
+      },
+      {
+        "check_id": "V06_symbol_exists",
+        "check_name": "段引用的函数在 AST 中真实存在且覆盖段行范围",
+        "scope": "segment",
+        "target_id": "seg_015",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 181,
+        "detail": ""
+      },
+      {
+        "check_id": "V10_claim_has_evidence",
+        "check_name": "每条断言都带至少一条证据",
+        "scope": "claim",
+        "target_id": "seg_015_c1",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 182,
+        "detail": ""
+      },
+      {
+        "check_id": "V03_excerpt_fidelity",
+        "check_name": "存下的摘录与磁盘源码逐字符一致",
+        "scope": "claim",
+        "target_id": "seg_015_c1",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 182,
+        "detail": ""
+      },
+      {
+        "check_id": "V04_hash_matches",
+        "check_name": "摘录哈希与存下的哈希一致",
+        "scope": "claim",
+        "target_id": "seg_015_c1",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 182,
+        "detail": ""
+      },
+      {
+        "check_id": "V10_claim_has_evidence",
+        "check_name": "每条断言都带至少一条证据",
+        "scope": "claim",
+        "target_id": "seg_015_c2",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 182,
+        "detail": ""
+      },
+      {
+        "check_id": "V03_excerpt_fidelity",
+        "check_name": "存下的摘录与磁盘源码逐字符一致",
+        "scope": "claim",
+        "target_id": "seg_015_c2",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 182,
+        "detail": ""
+      },
+      {
+        "check_id": "V04_hash_matches",
+        "check_name": "摘录哈希与存下的哈希一致",
+        "scope": "claim",
+        "target_id": "seg_015_c2",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 182,
+        "detail": ""
+      },
+      {
+        "check_id": "V10_claim_has_evidence",
+        "check_name": "每条断言都带至少一条证据",
+        "scope": "claim",
+        "target_id": "seg_015_k1",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 182,
+        "detail": ""
+      },
+      {
+        "check_id": "V03_excerpt_fidelity",
+        "check_name": "存下的摘录与磁盘源码逐字符一致",
+        "scope": "claim",
+        "target_id": "seg_015_k1",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 182,
+        "detail": ""
+      },
+      {
+        "check_id": "V04_hash_matches",
+        "check_name": "摘录哈希与存下的哈希一致",
+        "scope": "claim",
+        "target_id": "seg_015_k1",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 182,
+        "detail": ""
+      },
+      {
+        "check_id": "V10_claim_has_evidence",
+        "check_name": "每条断言都带至少一条证据",
+        "scope": "claim",
+        "target_id": "seg_015_summary",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 182,
+        "detail": ""
+      },
+      {
+        "check_id": "V03_excerpt_fidelity",
+        "check_name": "存下的摘录与磁盘源码逐字符一致",
+        "scope": "claim",
+        "target_id": "seg_015_summary",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 182,
+        "detail": ""
+      },
+      {
+        "check_id": "V04_hash_matches",
+        "check_name": "摘录哈希与存下的哈希一致",
+        "scope": "claim",
+        "target_id": "seg_015_summary",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 182,
+        "detail": ""
+      },
+      {
+        "check_id": "V01_path_relative",
+        "check_name": "证据文件路径为项目内相对路径",
+        "scope": "segment",
+        "target_id": "seg_016",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 0,
+        "detail": ""
+      },
+      {
+        "check_id": "V02_span_valid",
+        "check_name": "行区间合法（1 <= start <= end <= 总行数）",
+        "scope": "segment",
+        "target_id": "seg_016",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 183,
+        "detail": ""
+      },
+      {
+        "check_id": "V05_segment_excerpt",
+        "check_name": "段的代码摘录与磁盘源码逐字符一致",
+        "scope": "segment",
+        "target_id": "seg_016",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 183,
+        "detail": ""
+      },
+      {
+        "check_id": "V06_symbol_exists",
+        "check_name": "段引用的函数在 AST 中真实存在且覆盖段行范围",
+        "scope": "segment",
+        "target_id": "seg_016",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 181,
+        "detail": ""
+      },
+      {
+        "check_id": "V10_claim_has_evidence",
+        "check_name": "每条断言都带至少一条证据",
+        "scope": "claim",
+        "target_id": "seg_016_c1",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 183,
+        "detail": ""
+      },
+      {
+        "check_id": "V03_excerpt_fidelity",
+        "check_name": "存下的摘录与磁盘源码逐字符一致",
+        "scope": "claim",
+        "target_id": "seg_016_c1",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 183,
+        "detail": ""
+      },
+      {
+        "check_id": "V04_hash_matches",
+        "check_name": "摘录哈希与存下的哈希一致",
+        "scope": "claim",
+        "target_id": "seg_016_c1",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 183,
+        "detail": ""
+      },
+      {
+        "check_id": "V10_claim_has_evidence",
+        "check_name": "每条断言都带至少一条证据",
+        "scope": "claim",
+        "target_id": "seg_016_c2",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 184,
+        "detail": ""
+      },
+      {
+        "check_id": "V03_excerpt_fidelity",
+        "check_name": "存下的摘录与磁盘源码逐字符一致",
+        "scope": "claim",
+        "target_id": "seg_016_c2",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 184,
+        "detail": ""
+      },
+      {
+        "check_id": "V04_hash_matches",
+        "check_name": "摘录哈希与存下的哈希一致",
+        "scope": "claim",
+        "target_id": "seg_016_c2",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 184,
+        "detail": ""
+      },
+      {
+        "check_id": "V10_claim_has_evidence",
+        "check_name": "每条断言都带至少一条证据",
+        "scope": "claim",
+        "target_id": "seg_016_summary",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 183,
+        "detail": ""
+      },
+      {
+        "check_id": "V03_excerpt_fidelity",
+        "check_name": "存下的摘录与磁盘源码逐字符一致",
+        "scope": "claim",
+        "target_id": "seg_016_summary",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 183,
+        "detail": ""
+      },
+      {
+        "check_id": "V04_hash_matches",
+        "check_name": "摘录哈希与存下的哈希一致",
+        "scope": "claim",
+        "target_id": "seg_016_summary",
+        "status": "pass",
+        "file": "parser.py",
+        "line": 183,
+        "detail": ""
+      }
+    ],
+    "rejected_claim_ids": [],
+    "rejected_segment_ids": [],
+    "caveats": [
+      "校验器只做**机械复核**：它能证明「这句话引用的那段代码确实存在且逐字符一致」，不能证明「这句业务解释是对的」。后者只有人能判（README §13.4 三层判定主体分离）。",
+      "校验器刻意绕开 ast_cache，直接从磁盘重读源码 —— 它校验的是文件本身，不是生成时的记忆。",
+      "任何一项失败都会让 can_publish=False，且失败项必须在前端可见；不存在「错误率低于阈值就放行」的规则。",
+      "算法版本 verify-1.0；同一份输入两次运行结果逐字节一致（无随机、无网络、无时间依赖）。"
+    ]
+  }
+}

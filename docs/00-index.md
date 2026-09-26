@@ -1,6 +1,6 @@
 # 文档索引与 AI 交接协议
 
-> 更新触发：**很少改**（文档增删 / 交接流程变化 / 门禁命令变化才动） | 上次更新：工单编排一轮（2026-09-26）
+> 更新触发：**很少改**（文档增删 / 交接流程变化 / 门禁命令变化才动） | 上次更新：克隆完整性一轮（2026-09-26）
 > **这一份是给"接手的人或 AI 助手"的第一份文档**：读完它就知道该读什么、改哪里、怎么算改完、什么绝对不许做。
 > 项目是什么见 `README.md`；现在做到哪一步见 `docs/07-status-and-acceptance.md`。
 
@@ -49,6 +49,9 @@
 ## 三、AI 助手交接协议（接手前必读）
 
 ### 3.1 第一件事：先跑门禁，别先改代码
+
+**换了机器 / 刚克隆下来**：先跑 `powershell -ExecutionPolicy Bypass -File scripts/bootstrap.ps1`
+把环境装齐（建 `.venv` + 装两份 requirements + 前端 npm ci + 生成演示快照），再跑下面这三条。
 
 ```bash
 python scripts/build_acceptance_report.py    # 跑 13 个只读验收脚本 → validation/acceptance_latest.md（数字的唯一来源）
