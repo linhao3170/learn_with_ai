@@ -2,7 +2,7 @@
 
 # LearnWithAI · 文档全集（单文件打包）
 
-> 由 `python scripts/pack_docs.py` 按 `docs/00-index.md` 的顺序拼成；含 15 份文档、466363 字节。
+> 由 `python scripts/pack_docs.py` 按 `docs/00-index.md` 的顺序拼成；含 15 份文档、466416 字节。
 > **接手这个项目的 AI 助手请先读 `docs/00-index.md`（本文件第二部分）**：里面有硬约束、门禁命令、完成定义与禁止事项。
 > 单个章节的实际归属看每段前的 `<!-- 以下来自 ... -->` 注释；章节号（`§16.1` 这类）在各文档间是连续的。
 
@@ -4883,10 +4883,10 @@ powershell -ExecutionPolicy Bypass -File scripts/bootstrap.ps1 -Build -Verify
 > 装进 `.venv` 才是"克隆下来就能重现"的做法（理由与实测见 `docs/06-runbook.md` §19.5）。
 >
 > ⚠️ **门禁有环境前提，别在裸克隆里下结论**：刚 `git clone` 完、还没跑 bootstrap 时，
-> `python scripts/verify_docs.py` 会报一批 D1「路径不存在」—— 因为文档里提到的
-> `frontend/node_modules/`、`frontend/.smoke-dist/`、`frontend/dist` 这些**故意不进来**的东西
-> 那时**确实不存在**（部署说明一轮实测：裸克隆里 18 条，全是这一类；跑完
-> `bootstrap.ps1`（要用前端产物就再加 `-Build`）再跑同一份文档就恢复正常）。
+> `python scripts/verify_docs.py` 会报一批 D1「路径不存在」—— 因为文档里提到的这些东西
+> （`frontend/node_modules/`、`frontend/.smoke-dist/`、`frontend/dist`）那时**确实不存在**：
+> 它们是**故意不进来**的可再生依赖与构建产物。部署说明一轮实测：裸克隆里 18 条全是这一类；
+> 跑完 `scripts/bootstrap.ps1`（要用前端产物就再加 `-Build`）之后，同一份文档就恢复正常。
 > **这不是文档写错了，是"依赖还没装"** —— 先 bootstrap，再跑门禁。
 
 ### 25.5 路径 A：单机双进程（默认；开发与答辩演示）

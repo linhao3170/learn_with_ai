@@ -101,10 +101,10 @@ powershell -ExecutionPolicy Bypass -File scripts/bootstrap.ps1 -Build -Verify
 > 装进 `.venv` 才是"克隆下来就能重现"的做法（理由与实测见 `docs/06-runbook.md` §19.5）。
 >
 > ⚠️ **门禁有环境前提，别在裸克隆里下结论**：刚 `git clone` 完、还没跑 bootstrap 时，
-> `python scripts/verify_docs.py` 会报一批 D1「路径不存在」—— 因为文档里提到的
-> `frontend/node_modules/`、`frontend/.smoke-dist/`、`frontend/dist` 这些**故意不进来**的东西
-> 那时**确实不存在**（部署说明一轮实测：裸克隆里 18 条，全是这一类；跑完
-> `bootstrap.ps1`（要用前端产物就再加 `-Build`）再跑同一份文档就恢复正常）。
+> `python scripts/verify_docs.py` 会报一批 D1「路径不存在」—— 因为文档里提到的这些东西
+> （`frontend/node_modules/`、`frontend/.smoke-dist/`、`frontend/dist`）那时**确实不存在**：
+> 它们是**故意不进来**的可再生依赖与构建产物。部署说明一轮实测：裸克隆里 18 条全是这一类；
+> 跑完 `scripts/bootstrap.ps1`（要用前端产物就再加 `-Build`）之后，同一份文档就恢复正常。
 > **这不是文档写错了，是"依赖还没装"** —— 先 bootstrap，再跑门禁。
 
 ### 25.5 路径 A：单机双进程（默认；开发与答辩演示）
