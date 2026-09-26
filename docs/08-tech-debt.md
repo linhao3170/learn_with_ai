@@ -1,6 +1,6 @@
 # 技术债与复盘（原 README 第十九章）
 
-> 更新触发：**每轮**（清了债 / 发现新坑 / 被真实数据纠正了设计就要动这份） | 上次更新：工单编排一轮（2026-09-26）
+> 更新触发：**每轮**（清了债 / 发现新坑 / 被真实数据纠正了设计就要动这份） | 上次更新：W0 集成轮（2026-09-26）
 > 来源：原 `README.md` 的 §19 **整章搬移**；`§19.1` ~ `§19.4` 与 `§19.6` 在本文件，**`§19.5`（沙箱 / 环境约束）已搬到 `docs/06-runbook.md`** —— 它是手册内容不是债，本文件留了占位与指针。
 > 分工：**架构与契约规范**在 `docs/02-architecture.md` 与 `docs/03-contracts.md`，**现状与验收**在 `docs/07-status-and-acceptance.md`，
 > 这份只放"哪里会踩坑、为什么这么写"。
@@ -39,6 +39,7 @@
 | 25 | **一次性验证脚本散落在仓库外**（跑完就删 → 结论不可复跑） | ✅ 证据折叠一轮已修：本轮先用临时 jsdom 脚本验证，跑通后**立刻**提升为常驻检查 `scripts/check_evidence_fold.mjs`（含负向对照），而不是"验证完就删"。理由：折叠的核心承诺是"收起 ≠ 删掉"，而它**最容易被下一次重构无声破坏**（把 `.drawer-body` 改成 `v-if`，界面看起来一样好，纪律却没了）——没有常驻断言，这种回退只能靠人偶然发现 |
 | 26 | **前端口径文案与引擎机制之间没有同步机制** | ⚠️ **未修（没有机器化办法，如实登记）**：证据折叠一轮给讲稿与反幻觉面板各写了一段"机械复核能证明什么 / 不能证明什么"的说明，**这些机制全在 `engine/logic_platform/` 里**（`verify.py` 的检查项、`narration.py` 的四条把关规则、`apply_verification` 的 `can_publish=False`）。引擎改了检查项而前端文案没跟上，页面就会**说错话**，而门禁抓不到。当前唯一的防线是 `docs/features/evidence-fold.md` §2 第 6 条那张"说明句子 ↔ 实现位置"对照表（**人工复核**），以及两个组件里说明常量上方的逐条依据注释。**触发条件**：将来若真的改了 `verify.py` 的检查项集合，必须同轮改这两处文案并重跑 `node scripts/check_evidence_fold.mjs` |
 | 27 | **登录与搜索容易被误解为完整账号系统 / 全局路由** | ✅ 入口完善一轮已补齐本地演示登录、`/` 快捷搜索和模块卡片快捷跳转；明确标注登录不接远程鉴权，搜索只做前端入口编排。真正的账号、权限、跨设备会话与 `vue-router` 深链仍是后续工作，见 `docs/features/login-and-quick-navigation.md` |
+| 28 | **文档门禁 D1 查不出带前导点的路径**（`WO-01` 一轮实测撞到）：`scripts/verify_docs.py` 的 `resolve_token()` 用 `lstrip("./")`，而 `str.lstrip` 剥的是**字符集合**而不是**前缀** —— 于是 `.ai_orchestrator/` 被剥成 `ai_orchestrator/`，明明在磁盘上却被判成「路径不存在」。实测三行：`'.ai_orchestrator/'.lstrip('./')` 得到 `'ai_orchestrator/'`；`(仓库根 / '.ai_orchestrator').exists()` 是 `True`，剥过之后是 `False`。**影响面**：任何点开头的目录 / 文件（`.ai_orchestrator`、`.venv` 这类带路径的写法）在文档里都无法通过 D1，而且报出来的话术是「路径不存在」——**看起来像文档写错了**，排查会朝错的方向走 | ⚠️ **未修（已并入 `WO-04` 门禁补强，见 `docs/10-work-orders.md` §23.4 第 4 件）**：改成剥**前缀**（`re.sub(r"^(\./)+", "", token)` 这一类），并**补一条负向对照**（点目录必须能解析成功，改回 `lstrip` 必须 FAIL）。在那之前，`docs/90-archive.md` 附录 C.2 按**不带尾随斜杠**的写法引用它，并把原因写在注记里 |
 
 ### 19.2 开发过程中被真实数据纠正的设计错误（累计 21 条）
 **这些全都是「跑起来才发现」的，看代码看不出来。**
@@ -183,7 +184,7 @@
    新组件（`HomeView.vue` / `LoginDialog.vue` / `QuickSearch.vue` / `EvidenceFold.vue` / `EvidenceNote.vue`）、
    新脚本（`verify_docs.py` / `build_acceptance_report.py` / `pack_docs.py` / `check_evidence_fold.mjs`）、
    `validation/acceptance_latest.json` / `.md` 都还是 **untracked**；另有一批已删未提交（`README1.md`、`niu/` 下的旧样本文件）。
-   **`WO-01` 一轮已把上述改动按轮次分次提交**（`git log --oneline` 可见每一轮的 message），
+   **`WO-01` 一轮已把上述改动按轮次分次提交**（`git log --oneline wave-0` 可见每一轮的 message；W0 集成轮已给基线打了标签 **`wave-0`**），
    并已清理根目录零引用残留（`aud.m4s` / `vid.m4s` / `generated_assets_motion_tiles_20260926/` / 空目录 `assets/`，
    均已清理并登记在 `docs/90-archive.md` 附录 C.2）。
    repo 层面谈论「工程完成度」时，只能说成「已提交为本地基线」：远端 `origin`（GitHub）仍停在 `1d640fb`，

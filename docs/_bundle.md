@@ -2,7 +2,7 @@
 
 # LearnWithAI · 文档全集（单文件打包）
 
-> 由 `python scripts/pack_docs.py` 按 `docs/00-index.md` 的顺序拼成；含 14 份文档、412847 字节。
+> 由 `python scripts/pack_docs.py` 按 `docs/00-index.md` 的顺序拼成；含 14 份文档、422980 字节。
 > **接手这个项目的 AI 助手请先读 `docs/00-index.md`（本文件第二部分）**：里面有硬约束、门禁命令、完成定义与禁止事项。
 > 单个章节的实际归属看每段前的 `<!-- 以下来自 ... -->` 注释；章节号（`§16.1` 这类）在各文档间是连续的。
 
@@ -2322,7 +2322,7 @@ cd frontend && npm run build
 
 # 运行、验收与排障手册（原 README 第二十章 + §19.5）
 
-> 更新触发：**新增脚本或环境结论变了** | 上次更新：证据折叠一轮（2026-09-26）
+> 更新触发：**新增脚本或环境结论变了** | 上次更新：W0 集成轮（2026-09-26）
 > 来源：原 `README.md` 第二十章（工具与命令手册）+ 从技术债文档搬来的 `§19.5`（沙箱与环境约束 —— 它是手册内容，不是债）。
 > **读它的时机**：第一次跑起来 / 要跑验收 / 环境报错时。
 > ⚠️ 这里只放"怎么跑、跑出什么、为什么跑不起来"；**实跑数字不在这里手抄** ——
@@ -2349,7 +2349,7 @@ cd frontend && npm run build
 | `scripts/check_determinism.py` | 同进程双跑逐字段比对，输出第一处差异路径；**`--cross-process`**（优先级 4 二轮新增）用不同 `PYTHONHASHSEED` 各起一个子进程**逐字节**比对 —— 同进程双跑查不出「`set` 迭代顺序」那一类问题（见 §19.2 ⑳） |
 | `scripts/build_demo_snapshots.py` | 一键生成「学生快照 + 后端答案表 + 证据源码副本」，支持多项目。⚠️ **改了题目必须重跑它**（答案表与题目按下标对应）；⚠️ **旧管线冒烟会覆盖它写的学生快照**，见 §17.2 的顺序陷阱 |
 | `scripts/audit_hardcoding.py` | 业务词审计：引擎侧失败、前端侧提示；`--include-frontend` 连前端一起判失败 |
-| `scripts/build_acceptance_report.py` | **验收报告生成器（阶段 0 新增）**：在**一个进程内**跑 13 个只读验收脚本（不用子进程、不用管道，见 §19.5），把每个脚本的「通过/总数」解析成 `validation/acceptance_latest.json` / `.md` —— **文档引用数字的唯一来源**。默认不跑需要后端 / node / 走查 bundle 的条目，也**不跑会覆盖产物或人工判定模板的脚本**（`--with-backend` / `--with-node` / `--with-manual` / `--with-order-trap` 显式开启，原因逐条打印） |
+| `scripts/build_acceptance_report.py` | **验收报告生成器（阶段 0 新增）**：**默认组**的 13 个只读验收脚本在**一个进程内**跑（不启子进程、不用管道）；`--with-node` 那一组的 4 条走查会起 **node 子进程，但输出走临时文件、不走管道**（同一条沙箱纪律，见 §19.5）。它把每个脚本的「通过/总数」解析成 `validation/acceptance_latest.json` / `.md` —— **文档引用数字的唯一来源**。默认不跑需要后端 / node / 走查 bundle 的条目，也**不跑会覆盖产物或人工判定模板的脚本**（`--with-backend` / `--with-node` / `--with-manual` / `--with-order-trap` 显式开启，原因逐条打印） |
 | `scripts/verify_docs.py` | **文档门禁（阶段 0 新增，阶段 2 扩到 7 项）**：D1 反引号路径必须真实存在（当行写「待建 / 已删除 / 还没做」的除外）；D2 `§X.Y` 与「第 N 章」必须在**整个文档集**上解析得到标题（并报告跨文件引用规模）；D3 文档里的应用版本号必须等于 `backend/app/main.py`；D4 文档里的验收数字必须与验收报告一致、已淘汰的旧总数不许裸写；D5 每篇 `docs/*.md` 要有「更新触发」行；D6 `文件:行号` 必须指得到东西（行号不越界，且同一行的路径 / 标识符要出现在被引行号附近）；D7 **文档清单完整性**（`docs/` 下每份文档都要被 `docs/00-index.md` 与 `README.md` 提到，清单里写的路径必须真实存在）。**退出码 1 = 有 ERROR** |
 | `scripts/pack_docs.py` | **文档打包器（阶段 2 新增）**：按 `docs/00-index.md` 的清单顺序把模块化文档拼成**单文件** `docs/_bundle.md`，用于"一次性交给 AI 助手做全面升级"的场景；同时核对"清单 ↔ 磁盘"是否一致（索引里列了却没有 / 磁盘上有却没进清单都会报出来）。`--list` 只看顺序不写文件。**产物不要手改**（`verify_docs.py` 按 `_` 前缀跳过它） |
 | `scripts/browser_clickthrough.mjs` | jsdom 真实 DOM 点击走查（真实组件 + 真实 HTTP），`--offline` 验证离线降级；断言覆盖**系统主页面**（两大核心功能入口 / 未开始阶段不给入口 / 来源依据默认收起且能展开收起）、训练判分与离线降级、业务图谱、阶段一 / 二、**阶段四的 28 条断言**（加节点 / 改名 / 拖拽连线 / 填卡 / 提交 / 六维渲染 / 未评估不显示 0 / 必备能力不下发 / iteration 递增）。**项数口径**：UI 重设计一轮起是「在线 109 条 / 离线 55 条」（旧值 99 / 45 是 Sprint 5 口径），实跑记录见 `docs/07` §17.2 |
@@ -2552,7 +2552,7 @@ python scripts/validation_report.py --input validation/results/python_dotenv_che
 
 # 现状与验收（原 README 第十六 ~ 十八章 + 附录 B）
 
-> 更新触发：**每轮**（改了功能行为 / 跑了验收 / 调了优先级就要动这份） | 上次更新：工单编排一轮（2026-09-26）
+> 更新触发：**每轮**（改了功能行为 / 跑了验收 / 调了优先级就要动这份） | 上次更新：W0 集成轮（2026-09-26）
 > 来源：原 `README.md` 的 §16 / §17 / §18 / 附录 B **整章搬移，逐字未改**；章节号保持不变，
 > 所以 `§16.1` / `§17.2` / `§18` 这类引用（README 正文、代码注释、脚本里都有）仍然解析得到这里。
 > **数字规矩**：验收数字**不许手抄** —— 以 `validation/acceptance_latest.md` 为唯一来源
@@ -2802,7 +2802,7 @@ python scripts/validation_report.py --input validation/results/python_dotenv_che
 
 | 组件 | 文件 | 说明 |
 |---|---|---|
-| 验收报告生成器 | `scripts/build_acceptance_report.py` | **一个进程内**跑 13 个只读验收脚本（不启子进程、不用管道，理由见 §19.5），解析每个脚本屏幕输出里的「通过/总数」，产出 `validation/acceptance_latest.json`（机器读）+ `.md`（人读）。总计解析有四种口径（总结行 / 逐行相加 / `[PASS]` 行计数 / 无总计只报退出码），**来源逐条记在报告的 `total_source` 里**。默认组**只读**：会覆盖产物或人工判定模板的脚本（`validate_business_graph.py --emit-review`、`graph_review_report.py`、旧管线冒烟）默认不跑，且**原因逐条打印**，不会被静默跳过 |
+| 验收报告生成器 | `scripts/build_acceptance_report.py` | **默认组**的 13 个只读验收脚本在**一个进程内**跑（不启子进程、不用管道）；`--with-node` 的 4 条走查另起 node 子进程、输出走临时文件而不是管道（理由见 §19.5）。它解析每个脚本屏幕输出里的「通过/总数」，产出 `validation/acceptance_latest.json`（机器读）+ `.md`（人读）。总计解析有四种口径（总结行 / 逐行相加 / `[PASS]` 行计数 / 无总计只报退出码），**来源逐条记在报告的 `total_source` 里**。默认组**只读**：会覆盖产物或人工判定模板的脚本（`validate_business_graph.py --emit-review`、`graph_review_report.py`、旧管线冒烟）默认不跑，且**原因逐条打印**，不会被静默跳过 |
 | 文档门禁 | `scripts/verify_docs.py` | 6 项检查：**D1** 反引号里的路径必须真实存在（当行明写「待建 / 已删除 / 不存在」或写进允许清单的除外；已按附录 C 处置的旧文档只记 WARN）；**D2** `§X.Y` 与「第 N 章」必须解析到真实标题（同时统计代码里指向**已删除旧文档**的引用 —— 当前 196 处，阶段 2 用稳定 ID 处理）；**D3** 文档里的应用版本必须等于 `backend/app/main.py` 的值；**D4** 文档里的验收数字必须与验收报告一致、已淘汰的旧总数不许裸写；**D5** 拆分后每篇 `docs/*.md` 要有「更新触发」行；**D6** `文件:行号` 必须指得到东西（越界或锚点不在附近即报错） |
 | 本轮修掉的事实性错误 | `README.md` | 应用版本号的 3 处**历史值**（`0.3.0` / `0.4.0`）统一改为当前值 `0.5.0`，并写明唯一来源；§9 标题原写「尚未实现」而实际 Sprint 5 已落地；**`文件:行号` 引用 10 处过期**（阶段一覆盖度接口在 `main.py` 里的旧值 `241` 实为 `255`、模块卡片两个路由的 `267`/`284` 实为 `281`/`298`、设计层三个路由的 `318`/`334`/`356` 实为 `327`/`341`/`363`、§4 里的 `main.py` 旧值 `228`；另有一处 `coverage.py` 里的 `evaluate_orientation` 旧值行号也已改正）；A3 扫描文件数 `54→62`（4 处）；A10 待确认卡片 `25→17`、`lab_safety_assistant` 的 `8→0`（3 处）；`lexicon` 份数 `15→20`、`models.py` dataclass `13→12`（含附 A 只列了 9 个类名）、前端页签 `四个→五个`；§0.4 导航把「工具与命令手册」写成第十九章（实为第二十章）；把 2 处指向**不存在子节**的引用（原写成 `7.7`）改成「§七 第 7 条」；§17.2 的 `13/13`、`71/71`、`41/41`、`31/31` 等旧总数按「改成当前值或写明历史」逐条处理 |
 | 负向对照（纪律要求） | — | D6 做过一次负向对照：故意把 `coverage.py` 里那处行号写回过期值 → 门禁报 ERROR 且退出码 1；改回正确行号后 exit 0。D4 的正向证据是它本轮真的抓到了 `13/13` / `71/71` / `41/41` / `31/31` 四类旧值 |
@@ -2910,6 +2910,8 @@ python scripts/validation_report.py --input validation/results/python_dotenv_che
 > ② 没有在真实浏览器里点过（本环境起不来无头 Chromium，见 `docs/06` §19.5），点击是在 jsdom 里派发真实事件验证的；
 > ③ 没有做长讲稿（段上限 24 段 × 每段 40 条陈述）展开全部折叠区的性能实测；
 > ④ 说明文案与引擎真实机制的一致性**没有门禁**（只有人复核的对照表）。
+
+**仓库卫生与基线（WO-01 一轮 + W0 集成轮，2026-09-26）**：这一轮**不改任何产品行为**，交付的是"所有并行线从同一个已提交的基线开工"：把此前几轮（阶段 0 / 文档拆分阶段 1·2 / UI 重设计 / 证据折叠 / 入口完善）**只在工作区里的改动**按轮次分次提交，并在 W0 集成轮打成标签 **`wave-0`**；清掉根目录零引用残留（已清理：`aud.m4s` / `vid.m4s` / `generated_assets_motion_tiles_20260926/` / 空目录 `assets/`）与 `sample_projects/flask_crud_demo` 的空壳（源码确认丢失、决定不恢复）。`.gitignore` 补上 `*.m4s` / `generated_assets_*` / `.ai_orchestrator/` 三条规则。清理登记见 `docs/90-archive.md` 附录 C.2，交接事实见 `docs/08` §19.6，顺带抓到的门禁缺陷见 `docs/08` §19.1 第 28 条。三条验收命令的原始输出见该轮交付说明；**明确没做的**：没有 push（`origin/master` 仍停在 `1d640fb`）。
 
 ### 16.2 ⚠️ 部分完成
 
@@ -3495,7 +3497,7 @@ python scripts/export_domain_review_worksheet.py --pilot validation/python_doten
 
 # 技术债与复盘（原 README 第十九章）
 
-> 更新触发：**每轮**（清了债 / 发现新坑 / 被真实数据纠正了设计就要动这份） | 上次更新：工单编排一轮（2026-09-26）
+> 更新触发：**每轮**（清了债 / 发现新坑 / 被真实数据纠正了设计就要动这份） | 上次更新：W0 集成轮（2026-09-26）
 > 来源：原 `README.md` 的 §19 **整章搬移**；`§19.1` ~ `§19.4` 与 `§19.6` 在本文件，**`§19.5`（沙箱 / 环境约束）已搬到 `docs/06-runbook.md`** —— 它是手册内容不是债，本文件留了占位与指针。
 > 分工：**架构与契约规范**在 `docs/02-architecture.md` 与 `docs/03-contracts.md`，**现状与验收**在 `docs/07-status-and-acceptance.md`，
 > 这份只放"哪里会踩坑、为什么这么写"。
@@ -3534,6 +3536,7 @@ python scripts/export_domain_review_worksheet.py --pilot validation/python_doten
 | 25 | **一次性验证脚本散落在仓库外**（跑完就删 → 结论不可复跑） | ✅ 证据折叠一轮已修：本轮先用临时 jsdom 脚本验证，跑通后**立刻**提升为常驻检查 `scripts/check_evidence_fold.mjs`（含负向对照），而不是"验证完就删"。理由：折叠的核心承诺是"收起 ≠ 删掉"，而它**最容易被下一次重构无声破坏**（把 `.drawer-body` 改成 `v-if`，界面看起来一样好，纪律却没了）——没有常驻断言，这种回退只能靠人偶然发现 |
 | 26 | **前端口径文案与引擎机制之间没有同步机制** | ⚠️ **未修（没有机器化办法，如实登记）**：证据折叠一轮给讲稿与反幻觉面板各写了一段"机械复核能证明什么 / 不能证明什么"的说明，**这些机制全在 `engine/logic_platform/` 里**（`verify.py` 的检查项、`narration.py` 的四条把关规则、`apply_verification` 的 `can_publish=False`）。引擎改了检查项而前端文案没跟上，页面就会**说错话**，而门禁抓不到。当前唯一的防线是 `docs/features/evidence-fold.md` §2 第 6 条那张"说明句子 ↔ 实现位置"对照表（**人工复核**），以及两个组件里说明常量上方的逐条依据注释。**触发条件**：将来若真的改了 `verify.py` 的检查项集合，必须同轮改这两处文案并重跑 `node scripts/check_evidence_fold.mjs` |
 | 27 | **登录与搜索容易被误解为完整账号系统 / 全局路由** | ✅ 入口完善一轮已补齐本地演示登录、`/` 快捷搜索和模块卡片快捷跳转；明确标注登录不接远程鉴权，搜索只做前端入口编排。真正的账号、权限、跨设备会话与 `vue-router` 深链仍是后续工作，见 `docs/features/login-and-quick-navigation.md` |
+| 28 | **文档门禁 D1 查不出带前导点的路径**（`WO-01` 一轮实测撞到）：`scripts/verify_docs.py` 的 `resolve_token()` 用 `lstrip("./")`，而 `str.lstrip` 剥的是**字符集合**而不是**前缀** —— 于是 `.ai_orchestrator/` 被剥成 `ai_orchestrator/`，明明在磁盘上却被判成「路径不存在」。实测三行：`'.ai_orchestrator/'.lstrip('./')` 得到 `'ai_orchestrator/'`；`(仓库根 / '.ai_orchestrator').exists()` 是 `True`，剥过之后是 `False`。**影响面**：任何点开头的目录 / 文件（`.ai_orchestrator`、`.venv` 这类带路径的写法）在文档里都无法通过 D1，而且报出来的话术是「路径不存在」——**看起来像文档写错了**，排查会朝错的方向走 | ⚠️ **未修（已并入 `WO-04` 门禁补强，见 `docs/10-work-orders.md` §23.4 第 4 件）**：改成剥**前缀**（`re.sub(r"^(\./)+", "", token)` 这一类），并**补一条负向对照**（点目录必须能解析成功，改回 `lstrip` 必须 FAIL）。在那之前，`docs/90-archive.md` 附录 C.2 按**不带尾随斜杠**的写法引用它，并把原因写在注记里 |
 
 ### 19.2 开发过程中被真实数据纠正的设计错误（累计 21 条）
 **这些全都是「跑起来才发现」的，看代码看不出来。**
@@ -3672,15 +3675,22 @@ python scripts/export_domain_review_worksheet.py --pilot validation/python_doten
 
 ### 19.6 交接时必须知道的三件事
 
-1. **「代码已完成，但最近几轮的改动还没提交」**：2026-09-26 实测 —— 已有若干次提交（HEAD 是 `1d640fb`，2026-09-25 10:34），
-   但**最近三轮（UI 重设计 / 证据折叠 / 入口完善）的改动全部还没提交**：`docs/` **整个目录**、
+1. **「基线已提交」（WO-01 一轮，2026-09-26）**：交接时的状态是「代码已完成、但最近几轮的改动全都没提交」——
+   2026-09-26 实测 HEAD 停在 `1d640fb`（2026-09-25 10:34），而**阶段 0（文档门禁 / 验收报告）、文档拆分阶段 1·2、
+   UI 重设计、证据折叠、入口完善这几轮的改动全部只在工作区里**：`docs/` **整个目录**、
    新组件（`HomeView.vue` / `LoginDialog.vue` / `QuickSearch.vue` / `EvidenceFold.vue` / `EvidenceNote.vue`）、
    新脚本（`verify_docs.py` / `build_acceptance_report.py` / `pack_docs.py` / `check_evidence_fold.mjs`）、
    `validation/acceptance_latest.json` / `.md` 都还是 **untracked**；另有一批已删未提交（`README1.md`、`niu/` 下的旧样本文件）。
-   repo 层面谈论「工程完成度」时，不能说成「已提交 / 已发布」。
-   **并行开工前先提交**（这一步本身就是 `docs/10-work-orders.md` 的 `WO-01`）。
-2. **`sample_projects/flask_crud_demo` 只剩 `.git.bak`，源码已丢失**——
-   当前可用的自造样本只有 `lab_safety_assistant`（784 行）。
+   **`WO-01` 一轮已把上述改动按轮次分次提交**（`git log --oneline wave-0` 可见每一轮的 message；W0 集成轮已给基线打了标签 **`wave-0`**），
+   并已清理根目录零引用残留（`aud.m4s` / `vid.m4s` / `generated_assets_motion_tiles_20260926/` / 空目录 `assets/`，
+   均已清理并登记在 `docs/90-archive.md` 附录 C.2）。
+   repo 层面谈论「工程完成度」时，只能说成「已提交为本地基线」：远端 `origin`（GitHub）仍停在 `1d640fb`，
+   `WO-01` 的这几个提交**只在本地、还没有 push**。
+   **并行开工前先提交**：任何一条线都不许带着未提交的改动开分支 / 开 worktree
+   （`docs/10-work-orders.md` §22.5 的 worktree 规则的前提就是这一条）。
+2. **`sample_projects/flask_crud_demo` 的源码已丢失，并已决定「不再恢复」（WO-01 一轮）**——
+   实测它的 `.git.bak` 里没有任何 git 对象（空壳，已清理），恢复不出源码；
+   当前可用的自造样本只有 `lab_safety_assistant`（784 行）。处置记录见 `docs/90-archive.md` 附录 C.2。
 3. **人工判定与准确率仍然空缺**：`validation/business_graph_validation.md` 第 6 节的「人工判定」列
    全部为空，`validation/batch_priority_review.md` 也是留给人工填的模板。
    仓库里**没有任何实测准确率数字**——凡涉及准确率，必须写成「待人工核对」。
@@ -4050,7 +4060,7 @@ python scripts/export_domain_review_worksheet.py --pilot validation/python_doten
 
 # 并行工单与执行编排（多任务同时开工时的唯一发单口径）
 
-> 更新触发：**工单增删 / 波次调整 / 文件归属变化 / 有工单做完时** | 上次更新：工单编排一轮（2026-09-26）
+> 更新触发：**工单增删 / 波次调整 / 文件归属变化 / 有工单做完时** | 上次更新：W0 集成轮（2026-09-26）
 > 来源：`docs/07-status-and-acceptance.md` 的 `§16.2` / `§16.3` / `§18`（未做项与优先级）+ `docs/08-tech-debt.md` 的 `§19.1` / `§19.6`（技术债与交接事实）。
 > **读它的时机**：要把"剩下没做的活"拆给一个或多个人 / AI 助手**同时开工**时。
 > ⚠️ **它不是第二份「下一步」**：优先级与取舍的唯一权威仍是 `§18`（`docs/00-index.md` §3.2 第 6 条）。
@@ -4151,13 +4161,19 @@ python scripts/export_domain_review_worksheet.py --pilot validation/python_doten
 
 | 波次 | 工单（可并行） | 该波热文件持有者 | 前置（不满足不许开工） |
 |---|---|---|---|
-| **W0** | `WO-01` 基线提交与仓库卫生 | 全部（只此一条线） | — |
+| **W0** ✅ **已完成（2026-09-26）** | `WO-01` 基线提交与仓库卫生 | 全部（只此一条线） | — |
 | **W1** | `WO-02` 路由拆分 · `WO-03` 训练题遗留 · `WO-04` 门禁补强 · `WO-05` 教师种子备料 | H1 = `WO-02` | W0 完成（基线已提交） |
 | **W2** | `WO-06` 阶段编排外置 · `WO-07` 学习会话与能力报告 · `WO-08` 设计模式复核 · `WO-09` 画布功能集 | H2/H3/H13 = `WO-06` | W1 集成完成 |
 | **W3** | `WO-10` 阶段三 · `WO-11` 阶段六 · `WO-12` 教师工具链 · `WO-13` 覆盖度评分器与 Skill 报告 | H2/H3 = 无（阶段由配置驱动，见 `WO-06`） | W2 集成完成 |
 | **W4** | `WO-14` vue-router 深链与 8 页信息架构 | H4 = `WO-14` | W3 集成完成（页面先存在，才谈路由） |
 | **W5** | `WO-15` 稳定 ID 引用规范 | **全仓库（必须独占，单独一波）** | 全部功能工单做完（它会重写几乎所有文档与代码注释） |
 | **每波之后** | `WO-90` 集成轮（**串行，一条线**） | H7/H8/H9/H10/H11/H12/H15 | 该波全部工单交付 |
+
+> **W0 已完成（2026-09-26）**：基线 = 标签 **`wave-0`**（`master` 上那一串提交，用 `git log --oneline wave-0` 看逐轮 message）。
+> 清理登记在 `docs/90-archive.md` 附录 C.2，门禁缺陷登记在 `docs/08` §19.1 第 28 条，
+> `docs/08` §19.6 第 1·2 条已按提交后的实况改写。**仍未做**：没有 push —— `origin/master` 仍停在 `1d640fb`。
+> ⚠️ **W1 开工前先确认没有第二条线**：W0 期间实测有另一条线在同一个工作区改
+> `scripts/build_acceptance_report.py`（20:51:40），热文件被两条线同时持有是这套流程唯一真实的失败原因。
 
 **最短路径（时间不够时按这个顺序砍）**：
 `WO-01` → `WO-02` → `WO-06` → `WO-10` → `WO-11` → `WO-12`（对应 `§18` 的"二档完整闭环"：阶段三 / 六 + 教师工具）。
@@ -4214,7 +4230,15 @@ scripts/build_acceptance_report.py、validation/acceptance_latest.*）——
 
 ## 二十三、逐条工单
 
-### 23.1 WO-01 · 基线提交与仓库卫生（W0，独占全仓）
+### 23.1 WO-01 · 基线提交与仓库卫生（W0，独占全仓）—— ✅ 已完成（2026-09-26）
+
+> **结果（WO-01 一轮 + W0 集成轮）**：基线已建立 —— 标签 **`wave-0`**（`master` 上从 `1d640fb` 起的那一串提交，逐轮 message 见 `git log --oneline wave-0`）。
+> 根目录零引用残留已清理并登记在 `docs/90-archive.md` 附录 C.2；`docs/08` §19.6 第 1·2 条已按提交后的实况改写；
+> `sample_projects/flask_crud_demo` 按第 4 步的**选项 ①**（源码已丢失、不再恢复）清掉了空壳。
+> 三条验收命令（`python scripts/verify_docs.py` exit 0 / `python scripts/build_acceptance_report.py` 全绿 / `git status` 干净）
+> 的原始屏幕输出见该轮交付说明的 ②；负向对照（故意造失败 → 报错 → 逐字节回滚 → 通过）见 ③。
+> **仍未做**：没有 push（`origin/master` 仍停在 `1d640fb`）；`docs/_bundle.md` 由 W0 集成轮重跑过 `pack_docs.py`。
+> 下面这段「做什么」保留原文，作为这一轮**实际执行过**的记录 —— 它是本仓库唯一的"基线是怎么来的"说明。
 
 - **目标**：让所有并行线从**同一个已提交的基线**开工；清掉仓库根目录里没有任何引用、也不属于任何脚本产出的残留；修掉文档里已经过期的事实。
 - **为什么**：`docs/08` `§19.6` 第 1 条记的是"仓库只有 1 个 initial commit、全部未跟踪"，而 2026-09-26 实测的状态是：
@@ -4223,7 +4247,7 @@ scripts/build_acceptance_report.py、validation/acceptance_latest.*）——
   新脚本（`verify_docs.py` / `build_acceptance_report.py` / `pack_docs.py` / `check_evidence_fold.mjs`）都还是 untracked；
   另有一批已删未提交（`README1.md`、`niu/` 下的旧样本文件）。
   在这种状态下开分支，worktree 里会缺文件、合并时会把该删的东西带回来。根目录还留着全仓 grep 零命中的产物；
-  `sample_projects/flask_crud_demo` 只剩一个空的 `.git.bak`。**不先收拾，后面每条线都会踩到"基线里带着别人的半成品"。**
+  `sample_projects/flask_crud_demo` 只剩一个空的 `.git.bak`（**WO-01 一轮已确认"源码丢失、不再恢复"并清掉了这个空壳**，见 `docs/90-archive.md` 附录 C.2）。**不先收拾，后面每条线都会踩到"基线里带着别人的半成品"。**
 - **前置**：无。**这是唯一允许在没有任何前置的情况下动全仓的工单。**
 - **独占文件**：仓库根目录、`.gitignore`、`docs/90-archive.md`、`docs/08`（仅 `§19.6` 那一条）。
 - **必读**：`docs/00-index.md` §3.4（禁止事项，尤其"不许顺手删看着像旧的东西"）、`docs/90-archive.md`（旧产物处置表）、`§19.6`。
@@ -4233,9 +4257,9 @@ scripts/build_acceptance_report.py、validation/acceptance_latest.*）——
      `verify_docs.py` / `build_acceptance_report.py` / `pack_docs.py` / `check_evidence_fold.mjs`、`validation/acceptance_latest.*` 都还是 untracked；
      另有一批已删未提交：`README1.md` 与 `niu/` 下的旧样本文件）。
      把尚未提交的那几轮改动（文档里记的 UI 重设计一轮 / 证据折叠一轮 / 入口完善一轮）作为一个或几个提交，message 逐轮写清。
-     **这一步不许顺手改任何代码**；**`aud.m4s` / `vid.m4s` / `generated_assets_motion_tiles_20260926/` 不要提交**（留给第 2 步处理）；`.ai_orchestrator`（编排器的运行产物目录）也不要提交。
+     **这一步不许顺手改任何代码**；**`aud.m4s` / `vid.m4s` / `generated_assets_motion_tiles_20260926/` 不要提交**（留给第 2 步处理；**第 2 步已清理**）；`.ai_orchestrator`（编排器的运行产物目录）也不要提交。
   2. **清理无引用残留**：先全仓确认下列产物**没有任何代码 / 脚本 / 文档引用**，再删：
-     根目录的 `aud.m4s`、`vid.m4s`、`generated_assets_motion_tiles_20260926/`、空目录 `assets/`。
+     根目录的 `aud.m4s`、`vid.m4s`、`generated_assets_motion_tiles_20260926/`、空目录 `assets/`（这四项**已清理**，登记在 `docs/90-archive.md` 附录 C.2）。
      **删之前必须在 `docs/90-archive.md` 的处置表里登记一行**（本仓库的纪律：清理要留痕，否则下一个人会以为丢了东西）。
   3. **补 `.gitignore`**：至少让同类产物（如 `*.m4s`）不再进仓库。
   4. **`flask_crud_demo` 的处置决定**（二选一，都要留痕）：① 明确"源码已丢失、不再恢复"，把 `.git.bak` 一并清掉，
@@ -4305,7 +4329,11 @@ scripts/build_acceptance_report.py、validation/acceptance_latest.*）——
   3. **口径文案一致性**：把讲稿 / 反幻觉面板说明里提到的引擎机制做成**机器可读的唯一来源**
      （例如 `engine/logic_platform/verification_manifest.json` 待建：检查项、四条把关规则、`can_publish` 恒假），
      再写一个比对脚本（前端不能直接读 `engine/`，所以允许"由脚本读清单 + 读组件里的说明常量再比对"）。
-- **验收**：三件各带负向对照；`python scripts/verify_docs.py` exit 0；`node scripts/check_evidence_fold.mjs` 仍全绿（它是折叠口径的常驻检查）。
+  4. **（W0 集成轮转来）修一条门禁缺陷**：`scripts/verify_docs.py` 的 `resolve_token()` 用 `lstrip("./")`，
+     剥的是**字符集合**而不是**前缀** → 任何带前导点的路径都被判成"不存在"（`docs/08` §19.1 第 28 条有实测与影响面）。
+     修法是改成剥前缀（`re.sub(r"^(\./)+", "", token)` 这一类），并**补一条负向对照**：
+     点目录必须能解析成功，改回 `lstrip` 必须 FAIL。**修完之前，文档里不要写带尾随斜杠的点目录。**
+- **验收**：四件各带负向对照；`python scripts/verify_docs.py` exit 0；`node scripts/check_evidence_fold.mjs` 仍全绿（它是折叠口径的常驻检查）。
 - **集成轮待办**：`docs/06` §20.1 与 `docs/07` §17.2 登记新脚本；`§19.1` 第 22、26 条状态从"⚠️ 未修"改为"✅ 已加机器检查"（或如实写"部分修"）。
 - **诚实边界**：**不许为了让文案通过而放宽断言**（`§19.4` 第 4 条的教训：放宽断言比改一句文案危险得多）。
   第 ③ 件如果做不到"派生"，就退成"比对 + 触发条件写在文档里"，并如实说明它抓不到什么。
@@ -4598,7 +4626,7 @@ python scripts/verify_sprint0.py
 | 低端机 / 移动端性能实测 | 没有设备，也没有可跑的浏览器环境 | 同上 |
 | Skill 失效点报告里需要**外部 LLM 调用**的部分（一致性 / 批量一致性） | 引擎层本来就禁止网络调用；若无 API 就只能交付骨架并写"未实测" | `docs/02` §8.9、`docs/01` §1.2 |
 | Java / JavaScript 支持 | **明确维持不做** | `§16.3` |
-| `sample_projects/flask_crud_demo` 的源码 | 已丢失，只剩一个空的 `.git.bak`；只能做"决定不恢复" | `§19.6` 第 2 条 |
+| `sample_projects/flask_crud_demo` 的源码 | 已丢失（空壳 `.git.bak` 已由 `WO-01` 一轮清理，见 `docs/90-archive.md` 附录 C.2）；只能做"决定不恢复" | `§19.6` 第 2 条 |
 | `modules`（代码模块）与业务域的统一、两套调用图收敛 | **现在不要动**（`§16.4` 明写留给下一轮一并处理） | `§16.4` |
 
 ### 24.3 一句话总结怎么用
@@ -4614,7 +4642,7 @@ python scripts/verify_sprint0.py
 
 # 历史存档（原 README 附录 C）
 
-> 更新触发：**几乎不改**（只有再删 / 再移出文档或产物时才追加） | 上次更新：阶段 1 拆出一轮（2026-09-26）
+> 更新触发：**几乎不改**（只有再删 / 再移出文档或产物时才追加） | 上次更新：W0 集成轮（2026-09-26）
 > 来源：原 `README.md` 的附录 C（含 C.1）**整章搬移，逐字未改**；阶段 2 从 `docs/90-历史存档.md` 改名为本文件（ASCII 文件名，便于跨平台与一次性交付）。
 > 这是一次性历史记录，**不是当前结论**：当前该看的是 `README.md` 与 `docs/` 下的其它几份。
 
@@ -4675,6 +4703,39 @@ python scripts/verify_sprint0.py
 > 以及上表「必须留」那一整列 —— 它们互相咬合，合计约五千行。
 > 砍掉它要先改 §17.2 的验收清单与 `browser_clickthrough.mjs` 的断言，
 > 属于**产品决策**，不要当成清理顺手做。
+
+### 附录 C.2 · WO-01 一轮的仓库卫生清理（2026-09-26）
+
+`WO-01`（基线提交与仓库卫生）建基线时又清了一批。口径与 C.1 相同：**先全仓确认零引用，再删**；
+**删之前先在本表登记一行**（本仓库的纪律：清理要留痕，否则下一个人会以为丢了东西）。
+
+| 已清理 | 体积 | 为什么可以删 |
+|---|---|---|
+| `aud.m4s`（根目录） | 905,004 B（约 884 KB） | 音频素材，既不是任何脚本的产出，也不是任何脚本的输入；全仓 grep `aud.m4s` **0 处引用**（只有 `docs/10-work-orders.md` 里"不要提交它"这句话本身提到过它） |
+| `vid.m4s`（根目录） | 4,475,018 B（约 4.3 MB） | 同上（全仓 grep `vid.m4s` **0 处引用**） |
+| `generated_assets_motion_tiles_20260926/` | 19 个文件、37,095 B（SVG / HTML / CSS / manifest + 3 份提示词） | 一次性生成的视觉素材包（**已清理**）；全仓 grep 该目录名 **0 处引用**，`frontend/` 里没有任何一处 import / fetch 它 |
+| `assets/`（根目录） | 空目录（**已清理**） | 空目录本身不携带任何内容；`scripts/`、`engine/`、`backend/` 里 grep `assets` **0 处命中**。前端自己的 `frontend/src/assets/` 是另一回事（仍在，与根目录这个空目录无关） |
+| `niu/`（`README.md` + 5 个 `.py`，合计 25,142 B） | 6 个文件（**已清理**） | 早期自造样本「实验室设备借还与安全检查管理系统」，已被 `sample_projects/lab_safety_assistant` 取代；`scripts/`、`engine/`、`backend/`、`frontend/` **0 处引用**（它自己 README 里那句 `cd D:\learn_with_ai\lab_equipment_system` 指向的目录早已不存在）。⚠️ 这批删除在 `WO-01` 之前就已经落在磁盘上（未提交），`WO-01` 做的是**核对零引用 + 提交 + 在此登记** |
+| `sample_projects/flask_crud_demo/`（只剩 `.git.bak` 的空壳） | 空目录（**已清理**） | 见下方「`flask_crud_demo` 的处置决定」 |
+
+**`sample_projects/flask_crud_demo` 的处置决定（`WO-01` 第 4 步 · 选项 ①）**：**明确「源码已丢失、不再恢复」**。
+
+理由是实测（在**已清理**之前先看过它里面到底有什么）：`.git.bak` 里**没有任何 git 对象** —— `objects/` 下只有空的 `info/` 与 `pack/`，`refs/` 为空，也没有 `packed-refs` —— 所以它**恢复不出任何源码**，留着只会让人以为还有东西可捞。
+
+因此连 `.git.bak` 带整个空壳目录一并清掉（**已清理**），并据此把 `§19.6` 第 2 条改写为「**当前可用的自造样本只剩 `lab_safety_assistant` 一个**」。
+`docs/10-work-orders.md` 的 `§24.2`「不派单」那一行结论（源码只能「决定不恢复」）仍然成立，但它写的「只剩一个空的 `.git.bak`」已不再符合事实 —— 这条措辞与 `§23.1` 的状态需要由集成轮同步（见 `WO-01` 交付说明的「集成轮待办」）。
+
+**这一轮查过、但确认「不能删」的**（记在这里，免得下次再来查一遍）：
+
+| 看着像旧的 | 为什么必须留 |
+|---|---|
+| `.ai_orchestrator`（根目录下的隐藏目录） | 编排器的**运行产物**（它里面的 `runs/<时间戳>/` 放着每次运行的 input / events / 日志）。它**不进仓库**（已加进 `.gitignore`），但**不删**：正在运行 / 下次运行的编排器还要往里写 |
+| `.lp_render.txt`（根目录） | `scripts/test_logic_platform.py --out .lp_render.txt` 的导出产物，供人工走查排版；已在 `.gitignore` 里忽略，**不是**无引用残留 |
+
+> ⚠️ **门禁现状（`WO-01` 一轮实测，顺带发现的一条 D1 缺陷）**：`scripts/verify_docs.py` 的 D1 目前**查不出带前导点的路径** ——
+> `resolve_token()` 里那句 `lstrip("./")` 剥的是"字符集合"而不是"前缀"，于是 `.ai_orchestrator` 会被剥成 `ai_orchestrator`，
+> 明明在磁盘上却被判成"不存在"（本表第一行原本就因此报了一条 ERROR：`docs/90-archive.md` 的 `.ai_orchestrator` 一行）。
+> 这份表因此按**不带尾随斜杠**的写法引用它。这条门禁缺陷已登记在 `docs/08` §19.1 第 28 条，并作为**第 4 件**并入 `docs/10-work-orders.md` 的 `§23.4`（`WO-04` 门禁补强）一并修。
 
 
 <!-- ===== 以下来自 docs/features/_TEMPLATE.md ===== -->
