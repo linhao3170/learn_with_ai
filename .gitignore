@@ -63,5 +63,16 @@ backend/data/logic_platform/
 # 浏览器走查脚本的临时产物目录（scripts/browser_walkthrough.ps1 按需创建）
 _task_scripts/
 
+# 视频 / 音频素材产物（WO-01 一轮：根目录 aud.m4s / vid.m4s 全仓 0 处引用，已清理）
+# 它们是被分析项目之外的临时素材，不是任何脚本的输入，也不参与任何产物生成。
+*.m4s
+
+# 一次性视觉素材包（WO-01 一轮：根目录 generated_assets_motion_tiles_20260926/ 全仓 0 处引用，已清理）
+# 这类"某天生成、只给人看"的素材包统一按前缀忽略，避免同类目录再进仓库。
+generated_assets_*/
+
+# AI 编排器的运行产物目录（WO-01 一轮：runs/ 下是每次运行留下的 input / events / 日志，不是源码）
+.ai_orchestrator/
+
 # Backup files
 *.bak
