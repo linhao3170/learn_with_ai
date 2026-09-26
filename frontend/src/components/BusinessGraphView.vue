@@ -311,6 +311,10 @@ const props = defineProps({
     type: String,
     default: '',
   },
+  initialModuleId: {
+    type: String,
+    default: '',
+  },
 })
 
 /** 打开一条证据时上报给父级（TrainingView 会写进学习会话的 viewed_evidence） */
@@ -427,6 +431,9 @@ async function load() {
   if (!openDomains.value.size && domains.value.length) {
     openDomains.value = new Set([domains.value[0].domain_id])
   }
+  if (props.initialModuleId && (graph.value?.module_cards?.[props.initialModuleId] || capabilities.value.some((c) => c.capability_id === props.initialModuleId) || domains.value.some((d) => d.domain_id === props.initialModuleId))) {
+    await selectModule(props.initialModuleId)
+  }
   // 之前选中的模块如果不在新图谱里，关掉面板（不显示上一个项目的内容）
   if (selectedId.value && !graph.value.module_cards?.[selectedId.value]) {
     selectedId.value = ''
@@ -441,6 +448,9 @@ watch(() => props.projectId, () => {
   openDomains.value = new Set()
   openCaps.value = new Set()
   load()
+})
+watch(() => props.initialModuleId, (id) => {
+  if (id && graph.value) selectModule(id)
 })
 
 // ---------------------------------------------------------------------------

@@ -368,3 +368,431 @@ body {
   background: rgba(0, 212, 255, 0.12);
   color: #00d4ff;
 }
+
+/* ===========================================================================
+ * UI 重设计一轮（系统主页面 + 链式拉动 / 层进式动画）
+ * ===========================================================================
+ *
+ * 这一节只做三件事，别的都不动：
+ *   1. **模块化**：`.module-block`（大模块，系统主页面上的两个核心功能）与
+ *      `.mini-module`（小模块，次级入口）；
+ *   2. **链式拉动**：`.chain-rail` + `.chain-car`（一条链子把一个模块拉向另一个），
+ *      以及 `.chain-pull-{left,right}` 的入场；
+ *   3. **层进式展现**：`[data-layer]` —— 由 `src/composables/useReveal.js` 在
+ *      进入视口时逐层点亮，子项靠 `--i` / `--d` 排延迟。
+ *
+ * 两条硬约定（都是为了让"动画不伤可用性"）：
+ *   - **默认可见**：`[data-layer]` 不带 `.layer-armed` 时就是普通可见元素。
+ *     只有当 JS 确认浏览器支持 IntersectionObserver 时才加上 `.layer-armed` 并在
+ *     进入视口后 `is-in`。也就是说：JS 挂了 / 浏览器不支持 / jsdom 走查里，
+ *     页面内容**照样完整可见**，不会白屏（走查是断言 DOM 的，但这条约定是给人的）。
+ *   - **尊重 prefers-reduced-motion**：系统开了"减少动态效果"时，所有入场动画关掉，
+ *     只保留颜色变化。
+ */
+
+/* ------------------------------ 1. 大 / 小模块 ------------------------------ */
+
+.module-block {
+  position: relative;
+  border-radius: 20px;
+  border: 1px solid rgba(31, 31, 46, 0.9);
+  background:
+    radial-gradient(120% 120% at 0% 0%, rgba(0, 212, 255, 0.07) 0%, transparent 55%),
+    radial-gradient(120% 120% at 100% 100%, rgba(168, 85, 247, 0.08) 0%, transparent 55%),
+    rgba(17, 17, 24, 0.82);
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+              border-color 0.35s ease,
+              box-shadow 0.35s ease;
+  overflow: hidden;
+}
+
+.module-block:hover {
+  transform: translateY(-4px);
+  border-color: rgba(0, 212, 255, 0.42);
+  box-shadow: 0 18px 50px rgba(0, 212, 255, 0.12);
+}
+
+.module-block--purple:hover {
+  border-color: rgba(168, 85, 247, 0.45);
+  box-shadow: 0 18px 50px rgba(168, 85, 247, 0.14);
+}
+
+/* 顶部那道渐变细线：大模块的"身份证" */
+.module-block::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #00d4ff, #a855f7, transparent);
+  opacity: 0.65;
+}
+
+.module-block--purple::before {
+  background: linear-gradient(90deg, transparent, #a855f7, #ec4899, transparent);
+}
+
+/* hover 时扫过一条高光：一次性（0.9s），不是循环 */
+.sheen-layer {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 45%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.07), transparent);
+  transform: translateX(-120%);
+  pointer-events: none;
+}
+
+.module-block:hover .sheen-layer {
+  animation: sheen 0.9s ease-out both;
+}
+
+.mini-module {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(31, 31, 46, 0.9);
+  background: rgba(22, 22, 31, 0.6);
+  text-align: left;
+  width: 100%;
+  cursor: pointer;
+  transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+              border-color 0.28s ease,
+              background-color 0.28s ease;
+}
+
+.mini-module:hover {
+  transform: translateY(-3px);
+  border-color: rgba(168, 85, 247, 0.38);
+  background: rgba(26, 26, 40, 0.85);
+}
+
+/* 数字 / 事实小方块的统一外观（主页面统计与各处小计数共用） */
+.stat-tile {
+  border-radius: 12px;
+  border: 1px solid rgba(31, 31, 46, 0.9);
+  background: rgba(15, 15, 22, 0.6);
+  padding: 10px 12px;
+}
+
+/* 登录与统一搜索：只增加入口层样式，不触碰分析结果的视觉语义。 */
+.home-user-chip { display: inline-flex; align-items: center; gap: 7px; padding: 5px 9px; border: 1px solid rgba(31,31,46,.9); border-radius: 9px; color: #94a3b8; font-size: 11px; transition: border-color .2s ease, color .2s ease, background-color .2s ease; }
+.home-user-chip:hover { color: #fff; border-color: rgba(168,85,247,.45); background: rgba(168,85,247,.08); }
+.login-input { width: 100%; border: 1px solid #2a2a3e; border-radius: 10px; background: rgba(15,15,22,.8); color: #e2e8f0; padding: 10px 12px; font-size: 13px; outline: none; transition: border-color .2s ease, box-shadow .2s ease; }
+.login-input:focus { border-color: rgba(0,212,255,.55); box-shadow: 0 0 0 3px rgba(0,212,255,.08); }
+.quick-search-box { display: flex; align-items: center; gap: 10px; border: 1px solid rgba(31,31,46,.95); background: rgba(15,15,22,.72); border-radius: 12px; padding: 0 12px; min-height: 44px; transition: border-color .2s ease, box-shadow .2s ease; }
+.quick-search-box:focus-within { border-color: rgba(0,212,255,.45); box-shadow: 0 0 24px rgba(0,212,255,.08); }
+.quick-search-input { flex: 1; min-width: 0; background: transparent; border: 0; outline: none; color: #e2e8f0; font-size: 13px; }
+.quick-search-input::placeholder { color: #6b7280; }
+.quick-search-box kbd { border: 1px solid #2a2a3e; border-radius: 5px; padding: 2px 6px; color: #6b7280; font: 10px 'JetBrains Mono', monospace; }
+.quick-search-results { position: absolute; z-index: 30; top: 50px; left: 0; right: 0; overflow: hidden; border: 1px solid #2a2a3e; border-radius: 12px; background: rgba(18,18,26,.98); box-shadow: 0 18px 45px rgba(0,0,0,.4); }
+.quick-search-result { display: flex; align-items: center; gap: 10px; width: 100%; padding: 10px 12px; background: transparent; border: 0; border-bottom: 1px solid rgba(31,31,46,.55); cursor: pointer; }
+.quick-search-result:last-child { border-bottom: 0; }
+.quick-search-result:hover { background: rgba(0,212,255,.08); }
+.quick-search-icon { width: 24px; text-align: center; color: #7dd3fc; }
+
+/* ------------------------ 2. 链式拉动（链表 + 拉入） ------------------------ */
+
+/* 一条水平链子：两个大模块之间的连接；窄屏时隐藏（改成竖排就没有"链"了） */
+.chain-rail {
+  position: relative;
+  height: 2px;
+  background: linear-gradient(90deg,
+    rgba(0, 212, 255, 0.05),
+    rgba(0, 212, 255, 0.45),
+    rgba(168, 85, 247, 0.45),
+    rgba(168, 85, 247, 0.05));
+}
+
+/* 链节：沿链子等距排布的小方块，依次点亮（--i 决定延迟） */
+.chain-knot {
+  position: absolute;
+  top: 50%;
+  width: 7px;
+  height: 7px;
+  margin-top: -3.5px;
+  border-radius: 2px;
+  background: rgba(148, 163, 184, 0.35);
+  transform: rotate(45deg);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  transition-delay: calc(var(--i, 0) * 90ms);
+}
+
+.chain-rail.is-live .chain-knot {
+  background: #00d4ff;
+  box-shadow: 0 0 10px rgba(0, 212, 255, 0.75);
+}
+
+/* 沿链子跑动的光点：表示"这一步通往下一步" */
+.chain-car {
+  position: absolute;
+  top: 50%;
+  width: 34px;
+  height: 4px;
+  margin-top: -2px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.95), rgba(168, 85, 247, 0.95), transparent);
+  animation: chain-travel 2.6s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+  pointer-events: none;
+}
+
+/* 入场：左卡被"拉"向右边、右卡被"拉"向左边 */
+.chain-pull-left { animation: chain-pull-left 0.75s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.chain-pull-right { animation: chain-pull-right 0.75s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+/* 竖排（窄屏）时的"链"：一段竖直渐变线 */
+.chain-rail-v {
+  width: 2px;
+  height: 28px;
+  margin: 0 auto;
+  background: linear-gradient(180deg, rgba(0, 212, 255, 0.45), rgba(168, 85, 247, 0.45));
+}
+
+/* --------------------------- 3. 层进式展现 --------------------------- */
+
+[data-layer].layer-armed {
+  opacity: 0;
+  transform: translateY(22px);
+  filter: blur(6px);
+  transition:
+    opacity 0.5s ease,
+    transform 0.62s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.5s ease;
+  transition-delay: var(--d, 0ms);
+  will-change: opacity, transform;
+}
+
+[data-layer].layer-armed.is-in {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
+
+/* 容器内的子项依次侧向滑入（层进式的"层"） */
+.stagger-item.layer-armed {
+  opacity: 0;
+  transform: translateX(-18px);
+  transition:
+    opacity 0.42s ease,
+    transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: calc(var(--i, 0) * 55ms + var(--d, 0ms));
+}
+
+.stagger-item.layer-armed.is-in {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ------------------------------ 4. 折叠抽屉 ------------------------------ */
+
+/* 「来源依据 / 口径说明」抽屉：默认收起，需要时点开 —— 证据不删，只是不喧宾夺主 */
+.drawer-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(31, 31, 46, 0.9);
+  background: rgba(15, 15, 22, 0.55);
+  cursor: pointer;
+  transition: border-color 0.25s ease, background-color 0.25s ease;
+}
+
+.drawer-head:hover {
+  border-color: rgba(0, 212, 255, 0.35);
+  background: rgba(0, 212, 255, 0.05);
+}
+
+.drawer-chevron {
+  transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+  flex-shrink: 0;
+}
+
+.drawer-chevron.open {
+  transform: rotate(90deg);
+}
+
+.drawer-body {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.drawer-body.open {
+  grid-template-rows: 1fr;
+}
+
+.drawer-body > .drawer-inner {
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* 抽屉里的每一行也逐层出现 */
+.drawer-body.open .drawer-row {
+  animation: layer-slide 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--i, 0) * 45ms);
+}
+
+/* ------------------- 4.5 链式拉动（微观版：阶段行的"拉动下一格"） ------------------- */
+
+/*
+ * 一条竖链把六阶段串起来。鼠标停在某一格上时：
+ *   - 这一格的圆点点亮（你在这一格）；
+ *   - 从这一格往下的一段链子亮起（把它拉向下一格）；
+ *   - 下一格的圆点被"带"着放大一点（拉动效果）。
+ * 全部靠纯 CSS 的 `:hover` + 相邻兄弟选择器，没有任何 JS 状态。
+ */
+.stage-list {
+  position: relative;
+}
+
+.stage-row {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 8px 10px 8px 8px;
+  border-radius: 12px;
+  transition: background-color 0.25s ease, transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.stage-row::before {
+  content: '';
+  position: absolute;
+  left: 19px;
+  top: 50%;
+  bottom: -50%;
+  width: 1px;
+  background: rgba(31, 31, 46, 0.9);
+  transition: background 0.32s ease;
+  pointer-events: none;
+}
+
+.stage-row:last-child::before {
+  display: none;
+}
+
+.stage-row.is-clickable {
+  cursor: pointer;
+}
+
+.stage-row.is-clickable:hover {
+  background: rgba(0, 212, 255, 0.06);
+  transform: translateX(3px);
+}
+
+.stage-row.is-clickable:hover::before {
+  background: linear-gradient(180deg, #00d4ff, rgba(168, 85, 247, 0.15));
+}
+
+.stage-dot {
+  position: relative;
+  z-index: 1;
+  width: 23px;
+  height: 23px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
+  border: 1px solid rgba(31, 31, 46, 0.9);
+  background: #12121a;
+  color: #6b7280;
+  transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.stage-row.is-done .stage-dot {
+  border-color: rgba(0, 212, 255, 0.35);
+  color: #7dd3fc;
+}
+
+.stage-row.is-clickable:hover .stage-dot {
+  border-color: rgba(0, 212, 255, 0.8);
+  color: #fff;
+  background: rgba(0, 212, 255, 0.18);
+  transform: scale(1.08);
+}
+
+/* 链式拉动：停在上一格时，下一格被"带"动 */
+.stage-row:hover + .stage-row .stage-dot {
+  transform: scale(1.14);
+  border-color: rgba(168, 85, 247, 0.6);
+}
+
+.stage-row:hover + .stage-row .stage-name {
+  color: #fff;
+}
+
+/* --------------------------- 5. 六步流程链（平台页） --------------------------- */
+.flow-chain {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 6px;
+}
+
+.flow-node {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 11px;
+  border-radius: 10px;
+  border: 1px solid rgba(31, 31, 46, 0.9);
+  background: rgba(22, 22, 31, 0.5);
+  font-size: 11px;
+  color: #6b7280;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.flow-node.is-active {
+  color: #00d4ff;
+  border-color: rgba(0, 212, 255, 0.6);
+  background: rgba(0, 212, 255, 0.1);
+  box-shadow: 0 0 22px rgba(0, 212, 255, 0.16);
+}
+
+.flow-node.is-done {
+  color: rgba(74, 222, 128, 0.85);
+  border-color: rgba(74, 222, 128, 0.28);
+  background: rgba(74, 222, 128, 0.06);
+}
+
+.flow-arrow {
+  color: #374151;
+  transition: color 0.3s ease;
+}
+
+.flow-node.is-done + .flow-arrow {
+  color: rgba(74, 222, 128, 0.6);
+}
+
+/* ------------------------------ 6. 无障碍 ------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+
+  [data-layer].layer-armed {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+
+  .chain-car {
+    display: none;
+  }
+}

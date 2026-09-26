@@ -1,12 +1,12 @@
 <template>
-  <div class="min-h-screen bg-grid relative overflow-hidden">
+  <div ref="rootRef" class="min-h-screen bg-grid relative overflow-hidden">
     <!-- 背景装饰 -->
     <div class="glow-orb w-[700px] h-[700px] -top-52 right-[-200px] bg-neon-purple opacity-20"></div>
     <div class="glow-orb w-[500px] h-[500px] bottom-[-150px] left-[-100px] bg-neon-blue opacity-20"></div>
 
     <div class="relative z-10 max-w-5xl mx-auto px-6 py-8">
       <!-- 顶部：项目信息 + 项目切换 + 进度 -->
-      <div class="mb-8">
+      <div class="mb-8" data-layer>
         <div class="flex items-center justify-between mb-4">
           <div>
             <div class="text-xs text-gray-500 font-mono tracking-widest uppercase mb-1">Project Training</div>
@@ -90,70 +90,118 @@
 
       <!--
         Sprint 2 · 阶段切换（README5 §6.2 的 A 方案：不动 App.vue 外壳，在 TrainingView 里用 v-show 切子组件）
-        - "训练关卡"仍是默认阶段，判分 / 离线横幅的行为一个字都没改；
+        - "训练关卡"是本工作区的默认阶段，判分 / 离线横幅的行为一个字都没改；
           （题数**不固定**：第 2 关每个够格的业务模块各一道题，
            所以 4 个业务模块的项目是 7 关，不是 4 关 —— 见训练生成器
-           `engine/project_analyzer/training_generator.py` 的 `_generate_level2`）
+           `engine/project_analyzer/training_generator.py` 的 `_generateLevel2`）
         - "业务图谱"是 Sprint 2 新增的学生可见入口（P1-06）。
           这里用 v-if 而不是 v-show：图谱是重面板，且**不该在只做训练时也发请求**，
           也不该把图谱正文混进训练页的可见文本里（走查会用 body 文本做断言）。
         - "项目认知"是 Sprint 3 新增的**阶段一**（培养方案第四章六阶段的第一个）。
-          它排在页签最前（学习顺序），但**默认阶段仍是训练关卡** ——
-          改默认落地页会牵动既有走查与演示动线，属于另一件事，不在这里顺手改。
         - "模块卡片"是 Sprint 4 新增的**阶段二**（逐张卡片 + 五个问题 → 事实覆盖清单）。
           它紧跟在阶段一后面（学习顺序），题目与判定都在后端，前端不认识任何业务字段。
         - "设计画布"是 Sprint 5 新增的**阶段四 / 五**（自己拆模块 → 六维评审）。
-          按学习顺序它应该排在"训练关卡"前面，但**这里的顺序仍按落地时间排**：
-          改页签顺序会牵动既有走查的断言与演示动线，属于另一件事（README §10.3 说的
-          `teaching_plan.json` 落地时一并处理）。
+
+        进哪一个阶段由 `initial-stage` 决定（UI 重设计一轮新增）：
+        系统主页面上的六阶段入口把 `mainStage` 直接指到对应阶段；
+        省略时仍是 `training`（"训练关卡"），走查与演示动线不变。
       -->
-      <div class="flex gap-2 mb-5 flex-wrap items-center" data-test="stage-switcher">
-        <button
-          class="tab-btn"
-          :class="{ active: mainStage === 'orientation' }"
-          data-test="stage-orientation"
-          @click="mainStage = 'orientation'"
-        >项目认知</button>
-        <button
-          class="tab-btn"
-          :class="{ active: mainStage === 'module-card' }"
-          data-test="stage-module-card"
-          @click="mainStage = 'module-card'"
-        >模块卡片</button>
-        <button
-          class="tab-btn"
-          :class="{ active: mainStage === 'design' }"
-          data-test="stage-design"
-          @click="mainStage = 'design'"
-        >设计画布</button>
-        <button
-          class="tab-btn"
-          :class="{ active: mainStage === 'training' }"
-          data-test="stage-training"
-          @click="mainStage = 'training'"
-        >训练关卡</button>
-        <button
-          class="tab-btn"
-          :class="{ active: mainStage === 'graph' }"
-          data-test="stage-graph"
-          @click="mainStage = 'graph'"
-        >业务图谱</button>
-        <span v-if="mainStage === 'graph'" class="text-[11px] text-gray-500">
-          数据来自 <span class="font-mono">/api/projects/{{ projectId }}/business-graph</span>，
-          后端不可用时回落到静态快照的 <span class="font-mono">business_graph</span>。
-        </span>
-        <span v-else-if="mainStage === 'orientation'" class="text-[11px] text-gray-500">
-          阶段一 · 系统只回覆盖清单，<span class="text-gray-400">不打分</span>
-          （覆盖度比对在后端：<span class="font-mono">engine/teaching/coverage.py</span>）。
-        </span>
-        <span v-else-if="mainStage === 'module-card'" class="text-[11px] text-gray-500">
-          阶段二 · 逐张卡片 + 五个问题，系统只做<span class="text-gray-400">事实覆盖比对</span>、不打分
-          （题目与判定都在后端：<span class="font-mono">engine/teaching/card_coverage.py</span>）。
-        </span>
-        <span v-else-if="mainStage === 'design'" class="text-[11px] text-gray-500">
-          阶段四 / 五 · 自己拆模块 → 六维评审；<span class="text-gray-400">算不出来的维度显示「本轮未评估」，不填 0</span>
-          （判定在后端：<span class="font-mono">engine/design/rubric.py</span>）。
-        </span>
+      <!--
+        UI 重设计一轮（排版优先级）：
+        这五个页签原来是一条平级的按钮排，看不出"哪个是教、哪个是看"。
+        现在按**模块层级**分成两组：① 「阶段主线」= 六阶段教学（教）；
+        ② 「项目视图」= 训练关卡 + 业务图谱（看）。
+        同时把原来直接铺在页签旁边的那几段口径说明**收进可折叠抽屉** ——
+        说明一个字没删，只是默认不再占据第一屏（`data-test="stage-scope-toggle"`）。
+      -->
+      <div class="mb-5 space-y-3" data-test="stage-switcher" data-layer data-layer-delay="80">
+        <div class="flex flex-wrap items-center gap-x-4 gap-y-2">
+          <!-- 组 1：阶段主线（大模块） -->
+          <div class="flex items-center gap-2 flex-wrap">
+            <span class="text-[10px] font-mono tracking-wider text-neon-blue/70 uppercase">阶段主线</span>
+            <button
+              class="tab-btn"
+              :class="{ active: mainStage === 'orientation' }"
+              data-test="stage-orientation"
+              @click="mainStage = 'orientation'"
+            >① 项目认知</button>
+            <button
+              class="tab-btn"
+              :class="{ active: mainStage === 'module-card' }"
+              data-test="stage-module-card"
+              @click="mainStage = 'module-card'"
+            >② 模块卡片</button>
+            <button
+              class="tab-btn"
+              :class="{ active: mainStage === 'design' }"
+              data-test="stage-design"
+              @click="mainStage = 'design'"
+            >④⑤ 设计画布</button>
+          </div>
+
+          <div class="hidden sm:block w-px h-5 bg-deep-border"></div>
+
+          <!-- 组 2：项目视图（辅助） -->
+          <div class="flex items-center gap-2 flex-wrap">
+            <span class="text-[10px] font-mono tracking-wider text-gray-500 uppercase">项目视图</span>
+            <button
+              class="tab-btn"
+              :class="{ active: mainStage === 'training' }"
+              data-test="stage-training"
+              @click="mainStage = 'training'"
+            >训练关卡</button>
+            <button
+              class="tab-btn"
+              :class="{ active: mainStage === 'graph' }"
+              data-test="stage-graph"
+              @click="mainStage = 'graph'"
+            >业务图谱</button>
+          </div>
+        </div>
+
+        <!-- 当前阶段的一句话定位（长说明在下面的抽屉里，需要时展开） -->
+        <p class="text-[11px] text-gray-500" data-test="stage-hint">{{ stageHint }}</p>
+
+        <!-- 口径与来源：可折叠（内容与改动前完全一致，只是默认收起） -->
+        <div>
+          <button
+            class="drawer-head"
+            data-test="stage-scope-toggle"
+            :aria-expanded="String(scopeOpen)"
+            @click="scopeOpen = !scopeOpen"
+          >
+            <span class="flex items-center gap-2 min-w-0">
+              <span class="text-sm leading-none">📎</span>
+              <span class="text-xs text-gray-300">这一阶段的判定口径与数据来源</span>
+              <span class="text-[10px] text-gray-500 font-mono truncate">{{ STAGE_LABELS[mainStage] }}</span>
+            </span>
+            <span class="flex items-center gap-2 flex-shrink-0">
+              <span class="text-[10px] text-gray-500 font-mono">{{ scopeOpen ? '收起' : '展开' }}</span>
+              <svg
+                class="drawer-chevron text-gray-500" :class="{ open: scopeOpen }"
+                width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"
+              >
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </span>
+          </button>
+
+          <div class="drawer-body" :class="{ open: scopeOpen }" data-test="stage-scope-body">
+            <div class="drawer-inner">
+              <div class="pt-2 space-y-2">
+                <div
+                  v-for="(line, li) in stageScopeLines"
+                  :key="li"
+                  class="drawer-row glass-card px-3 py-2 text-[11px] text-gray-400 leading-relaxed"
+                  :style="{ '--i': li }"
+                >
+                  <span class="text-gray-600 mr-1.5">{{ li + 1 }}.</span>{{ line }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div v-show="mainStage === 'training'">
@@ -175,7 +223,7 @@
               该项目契约里没有下发训练题（training.questions 为空），无法开始训练。
             </div>
 
-            <div v-else class="glass-card p-8 neon-border">
+            <div v-else class="glass-card p-8 neon-border" data-layer>
               <div class="flex items-center gap-3 mb-6">
                 <div class="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold bg-gradient-to-br" :class="theme.badge">
                   {{ currentLevel }}
@@ -242,14 +290,16 @@
               </div>
               <div v-if="isMultiSelect" class="mb-4 text-xs text-gray-500">已选 {{ currentState.selected.length }} 项</div>
 
-              <!-- 多选（第 1 关样式） -->
+              <!-- 多选（第 1 关样式）：选项按 --i 依次滑入（层进式） -->
               <div v-if="isMultiSelect" class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-8">
                 <div
-                  v-for="opt in currentQuestion.options"
+                  v-for="(opt, oi) in currentQuestion.options"
                   :key="opt.id"
                   data-test="option-multi"
                   :data-option-id="opt.id"
-                  class="p-4 rounded-xl border cursor-pointer transition-all group"
+                  data-layer
+                  :style="{ '--i': oi }"
+                  class="stagger-item p-4 rounded-xl border cursor-pointer transition-all group"
                   :class="multiOptionClass(opt)"
                   @click="toggleOption(opt)"
                 >
@@ -266,14 +316,16 @@
                 </div>
               </div>
 
-              <!-- 单选（第 2/3/4 关样式） -->
+              <!-- 单选（第 2/3/4 关样式）：同样按 --i 依次滑入 -->
               <div v-else class="space-y-2.5 mb-8">
                 <div
-                  v-for="opt in currentQuestion.options"
+                  v-for="(opt, oi) in currentQuestion.options"
                   :key="opt.id"
                   data-test="option-single"
                   :data-option-id="opt.id"
-                  class="quiz-option"
+                  data-layer
+                  :style="{ '--i': oi }"
+                  class="stagger-item quiz-option"
                   :class="singleOptionClass(opt)"
                   @click="selectSingle(opt.id)"
                 >
@@ -646,6 +698,7 @@
       <BusinessGraphView
         v-if="mainStage === 'graph'"
         :project-id="projectId"
+        :initial-module-id="initialModuleId"
         @evidence-viewed="onEvidenceLoaded"
       />
     </div>
@@ -683,6 +736,24 @@ import StageDesign from '../components/StageDesign.vue'
 import { useDataSource, DEFAULT_PROJECT_ID } from '../api/dataSource'
 // P0-03：会话与进度持久化
 import { useLearningSession } from '../stores/learningSession'
+// UI 重设计一轮：层进式展现（进入视口逐层点亮；不支持 IntersectionObserver 时保持默认可见）
+import { useLayeredReveal } from '../composables/useReveal'
+
+const props = defineProps({
+  /**
+   * 进入本工作区时落在哪个阶段（系统主页面上的六阶段入口用它直接指路）。
+   * 取值：'orientation' | 'module-card' | 'design' | 'training' | 'graph'；
+   * 非法值 / 省略 → 'training'（保持改动前的默认落地行为）。
+   */
+  initialStage: {
+    type: String,
+    default: 'training',
+  },
+  initialModuleId: {
+    type: String,
+    default: '',
+  },
+})
 
 const emit = defineEmits(['view-analysis'])
 
@@ -701,12 +772,87 @@ const contract = ref(null)
 const loading = ref(true)
 const loadError = ref('')
 
+/** 本工作区的五个阶段（顺序 => 页签分组的顺序）。 */
+const STAGE_KEYS = ['orientation', 'module-card', 'design', 'training', 'graph']
+
+/** 页签文案（抽屉标题里也会用到，所以提到这里只留一份）。 */
+const STAGE_LABELS = {
+  orientation: '① 项目认知',
+  'module-card': '② 模块卡片',
+  design: '④⑤ 设计画布',
+  training: '训练关卡',
+  graph: '业务图谱',
+}
+
 /**
  * 主阶段：'orientation'（Sprint 3 · 阶段一 项目认知） | 'module-card'（Sprint 4 · 阶段二 模块卡片）
+ * | 'design'（Sprint 5 · 阶段四 / 五 设计画布 + 六维评审）
  * | 'training'（旧四关题型，**默认**；题数随项目而定） | 'graph'（Sprint 2 业务图谱）。
  * 用 v-show/v-if 切换而**不引 vue-router**，与 App.vue 的 currentView 机制一致（README5 §6.2 方案 A）。
  */
-const mainStage = ref('training')
+const mainStage = ref(STAGE_KEYS.includes(props.initialStage) ? props.initialStage : 'training')
+
+/** 口径抽屉：默认收起（说明一条没删，只是不再占第一屏）。 */
+const scopeOpen = ref(false)
+
+/** 当前阶段的一句话定位（长口径在 `stageScopeLines` 里）。 */
+const STAGE_HINTS = {
+  orientation: '阶段一 · 写出你认识的项目地图，系统只回覆盖清单，不打分。',
+  'module-card': '阶段二 · 逐张卡片回答五个问题，系统只做事实覆盖比对，不打分。',
+  design: '阶段四 / 五 · 自己拆模块、画依赖，提交后得到六维结构信号（有分数，算不出来的维度不填 0）。',
+  training: '训练关卡 · 旧四关题型（当前学生主流程）：功能拆分 / 模块职责 / 流程推演 / 关键实现。',
+  graph: '业务图谱 · 一级域 → 二级功能点 → 卡片与证据，用来回看"这个结论凭什么这么说"。',
+}
+const stageHint = computed(() => STAGE_HINTS[mainStage.value] || '')
+
+/**
+ * 每个阶段的判定口径与数据来源（可折叠抽屉的内容）。
+ *
+ * ⚠️ 这些句子里**不许出现效果数字**：数字的唯一来源是 `validation/acceptance_latest.md`，
+ * 手抄进前端第二天就会过期（docs/08 §19.2 ㉑）。这里只写"谁在算、算不出来会怎样"。
+ */
+const STAGE_SCOPE_LINES = {
+  orientation: [
+    '覆盖度比对在后端执行：engine/teaching/coverage.py；前端不算第二份。',
+    '系统只回「你已经提到的」与「你还没提到的」两份清单，没有分数、没有标准答案。',
+    '域目标是否可比，取决于该项目有没有教师确认的种子图谱；没有就只用域名比对，并在页面上说明。',
+    '后端不可用（离线演示模式）时如实报「覆盖度报告不可用」，不在浏览器里补算。',
+  ],
+  'module-card': [
+    '题目与「问题 → 字段」映射都从后端下发：engine/teaching/card_coverage.py + stage_questions 词典。',
+    '只做事实覆盖比对，不打分；反馈先给命中的事实，再给还没提到的事实。',
+    '卡片上 unconfirmed 的字段不参与比对，页面显示「该卡片待教师确认」。',
+    '离线时整页如实报「模块卡片任务不可用」——把题目烤进静态快照会造出第二份题目定义。',
+  ],
+  design: [
+    '题干 / 需求简报 / 必备能力清单 / 六维评审全部来自后端：engine/design/ 与 engine/lexicon/design_*.json。',
+    '算不出来的维度返回 not_evaluated（score = null + reason），页面显示「本轮未评估」，绝不填 0。',
+    '画布（原生 drag + 手写 SVG）只是学生的输入；判定只在后端，前端不自己算分。',
+    '第 2 次提交会 iteration + 1 并显示与上一轮的对比；离线时如实报「设计任务不可用」。',
+  ],
+  training: [
+    '判题只在后端：正确答案不下发到学生视图，前端既不持有、也无法推断对错（走查会检查页面里不出现答案字段名）。',
+    '离线演示模式下如实报「无法判分」，最终结果页标记未判分，不给掌握度结论。',
+    '题目来自契约 training.questions，题数随项目而定（第 2 关按够格的业务模块逐模块出题）。',
+    '提示分层：每答错一次消耗一次机会，用尽后才允许继续。',
+  ],
+  graph: [
+    '在线走 GET /api/projects/{id}/business-graph；后端不可用时回落到静态快照的 business_graph 字段。',
+    '事实层（调用图 / 状态写入 / 流程 / 依赖）来自 AST，可复现；业务划分是规则引擎的推断结果。',
+    '节点带置信度徽章（verified / inferred / inferred-low / unconfirmed），推断级结论注明待教师确认。',
+    '复杂度是七维公式的分级信号，不是"好 / 坏"的判定；每个徽章都能展开看公式与阈值。',
+  ],
+}
+const stageScopeLines = computed(() => STAGE_SCOPE_LINES[mainStage.value] || [])
+
+// 切换阶段时把抽屉收起：它的内容是"当前阶段"的口径，留着展开会误导
+watch(mainStage, () => { scopeOpen.value = false })
+
+// 外部（系统主页面）改了 initial-stage 时跟随（组件复用的情况下也正确）
+watch(() => props.initialStage, (v) => {
+  if (v && STAGE_KEYS.includes(v)) mainStage.value = v
+})
+
 
 // P0-01：项目名来自契约 project_name，不再写死项目名字符串
 const projectName = computed(() => contract.value?.project_name || contract.value?.project_id || '（未命名项目）')
@@ -1244,6 +1390,18 @@ watch(projectId, async (id) => {
 watch([currentLevel, currentView], () => {
   if (!contract.value) return
   session.setStage(currentView.value === 'result' ? 'result' : `level:${currentLevel.value}`)
+})
+
+// ---------------------------------------------------------------------------
+// 层进式展现（UI 重设计一轮）
+// ---------------------------------------------------------------------------
+// 舞台/关卡/视图一变就重新武装一次：切页签会换掉一批 DOM（v-if 懒挂载），
+// 换关卡会重建答题卡（`:key="'level-' + currentLevel"`）—— 新节点要重新进入
+// "先武装、再点亮"的流程，否则它们只会直接出现（不难看，但没有层次感）。
+// 注意：`useLayeredReveal` 的重新扫描放在下一帧（rAF），所以扫到的一定是新 DOM。
+const rootRef = ref(null)
+useLayeredReveal(rootRef, {
+  watchSource: () => [mainStage.value, currentLevel.value, currentView.value],
 })
 </script>
 

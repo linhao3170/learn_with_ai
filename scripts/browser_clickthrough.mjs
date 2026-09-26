@@ -227,6 +227,90 @@ async function main() {
     await waitFor('App 挂载', () => container.children.length > 0)
     record('真实 App（浏览器版 Vue）挂载成功', true, `#app 子节点 ${container.children.length} 个`)
 
+    // =====================================================================
+    // ---- 4.5 系统主页面（UI 重设计一轮新增的默认落地页）----
+    //
+    // 这一轮把默认落地页从"训练关卡"改成了系统主页面，所以走查也必须按**真实用户路径**
+    // 走一遍：先看到主页面 → 确认两大核心功能的入口都在 → 展开"来源依据"（默认收起）
+    // → 点进培训工作区 → 后面 13 个环节的断言一个字都没改。
+    //
+    // 断言的取舍（都是"能机器验的事实"，不是排版偏好）：
+    //   - 两个核心模块都在 DOM 里，且各自带一个能进得去的按钮；
+    //   - 「未开始」的阶段**不给按钮**（disabled），不能被当成已实现的功能点进去；
+    //   - 来源依据抽屉默认是收起的，点一下能展开、再点一下能收起（证据没被删掉）。
+    // 刻意**不**断言像素尺寸：本环境里没有真实排版（jsdom 不测样式），
+    // 用"谁在里面"来断言，而不是用"谁更大"（那会是一条永远绿或永远红的假断言）。
+    // =====================================================================
+    await waitFor('系统主页面', () => q('[data-test="home"]'), 15000)
+    record('默认落地页是系统主页面', !!q('[data-test="home"]'), 'data-test="home"')
+
+    const coreTraining = q('[data-test="home-core-training"]')
+    const coreLogic = q('[data-test="home-core-logic"]')
+    record('两大核心功能都在主页面且都是独立大模块', !!coreTraining && !!coreLogic,
+      [coreTraining && '培训系统', coreLogic && '业务逻辑分析平台'].filter(Boolean).join(' / '))
+
+    record('培训系统模块里有"进入"入口',
+      !!q('[data-test="home-enter-training"]'),
+      (q('[data-test="home-enter-training"]')?.textContent || '').trim())
+
+    record('业务逻辑分析平台模块里有"进入"入口',
+      !!q('[data-test="go-logic-platform"]'),
+      (q('[data-test="go-logic-platform"]')?.textContent || '').trim())
+
+    // 六阶段：已落地的给按钮，未开始的是 disabled（"不许把没做的说成做了"的前端落点）
+    //
+    // 这里**写死了两组 stage key**，是刻意的：主页面这张状态表与 `README.md` §0.2 /
+    // `docs/07` §16.1 的完成度表是**同一件事**，而"哪几个阶段已落地"是本仓库最容易
+    // 被顺手说错的一句话（界面改了、文档没改，或反过来）。只断言"未开始的数量 ≥ 1"
+    // 抓不到"把阶段三偷偷标成已落地"这种错，所以这里钉到具体是哪几个。
+    // 阶段三 / 阶段六真正落地时，这条断言会失败 —— 那时该改的就是它 + 那两张表。
+    const stageEntries = qa('[data-test="home-stage-entry"]')
+    const stageTodos = qa('[data-test="home-stage-todo"]')
+    const entryStages = stageEntries.map((el) => el.dataset.stage).sort().join(',')
+    const todoStages = stageTodos.map((el) => el.dataset.stage).sort().join(',')
+    record('主页面六阶段入口与完成度表一致（只有已落地的阶段可点）',
+      entryStages === 'design,module-card,orientation' &&
+      todoStages === 'flow-sim,reconstruct' &&
+      stageTodos.every((el) => el.disabled),
+      `可点 ${stageEntries.length} 个（${entryStages}）· ` +
+      `未开始 ${stageTodos.length} 个（${todoStages}，全部 disabled=${stageTodos.every((el) => el.disabled)}）`)
+
+    // 来源依据：默认收起，但内容已经在 DOM 里（收起来 ≠ 删掉）
+    const evidenceToggle = await waitFor('来源依据开关', () => q('[data-test="home-evidence-toggle"]'))
+    const evidenceBody = () => q('[data-test="home-evidence-body"]')
+    const evidenceRows = () => qa('[data-test="home-evidence-row"]')
+    record('来源依据默认收起（且内容仍完整在 DOM 里）',
+      evidenceToggle.getAttribute('aria-expanded') === 'false' &&
+      !!evidenceBody() && !evidenceBody().classList.contains('open') &&
+      evidenceRows().length >= 4,
+      `aria-expanded=${evidenceToggle.getAttribute('aria-expanded')} · ${evidenceRows().length} 组依据`)
+
+    click(evidenceToggle)
+    await sleep(120)
+    record('来源依据可以点开',
+      evidenceBody().classList.contains('open') &&
+      evidenceToggle.getAttribute('aria-expanded') === 'true',
+      `${evidenceRows().length} 组依据 · ${(evidenceBody().textContent || '').replace(/\s+/g, ' ').length} 字`)
+
+    // 抽屉里必须真的写着"来源"与"没做的"，不是一句空壳
+    const evidenceText = (evidenceBody().textContent || '')
+    record('来源依据里写了数据来源与还没做的',
+      /acceptance_latest\.md/.test(evidenceText) &&
+      /阶段三|阶段六|还没做/.test(evidenceText),
+      evidenceText.replace(/\s+/g, ' ').slice(0, 80))
+
+    click(evidenceToggle)
+    await sleep(120)
+    record('来源依据可以再收起（不占第一屏）',
+      !evidenceBody().classList.contains('open'),
+      `aria-expanded=${evidenceToggle.getAttribute('aria-expanded')}`)
+
+    // 点进培训工作区（后面所有环节都在这个工作区里跑）
+    click(q('[data-test="home-enter-training"]'))
+    await waitFor('培训工作区挂载', () => q('[data-test="project-select"]'), 15000)
+    record('从主页面点得进培训工作区', !q('[data-test="home"]') && !!q('[data-test="stage-switcher"]'),
+      '主页面已卸载，五阶段页签已挂载')
+
     // ---- 5. 项目切换器 + 模式徽章 ----
     const select = await waitFor('项目切换器', () => q('[data-test="project-select"]'))
     record('项目切换器已渲染', select.options.length >= 1,
