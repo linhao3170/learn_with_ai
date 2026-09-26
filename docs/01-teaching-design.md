@@ -263,7 +263,7 @@
 
 > **阶段一已落地（Sprint 3）**，实现位置与口径：
 > 判定在 `engine/teaching/coverage.py:295`（`evaluate_orientation`，纯规则、无 LLM、确定性），
-> 接口是 `POST /api/projects/{id}/teaching/orientation/coverage`（`backend/app/main.py:255`），
+> 接口是 `POST /api/projects/{id}/teaching/orientation/coverage`（`backend/app/routers/teaching.py:28`），
 > 前端是 `frontend/src/components/StageOrientation.vue`（反馈区 `v-if="report"`，
 > 提交前一个节点都不渲染）。
 >
@@ -312,7 +312,7 @@
 > 题目文本与「问题 → 参与比对的卡片字段」映射**外置在 `engine/lexicon/stage_questions.json`**
 > （教师改问法或换比对字段不用改引擎，也不用改前端）；
 > 接口是 `GET/POST /api/projects/{id}/teaching/module-card/{task,coverage}`
-> （`backend/app/main.py:281` / `:298`）；前端是 `frontend/src/components/StageModuleCard.vue`
+> （`backend/app/routers/teaching.py:50` / `:67`）；前端是 `frontend/src/components/StageModuleCard.vue`
 > （阶段二视图，挂在培训工作区 `TrainingView.vue` 里；在「阶段主线」这一组里是**第二个页签**，
 > 页签分组与默认落地页见 `docs/04-api-and-frontend.md` §12.1）。
 >

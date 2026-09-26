@@ -1,6 +1,6 @@
 # 后端接口与前端架构（原 README 第十一、十二章）
 
-> 更新触发：**加 / 改路由或改页面结构时** | 上次更新：入口完善一轮（2026-09-26）
+> 更新触发：**加 / 改路由或改页面结构时** | 上次更新：WO-02 一轮（2026-09-26）
 > 来源：原 `README.md` 第十一、十二章**整章搬移**；章节号不变（`§11.1` 已实现接口表、`§11.4` 待实现接口、`§12.1` 页面信息架构…）。
 > **读它的时机**：加接口 / 加页面之前必读。
 > ⚠️ **应用版本号只有一个来源**：`backend/app/main.py` 的 `version=`；文档不许自报另一个值（`verify_docs.py` 的 D3 会核对）。
@@ -10,7 +10,11 @@
 
 ## 十一、后端接口（FastAPI，已实现）
 
-**唯一路由文件**：`backend/app/main.py`（应用版本 `0.5.0`，契约版本 `1.0`）。
+**路由按域分文件**：`backend/app/routers/` 下的 `projects.py`（项目 / 图谱 / 源码切片）、
+`grading.py`（判题）、`teaching.py`（阶段一 / 二 / 四·五 六个接口）、`analysis.py`（上传即分析）、
+`logic_platform.py`（业务逻辑分析平台 13 个路由）；**`backend/app/main.py` 只做装配**
+（app 创建 / CORS / `version=` / `include_router`）—— WO-02 一轮拆的，口径见
+`docs/10-work-orders.md` §23.2。应用版本 `0.5.0`，契约版本 `1.0`。
 **版本号只有一个来源**：`backend/app/main.py` 的 `version=`，本文档不再自报另一个值
 （`scripts/verify_docs.py` 会核对这一条）。
 启动：`cd backend && python -m uvicorn app.main:app --host 127.0.0.1 --port 8000`。
@@ -28,12 +32,12 @@
 | `GET` | `/api/projects/{id}/source?path=&start=&end=` | **源码切片**（只接受项目内相对路径；越界 / 缺失返回 404，不静默失败） |
 | `GET` | `/api/projects/{id}/source-by-location?location=a.py:88-120` | 用引擎的 `location` 串取源码 |
 | `POST` | `/api/projects/{id}/checkpoints/{i}/answer` | **后端判题**（不返回答案本身） |
-| `POST` | `/api/projects/{id}/teaching/orientation/coverage` | **阶段一覆盖度比对**（自由文本 → 覆盖清单，不打分；`main.py:255`） |
-| `GET` | `/api/projects/{id}/teaching/module-card/task` | **阶段二任务包**：五个问题 + 本项目全部模块卡片；**不下发任何比对键**（`main.py:281`） |
-| `POST` | `/api/projects/{id}/teaching/module-card/coverage` | **阶段二事实覆盖比对**（逐问 matched / missed，不打分；`main.py:298`） |
-| `GET` | `/api/projects/{id}/teaching/design/tasks` | **阶段四任务清单**：按复杂度级别（L1–L4）给任务类型；不含必备能力全文与权重（`main.py:327`） |
-| `GET` | `/api/projects/{id}/teaching/design/task?task_id=&mode=` | **取一道设计任务**（题干 + 需求简报）；`mode=teacher` 才下发 `must_have` / 权重（`main.py:341`） |
-| `POST` | `/api/projects/{id}/teaching/design/evaluate` | **阶段四 / 五：设计层六维评审**（`design_submission` → 六维报告；算不出来的维度 `not_evaluated`；`main.py:363`） |
+| `POST` | `/api/projects/{id}/teaching/orientation/coverage` | **阶段一覆盖度比对**（自由文本 → 覆盖清单，不打分；`backend/app/routers/teaching.py:28`） |
+| `GET` | `/api/projects/{id}/teaching/module-card/task` | **阶段二任务包**：五个问题 + 本项目全部模块卡片；**不下发任何比对键**（`backend/app/routers/teaching.py:50`） |
+| `POST` | `/api/projects/{id}/teaching/module-card/coverage` | **阶段二事实覆盖比对**（逐问 matched / missed，不打分；`backend/app/routers/teaching.py:67`） |
+| `GET` | `/api/projects/{id}/teaching/design/tasks` | **阶段四任务清单**：按复杂度级别（L1–L4）给任务类型；不含必备能力全文与权重（`backend/app/routers/teaching.py:92`） |
+| `GET` | `/api/projects/{id}/teaching/design/task?task_id=&mode=` | **取一道设计任务**（题干 + 需求简报）；`mode=teacher` 才下发 `must_have` / 权重（`backend/app/routers/teaching.py:106`） |
+| `POST` | `/api/projects/{id}/teaching/design/evaluate` | **阶段四 / 五：设计层六维评审**（`design_submission` → 六维报告；算不出来的维度 `not_evaluated`；`backend/app/routers/teaching.py:128`） |
 | `POST` | `/api/analyze` | 上传 `.py` / `.zip` 实时分析 |
 | `POST` | `/api/analyses/{analysis_id}/checkpoints/{i}/answer` | 实时分析结果的判题（`live_` 前缀） |
 
