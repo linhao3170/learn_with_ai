@@ -1,5 +1,15 @@
 """
 测试项目级分析引擎
+
+⚠️ **这个脚本不许写学生快照**（`WO-04` 一轮根治的顺序陷阱，`docs/08` §19.1 第 22 条）
+----------------------------------------------------------------------------
+它以前把分析结果写回 `frontend/public/demo/project_analysis.json` —— 那正是
+`scripts/build_demo_snapshots.py` 的学生快照。于是"先跑冒烟还是先跑产物脚本"
+会改变学生在页面上看到的内容，只能靠人记得"跑完冒烟要重跑产物脚本"。
+
+现在它只写 `validation/results/` 下的调试产物，并且**在同一次运行内**
+跑前跑后各取一次学生快照的内容 sha256 与 mtime、断言逐个相同
+（守卫本身也是验收的一部分）。
 """
 
 import sys
@@ -9,12 +19,24 @@ import json
 if sys.platform == "win32":
     sys.stdout.reconfigure(encoding="utf-8")
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, REPO_ROOT)
 
 from engine.project_analyzer import ProjectAnalyzer
+from scripts.build_demo_snapshots import (
+    assert_student_snapshots_unchanged,
+    student_snapshot_state,
+)
+
+#: 本脚本的调试产物（**不是**学生快照）：放到 gitignore 的 `validation/results/`，
+#: 与 `test_deep_analyzer.py` 的 P0-15/P0-16 处理方式一致。
+DEBUG_OUTPUT = os.path.join(REPO_ROOT, "validation", "results", "legacy_project_analysis.json")
 
 
 def main():
+    # 顺序陷阱守卫：跑之前先给全部学生快照取一次 sha256 + mtime
+    snapshots_before = student_snapshot_state()
+
     project_path = os.path.join("sample_projects", "lab_safety_assistant")
 
     print("=" * 70)
@@ -103,14 +125,19 @@ def main():
     ):
         print("\n  ⚠️ 契约里出现了 correct_answers —— 违反 P0-11！")
 
-    # === 保存 JSON ===
+    # === 保存 JSON（调试产物，**不是学生快照**）===
     print("\n" + "=" * 70)
-    output_path = os.path.join("frontend", "public", "demo", "project_analysis.json")
-    os.makedirs(os.path.dirname(output_path), exist_ok=True)
-    with open(output_path, "w", encoding="utf-8") as f:
+    os.makedirs(os.path.dirname(DEBUG_OUTPUT), exist_ok=True)
+    with open(DEBUG_OUTPUT, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
-    print(f"\n已保存到: {output_path}")
-    print(f"JSON 大小: {os.path.getsize(output_path)} 字节")
+    print(f"\n已保存到: {DEBUG_OUTPUT}")
+    print(f"JSON 大小: {os.path.getsize(DEBUG_OUTPUT)} 字节")
+    print("（学生快照 frontend/public/demo/ 下的产物不归本脚本写：")
+    print("  它的唯一写出方是 scripts/build_demo_snapshots.py）")
+
+    # === 顺序陷阱守卫：学生快照必须一个都没被写过 ===
+    print("\n" + "=" * 70)
+    assert_student_snapshots_unchanged(snapshots_before, context="scripts/test_project_analyzer.py")
 
     print("\n" + "=" * 70)
     print("  测试通过！项目级分析引擎工作正常")

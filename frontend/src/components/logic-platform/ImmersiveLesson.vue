@@ -551,21 +551,73 @@ const emit = defineEmits(['close', 'open-source', 'verify', 'review'])
  * 这张讲稿上每一句结论下面都挂着一串 `文件:行号`。**引用成立 ≠ 解释正确**——
  * 这句话必须写在证据旁边，否则读的人会把"机械复核通过"当成"业务解释也是对的"。
  *
- * 下面每一条都对应可执行的事实，不是形容词：
- * - 复核了什么：`engine/logic_platform/verify.py` 的检查项（路径纪律 / 行区间 / 摘录逐字符 /
- *   哈希 / 段落摘录 / 符号存在 / return 行与序号 / 「不会执行」的区间 / 每条断言必须有可核验的证据）；
- * - 模型把关：`engine/logic_platform/narration.py` 的四条规则（只给行号不给代码、行范围必须落在本段内、
+ * 下面每一条都对应可执行的事实，不是形容词 —— 且**不再靠人手抄**：
+ * 「机械复核逐项检查了什么」这句话由下面那组常量拼出来，那组常量又必须与
+ * `engine/logic_platform/verification_manifest.json` 逐项相同（门禁 `scripts/verify_docs.py` 的 D9 会核对）。
+ * - 复核了什么：`engine/logic_platform/verify.py` 的 `CHECKS`（V01~V11）；
+ * - 模型把关：`engine/logic_platform/narration.py` 四条规则（只给行号不给代码、行范围必须落在本段内、
  *   落不到证据上的条目直接拒绝并留痕、合并后必须重跑校验器）。
  */
 const EVIDENCE_SUMMARY =
   '断言下面的证据只证明一件事：那几行代码确实存在、且与磁盘上的源码逐字符一致。' +
   '它不证明「这句业务解释是对的」—— 那只有教师能判。'
 
+// ---------------------------------------------------------------------------
+// 口径文案 ↔ 引擎机制：机器可核对的唯一来源
+// ---------------------------------------------------------------------------
+/**
+ * 这四组常量是**说明文案的机器可读来源**，不是装饰：
+ *
+ * - `checks` 的条目与顺序来自 `engine/logic_platform/verification_manifest.json`；
+ * - 那份清单的 `checks[].id` / `name` 又与 `engine/logic_platform/verify.py` 的 `CHECKS` 逐项相同；
+ * - 前端不能直接读 `engine/`，所以由 `scripts/verify_docs.py` 的 **D9** 读清单 + 读本文件这几组常量再逐项比对
+ *   （条目集合、顺序、措辞、清单版本、四条把关规则、`can_publish` 恒假）。
+ *
+ * ⚠️ **改说明 = 改清单**：D9 报红时，要改的是这里的常量与那份清单（或者改对不上的那句文案），
+ * **不许**把 D9 放宽 —— 放宽断言比改一句文案危险得多（`docs/08` §19.4 第 4 条）。
+ * ⚠️ 这些 id 只给门禁读，**不许**渲染进 DOM（学生界面不出现内部编号）。
+ */
+const VERIFICATION_MANIFEST_VERSION = '1.0'
+const VERIFIED_CHECK_IDS = [
+  'V01_path_relative',
+  'V02_span_valid',
+  'V03_excerpt_fidelity',
+  'V04_hash_matches',
+  'V05_segment_excerpt',
+  'V06_symbol_exists',
+  'V07_return_claim',
+  'V08_return_ordinal',
+  'V09_skipped_range',
+  'V10_claim_has_evidence',
+  'V11_evidence_checkable',
+]
+const VERIFIED_CHECK_SUMMARIES = [
+  '文件是否为项目内相对路径',
+  '行区间是否合法（起止行有序、且不超出文件总行数）',
+  '摘录是否与磁盘源码逐字符一致',
+  '摘录哈希是否对得上',
+  '整段代码摘录是否也与磁盘源码逐字符一致',
+  '被引用的函数是否真的存在于语法树里、且这一段落在它的行范围内',
+  '声称的 return 行上是否真有 return',
+  '「这是第几个 return」是否与重新数出来的序号对得上',
+  '「后面几行不会执行」的区间是否真实存在于该函数内',
+  '每条断言是否至少带一条可核验的证据',
+  '每条证据是否都带非空摘录与哈希（否则它根本核不了）',
+]
+const VERIFIED_CHECKS_SUFFIX = '空壳证据按失败处理，不静默跳过'
+const NARRATION_GATE_RULE_IDS = [
+  'N1_model_gives_lines_not_code',
+  'N2_span_inside_segment',
+  'N3_reject_without_evidence',
+  'N4_reverify_after_merge',
+]
+const CAN_PUBLISH_ALWAYS_FALSE = true
+
 const EVIDENCE_LINES = [
   '证据是一段「文件:行号」，点它就打开源码：看的是磁盘上此刻的内容，而不是讲稿里抄下来的一份副本。',
-  '机械复核逐项检查：文件是否为项目内相对路径、行区间是否合法、摘录是否与磁盘源码逐字符一致、摘录哈希是否对得上、' +
-    '被引用的函数是否真的存在于语法树里、声称的 return 行与它的序号是否真的对得上、「后面不会执行」的区间是否真实，' +
-    '以及每一条断言是否至少带一条可核验的证据（空壳证据按失败处理，不静默跳过）。',
+  '机械复核逐项检查：' +
+    VERIFIED_CHECK_SUMMARIES.join('、') +
+    '（' + VERIFIED_CHECKS_SUFFIX + '）。',
   '机械复核**检查不到**的是：这几行代码是否真的支持这句话的结论。行号是真的、摘录是真的，' +
     '但「由它推出这条业务解释」这一步是语义判断，机器不做这个判断 —— 这就是发布权交给教师的原因。',
   '当徽章写「模型草稿」时（讲解措辞由语言模型渲染）：模型只允许给行号、不允许给代码；' +

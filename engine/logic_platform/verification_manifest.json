@@ -1,0 +1,123 @@
+{
+  "manifest_version": "1.0",
+  "what": "讲稿 / 反幻觉面板里那些「机械复核到底检查了什么」的说明文案，唯一的机器可读来源。前端不能直接读 engine/，所以由 scripts/verify_docs.py 的 D9 读本清单 + 读两个组件里的说明常量再逐项比对。",
+  "why": "docs/08 §19.1 第 26 条的缺口：引擎改了检查项而前端文案没跟上，页面就会说错话，而门禁抓不到。本清单把「引擎机制」与「学生看到的说明」之间的那条链子变成可机器核对的：verify.py 的 CHECKS → 本清单的 checks → 组件里的说明常量。",
+  "honest_boundary": [
+    "D9 只能证明「组件的说明条目集合与顺序 == 本清单 == verify.py 的 CHECKS」；它证明不了每条 student_facing 措辞是否准确、是否好懂 —— 那是人复核的事（docs/features/evidence-fold.md §2 第 6 条那张对照表）。",
+    "本清单里的 student_facing 是**给人看的措辞**，允许与 name（引擎内部命名）不同；两者的对应关系由「同一条目的同一个下标」保证。",
+    "四条把关规则的 summary 必须与 narration.py 模块 docstring 里那四条**逐字相同**（D9 会比对），所以改引擎那四条就必须同轮改这里与两个组件。"
+  ],
+  "source_of_truth": {
+    "checks": {
+      "file": "engine/logic_platform/verify.py",
+      "symbol": "CHECKS",
+      "algorithm_version": "verify-1.0"
+    },
+    "can_publish": {
+      "file": "engine/logic_platform/verify.py",
+      "symbol": "apply_verification",
+      "statement": "review[\"can_publish\"] = False",
+      "meaning": "「可发布」永远为假：机械复核通过只写进 verification_passed，发布权属于人（教师确认才可能变成 approved）"
+    },
+    "reverify_reads_disk": {
+      "file": "engine/logic_platform/verify.py",
+      "symbol": "_read_lines",
+      "meaning": "重新校验时刻意绕开解析缓存，直接读磁盘上的当前源码"
+    },
+    "narration_gating_rules": {
+      "file": "engine/logic_platform/narration.py",
+      "symbol": "模块 docstring「把关规则」一节",
+      "count": 4
+    },
+    "stale_on_source_change": {
+      "file": "backend/app/services/logic_platform_service.py",
+      "symbol": "_apply_reviews",
+      "meaning": "按 source_hash 判定：源码一变，此前的人工审核自动失效（stale）"
+    }
+  },
+  "checks": [
+    {
+      "id": "V01_path_relative",
+      "name": "证据文件路径为项目内相对路径",
+      "student_facing": "文件是否为项目内相对路径"
+    },
+    {
+      "id": "V02_span_valid",
+      "name": "行区间合法（1 <= start <= end <= 总行数）",
+      "student_facing": "行区间是否合法（起止行有序、且不超出文件总行数）"
+    },
+    {
+      "id": "V03_excerpt_fidelity",
+      "name": "存下的摘录与磁盘源码逐字符一致",
+      "student_facing": "摘录是否与磁盘源码逐字符一致"
+    },
+    {
+      "id": "V04_hash_matches",
+      "name": "摘录哈希与存下的哈希一致",
+      "student_facing": "摘录哈希是否对得上"
+    },
+    {
+      "id": "V05_segment_excerpt",
+      "name": "段的代码摘录与磁盘源码逐字符一致",
+      "student_facing": "整段代码摘录是否也与磁盘源码逐字符一致"
+    },
+    {
+      "id": "V06_symbol_exists",
+      "name": "段引用的函数在 AST 中真实存在且覆盖段行范围",
+      "student_facing": "被引用的函数是否真的存在于语法树里、且这一段落在它的行范围内"
+    },
+    {
+      "id": "V07_return_claim",
+      "name": "声称的 return 行在 AST 中真有 Return",
+      "student_facing": "声称的 return 行上是否真有 return"
+    },
+    {
+      "id": "V08_return_ordinal",
+      "name": "「第几个 return」由 AST 重新计数后一致",
+      "student_facing": "「这是第几个 return」是否与重新数出来的序号对得上"
+    },
+    {
+      "id": "V09_skipped_range",
+      "name": "「后面不会执行」的行区间真实存在于函数内",
+      "student_facing": "「后面几行不会执行」的区间是否真实存在于该函数内"
+    },
+    {
+      "id": "V10_claim_has_evidence",
+      "name": "每条断言都带至少一条证据",
+      "student_facing": "每条断言是否至少带一条可核验的证据"
+    },
+    {
+      "id": "V11_evidence_checkable",
+      "name": "每条证据都带非空摘录与哈希（否则核不了）",
+      "student_facing": "每条证据是否都带非空摘录与哈希（否则它根本核不了）"
+    }
+  ],
+  "checks_suffix": "空壳证据按失败处理，不静默跳过",
+  "narration_gating_rules": [
+    {
+      "id": "N1_model_gives_lines_not_code",
+      "summary": "模型只能给行号，不许给代码。",
+      "implementation": "engine/logic_platform/narration.py 的合并逻辑：模型返回的 excerpt 一律丢弃，摘录由本模块从磁盘重读"
+    },
+    {
+      "id": "N2_span_inside_segment",
+      "summary": "引用范围必须落在它所属的段里。",
+      "implementation": "engine/logic_platform/narration.py：行范围必须落在该段（或该段已有断言证据）的行范围内，越界即拒绝"
+    },
+    {
+      "id": "N3_reject_without_evidence",
+      "summary": "落不到证据上的断言，直接拒绝并留痕。",
+      "implementation": "engine/logic_platform/narration.py：进 rejected[] 并带 reason，不写进讲稿"
+    },
+    {
+      "id": "N4_reverify_after_merge",
+      "summary": "合并完必须重跑校验器。",
+      "implementation": "engine/logic_platform/narration.py 调 verify.verify_and_apply；generated_by 标 llm_draft、状态强制 needs_review"
+    }
+  ],
+  "can_publish": {
+    "always_false": true,
+    "lesson_review_field": "review.can_publish",
+    "meaning": "引擎永远不会把「可发布」置为真：只有教师走审核接口确认过、且机械复核通过，这一课才会变成已确认"
+  }
+}

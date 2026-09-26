@@ -2,6 +2,19 @@
 完整引擎集成测试
 
 验证：解析 -> 模式识别 -> 调用图 -> 知识点 -> 流程图 -> 题目生成  全链路
+
+⚠️ 输出路径（`WO-04` 一轮根治的顺序陷阱，`docs/08` §19.1 第 22 条）
+------------------------------------------------------------------
+它以前把结果写到 **cwd 相对的** `demo/analysis_output.json`。从仓库根跑就落在根目录
+那份过期副本上，从 `frontend/public` 跑就会**覆盖学生快照**
+`frontend/public/demo/analysis_output.json`（App 的旧分析页真的在读它）——
+同一个命令改不同的 cwd 就改不同的文件，这是典型的顺序陷阱。
+现在输出固定写到 gitignore 的 `validation/results/` 下（与 `test_deep_analyzer.py`
+的 P0-15/P0-16 一致），并在同一次运行内用 sha256 断言学生快照一个都没变。
+
+注意：**输入**仍是 cwd 相对的 `demo/student_manager.py`（根目录与 `frontend/public`
+下各有一份同样的文件）——它只读不写，所以不参与这个陷阱；改成绝对路径是另一件事，
+本工单不动它（见交付说明的「仍未做」）。
 """
 
 import sys
@@ -12,14 +25,25 @@ if sys.platform == "win32":
     sys.stdout.reconfigure(encoding="utf-8")
     sys.stderr.reconfigure(encoding="utf-8")
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, REPO_ROOT)
 
 from engine.analyzer import BusinessLogicAnalyzer
 from engine.visualizer import FlowchartGenerator
 from engine.quiz import QuizGenerator
+from scripts.build_demo_snapshots import (
+    assert_student_snapshots_unchanged,
+    student_snapshot_state,
+)
+
+#: 调试产物路径（**绝对路径**，不随 cwd 变；**不是**学生快照）
+DEBUG_OUTPUT = os.path.join(REPO_ROOT, "validation", "results", "legacy_full_engine_output.json")
 
 
 def main():
+    # 顺序陷阱守卫：跑之前先给全部学生快照取一次 sha256 + mtime
+    snapshots_before = student_snapshot_state()
+
     # 读取示例代码
     demo_path = os.path.join("demo", "student_manager.py")
     with open(demo_path, "r", encoding="utf-8") as f:
@@ -145,11 +169,16 @@ def main():
     json_str = json.dumps(output, ensure_ascii=False, indent=2)
     print(f"\nJSON 总大小: {len(json_str)} 字符 ({len(json_str.encode('utf-8'))} 字节)")
 
-    # 保存到文件
-    output_path = os.path.join("demo", "analysis_output.json")
-    with open(output_path, "w", encoding="utf-8") as f:
+    # 保存到文件（绝对路径；不写学生快照）
+    os.makedirs(os.path.dirname(DEBUG_OUTPUT), exist_ok=True)
+    with open(DEBUG_OUTPUT, "w", encoding="utf-8") as f:
         f.write(json_str)
-    print(f"已保存到: {output_path}")
+    print(f"已保存到: {DEBUG_OUTPUT}")
+    print(f"（学生快照 frontend/public/demo/ 下的产物不归本脚本写：")
+    print(f"  它的唯一写出方是 scripts/build_demo_snapshots.py）")
+
+    # 顺序陷阱守卫：学生快照必须一个都没变
+    assert_student_snapshots_unchanged(snapshots_before, context="scripts/test_full_engine.py")
 
     print("\n" + "=" * 70)
     print("  所有测试通过！引擎全链路工作正常")

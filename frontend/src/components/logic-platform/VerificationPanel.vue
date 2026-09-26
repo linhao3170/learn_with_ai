@@ -424,11 +424,61 @@ import { toProjectRelative } from '../../utils/businessGraph'
  * - 重新校验重读磁盘：`verify.py` 刻意绕开解析缓存（`_read_lines` 直接开文件）；
  * - `stale`：`backend/app/services/logic_platform_service.py` 的 `_apply_reviews` 按 `source_hash` 判定；
  * - 模型把关四条规则：`engine/logic_platform/narration.py` 模块 docstring。
+ *
+ * 「机械复核逐项检查了什么」这一句**不再是手抄的**：它由下面那组常量拼出来，
+ * 而那组常量必须与 `engine/logic_platform/verification_manifest.json` 逐项相同
+ * （门禁 `scripts/verify_docs.py` 的 D9 会核对清单 ↔ 组件 ↔ `verify.py` 的 `CHECKS`）。
  */
 const VERIFICATION_SUMMARY =
   '机械复核只证明一件事：讲稿里引用的代码确实存在，且与磁盘上的源码逐字符一致。' +
   '它不能证明「这句业务解释是对的」—— 那只有教师能判；' +
   '下面的通过数只说明「这台机器检查了什么」，不构成对内容的评价。'
+
+// ---------------------------------------------------------------------------
+// 口径文案 ↔ 引擎机制：机器可核对的唯一来源
+// ---------------------------------------------------------------------------
+/**
+ * 与 `ImmersiveLesson.vue` 里那组同名常量**必须逐字相同**（两个组件讲的是同一台机器），
+ * 且两者都要与 `engine/logic_platform/verification_manifest.json` 逐项相同。
+ *
+ * ⚠️ 这些 id 只给门禁读，**不许**渲染进 DOM；改引擎检查项时先改清单，再改这里，
+ * 最后才改说明文案 —— 顺序反了就会出现"页面在说一台不存在的机器"。
+ */
+const VERIFICATION_MANIFEST_VERSION = '1.0'
+const VERIFIED_CHECK_IDS = [
+  'V01_path_relative',
+  'V02_span_valid',
+  'V03_excerpt_fidelity',
+  'V04_hash_matches',
+  'V05_segment_excerpt',
+  'V06_symbol_exists',
+  'V07_return_claim',
+  'V08_return_ordinal',
+  'V09_skipped_range',
+  'V10_claim_has_evidence',
+  'V11_evidence_checkable',
+]
+const VERIFIED_CHECK_SUMMARIES = [
+  '文件是否为项目内相对路径',
+  '行区间是否合法（起止行有序、且不超出文件总行数）',
+  '摘录是否与磁盘源码逐字符一致',
+  '摘录哈希是否对得上',
+  '整段代码摘录是否也与磁盘源码逐字符一致',
+  '被引用的函数是否真的存在于语法树里、且这一段落在它的行范围内',
+  '声称的 return 行上是否真有 return',
+  '「这是第几个 return」是否与重新数出来的序号对得上',
+  '「后面几行不会执行」的区间是否真实存在于该函数内',
+  '每条断言是否至少带一条可核验的证据',
+  '每条证据是否都带非空摘录与哈希（否则它根本核不了）',
+]
+const VERIFIED_CHECKS_SUFFIX = '空壳证据按失败处理，不静默跳过'
+const NARRATION_GATE_RULE_IDS = [
+  'N1_model_gives_lines_not_code',
+  'N2_span_inside_segment',
+  'N3_reject_without_evidence',
+  'N4_reverify_after_merge',
+]
+const CAN_PUBLISH_ALWAYS_FALSE = true
 
 const VERIFICATION_LINES = [
   '引擎永远不会把「可发布」置为真：只有教师走审核接口确认过、且机械复核通过，这一课才会变成已确认；' +
@@ -437,9 +487,9 @@ const VERIFICATION_LINES = [
     '因此它给出的是"现在这一刻引用是否仍然成立"，而不是复用讲稿里上一次的结论。',
   '源码一旦变化，此前的人工审核会自动失效（stale）：界面会明写「审核已失效」并退回待确认，' +
     '绝不沿用一份已经作废的确认。',
-  '机械复核逐项检查：文件是否为项目内相对路径、行区间是否合法、摘录是否与磁盘源码逐字符一致、' +
-    '摘录哈希是否对得上、被引用的函数是否真的存在于语法树里、声称的 return 行与它的序号是否对得上、' +
-    '「后面不会执行」的区间是否真实，以及每条断言是否至少带一条可核验的证据（空壳证据按失败处理，不静默跳过）。',
+  '机械复核逐项检查：' +
+    VERIFIED_CHECK_SUMMARIES.join('、') +
+    '（' + VERIFIED_CHECKS_SUFFIX + '）。',
   '它仍然检查不到"这几行代码是否真的支持这句话的结论"：行号与摘录是真的，' +
     '但语义上的推导只有人能判。所以任何一项失败只说明"引用层面不成立"，全部通过也只说明"引用层面成立"。',
   '当这一课是模型草稿（generated_by = llm_draft）时：模型只允许给行号、不允许给代码，' +

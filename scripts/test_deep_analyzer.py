@@ -9,6 +9,16 @@ Output (P0-15): this script OWNS ``validation/results/deep_analysis_test.json``
 It must NOT write ``deep_analysis.json`` -- that canonical DeepAnalysisResult
 artifact belongs to ``scripts/generate_deep_data.py``. Two scripts writing the
 same path silently overwrote each other's (differently shaped) output.
+
+Order trap guard (WO-04)
+------------------------
+This script does **not** write the student snapshots under
+``frontend/public/demo/`` today (they are owned by
+``scripts/build_demo_snapshots.py``). The guard below pins that fact down:
+it takes sha256 digests of all student snapshots before and after the run and
+asserts they are byte-identical. Without it, a later edit that "helpfully"
+writes the analysis back into ``frontend/public/demo/`` would silently
+reintroduce the order trap (``docs/08`` §19.1 item 22) and nobody would notice.
 """
 
 import sys
@@ -22,9 +32,16 @@ from engine.project_analyzer.project_parser import ProjectParser
 from engine.deep_analyzer import (
     DeepAnalyzer,
 )
+from scripts.build_demo_snapshots import (
+    assert_student_snapshots_unchanged,
+    student_snapshot_state,
+)
 
 
 def main():
+    # Order-trap guard: take sha256 + mtime of every student snapshot before anything runs.
+    snapshots_before = student_snapshot_state()
+
     sample_path = os.path.join(
         os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
         "sample_projects", "lab_safety_assistant"
@@ -182,6 +199,9 @@ def main():
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(output, f, ensure_ascii=False, indent=2)
     print(f"\nFull analysis saved to: {output_path}")
+
+    # Order-trap guard: the student snapshots must be byte-identical (WO-04).
+    assert_student_snapshots_unchanged(snapshots_before, context="scripts/test_deep_analyzer.py")
 
     print("\n" + "=" * 70)
     print("Test complete!")
